@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" enabled="true" immediate="true" name="net.jp2p.chaupal.jxta.platform.module.loader">
+   <implementation class="net.jp2p.chaupal.jxta.platform.module.ModuleLoader"/>
+   <service>
+      <provide interface="net.jp2p.jxta.module.IModuleLoader"/>
+   </service>>
+</scr:component>

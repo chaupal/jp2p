@@ -1,0 +1,98 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Chaupal.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution, and is available at
+ * http://www.apache.org/licenses/LICENSE-2.0.html
+ *******************************************************************************/
+package net.jp2p.jxta.pipe;
+
+import java.net.URISyntaxException;
+
+import net.jp2p.container.properties.IJp2pProperties;
+import net.jp2p.container.properties.IJp2pPropertySource;
+import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
+import net.jp2p.container.utils.StringStyler;
+import net.jp2p.container.utils.Utils;
+import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
+import net.jp2p.jxta.advertisement.ModuleImplAdvertisementPropertySource.ModuleImplProperties;
+import net.jxta.document.AdvertisementFactory;
+import net.jxta.peergroup.PeerGroup;
+import net.jxta.protocol.PipeAdvertisement;
+
+public class PipeAdvertisementPropertySource extends AdvertisementPropertySource{
+	
+	/**
+	 * Properties specific for module spec services
+	 * @author Kees
+	 *
+	 */
+	public enum PipeAdvertisementProperties implements IJp2pProperties{
+		DESCRIPTION,
+		TYPE,
+		PIPE_ID;
+	
+		public static boolean isValidProperty( String str ){
+			if( Utils.isNull( str ))
+				return false;
+			for( PipeAdvertisementProperties dir: values() ){
+				if( dir.name().equals( str ))
+					return true;
+			}
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return StringStyler.prettyString( super.toString() );
+		}
+	}
+
+	public PipeAdvertisementPropertySource( IJp2pPropertySource<IJp2pProperties> parent) {
+		super( AdvertisementTypes.PIPE, parent);
+	}
+
+	@Override
+	protected void fillDefaultValues( IJp2pPropertySource<IJp2pProperties> parent ) {
+		super.fillDefaultValues(parent);
+		String name = super.getParent().getDirective( Directives.NAME );
+		if(Utils.isNull( name )){
+			name = (String) super.getParent().getProperty( ModuleImplProperties.CODE );
+		}
+		if(!Utils.isNull( name )){
+			this.setManagedProperty( new ManagedProperty<IJp2pProperties, Object>( this, ModuleImplProperties.CODE, name ));
+		}
+	}
+
+	@Override
+	public IJp2pProperties getIdFromString(String key) {
+		if( PipeAdvertisementProperties.isValidProperty(key))
+			return PipeAdvertisementProperties.valueOf(key);
+		return super.getIdFromString(key);
+	}
+
+	@Override
+	public boolean validate(IJp2pProperties id, Object value) {
+		return PipeAdvertisementProperties.isValidProperty(id.toString());	
+	}	
+	
+	/**
+	 * Create a pipe advertisement
+	 * @return
+	 * @throws URISyntaxException 
+	 */
+	public static PipeAdvertisement createPipeAdvertisement( IJp2pPropertySource<IJp2pProperties> source, PeerGroup peergroup ) throws URISyntaxException{
+		PipeAdvertisementPreferences preferences = new PipeAdvertisementPreferences( (IJp2pWritePropertySource<IJp2pProperties>) source, peergroup );
+		PipeAdvertisement pipead = ( PipeAdvertisement )AdvertisementFactory.newAdvertisement( AdvertisementTypes.convertTo( AdvertisementTypes.PIPE ));
+		String name = (String) source.getProperty( AdvertisementProperties.NAME );
+		pipead.setName(name);
+		pipead.setType(( String )source.getProperty( PipeAdvertisementProperties.TYPE ));
+		pipead.setDescription(( String )source.getProperty( PipeAdvertisementProperties.DESCRIPTION ));
+		pipead.setPipeID( preferences.getPipeID());
+		return pipead;
+	}
+
+	
+}
