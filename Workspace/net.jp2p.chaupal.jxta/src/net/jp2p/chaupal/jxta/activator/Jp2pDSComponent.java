@@ -12,6 +12,7 @@ package net.jp2p.chaupal.jxta.activator;
 
 import net.jp2p.chaupal.activator.ContainerBuilderEvent;
 import net.jp2p.chaupal.activator.IContainerBuilderListener;
+import net.jp2p.chaupal.activator.IJp2pBundleActivator;
 import net.jp2p.chaupal.activator.IJp2pDSComponent;
 import net.jp2p.container.IJp2pContainer;
 
@@ -28,14 +29,14 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 	private Jp2pBundleActivator activator;
 	private IContainerBuilderListener listener;
 
-	protected Jp2pDSComponent( Jp2pBundleActivator activator ) {
+	protected Jp2pDSComponent( IJp2pBundleActivator activator ) {
 		this( S_IJP2P_CONTAINER_PACKAGE_ID, S_IP2P_TOKEN, activator);
 	}
 
-	protected Jp2pDSComponent( String introduction, String token, Jp2pBundleActivator activator ) {
+	protected Jp2pDSComponent( String introduction, String token, IJp2pBundleActivator activator ) {
 		this.token = token;
 		this.introduction = introduction;
-		this.activator = activator;
+		this.activator = (Jp2pBundleActivator) activator;
 		this.setActivator();
 	}
 

@@ -10,14 +10,14 @@ package net.jp2p.chaupal.activator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.log.Jp2pLevel;
 
-import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
-public abstract class AbstractJp2pBundleActivator<T extends Object> implements BundleActivator {
+public abstract class AbstractJp2pBundleActivator<T extends Object> implements IJp2pBundleActivator {
 
 	private static final String S_MSG_NOT_A_JP2P_BUNDLE = "\n\nThis bundle is not a valid JP2P Bundle. A JP2P-INF directory is required!\n\n";
 	private static final String S_JP2P_INF = "/JP2P-INF";
@@ -25,13 +25,33 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 	
 	private Jp2pActivator<T> jp2pActivator;
 
+	private BundleContext bundleContext;
+	private IJp2pContainer container;
+	
 	private ServiceTracker<BundleContext,LogService> logServiceTracker;
 	private LogService logService;
-	
+
 	/**
 	 * Create the container;
 	 */
-	protected abstract void createContainer();
+	protected abstract IJp2pContainer onCreateContainer();
+
+	/**
+	 * Create the container;
+	 */
+	protected void createContainer(){
+		container = this.onCreateContainer();
+	}
+
+	@Override
+	public IJp2pContainer getContainer() {
+		return this.container;
+	}
+
+	
+	protected void setContainer(IJp2pContainer container) {
+		this.container = container;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -42,6 +62,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 		if(this.getClass().getResource( S_JP2P_INF ) == null )
 			Logger.getLogger( this.getClass().getName() ).warning( S_MSG_NOT_A_JP2P_BUNDLE);
 		
+		this.bundleContext = bundleContext;
 		Level level = Jp2pLevel.getJxtaLevel();
 		Logger log = Logger.getLogger( this.getClass().getName() );
 		log.log( level, S_MSG_LOG );
@@ -68,6 +89,10 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 		return logService;
 	}
 	
+	protected BundleContext getBundleContext() {
+		return bundleContext;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
@@ -82,5 +107,6 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 		// close the service tracker
 		logServiceTracker.close();
 		logServiceTracker = null;
+		this.bundleContext=  null;
 	}
 }

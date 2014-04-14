@@ -24,14 +24,11 @@ import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.context.ContextLoader;
-import net.jp2p.container.startup.Jp2pStartupService;
 
-public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Jp2pStartupService> {
+public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
 	private String bundle_id;
 	private IComponentChangedListener observer;
-	
-	private BundleContext bundleContext;
 	
 	private static Jp2pContextService contextService; 
 	private ContextLoader contextLoader;
@@ -39,7 +36,6 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Jp2pStartup
 	
 	
 	private Jp2pContainerBuilder builder;
-	private IJp2pContainer container;
 	private IContainerBuilderListener listener;
 	
 	private Collection<IContainerBuilderListener> listeners;
@@ -52,12 +48,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Jp2pStartup
 	public String getBundleId() {
 		return bundle_id;
 	}
-
 	
-	public IJp2pContainer getContainer() {
-		return container;
-	}
-
 	public IComponentChangedListener getObserver() {
 		return observer;
 	}
@@ -76,7 +67,6 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Jp2pStartup
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
-		this.bundleContext = bundleContext;
 		moduleService = new ModuleFactoryService( bundleContext );
 		moduleService.open();			
 		super.start(bundleContext);
@@ -108,20 +98,20 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Jp2pStartup
 		for( IContainerBuilderListener listener: listeners )
 			listener.notifyContainerBuilt(event);		
 	}
+
 	
 	@Override
-	protected void createContainer() {
-		
+	protected IJp2pContainer onCreateContainer() {
 		//Add contexts, both default as the ones provided through DS
 		contextLoader = ContextLoader.getInstance();
 
-		contextService = new Jp2pContextService( contextLoader, bundleContext );
+		contextService = new Jp2pContextService( contextLoader, super.getBundleContext() );
 		builder = new Jp2pContainerBuilder( this, contextLoader );
 		listener = new IContainerBuilderListener(){
 
 			@Override
 			public void notifyContainerBuilt(ContainerBuilderEvent event) {
-				container = builder.getContainer();
+				setContainer( builder.getContainer() );
 				notifyListeners(event);
 			}	
 		};
@@ -133,6 +123,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Jp2pStartup
 		if( observer != null )
 			dispatcher.addServiceChangeListener(observer);
 		
-		contextService.open();				
+		contextService.open();		
+		return super.getContainer();
 	}
 }

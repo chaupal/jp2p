@@ -29,11 +29,11 @@ import net.jxta.peergroup.PeerGroup;
 import net.jxta.refplatform.platform.NetworkConfigurator;
 import net.jxta.refplatform.platform.NetworkManager;
 
-public abstract class AbstractExampleContext extends AbstractJp2pContainer<NetworkManager>{
+public abstract class AbstractJxeContainer extends AbstractJp2pContainer<NetworkManager>{
 
 	private String identifier;
 	
-	protected AbstractExampleContext( String bundle_id, String identifier ) {
+	protected AbstractJxeContainer( String bundle_id, String identifier ) {
 		super(new Jp2pContainerPropertySource( bundle_id ));
 		this.identifier = identifier;
 	}
