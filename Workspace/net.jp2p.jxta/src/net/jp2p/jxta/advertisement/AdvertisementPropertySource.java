@@ -162,6 +162,15 @@ public class AdvertisementPropertySource extends AbstractJp2pWritePropertySource
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );
 		}
+
+		/**
+		 * Get the given directive as lowercase
+		 * @param directive
+		 * @return
+		 */
+		public String toLowerCase(){
+			return toString().toLowerCase();
+		}
 	}
 
 	/**

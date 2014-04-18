@@ -10,6 +10,9 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.peergroup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.jp2p.chaupal.jxta.advertisement.ChaupalAdvertisementFactory;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
@@ -41,10 +44,10 @@ public class ChaupalPeerGroupFactory extends ChaupalAdvertisementFactory<PeerGro
 	@Override
 	public void prepare(String componentName,
 			IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, String[] attributes) {
-		String[] attr = new String[1];
-		attr[0] = AdvertisementTypes.PEERGROUP.toString();
-		super.prepare(componentName, parentSource, builder, attr);
+			IContainerBuilder builder, Map<String,String> attributes) {
+		Map<String, String> attrs = new HashMap<String, String>();
+		attrs.put( AdvertisementDirectives.TYPE.toLowerCase() , AdvertisementTypes.PEERGROUP.toString());
+		super.prepare(componentName, parentSource, builder, attrs);
 	}
 
 
@@ -75,11 +78,11 @@ public class ChaupalPeerGroupFactory extends ChaupalAdvertisementFactory<PeerGro
 
 	@Override
 	protected PeerGroupAdvertisement createAdvertisement( IJp2pPropertySource<IJp2pProperties> source) {
-		PeerGroupAdvertisementPropertySource pgps = (PeerGroupAdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(source, AdvertisementTypes.PEERGROUP );
+		AdvertisementPropertySource pgps = (AdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(source, AdvertisementTypes.PEERGROUP );
 		ModuleSpecAdvertisementPropertySource msps = (ModuleSpecAdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(source, AdvertisementTypes.MODULE_SPEC );
 		ModuleClassAdvertisementPropertySource mcps = (ModuleClassAdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(msps, AdvertisementTypes.MODULE_CLASS );
 		try {
-			return createPeerGroupAdsFromPeerAds( super.getPeerGroup(), msps, mcps, (PeerGroupPropertySource) super.getPropertySource(), pgps);
+			return createPeerGroupAdsFromPeerAds( super.getPeerGroup(), msps, mcps, (PeerGroupPropertySource) super.getPropertySource(), (PeerGroupAdvertisementPropertySource) pgps);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

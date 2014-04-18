@@ -21,7 +21,6 @@ public interface IJp2pContainer extends IJp2pComponentNode<Object>, IJp2pService
 	 *
 	 */
 	public enum ContainerProperties implements IJp2pProperties{
-		BUNDLE_ID,
 		HOME_FOLDER,
 		PERSIST,
 		PASS_1,

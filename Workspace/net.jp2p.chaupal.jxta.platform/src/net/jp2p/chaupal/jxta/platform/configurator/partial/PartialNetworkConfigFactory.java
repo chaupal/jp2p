@@ -7,6 +7,8 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform.configurator.partial;
 
+import java.util.Map;
+
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -19,7 +21,7 @@ public class PartialNetworkConfigFactory<T extends Object> extends AbstractPrope
 	@Override
 	public void prepare(String componentName,
 			IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, String[] attributes) {
+			IContainerBuilder builder, Map<String, String> attributes) {
 		super.prepare(componentName, parentSource, builder, attributes);
 		this.componentName = componentName;
 	}

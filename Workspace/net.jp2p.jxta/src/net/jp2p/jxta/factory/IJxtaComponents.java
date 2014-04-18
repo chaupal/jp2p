@@ -13,14 +13,6 @@ import net.jp2p.container.utils.StringStyler;
 public interface IJxtaComponents{
 
 	public enum JxtaComponents implements IJp2pComponents{
-		//NETWORK_MANAGER,
-		//NETWORK_CONFIGURATOR,
-		//SEED_LIST,
-		//SECURITY,
-		//TCP,
-		//HTTP,
-		//HTTP2,
-		//MULTICAST,
 		NET_PEERGROUP_SERVICE,
 		DISCOVERY_SERVICE,
 		PEERGROUP_SERVICE,

@@ -25,8 +25,6 @@ public class Jp2pContainerPropertySource extends AbstractJp2pWritePropertySource
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Jp2pContainerPropertySource( String bundleId) {
 		super( bundleId, Jp2pContext.Components.JP2P_CONTAINER.toString() );
-		this.setProperty( ContainerProperties.BUNDLE_ID, bundleId, 
-				new ClassValidator( Jp2pProperties.BUNDLE_ID, String.class ), false );
 		this.setProperty( ContainerProperties.HOME_FOLDER, ProjectFolderUtils.getParsedUserDir(DEF_HOME_FOLDER, bundleId),
 				new ClassValidator( ContainerProperties.HOME_FOLDER, URI.class ), false);
 	}
@@ -36,12 +34,16 @@ public class Jp2pContainerPropertySource extends AbstractJp2pWritePropertySource
 	 * @return
 	 */
 	public String getBundleId(){
-		return (String) super.getProperty( ContainerProperties.BUNDLE_ID );
+		return getBundleId( this );
 	}
 	
 	@Override
 	public IJp2pProperties getIdFromString(String key) {
-		return ContainerProperties.valueOf( key );
+		IJp2pProperties id = super.getIdFromString(key);
+		if( id == null )
+			return ContainerProperties.valueOf( key );
+		else
+			return id;
 	}
 
 	@Override
@@ -52,12 +54,10 @@ public class Jp2pContainerPropertySource extends AbstractJp2pWritePropertySource
 		String str = null;
 		switch( cp ){
 		case HOME_FOLDER:
-			String bundle_id = (String) super.getProperty( ContainerProperties.BUNDLE_ID );
+			String bundle_id = (String) super.getProperty( Jp2pProperties.BUNDLE_ID );
 			str = ProjectFolderUtils.getParsedUserDir( DEF_HOME_FOLDER, bundle_id ).getPath();
 			File file = new File( str );
 			return file.toURI();
-		case BUNDLE_ID:
-			return super.getProperty( ContainerProperties.BUNDLE_ID );
 		default:
 			break;
 		}

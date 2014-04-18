@@ -11,6 +11,8 @@
 package net.jp2p.chaupal.jxta.pipe;
 
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.jp2p.chaupal.jxta.advertisement.ChaupalAdvertisementFactory;
 import net.jp2p.container.activator.IJp2pService;
@@ -32,10 +34,10 @@ public class ChaupalPipeFactory extends ChaupalAdvertisementFactory<PipeService,
 	@Override
 	public void prepare(String componentName,
 			IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, String[] attributes) {
-		String[] attr = new String[1];
-		attr[0] = AdvertisementTypes.PIPE.toString();
-		super.prepare(componentName, parentSource, builder, attr);
+			IContainerBuilder builder, Map<String, String> attributes) {
+		Map<String, String> attrs = new HashMap<String, String>();
+		attrs.put( AdvertisementDirectives.TYPE.toLowerCase() , AdvertisementTypes.PIPE.toString());
+		super.prepare(componentName, parentSource, builder, attrs);
 	}
 
 	@Override

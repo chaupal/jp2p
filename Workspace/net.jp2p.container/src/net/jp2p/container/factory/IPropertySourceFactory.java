@@ -7,6 +7,8 @@
  *******************************************************************************/
 package net.jp2p.container.factory;
 
+import java.util.Map;
+
 import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -21,7 +23,7 @@ public interface IPropertySourceFactory extends ICompositeBuilderListener<Object
 	 * @param builder
 	 * @param attributes
 	 */
-	public void prepare( String componentName, IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, String[] attributes );
+	public void prepare( String componentName, IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, Map<String, String> attributes );
 	
 	/**
 	 * Get the component name that will be created

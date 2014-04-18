@@ -79,13 +79,20 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 			listener = null;
 		}
 
-		moduleService.close();
-		moduleService = null;
+		if( moduleService != null ){
+		    moduleService.close();
+		    moduleService = null;
+		}
 
-		contextService.close();
-		contextService = null;
-		contextLoader.clear();
-		contextLoader = null;
+		if( contextService != null ){
+			contextService.close();
+			contextService = null;
+		}
+		
+		if( contextLoader != null ){
+			contextLoader.clear();
+			contextLoader = null;
+		}
 
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 		if( observer != null )

@@ -8,6 +8,7 @@
 package net.jp2p.container.factory;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
@@ -34,7 +35,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	 * @param attributes
 	 */
 	@Override
-	public void prepare( String componentName, IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, String[] attributes ){
+	public void prepare( String componentName, IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, Map<String, String> attributes ){
 		this.canCreate = false;
 		this.parentSource = parentSource;
 		this.builder = builder;

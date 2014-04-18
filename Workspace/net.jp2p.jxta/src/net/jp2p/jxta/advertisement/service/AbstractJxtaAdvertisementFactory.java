@@ -8,6 +8,7 @@
 package net.jp2p.jxta.advertisement.service;
 
 import java.net.URISyntaxException;
+import java.util.Map;
 
 import org.xml.sax.Attributes;
 
@@ -47,8 +48,9 @@ public abstract class AbstractJxtaAdvertisementFactory<T extends Object, U exten
 	@Override
 	public void prepare(String componentName,
 			IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, String[] attributes) {
-		this.type =	AdvertisementTypes.convertFrom(attributes[0]);
+			IContainerBuilder builder, Map<String, String> attributes) {
+		String id = AdvertisementDirectives.TYPE.toString().toLowerCase();
+		this.type =	AdvertisementTypes.convertFrom( id );
 		super.prepare(componentName, parentSource, builder, attributes);
 	}
 

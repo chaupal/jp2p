@@ -9,6 +9,7 @@ package net.jp2p.jxta.socket;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,7 +37,7 @@ public class PipeAdvertisementFactory extends AbstractComponentFactory<PipeAdver
 	@Override
 	public void prepare(String componentName,
 			IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, String[] attributes) {
+			IContainerBuilder builder, Map<String, String> attributes) {
 		super.prepare(componentName, parentSource, builder, attributes);
 		this.fillDefaultValues();
 	}

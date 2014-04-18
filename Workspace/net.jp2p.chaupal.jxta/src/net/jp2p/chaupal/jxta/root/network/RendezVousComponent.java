@@ -126,5 +126,5 @@ class RendezvousServiceFactory extends AbstractComponentFactory<RendezVousServic
 	public String getComponentName() {
 		// TODO Auto-generated method stub
 		return null;
-	}	
+	}
 }

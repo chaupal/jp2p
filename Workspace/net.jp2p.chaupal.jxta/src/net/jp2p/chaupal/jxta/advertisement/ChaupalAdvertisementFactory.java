@@ -10,6 +10,8 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.advertisement;
 
+import java.util.HashMap;
+
 import net.jp2p.chaupal.jxta.IChaupalComponents.ChaupalComponents;
 import net.jp2p.chaupal.jxta.advertisement.AdvertisementServicePropertySource.AdvertisementServiceProperties;
 import net.jp2p.chaupal.jxta.discovery.ChaupalDiscoveryService;
@@ -56,7 +58,7 @@ public abstract class ChaupalAdvertisementFactory<T extends Object, U extends Ad
 		IPropertySourceFactory df = builder.getFactory( componentName);
 		if( df == null ){
 			df = JxtaFactoryUtils.getDefaultFactory(  componentName );
-			df.prepare(componentName, super.getPropertySource(), builder, new String[0]);
+			df.prepare(componentName, super.getPropertySource(), builder, new HashMap<String, String>());
 			df.createPropertySource();
 			builder.addFactory( df ); 
 		}

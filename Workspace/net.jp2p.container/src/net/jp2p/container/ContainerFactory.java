@@ -7,6 +7,8 @@
  *******************************************************************************/
 package net.jp2p.container;
 
+import java.util.Map;
+
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.context.Jp2pContext;
 import net.jp2p.container.factory.AbstractComponentFactory;
@@ -29,7 +31,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 	@Override
 	public void prepare(String componentName,
 			IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, String[] attributes) {
+			IContainerBuilder builder, Map<String, String> attributes) {
 		super.prepare(componentName, parentSource, builder, attributes);
 		super.setCanCreate(true);
 	}
@@ -92,6 +94,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 			return;
 		
 		startup = Jp2pContext.getDefaultFactory( comp);
+		startup.prepare( comp, super.getPropertySource(), builder, null );
 		IJp2pWritePropertySource<IJp2pProperties> props = (IJp2pWritePropertySource<IJp2pProperties>) startup.createPropertySource();
 		props.setDirective( Directives.AUTO_START, Boolean.TRUE.toString());
 		builder.addFactory(startup);

@@ -7,6 +7,8 @@
  *******************************************************************************/
 package net.jp2p.jxta.factory;
 
+import java.util.Map;
+
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -69,7 +71,7 @@ public class JxtaFactoryUtils {
 	 * @param createSource: create the property source immediately
 	 * @return
 	 */
-	public static IPropertySourceFactory getOrCreateChildFactory( IContainerBuilder builder, String[] attributes, IJp2pPropertySource<IJp2pProperties> parentSource, String componentName, boolean createSource ){
+	public static IPropertySourceFactory getOrCreateChildFactory( IContainerBuilder builder, Map<String,String> attributes, IJp2pPropertySource<IJp2pProperties> parentSource, String componentName, boolean createSource ){
 		IJp2pPropertySource<?> child = parentSource.getChild( componentName ); 
 		if( child != null )
 			return builder.getFactory(child );

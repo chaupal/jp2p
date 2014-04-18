@@ -9,6 +9,10 @@ package net.jp2p.chaupal.xml;
 
 import java.lang.reflect.Constructor;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,7 +94,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 				if( factory == null ){
 					factory = new ContainerFactory( bundleId );
 				}
-				factory.prepare( Jp2pContext.Components.JP2P_CONTAINER.toString(), null, builder, new String[0]);
+				factory.prepare( Jp2pContext.Components.JP2P_CONTAINER.toString(), null, builder, new HashMap<String, String>());
 				this.root = (ContainerFactory) factory;
 				break;
 			case CONTEXT:
@@ -133,7 +137,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	}
 
 	@SuppressWarnings("unchecked")
-	protected IPropertySourceFactory getFactory( String componentName, Attributes attributes, IJp2pPropertySource<?> parentSource ){
+	protected synchronized IPropertySourceFactory getFactory( String componentName, Attributes attributes, IJp2pPropertySource<?> parentSource ){
 		String contextName = attributes.getValue(Directives.CONTEXT.toString().toLowerCase());
 		if( Utils.isNull( contextName )){
 			contextName = AbstractJp2pPropertySource.findFirstAncestorDirective( parentSource, Directives.CONTEXT );
@@ -142,8 +146,9 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		if( context == null )
 			context = this.contexts.getContextForComponent( contextName, componentName);
 		IPropertySourceFactory factory = context.getFactory(componentName);
-		if( factory != null )
-			factory.prepare(componentName, (IJp2pPropertySource<IJp2pProperties>) parentSource, builder, new String[0]/*attributes*/);
+		if( factory != null ){
+			factory.prepare(componentName, (IJp2pPropertySource<IJp2pProperties>) parentSource, builder, convertAttributes(attributes));
+		}
 		return factory;
 	}
 
@@ -346,5 +351,20 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 			super.getChildrenAsCollection().add(child);
 			return child;
 		}	
+	}
+	
+	/**
+	 * Convert the attributes to a string map
+	 * @param attributes
+	 * @return
+	 */
+	public static Map<String, String> convertAttributes( Attributes attributes ){
+		Map<String,String> attrs = new HashMap<String,String>();
+		for( int i=0; i<attributes.getLength(); i++  ){
+			if( !Utils.isNull( attributes.getLocalName(i))){
+				attrs.put( attributes.getLocalName( i ), attributes.getValue(i));
+			}
+		}
+		return attrs;
 	}
 }

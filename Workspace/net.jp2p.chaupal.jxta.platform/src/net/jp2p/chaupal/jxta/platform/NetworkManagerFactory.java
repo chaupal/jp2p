@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,8 +73,8 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 	@Override
 	public void extendContainer() {
 		IContainerBuilder builder = super.getBuilder();
-		JxtaFactoryUtils.getOrCreateChildFactory( builder, new String[0], super.getPropertySource(), JxtaNetworkComponents.NETWORK_CONFIGURATOR.toString(), true );
-		PeerGroupPropertySource npps = (PeerGroupPropertySource) JxtaFactoryUtils.getOrCreateChildFactory( builder, new String[0], super.getParentSource(), JxtaComponents.NET_PEERGROUP_SERVICE.toString(), true ).getPropertySource();
+		JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getPropertySource(), JxtaNetworkComponents.NETWORK_CONFIGURATOR.toString(), true );
+		PeerGroupPropertySource npps = (PeerGroupPropertySource) JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getParentSource(), JxtaComponents.NET_PEERGROUP_SERVICE.toString(), true ).getPropertySource();
 		npps.setDirective( Directives.AUTO_START, this.getPropertySource().getDirective( Directives.AUTO_START ));
 		super.extendContainer();
 	}

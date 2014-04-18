@@ -9,6 +9,8 @@ package net.jp2p.container.context;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import net.jp2p.container.context.ContextLoaderEvent.LoaderEvent;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -24,6 +26,8 @@ public class ContextLoader {
 
 	private Collection<IContextLoaderListener> listeners;
 	
+	private Lock lock = new ReentrantLock();
+	
 	private ContextLoader() {
 		contexts = new ArrayList<IJp2pContext>();
 		this.listeners = new ArrayList<IContextLoaderListener>();
@@ -37,24 +41,42 @@ public class ContextLoader {
 		contexts.clear();
 	}
 
-	public void addContextLoaderListener( IContextLoaderListener listener ){
-		this.listeners.add( listener );
+	public synchronized void addContextLoaderListener( IContextLoaderListener listener ){
+		lock.lock();
+		try{
+			this.listeners.add( listener );
+		}
+		finally{
+			lock.unlock();
+		}
 	}
 
-	public void removeContextLoaderListener( IContextLoaderListener listener ){
-		this.listeners.remove( listener );
+	public synchronized void removeContextLoaderListener( IContextLoaderListener listener ){
+		lock.lock();
+		try{
+			this.listeners.remove( listener );
+		}
+		finally{
+			lock.unlock();
+		}
 	}
 
-	private final void notifyContextChanged( ContextLoaderEvent event ){
-		for( IContextLoaderListener listener: listeners){
-			switch( event.getType() ){
-			case REGISTERED:
-				listener.notifyRegisterContext(event);
-				break;
-			default:
-				listener.notifyUnregisterContext(event);
-				break;
+	private synchronized final void notifyContextChanged( ContextLoaderEvent event ){
+		lock.lock();
+		try{
+			for( IContextLoaderListener listener: listeners){
+				switch( event.getType() ){
+				case REGISTERED:
+					listener.notifyRegisterContext(event);
+					break;
+				default:
+					listener.notifyUnregisterContext(event);
+					break;
+				}
 			}
+		}
+		finally{
+			lock.unlock();
 		}
 	}
 
