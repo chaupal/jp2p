@@ -6,7 +6,6 @@ import net.jp2p.chaupal.jxta.discovery.ChaupalDiscoveryServiceFactory;
 import net.jp2p.chaupal.jxta.peergroup.ChaupalPeerGroupFactory;
 import net.jp2p.chaupal.jxta.persistence.OsgiPersistenceFactory;
 import net.jp2p.chaupal.jxta.pipe.ChaupalPipeFactory;
-import net.jp2p.chaupal.jxta.root.network.NetworkManagerPreferences;
 import net.jp2p.chaupal.jxta.root.network.http.HttpServiceFactory;
 import net.jp2p.container.context.IJp2pContext;
 import net.jp2p.container.context.Jp2pContext;
@@ -21,6 +20,7 @@ import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.container.xml.IJp2pHandler;
 import net.jp2p.jxta.discovery.DiscoveryPreferences;
+import net.jp2p.jxta.network.NetworkManagerPreferences;
 import net.jp2p.jxta.peergroup.PeerGroupPreferences;
 
 public class ChaupalContext implements IJp2pContext {

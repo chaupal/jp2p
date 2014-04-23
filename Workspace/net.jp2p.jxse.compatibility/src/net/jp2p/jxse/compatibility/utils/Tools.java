@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
 
-package net.jp2p.jxse.compatibility;
+package net.jp2p.jxse.compatibility.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import net.jxta.endpoint.Message;
 import net.jxta.endpoint.Message.ElementIterator;
 import net.jxta.endpoint.MessageElement;
 import net.jxta.peer.PeerID;
-import net.jxta.refplatform.platform.NetworkConfigurator;
+import net.jxta.platform.NetworkConfigurator;
 import net.jxta.rendezvous.RendezVousService;
 
 public class Tools {

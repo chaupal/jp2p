@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.jp2p.container.component.IJp2pComponent;
-import net.jxta.refplatform.platform.NetworkConfigurator;
+import net.jxta.platform.NetworkConfigurator;
 
 public class RelayConfiguration {
 

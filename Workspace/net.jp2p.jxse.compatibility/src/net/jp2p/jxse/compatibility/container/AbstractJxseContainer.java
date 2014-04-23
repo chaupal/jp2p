@@ -5,14 +5,12 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.jxse.compatibility;
+package net.jp2p.jxse.compatibility.container;
 
 import java.io.IOException;
 
 import org.eclipse.core.runtime.Platform;
 
-import net.jp2p.chaupal.jxta.root.network.NetworkManagerPropertyFacade;
-import net.jp2p.chaupal.jxta.root.network.configurator.NetworkConfiguratorPropertyFacade;
 import net.jp2p.container.AbstractJp2pContainer;
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.Jp2pContainerPropertySource;
@@ -24,16 +22,18 @@ import net.jp2p.container.properties.DefaultPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.Utils;
+import net.jp2p.jxta.network.NetworkManagerPropertyFacade;
 import net.jp2p.jxta.peergroup.PeerGroupPropertyFacade;
+import net.jp2p.jxta.root.network.configurator.NetworkConfiguratorPropertyFacade;
 import net.jxta.peergroup.PeerGroup;
-import net.jxta.refplatform.platform.NetworkConfigurator;
-import net.jxta.refplatform.platform.NetworkManager;
+import net.jxta.platform.NetworkConfigurator;
+import net.jxta.platform.NetworkManager;
 
-public abstract class AbstractJxeContainer extends AbstractJp2pContainer<NetworkManager>{
+public abstract class AbstractJxseContainer extends AbstractJp2pContainer<NetworkManager>{
 
 	private String identifier;
 	
-	protected AbstractJxeContainer( String bundle_id, String identifier ) {
+	protected AbstractJxseContainer( String bundle_id, String identifier ) {
 		super(new Jp2pContainerPropertySource( bundle_id ));
 		this.identifier = identifier;
 	}

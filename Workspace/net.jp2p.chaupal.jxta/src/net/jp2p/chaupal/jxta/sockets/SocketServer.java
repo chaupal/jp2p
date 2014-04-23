@@ -18,7 +18,7 @@ import net.jxta.peergroup.PeerGroup;
 import net.jxta.pipe.PipeID;
 import net.jxta.pipe.PipeService;
 import net.jxta.protocol.PipeAdvertisement;
-import net.jxta.refplatform.platform.NetworkManager;
+import net.jxta.platform.NetworkManager;
 import net.jxta.socket.JxtaServerSocket;
 
 import java.io.DataInput;

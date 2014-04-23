@@ -26,6 +26,7 @@ import net.jxta.document.Advertisement;
 import net.jxta.document.MimeMediaType;
 import net.jxta.document.XMLElement;
 import net.jxta.impl.protocol.PlatformConfig;
+import net.jxta.impl.peergroup.CompatibilityUtils;
 import net.jxta.platform.Module;
 import net.jxta.platform.ModuleClassID;
 import net.jxta.platform.ModuleSpecID;
@@ -144,7 +145,7 @@ public abstract class AbstractModuleComponent<T extends Module> extends Jp2pComp
         				String description = parts[2];
         				mAdv = locateModuleImplAdvertisement( code);
         				if (mAdv == null) {
-        					mAdv = net.jxta.impl.peergroup.CompatibilityUtils.createModuleImplAdvertisement(msid, code, description);
+        					mAdv = CompatibilityUtils.createModuleImplAdvertisement(msid, code, description);
         				}
         		        XMLElement<?> paramElement = (XMLElement<?>) mAdv.getDocument(MimeMediaType.XMLUTF8);
         		        mAdv.setParam(paramElement);

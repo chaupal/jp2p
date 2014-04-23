@@ -1,15 +1,15 @@
-package net.jp2p.chaupal.jxta.root.network.configurator;
+package net.jp2p.jxta.root.network.configurator;
 
 import java.util.Iterator;
 
-import net.jp2p.chaupal.jxta.root.network.NetworkManagerPropertySource;
-import net.jp2p.chaupal.jxta.root.network.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
-import net.jxta.refplatform.platform.NetworkManager.ConfigMode;
+import net.jp2p.jxta.network.NetworkManagerPropertySource;
+import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
+import net.jxta.platform.NetworkManager.ConfigMode;
 
 public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropertySource
 	implements IJp2pWritePropertySource<IJp2pProperties>

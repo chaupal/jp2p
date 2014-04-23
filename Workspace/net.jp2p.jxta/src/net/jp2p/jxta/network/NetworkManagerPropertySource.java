@@ -1,4 +1,4 @@
-package net.jp2p.chaupal.jxta.root.network;
+package net.jp2p.jxta.network;
 
 import java.util.Iterator;
 

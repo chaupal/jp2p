@@ -41,8 +41,6 @@ Import-Package: net.jp2p.chaupal,
  net.jxta.peergroup,
  net.jxta.platform,
  net.jxta.protocol,
- net.jxta.refplatform.peergroup,
- net.jxta.refplatform.platform,
  net.jxta.service,
  org.osgi.framework,
  org.osgi.service.log;version="1.3.0",
@@ -52,6 +50,5 @@ Export-Package: net.jp2p.chaupal.jxta.platform.configurator.partial,
  net.jp2p.chaupal.jxta.platform.rdvrel,
  net.jp2p.chaupal.jxta.platform.security,
  net.jp2p.chaupal.jxta.platform.tcp
-Require-Bundle: net.jxta.refplatform
 Bundle-ActivationPolicy: lazy
 Service-Component: OSGI-INF/context.xml, OSGI-INF/moduleloader.xml 

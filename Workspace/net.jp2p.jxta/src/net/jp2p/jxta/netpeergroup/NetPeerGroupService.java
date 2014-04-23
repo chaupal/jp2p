@@ -13,7 +13,7 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.jxta.netpeergroup.NetPeerGroupFactory;
 import net.jp2p.jxta.peergroup.PeerGroupPreferences;
 import net.jxta.peergroup.PeerGroup;
-import net.jxta.refplatform.platform.NetworkManager;
+import net.jxta.platform.NetworkManager;
 
 public class NetPeerGroupService extends AbstractJp2pService<PeerGroup>{
 

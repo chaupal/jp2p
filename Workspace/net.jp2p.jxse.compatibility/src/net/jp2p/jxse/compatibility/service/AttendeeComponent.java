@@ -13,7 +13,6 @@ public class AttendeeComponent extends AbstractAttendeeProviderComponent {
 
 	@Override
 	protected void initialise() {
-		super.addAttendee( PeerGroupProvider.getInstance() );
 		super.addAttendee( MessageBoxPetitioner.getInstance() );
 	}
 }

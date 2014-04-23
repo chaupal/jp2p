@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 
 import net.jp2p.container.component.AbstractJp2pService;
 import net.jp2p.container.utils.IOUtils;
-import net.jxta.refplatform.platform.NetworkManager;
+import net.jxta.platform.NetworkManager;
 import net.jxta.socket.JxtaSocket;
 
 public class SocketService extends AbstractJp2pService<JxtaSocket> implements Runnable{
