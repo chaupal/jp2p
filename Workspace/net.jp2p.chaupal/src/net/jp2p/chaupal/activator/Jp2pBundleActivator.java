@@ -8,67 +8,35 @@
  * Contributors:
  *     Kees Pieters - initial API and implementation
  *******************************************************************************/
-package net.jp2p.chaupal.jxta.activator;
-
-import java.util.ArrayList;
-import java.util.Collection;
+package net.jp2p.chaupal.activator;
 
 import org.osgi.framework.BundleContext;
 
-import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
-import net.jp2p.chaupal.activator.ContainerBuilderEvent;
-import net.jp2p.chaupal.activator.IContainerBuilderListener;
 import net.jp2p.chaupal.context.Jp2pContextService;
-import net.jp2p.chaupal.jxta.module.ModuleFactoryService;
+import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
 import net.jp2p.container.IJp2pContainer;
+import net.jp2p.container.builder.ContainerBuilderEvent;
+import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.context.ContextLoader;
 
 public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
-	private String bundle_id;
-	private IComponentChangedListener observer;
-	
+	protected Jp2pBundleActivator(String bundle_id) {
+		super(bundle_id);
+	}
+
 	private static Jp2pContextService contextService; 
 	private ContextLoader contextLoader;
-	private static ModuleFactoryService moduleService; 
 	
 	
 	private Jp2pContainerBuilder builder;
 	private IContainerBuilderListener listener;
 	
-	private Collection<IContainerBuilderListener> listeners;
-
-	public Jp2pBundleActivator(String bundle_id) {
-		this.bundle_id = bundle_id;
-		listeners = new ArrayList<IContainerBuilderListener>();
-	}
-
-	public String getBundleId() {
-		return bundle_id;
-	}
 	
-	public IComponentChangedListener getObserver() {
-		return observer;
-	}
-
-	public void setObserver(IComponentChangedListener observer) {
-		this.observer = observer;
-	}
-
-	public void addContainerBuilderListener( IContainerBuilderListener listener ){
-		listeners.add( listener );
-	}
-
-	public void removeContainerBuilderListener( IContainerBuilderListener listener ){
-		listeners.remove( listener );
-	}
-
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
-		moduleService = new ModuleFactoryService( bundleContext );
-		moduleService.open();			
 		super.start(bundleContext);
 	}
 
@@ -77,11 +45,6 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 		if(( builder != null ) && ( listener != null )){
 			builder.removeContainerBuilderListener(listener);
 			listener = null;
-		}
-
-		if( moduleService != null ){
-		    moduleService.close();
-		    moduleService = null;
 		}
 
 		if( contextService != null ){
@@ -95,18 +58,14 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 		}
 
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
+		
+		IComponentChangedListener observer= super.getObserver();
 		if( observer != null )
 			dispatcher.removeServiceChangeListener(observer);
 
 		super.stop(bundleContext);
 	}
 
-	private void notifyListeners( ContainerBuilderEvent event ){
-		for( IContainerBuilderListener listener: listeners )
-			listener.notifyContainerBuilt(event);		
-	}
-
-	
 	@Override
 	protected IJp2pContainer onCreateContainer() {
 		//Add contexts, both default as the ones provided through DS
@@ -127,6 +86,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 		builder.build();
 
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
+		IComponentChangedListener observer= super.getObserver();
 		if( observer != null )
 			dispatcher.addServiceChangeListener(observer);
 		

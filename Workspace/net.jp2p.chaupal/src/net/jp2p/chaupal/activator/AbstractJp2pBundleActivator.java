@@ -7,17 +7,24 @@
  *******************************************************************************/
 package net.jp2p.chaupal.activator;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.container.IJp2pContainer;
+import net.jp2p.container.activator.IJp2pBundleActivator;
+import net.jp2p.container.builder.ContainerBuilderEvent;
+import net.jp2p.container.builder.IContainerBuilderListener;
+import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.log.Jp2pLevel;
 
+import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
-public abstract class AbstractJp2pBundleActivator<T extends Object> implements IJp2pBundleActivator {
+public abstract class AbstractJp2pBundleActivator<T extends Object> implements IJp2pBundleActivator, BundleActivator {
 
 	private static final String S_MSG_NOT_A_JP2P_BUNDLE = "\n\nThis bundle is not a valid JP2P Bundle. A JP2P-INF directory is required!\n\n";
 	private static final String S_JP2P_INF = "/JP2P-INF";
@@ -27,9 +34,44 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 
 	private BundleContext bundleContext;
 	private IJp2pContainer container;
+
+	private String bundle_id;
+	private IComponentChangedListener observer;
 	
 	private ServiceTracker<BundleContext,LogService> logServiceTracker;
 	private LogService logService;
+	private Collection<IContainerBuilderListener> listeners;
+	
+	protected AbstractJp2pBundleActivator( String bundle_id ) {
+		listeners = new ArrayList<IContainerBuilderListener>();
+		this.bundle_id = bundle_id;
+	}
+
+	public String getBundleId() {
+		return bundle_id;
+	}
+	
+	public IComponentChangedListener getObserver() {
+		return observer;
+	}
+
+	public void setObserver(IComponentChangedListener observer) {
+		this.observer = observer;
+	}
+
+
+	public void addContainerBuilderListener( IContainerBuilderListener listener ){
+		listeners.add( listener );
+	}
+
+	public void removeContainerBuilderListener( IContainerBuilderListener listener ){
+		listeners.remove( listener );
+	}
+
+	protected final void notifyListeners( ContainerBuilderEvent event ){
+		for( IContainerBuilderListener listener: listeners )
+			listener.notifyContainerBuilt(event);		
+	}
 
 	/**
 	 * Create the container;

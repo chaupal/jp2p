@@ -8,13 +8,14 @@
  * Contributors:
  *     Kees Pieters - initial API and implementation
  *******************************************************************************/
-package net.jp2p.chaupal.jxta.activator;
+package net.jp2p.chaupal.service;
 
-import net.jp2p.chaupal.activator.ContainerBuilderEvent;
-import net.jp2p.chaupal.activator.IContainerBuilderListener;
-import net.jp2p.chaupal.activator.IJp2pBundleActivator;
-import net.jp2p.chaupal.activator.IJp2pDSComponent;
+import net.jp2p.chaupal.activator.Jp2pBundleActivator;
 import net.jp2p.container.IJp2pContainer;
+import net.jp2p.container.IJp2pDSComponent;
+import net.jp2p.container.activator.IJp2pBundleActivator;
+import net.jp2p.container.builder.ContainerBuilderEvent;
+import net.jp2p.container.builder.IContainerBuilderListener;
 
 import org.eclipselabs.osgi.ds.broker.service.AbstractAttendeeProviderComponent;
 import org.eclipselabs.osgi.ds.broker.service.AbstractPalaver;

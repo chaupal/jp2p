@@ -5,11 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.chaupal.activator;
+package net.jp2p.container;
 
 public interface IJp2pDSComponent {
 
-	public static final String S_IJP2P_CONTAINER_PACKAGE_ID = "org.osgi.jxse.service.core";
-	public static final String S_IP2P_TOKEN = "org.osgi.jxse.token";
+	public static final String S_IJP2P_CONTAINER_PACKAGE_ID = "net.jp2p.container";
+	public static final String S_IP2P_TOKEN = S_IJP2P_CONTAINER_PACKAGE_ID + ".token";
 
 }

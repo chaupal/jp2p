@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.chaupal.activator;
+package net.jp2p.container.builder;
 
 import java.util.EventObject;
 
