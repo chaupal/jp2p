@@ -14,7 +14,7 @@ import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringProperty;
 
-public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Comparable< IJp2pComponent<?>>{
+public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Comparable< IJp2pComponent<T>>{
 
 	public static final String S_DEFAULT_PROPERTY = "Default";
 	private T module;
@@ -78,7 +78,7 @@ public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Compa
 	}
 
 	@Override
-	public int compareTo(IJp2pComponent<?> o) {
+	public int compareTo(IJp2pComponent<T> o) {
 		return Integer.MAX_VALUE;
 	}
 }
