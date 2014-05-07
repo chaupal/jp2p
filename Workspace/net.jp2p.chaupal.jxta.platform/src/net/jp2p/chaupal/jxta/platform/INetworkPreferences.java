@@ -8,7 +8,7 @@
 package net.jp2p.chaupal.jxta.platform;
 
 import net.jp2p.container.properties.IPropertyConvertor;
-import net.jxta.refplatform.platform.NetworkConfigurator;
+import net.jxta.platform.NetworkConfigurator;
 
 public interface INetworkPreferences extends IPropertyConvertor<String, Object>{
 

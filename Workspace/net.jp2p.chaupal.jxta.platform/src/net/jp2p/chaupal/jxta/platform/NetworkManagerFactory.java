@@ -19,10 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.chaupal.jxta.platform.factory.NetworkModuleFactory;
-import net.jp2p.chaupal.jxta.root.network.NetworkManagerPreferences;
-import net.jp2p.chaupal.jxta.root.network.NetworkManagerPropertySource;
-import net.jp2p.chaupal.jxta.root.network.NetworkManagerPropertySource.NetworkManagerDirectives;
-import net.jp2p.chaupal.jxta.root.network.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -43,11 +39,15 @@ import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
 import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
+import net.jp2p.jxta.network.NetworkManagerPreferences;
+import net.jp2p.jxta.network.NetworkManagerPropertySource;
+import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerDirectives;
+import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource;
 import net.jxta.id.IDFactory;
 import net.jxta.peer.PeerID;
 import net.jxta.peergroup.PeerGroupID;
-import net.jxta.refplatform.platform.NetworkManager;
+import net.jxta.platform.NetworkManager;
 
 public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>{
 		

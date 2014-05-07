@@ -1,7 +1,12 @@
 package net.jp2p.chaupal.jxta.context;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import net.jp2p.chaupal.jxta.Activator;
 import net.jp2p.chaupal.jxta.advertisement.ChaupalAdvertisementFactory;
 import net.jp2p.chaupal.jxta.discovery.ChaupalDiscoveryServiceFactory;
+import net.jp2p.chaupal.jxta.module.ModuleFactoryService;
 import net.jp2p.chaupal.jxta.pipe.ChaupalPipeFactory;
 import net.jp2p.container.context.IJp2pContext;
 import net.jp2p.container.context.Jp2pContext;
@@ -17,15 +22,13 @@ import net.jp2p.container.utils.Utils;
 import net.jp2p.container.xml.IJp2pHandler;
 import net.jp2p.jxta.advertisement.AdvertisementPreferences;
 import net.jp2p.jxta.discovery.DiscoveryPreferences;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
 import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.network.NetworkManagerPreferences;
 import net.jp2p.jxta.peergroup.PeerGroupPreferences;
 
 public class JxtaContext implements IJp2pContext {
-
-	public JxtaContext() {
-	}
 
 	@Override
 	public String getName() {
@@ -38,10 +41,16 @@ public class JxtaContext implements IJp2pContext {
 	@Override
 	public String[] getSupportedServices() {
 		JxtaComponents[] components = JxtaComponents.values();
-		String[] names = new String[ components.length ];
+		Collection<String> names = new ArrayList<String>();
 		for( int i=0; i<components.length; i++ )
-			names[i] = components[i].toString();
-		return names;
+			names.add( components[i].toString() );
+		ModuleFactoryService service = Activator.getModuleService();
+		if( service.hasService( JxtaNetworkComponents.PLATFORM.toString() )){
+			JxtaNetworkComponents[] nc = JxtaNetworkComponents.values();
+			for( int i=0; i<nc.length; i++ )
+				names.add( nc[i].toString() );			
+		}
+		return names.toArray( new String[ names.size() ]);
 	}
 
 	/**

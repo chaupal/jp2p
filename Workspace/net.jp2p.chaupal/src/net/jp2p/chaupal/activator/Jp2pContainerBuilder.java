@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.osgi.service.log.LogService;
@@ -22,7 +23,7 @@ import net.jp2p.container.context.IContextLoaderListener;
 
 public class Jp2pContainerBuilder{
 
-	public static final String S_ERR_CONTEXT_FOUND = "The following context was found and registered: ";
+	public static final String S_CONTEXT_FOUND = "The following context was found and registered: ";
 	
 	private ContextLoader contextLoader;
 
@@ -82,7 +83,7 @@ public class Jp2pContainerBuilder{
 			
 			@Override
 			public void notifyRegisterContext(ContextLoaderEvent event) {
-				activator.getLog().log( LogService.LOG_INFO, S_ERR_CONTEXT_FOUND + event.getContext().getName() );
+				activator.getLog().log( LogService.LOG_INFO, S_CONTEXT_FOUND + event.getContext().getName() );
 				for( ServiceInfo info: services ){
 					for( String name: event.getContext().getSupportedServices() ){
 						if( !info.getName().equals(name))
@@ -123,13 +124,14 @@ public class Jp2pContainerBuilder{
 	 * @see net.osgi.jp2p.chaupal.xml.IFactoryBuilder#isCompleted()
 	 */
 	private boolean isCompleted() {
+		Logger log = Logger.getLogger( this.getClass().getName() );
 		for( ServiceInfo info: services ){
 			if( !info.isFound()){
-				Logger log = Logger.getLogger( this.getClass().getName() );
-				log.info("waiting for: " + info.getName());
+				log.log( Level.WARNING, "waiting for: " + info.getName());
 				return false;
 			}
 		}
+		log.log( Level.INFO, "Building completed: " + activator.getBundleId() );
 		return true;
 	}
 

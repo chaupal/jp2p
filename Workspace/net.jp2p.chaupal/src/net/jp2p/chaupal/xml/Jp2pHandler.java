@@ -9,8 +9,6 @@ package net.jp2p.chaupal.xml;
 
 import java.lang.reflect.Constructor;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -86,6 +84,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 			return;
 		}
 		//The name is not a group. try the default JP2P components
+		logger.info( "Parsing " + qName);
 		if( Jp2pContext.Components.isComponent( qName )){
 			IJp2pComponents current = Jp2pContext.Components.valueOf( StringStyler.styleToEnum( qName ));
 			switch(( Jp2pContext.Components )current ){
@@ -105,10 +104,8 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 				if( factory instanceof IContextFactory ){
 					IContextFactory cf = (IContextFactory) factory;
 					cf.setLoader(contexts);
-				}
-					
-				break;
-				
+				}		
+				break;			
 			default:
 				factory = this.getFactory( qName, attributes, node.getData().getPropertySource());
 				break;
@@ -245,17 +242,6 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 
 	@Override
 	public void characters(char ch[], int start, int length) throws SAXException {
-		this.parseProperties(ch, start, length);
-	}
-
-	/**
-	 * Parse the properties
-	 * @param ch
-	 * @param start
-	 * @param length
-	 * @throws SAXException
-	 */
-	protected synchronized void parseProperties(char ch[], int start, int length) throws SAXException {
 		String value = new String(ch, start, length);
 		if( Utils.isNull( value  ))
 			return;

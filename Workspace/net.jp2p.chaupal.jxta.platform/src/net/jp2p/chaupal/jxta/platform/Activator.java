@@ -17,7 +17,7 @@ import org.osgi.service.log.LogService;
 
 public class Activator implements BundleActivator {
 
-	public static final String BUNDLE_ID = "net.jp2p.chaupal.jxta.network";
+	public static final String BUNDLE_ID = "net.jp2p.chaupal.jxta.platform";
 	
 	private static Activator plugin;
 	

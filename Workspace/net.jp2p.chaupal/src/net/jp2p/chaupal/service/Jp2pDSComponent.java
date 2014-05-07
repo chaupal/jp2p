@@ -24,6 +24,8 @@ import org.eclipselabs.osgi.ds.broker.service.AbstractProvider;
 
 public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implements IJp2pDSComponent {
 
+	private static final String S_CONTAINER = ".container";
+	
 	private Jp2pContainerProvider provider;
 	private String introduction;
 	private String token;
@@ -50,8 +52,11 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 		}
 	}
 
+	/**
+	 * set the activator
+	 */
 	private final void setActivator() {
-		provider = new Jp2pContainerProvider( introduction, token );
+		provider = new Jp2pContainerProvider( activator.getBundleId() + S_CONTAINER, introduction, token );
 		if( activator.getContainer() != null ){
 			provideContainer( activator.getContainer() );
 			return;
@@ -92,12 +97,9 @@ class Jp2pContainerProvider extends AbstractProvider<String, Object, IJp2pContai
 
 	private IJp2pContainer  container;
 	
-	Jp2pContainerProvider() {
-		super( new Palaver());
-	}
-
-	Jp2pContainerProvider( String introduction, String token ) {
+	Jp2pContainerProvider( String bundleId, String introduction, String token ) {
 		super( new Palaver( introduction, token ));
+		super.setIdentifier(bundleId);
 	}
 
 	/**
@@ -116,7 +118,6 @@ class Jp2pContainerProvider extends AbstractProvider<String, Object, IJp2pContai
 		if( container == null )
 			throw new NullPointerException();
 		this.container = container;
-		super.setIdentifier( container.getId() );
 		super.provide(container);
 	}
 

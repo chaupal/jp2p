@@ -41,6 +41,7 @@ public interface IJxtaComponents{
 	}
 
 	public enum JxtaNetworkComponents implements IJp2pComponents{
+		PLATFORM,
 		NETWORK_MANAGER,
 		NETWORK_CONFIGURATOR,
 		SEED_LIST,

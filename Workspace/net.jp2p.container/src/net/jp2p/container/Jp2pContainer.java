@@ -59,5 +59,9 @@ public class Jp2pContainer extends AbstractJp2pContainer<Jp2pStartupService>{
 	protected boolean onInitialising() {
 		return true;
 	}
-	
+
+	@Override
+	public String toString() {
+		return this.getIdentifier() + ":" + super.toString();
+	}
 }

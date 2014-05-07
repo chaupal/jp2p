@@ -5,18 +5,18 @@ import java.util.Collection;
 
 import net.jp2p.jxta.module.IModuleLoader;
 import net.jxse.module.IJxtaModuleService;
+import net.jxse.module.IModuleService;
 import net.jxta.platform.Module;
-import net.jxta.platform.ModuleClassID;
 
 public abstract class AbstractModuleLoader<T extends Module> implements IModuleLoader<T> {
 
-	private Collection<ModuleClassID> requiredIds;
+	private Collection<IModuleService<?>> requiredIds;
 
 	private static Collection<IJxtaModuleService<? extends Module>> modules = new ArrayList<IJxtaModuleService<? extends Module>>();
 
 	public AbstractModuleLoader() {
-		requiredIds = new ArrayList<ModuleClassID>();
-		addRequiredModuleClassIDs(requiredIds);
+		requiredIds = new ArrayList<IModuleService<?>>();
+		addRequiredModuleServices(requiredIds);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -28,14 +28,14 @@ public abstract class AbstractModuleLoader<T extends Module> implements IModuleL
 	 * Add the module class IDS required to run the service
 	 * @param requiredIds
 	 */
-	protected abstract void addRequiredModuleClassIDs( Collection<ModuleClassID> requiredIds );
+	protected abstract void addRequiredModuleServices( Collection<IModuleService<?>> requiredIds );
 		
 	protected abstract boolean onModuleServiceAdded( IJxtaModuleService<T> module );
 	
 	@Override
 	public boolean addModule(IJxtaModuleService<T> module) {
-		for( ModuleClassID mcid: requiredIds ){
-			if( module.getModuleClassID().equals( mcid )){
+		for( IModuleService<?> service: requiredIds ){
+			if( service.equals( module )){
 				if( onModuleServiceAdded(module)){
 					return modules.add( module );
 				}

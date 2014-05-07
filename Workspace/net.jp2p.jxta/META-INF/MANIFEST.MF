@@ -60,4 +60,3 @@ Export-Package: net.jp2p.jxta.advertisement,
  net.jp2p.jxta.transport,
  net.jp2p.jxta.utils
 Bundle-ActivationPolicy: lazy
-Require-Bundle: net.jxse;bundle-version="2.8.0"

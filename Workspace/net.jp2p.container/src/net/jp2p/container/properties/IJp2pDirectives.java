@@ -54,6 +54,7 @@ public interface IJp2pDirectives{
 	 */
 	public enum Contexts{
 		JXTA,
+		PLATFORM,
 		JP2P,
 		CHAUPAL;
 

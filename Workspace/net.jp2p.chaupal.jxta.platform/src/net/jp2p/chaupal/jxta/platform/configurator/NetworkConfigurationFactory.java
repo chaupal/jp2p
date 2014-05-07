@@ -21,9 +21,6 @@ import net.jp2p.chaupal.jxta.platform.http.HttpPreferences;
 import net.jp2p.chaupal.jxta.platform.multicast.MulticastPreferences;
 import net.jp2p.chaupal.jxta.platform.security.SecurityPreferences;
 import net.jp2p.chaupal.jxta.platform.tcp.TcpPreferences;
-import net.jp2p.chaupal.jxta.root.network.NetworkManagerPropertySource;
-import net.jp2p.chaupal.jxta.root.network.configurator.NetworkConfigurationPropertySource;
-import net.jp2p.chaupal.jxta.root.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.Jp2pComponent;
 import net.jp2p.container.factory.AbstractDependencyFactory;
@@ -36,10 +33,13 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
+import net.jp2p.jxta.network.NetworkManagerPropertySource;
+import net.jp2p.jxta.root.network.configurator.NetworkConfigurationPropertySource;
+import net.jp2p.jxta.root.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.jxta.seeds.SeedListFactory;
 import net.jp2p.jxta.seeds.SeedListPropertySource;
-import net.jxta.refplatform.platform.NetworkConfigurator;
-import net.jxta.refplatform.platform.NetworkManager;
+import net.jxta.platform.NetworkConfigurator;
+import net.jxta.platform.NetworkManager;
 
 public class NetworkConfigurationFactory extends AbstractDependencyFactory<NetworkConfigurator, IJp2pComponent<NetworkManager>> {
 

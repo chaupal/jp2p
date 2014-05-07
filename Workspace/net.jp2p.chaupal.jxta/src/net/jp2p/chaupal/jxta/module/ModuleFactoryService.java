@@ -1,10 +1,13 @@
 package net.jp2p.chaupal.jxta.module;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import net.jp2p.chaupal.jxta.Activator;
 import net.jp2p.chaupal.module.AbstractService;
 import net.jxse.module.IJxtaModuleService;
+import net.jxse.module.IModuleService;
 import net.jxta.platform.Module;
-import net.jxta.impl.loader.DynamicJxtaLoader;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
@@ -29,12 +32,28 @@ public class ModuleFactoryService extends AbstractService<IJxtaModuleService<Mod
 
     private static String filter = "(objectclass=" + IJxtaModuleService.class.getName() + ")";
 
-	private DynamicJxtaLoader loader = DynamicJxtaLoader.getInstance();
+	private Collection<IJxtaModuleService<Module>> services;
 	
 	public ModuleFactoryService(BundleContext bc) {
 		super( bc, IJxtaModuleService.class, filter );
+		services = new ArrayList<IJxtaModuleService<Module>>();
 	}
 
+	/**
+	 * returns true if the service with the given identifier is avaialable
+	 * @param identifier
+	 * @return
+	 */
+	public boolean hasService( String identifier ){
+		if( identifier == null )
+			return false;
+		for( IModuleService<?> service: this.services ){
+			if( identifier.equals(service.getIdentifier() ))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void open() {
 		super.open();
@@ -48,13 +67,13 @@ public class ModuleFactoryService extends AbstractService<IJxtaModuleService<Mod
 	
 	@Override
 	protected void onDataRegistered(IJxtaModuleService<Module> module) {
-		loader.addModuleService( module );
+		services.add( module );
 		Activator.getLog().log( LogService.LOG_INFO,"Module Factory " + module.getIdentifier() + " registered." );
 	}
 
 	@Override
 	protected void onDataUnRegistered(IJxtaModuleService<Module> module) {
-		loader.removeModuleService(module);
+		services.remove(module);
 		Activator.getLog().log( LogService.LOG_INFO,"Module Factory " + module.getIdentifier() + " unregistered." );
 	}
 }
