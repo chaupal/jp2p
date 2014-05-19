@@ -1,4 +1,4 @@
-package net.jp2p.jxta.root.network.configurator;
+package net.jp2p.jxta.network.configurator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +7,7 @@ import java.util.Iterator;
 import net.jp2p.container.properties.AbstractPropertyFacade;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
-import net.jp2p.jxta.root.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
+import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jxta.platform.NetworkConfigurator;
 
 public class NetworkConfiguratorPropertyFacade extends AbstractPropertyFacade<NetworkConfigurator> {

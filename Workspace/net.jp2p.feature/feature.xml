@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.jp2p.feature"
-      label="Core JP2P Library Feature"
-      version="1.0.2.v20140424"
+      label="JP2P Core Bundles"
+      version="1.0.0.v20140516"
       provider-name="Chaupal">
 
    <description url="https://github.com/chaupal">
-      This feauture contains the core JP2P bundles and a compatibility bundle for existing JXTA applications
+      This feauture contains the UI Tools for Chaupal applications:
+- wizrds to create JP2P projects and applications
    </description>
 
    <copyright url="https://github.com/chaupal">
@@ -71,16 +72,43 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <url>
-      <discovery label="JXSE 2.8x Core Bundles" url="http://89.31.96.252/download.condast.org/updatesite/jp2p/release/1.0.0/20140423/org.jxse.update/site.xml"/>
+      <update label="JP2P Core Bundles" url="http://89.31.96.252/download.condast.org/jp2p-releases/net.jp2p.update/site.xml"/>
    </url>
 
+   <includes
+         id="net.jxse.feature"
+         version="0.0.0"/>
+
    <requires>
-      <import plugin="net.jxse" version="2.8.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.osgi"/>
-      <import plugin="org.eclipse.equinox.ds" version="1.4.0" match="greaterOrEqual"/>
-      <import feature="net.jxse.feature" version="1.0.0.v20140407"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.pde.ui"/>
+      <import plugin="org.apache.ant"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.pde"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.pde.core"/>
+      <import plugin="net.jp2p.container"/>
+      <import plugin="net.jp2p.jxta"/>
+      <import plugin="net.jxse"/>
+      <import plugin="org.chaupal.jp2p.ui"/>
+      <import plugin="org.chaupal.jp2p.ui.jxta"/>
    </requires>
+
+   <plugin
+         id="net.jp2p.chaupal"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.chaupal.jxta"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="net.jp2p.container"
@@ -90,28 +118,14 @@ END OF TERMS AND CONDITIONS
          unpack="false"/>
 
    <plugin
-         id="net.jp2p.jxta"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipselabs.osgi.ds.broker"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipselabs.osgi.ds.broker.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="net.jp2p.jxse.compatibility"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.jxta"
          download-size="0"
          install-size="0"
          version="0.0.0"

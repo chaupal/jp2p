@@ -78,10 +78,10 @@ public class ChaupalPeerGroupFactory extends ChaupalAdvertisementFactory<PeerGro
 
 	@Override
 	protected PeerGroupAdvertisement createAdvertisement( IJp2pPropertySource<IJp2pProperties> source) {
-		AdvertisementPropertySource pgps = (AdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(source, AdvertisementTypes.PEERGROUP );
-		ModuleSpecAdvertisementPropertySource msps = (ModuleSpecAdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(source, AdvertisementTypes.MODULE_SPEC );
-		ModuleClassAdvertisementPropertySource mcps = (ModuleClassAdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(msps, AdvertisementTypes.MODULE_CLASS );
 		try {
+			AdvertisementPropertySource pgps = (AdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(source, AdvertisementTypes.PEERGROUP );
+			ModuleSpecAdvertisementPropertySource msps = (ModuleSpecAdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(source, AdvertisementTypes.MODULE_SPEC );
+			ModuleClassAdvertisementPropertySource mcps = (ModuleClassAdvertisementPropertySource) AdvertisementPropertySource.findAdvertisementDescendant(msps, AdvertisementTypes.MODULE_CLASS );
 			return createPeerGroupAdsFromPeerAds( super.getPeerGroup(), msps, mcps, (PeerGroupPropertySource) super.getPropertySource(), (PeerGroupAdvertisementPropertySource) pgps);
 		} catch (Exception e) {
 			e.printStackTrace();

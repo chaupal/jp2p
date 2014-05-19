@@ -15,7 +15,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
-import net.jp2p.jxta.advertisement.service.SimpleJxtaAdvertisementFactory;
+import net.jp2p.jxta.advertisement.service.JxtaAdvertisementFactory;
 import net.jp2p.jxta.discovery.DiscoveryServiceFactory;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.netpeergroup.NetPeerGroupFactory;
@@ -56,7 +56,7 @@ public class JxtaFactoryUtils {
 			factory = new PeerGroupFactory();
 			break;			
 		case ADVERTISEMENT:
-			factory = new SimpleJxtaAdvertisementFactory();
+			factory = new JxtaAdvertisementFactory();
 			break;
 		default:
 			break;

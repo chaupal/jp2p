@@ -50,7 +50,7 @@ public abstract class AbstractJxtaAdvertisementFactory<T extends Object, U exten
 			IJp2pPropertySource<IJp2pProperties> parentSource,
 			IContainerBuilder builder, Map<String, String> attributes) {
 		String id = AdvertisementDirectives.TYPE.toString().toLowerCase();
-		this.type =	AdvertisementTypes.convertFrom( id );
+		this.type =	AdvertisementTypes.convertFrom( attributes.get( id ));
 		super.prepare(componentName, parentSource, builder, attributes);
 	}
 

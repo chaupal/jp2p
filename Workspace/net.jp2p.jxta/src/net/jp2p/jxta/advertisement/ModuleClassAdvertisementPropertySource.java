@@ -52,8 +52,8 @@ public class ModuleClassAdvertisementPropertySource extends AdvertisementPropert
 	}
 
 	@Override
-	protected void fillDefaultValues( IJp2pPropertySource<IJp2pProperties> parent ) {
-		super.fillDefaultValues(parent);
+	protected void fillDefaultValues( IJp2pPropertySource<IJp2pProperties> parent, AdvertisementTypes type ) {
+		super.fillDefaultValues(parent, type );
 		String name = super.getParent().getDirective( Directives.NAME );
 		if(!Utils.isNull( name )){
 			this.setManagedProperty( new ManagedProperty<IJp2pProperties, Object>( this, ModuleImplProperties.CODE, name ));

@@ -55,8 +55,8 @@ public class PipeAdvertisementPropertySource extends AdvertisementPropertySource
 	}
 
 	@Override
-	protected void fillDefaultValues( IJp2pPropertySource<IJp2pProperties> parent ) {
-		super.fillDefaultValues(parent);
+	protected void fillDefaultValues( IJp2pPropertySource<IJp2pProperties> parent, AdvertisementTypes type ) {
+		super.fillDefaultValues(parent, type );
 		String name = super.getParent().getDirective( Directives.NAME );
 		if(Utils.isNull( name )){
 			name = (String) super.getParent().getProperty( ModuleImplProperties.CODE );

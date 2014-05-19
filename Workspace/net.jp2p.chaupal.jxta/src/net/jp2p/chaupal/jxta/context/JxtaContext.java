@@ -85,17 +85,6 @@ public class JxtaContext implements IJp2pContext {
 	 */
 	@Override
 	public IPropertySourceFactory getFactory( String componentName ){
-		JxtaComponents component = JxtaComponents.valueOf( StringStyler.styleToEnum(componentName));
-		String[] attrs;
-		switch( component ){
-		case ADVERTISEMENT:
-			String adType = null;//TODO CP: attributes.getValue( AdvertisementDirectives.TYPE.toString().toLowerCase() );
-			attrs = new String[1];
-			attrs[0] = adType;
-			break;
-		default:
-			attrs = new String[0];
-		}
 		IPropertySourceFactory factory = JxtaFactoryUtils.getDefaultFactory( componentName);
 		return factory;
 	}

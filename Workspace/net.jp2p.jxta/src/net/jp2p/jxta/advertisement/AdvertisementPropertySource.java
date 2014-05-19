@@ -199,8 +199,6 @@ public class AdvertisementPropertySource extends AbstractJp2pWritePropertySource
 		}
 	}
 
-	private AdvertisementTypes type;
-	
 	public AdvertisementPropertySource( IJp2pPropertySource<IJp2pProperties> parent) {
 		this( JxtaComponents.ADVERTISEMENT.toString(), parent);
 	}
@@ -215,11 +213,10 @@ public class AdvertisementPropertySource extends AbstractJp2pWritePropertySource
 
 	protected AdvertisementPropertySource(String componentName, AdvertisementTypes type, IJp2pPropertySource<IJp2pProperties> parent) {
 		super(componentName, parent);
-		this.type = type;
-		this.fillDefaultValues( parent);
+		this.fillDefaultValues( parent, type );
 	}
 
-	protected void fillDefaultValues( IJp2pPropertySource<IJp2pProperties> parent ){
+	protected void fillDefaultValues( IJp2pPropertySource<IJp2pProperties> parent, AdvertisementTypes type ){
 		super.setDirective(Directives.CREATE, Boolean.FALSE.toString());
 		super.setDirective( AdvertisementDirectives.TYPE, type.toString() );
 }	
@@ -259,5 +256,29 @@ public class AdvertisementPropertySource extends AbstractJp2pWritePropertySource
 				return retval;
 		}
 		return null;
+	}
+	
+	/**
+	 * Get the correct property source from a given type
+	 * @param parent
+	 * @param adType
+	 * @return
+	 */
+	public static IJp2pPropertySource<IJp2pProperties> getAdvertisementFromType( IJp2pPropertySource<IJp2pProperties> parent, AdvertisementTypes adType ){
+		IJp2pPropertySource<IJp2pProperties> source;
+		switch( adType ){
+		case MODULE_SPEC:
+			source = new ModuleSpecAdvertisementPropertySource(parent);
+			break;
+		case MODULE_CLASS:
+			source = new ModuleClassAdvertisementPropertySource(parent);
+			break;
+		case MODULE_IMPL:
+			source = new ModuleImplAdvertisementPropertySource(parent);
+			break;
+		default:
+			source = new AdvertisementPropertySource(parent);
+		}
+		return source;
 	}
 }

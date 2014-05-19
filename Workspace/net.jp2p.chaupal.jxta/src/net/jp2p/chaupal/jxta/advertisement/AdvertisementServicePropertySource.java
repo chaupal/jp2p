@@ -10,6 +10,7 @@ import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jxta.peergroup.PeerGroup;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
+import net.jp2p.jxta.advertisement.AdvertisementPropertySource.AdvertisementTypes;
 
 public class AdvertisementServicePropertySource extends AdvertisementPropertySource {
 
@@ -99,16 +100,16 @@ public class AdvertisementServicePropertySource extends AdvertisementPropertySou
 
 	public AdvertisementServicePropertySource( IJp2pPropertySource<IJp2pProperties> parent) {
 		super( ChaupalComponents.ADVERTISEMENT_SERVICE.toString(), parent);
-		this.fillDefaultValues( parent );
+		this.fillDefaultValues( parent, AdvertisementTypes.ADV );
 	}
 
 	public AdvertisementServicePropertySource(String componentName, IJp2pPropertySource<IJp2pProperties> parent) {
 		super(componentName, parent);
-		this.fillDefaultValues( parent);
+		this.fillDefaultValues( parent, AdvertisementTypes.ADV);
 	}
 
 	@Override
-	protected void fillDefaultValues( IJp2pPropertySource<IJp2pProperties> parent ){
+	protected void fillDefaultValues( IJp2pPropertySource<IJp2pProperties> parent, AdvertisementTypes type ){
 		super.setDirective(Directives.CREATE, Boolean.TRUE.toString());
 		super.setDirective(AdvertisementDirectives.TYPE, parent.getDirective( AdvertisementDirectives.TYPE ));
 		super.setDirective(AdvertisementDirectives.PEERGROUP, parent.getDirective( AdvertisementDirectives.PEERGROUP ));
