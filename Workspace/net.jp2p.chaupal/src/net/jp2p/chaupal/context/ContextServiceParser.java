@@ -88,9 +88,9 @@ public class ContextServiceParser{
 	 */
 	public Collection<ServiceInfo> parse() {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
-		URL schema_in = ContextServiceParser.class.getResource( IFactoryBuilder.S_SCHEMA_LOCATION); 
-		if( schema_in == null )
-			throw new RuntimeException( S_ERR_NO_SCHEMA_FOUND );
+		//URL schema_in = ContextServiceParser.class.getResource( IFactoryBuilder.S_SCHEMA_LOCATION); 
+		//if( schema_in == null )
+		//	throw new RuntimeException( S_ERR_NO_SCHEMA_FOUND );
 		
 		//factory.setNamespaceAware( true );
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

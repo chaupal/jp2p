@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JXTA Compatibility for Equinox
 Bundle-SymbolicName: net.jp2p.jxse.compatibility
-Bundle-Version: 1.0.1.v20140424
+Bundle-Version: 1.0.1.v20140522
 Bundle-Activator: net.jp2p.jxse.compatibility.Activator
 Bundle-Vendor: Condast
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -10,12 +10,9 @@ Import-Package: net.jp2p.container,
  net.jp2p.container.activator,
  net.jp2p.container.builder,
  net.jp2p.container.component,
- net.jp2p.container.factory,
  net.jp2p.container.log,
  net.jp2p.container.properties,
- net.jp2p.container.startup,
  net.jp2p.container.utils,
- net.jp2p.jxta.factory,
  net.jp2p.jxta.network,
  net.jp2p.jxta.network.configurator,
  net.jp2p.jxta.peergroup,

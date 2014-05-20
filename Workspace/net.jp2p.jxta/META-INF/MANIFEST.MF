@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JXTA bridge for JP2P Container
 Bundle-SymbolicName: net.jp2p.jxta;singleton:=true
-Bundle-Version: 1.0.0.v20140101
+Bundle-Version: 1.0.0.v20140521
 Bundle-Vendor: Condast
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: net.jp2p.container,
@@ -14,23 +14,16 @@ Import-Package: net.jp2p.container,
  net.jp2p.container.factory.filter,
  net.jp2p.container.filter,
  net.jp2p.container.log,
- net.jp2p.container.partial,
  net.jp2p.container.persistence,
  net.jp2p.container.properties,
  net.jp2p.container.utils,
- net.jp2p.container.validator,
  net.jp2p.jxta.advertisement,
  net.jp2p.jxta.peergroup,
  net.jp2p.jxta.pipe,
  net.jxse.module,
  net.jxta.discovery,
  net.jxta.document,
- net.jxta.endpoint,
- net.jxta.exception,
  net.jxta.id,
- net.jxta.impl.id.CBID,
- net.jxta.impl.id.UUID,
- net.jxta.impl.loader,
  net.jxta.impl.peergroup,
  net.jxta.impl.protocol,
  net.jxta.peer,
@@ -38,7 +31,6 @@ Import-Package: net.jp2p.container,
  net.jxta.pipe,
  net.jxta.platform,
  net.jxta.protocol,
- net.jxta.rendezvous,
  net.jxta.service,
  net.jxta.socket
 Export-Package: net.jp2p.jxta.advertisement,

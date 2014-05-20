@@ -2,7 +2,7 @@
 <feature
       id="net.jp2p.feature"
       label="JP2P Core Bundles"
-      version="1.0.0.v20140516"
+      version="1.0.0.v20140522"
       provider-name="Chaupal">
 
    <description url="https://github.com/chaupal">
@@ -81,19 +81,10 @@ END OF TERMS AND CONDITIONS
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.pde.ui"/>
-      <import plugin="org.apache.ant"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.pde"/>
-      <import plugin="org.eclipse.jface"/>
-      <import plugin="org.eclipse.pde.core"/>
-      <import plugin="net.jp2p.container"/>
-      <import plugin="net.jp2p.jxta"/>
+      <import plugin="org.eclipse.equinox.preferences"/>
+      <import plugin="org.eclipselabs.osgi.ds.broker"/>
+      <import plugin="org.eclipse.osgi"/>
       <import plugin="net.jxse"/>
-      <import plugin="org.chaupal.jp2p.ui"/>
-      <import plugin="org.chaupal.jp2p.ui.jxta"/>
    </requires>
 
    <plugin
