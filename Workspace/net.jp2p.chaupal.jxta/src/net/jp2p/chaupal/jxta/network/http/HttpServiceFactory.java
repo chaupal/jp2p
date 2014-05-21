@@ -8,7 +8,7 @@
  * Contributors:
  *     Kees Pieters - initial API and implementation
  *******************************************************************************/
-package net.jp2p.chaupal.jxta.root.network.http;
+package net.jp2p.chaupal.jxta.network.http;
 
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.component.IJp2pComponent;

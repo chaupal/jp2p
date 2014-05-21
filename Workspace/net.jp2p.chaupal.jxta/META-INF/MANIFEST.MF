@@ -7,7 +7,7 @@ Bundle-Vendor: Condast
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: net.jp2p.chaupal.activator,
  net.jp2p.chaupal.dispatcher,
- net.jp2p.chaupal.jxta.root.network,
+ net.jp2p.chaupal.jxta.network,
  net.jp2p.chaupal.module,
  net.jp2p.chaupal.persistence,
  net.jp2p.container,
@@ -55,8 +55,8 @@ Export-Package: net.jp2p.chaupal.jxta.activator,
  net.jp2p.chaupal.jxta.advertisement,
  net.jp2p.chaupal.jxta.discovery,
  net.jp2p.chaupal.jxta.module,
+ net.jp2p.chaupal.jxta.network,
  net.jp2p.chaupal.jxta.peergroup,
- net.jp2p.chaupal.jxta.root.network,
  net.jp2p.chaupal.jxta.sockets
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: net.jp2p.chaupal.jxta.Activator

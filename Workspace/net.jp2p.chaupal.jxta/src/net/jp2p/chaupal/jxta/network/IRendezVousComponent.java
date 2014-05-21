@@ -1,4 +1,4 @@
-package net.jp2p.chaupal.jxta.root.network;
+package net.jp2p.chaupal.jxta.network;
 
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.utils.StringStyler;

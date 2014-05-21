@@ -1,4 +1,4 @@
-package net.jp2p.chaupal.jxta.root.network.http;
+package net.jp2p.chaupal.jxta.network.http;
 
 import net.jp2p.chaupal.jxta.IChaupalComponents.ChaupalComponents;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;

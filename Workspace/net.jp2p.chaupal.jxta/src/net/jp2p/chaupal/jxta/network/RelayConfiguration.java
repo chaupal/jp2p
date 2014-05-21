@@ -8,7 +8,7 @@
  * Contributors:
  *     Kees Pieters - initial API and implementation
  *******************************************************************************/
-package net.jp2p.chaupal.jxta.root.network;
+package net.jp2p.chaupal.jxta.network;
 
 import java.net.URI;
 import java.util.ArrayList;
