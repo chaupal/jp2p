@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Chaupal JXTA Service Library
 Bundle-SymbolicName: net.jp2p.chaupal.jxta
-Bundle-Version: 1.0.0.v20140521
+Bundle-Version: 1.0.0.v20140523
 Bundle-Vendor: Condast
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: net.jp2p.chaupal.activator,

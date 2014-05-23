@@ -12,4 +12,5 @@ public interface IJp2pDSComponent {
 	public static final String S_IJP2P_CONTAINER_PACKAGE_ID = "net.jp2p.container";
 	public static final String S_IP2P_TOKEN = S_IJP2P_CONTAINER_PACKAGE_ID + ".token";
 
+	public static final String S_CONTAINER = ".container";
 }

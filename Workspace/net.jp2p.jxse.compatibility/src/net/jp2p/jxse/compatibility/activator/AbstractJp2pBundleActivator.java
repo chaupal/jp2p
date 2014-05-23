@@ -144,6 +144,10 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	public void stop(BundleContext bundleContext) throws Exception {		
 		if( jp2pActivator != null )
 			jp2pActivator.stop();
+		
+		if( this.container != null )
+			container.stop();
+		
 		if(logService != null)
 			logService.log(LogService.LOG_INFO, "Logging service Stopped");
 		

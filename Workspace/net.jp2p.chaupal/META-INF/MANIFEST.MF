@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Chaupal OSGI Services for JP2P Container
 Bundle-SymbolicName: net.jp2p.chaupal;singleton:=true
-Bundle-Version: 1.0.0.v20140521
+Bundle-Version: 1.0.0.v20140523
 Bundle-Vendor: Condast
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/jp2pcontext.xml

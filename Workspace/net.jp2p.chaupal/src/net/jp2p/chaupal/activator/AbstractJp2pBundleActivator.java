@@ -47,6 +47,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 		this.bundle_id = bundle_id;
 	}
 
+	@Override
 	public String getBundleId() {
 		return bundle_id;
 	}

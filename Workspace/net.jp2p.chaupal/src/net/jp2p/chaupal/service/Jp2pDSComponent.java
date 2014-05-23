@@ -10,7 +10,6 @@
  *******************************************************************************/
 package net.jp2p.chaupal.service;
 
-import net.jp2p.chaupal.activator.Jp2pBundleActivator;
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.IJp2pDSComponent;
 import net.jp2p.container.activator.IJp2pBundleActivator;
@@ -24,12 +23,10 @@ import org.eclipselabs.osgi.ds.broker.service.AbstractProvider;
 
 public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implements IJp2pDSComponent {
 
-	private static final String S_CONTAINER = ".container";
-	
 	private Jp2pContainerProvider provider;
 	private String introduction;
 	private String token;
-	private Jp2pBundleActivator activator;
+	private IJp2pBundleActivator activator;
 	private IContainerBuilderListener listener;
 
 	protected Jp2pDSComponent( IJp2pBundleActivator activator ) {
@@ -39,11 +36,11 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 	protected Jp2pDSComponent( String introduction, String token, IJp2pBundleActivator activator ) {
 		this.token = token;
 		this.introduction = introduction;
-		this.activator = (Jp2pBundleActivator) activator;
+		this.activator = activator;
 		this.setActivator();
 	}
 
-	private void provideContainer( IJp2pContainer container ){
+	private synchronized void provideContainer( IJp2pContainer container ){
 		try{
 			provider.setContainer( container );		
 		}
