@@ -59,9 +59,10 @@ public abstract class AbstractJxtaService<T extends Module> extends
 		IJxtaModuleService<?> ms = (IJxtaModuleService<?>) obj;
 		if(( ms.getModuleImplAdvertisement() == null ) || !this.getModuleImplAdvertisement().equals( ms.getModuleImplAdvertisement()))
 			return false;
-		if( super.getVersion() == null )
-			return ( ms.getVersion() == null);
-		else
-			return super.getVersion().equals( ms.getVersion() );
+		//if( super.getVersion() == null )
+		//	return ( ms.getVersion() == null);
+		//else
+		//	return super.getVersion().equals( ms.getVersion() );
+		return true;
 	}
 }

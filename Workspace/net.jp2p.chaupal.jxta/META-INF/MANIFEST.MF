@@ -56,7 +56,7 @@ Export-Package: net.jp2p.chaupal.jxta.activator,
  net.jp2p.chaupal.jxta.discovery,
  net.jp2p.chaupal.jxta.module,
  net.jp2p.chaupal.jxta.network,
- net.jp2p.chaupal.jxta.peergroup,
- net.jp2p.chaupal.jxta.sockets
+ net.jp2p.chaupal.jxta.peergroup
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: net.jp2p.chaupal.jxta.Activator
+Require-Bundle: org.eclipse.osgi;bundle-version="3.9.1"

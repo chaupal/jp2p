@@ -22,6 +22,7 @@ import net.jp2p.jxta.netpeergroup.NetPeerGroupFactory;
 import net.jp2p.jxta.peergroup.PeerGroupFactory;
 import net.jp2p.jxta.pipe.PipeServiceFactory;
 import net.jp2p.jxta.registration.RegistrationServiceFactory;
+import net.jp2p.jxta.socket.SocketFactory;
 
 public class JxtaFactoryUtils {
 
@@ -57,6 +58,9 @@ public class JxtaFactoryUtils {
 			break;			
 		case ADVERTISEMENT:
 			factory = new JxtaAdvertisementFactory();
+			break;
+		case JXSE_SOCKET_SERVICE:
+			factory = new SocketFactory();
 			break;
 		default:
 			break;

@@ -35,3 +35,4 @@ Export-Package: net.jp2p.jxse.compatibility.activator,
  net.jp2p.jxse.compatibility.service,
  net.jp2p.jxse.compatibility.utils
 Service-Component: OSGI-INF/attendees.xml
+Require-Bundle: org.eclipse.osgi;bundle-version="3.9.1"

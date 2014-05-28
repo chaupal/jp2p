@@ -60,10 +60,11 @@ abstract class AbstractModuleService<T extends Object> implements IModuleService
 		IModuleService<?> ms = (IModuleService<?>) obj;
 		if(( ms.getIdentifier() == null ) || !identifier.equals( ms.getIdentifier()))
 			return false;
-		if( this.version == null )
-			return ( ms.getVersion() == null);
-		else
-			return this.version.equals( ms.getVersion() );
+		//if( this.version == null )
+		//	return ( ms.getVersion() == null);
+		//else
+		//	return this.version.equals( ms.getVersion() );
+		return true;
 	}
 
 	/**
