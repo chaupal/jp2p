@@ -7,14 +7,17 @@
  *******************************************************************************/
 package net.jp2p.jxta.socket;
 
+import java.net.URISyntaxException;
+
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
 import net.jp2p.jxta.factory.AbstractPeerGroupDependencyFactory;
-import net.jxta.peergroup.PeerGroup;
+import net.jp2p.jxta.pipe.PipeAdvertisementPropertySource;
 import net.jxta.pipe.PipeMsgListener;
+import net.jxta.protocol.PipeAdvertisement;
 
 public class SocketFactory extends AbstractPeerGroupDependencyFactory<PipeMsgListener>{
 	
@@ -28,19 +31,16 @@ public class SocketFactory extends AbstractPeerGroupDependencyFactory<PipeMsgLis
 
 	@Override
 	protected IJp2pComponent<PipeMsgListener> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
-		return new SocketService( this );
+		PipeAdvertisement pipead;
+		try {
+			pipead = PipeAdvertisementPropertySource.createPipeAdvertisement( this.pipeAdv, super.getPeerGroup() );
+			return new SocketService( (SocketPropertySource) super.getPropertySource(), super.getPeerGroup(), pipead );
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	@Override
-	public PeerGroup getPeerGroup() {
-		return super.getPeerGroup();
-	}
-
-	final AdvertisementPropertySource getPipePropertySource() {
-		return pipeAdv;
-	}
-
-	
 	@Override
 	public void notifyChange(ComponentBuilderEvent<Object> event) {
 		if( super.isChildEvent( event )){

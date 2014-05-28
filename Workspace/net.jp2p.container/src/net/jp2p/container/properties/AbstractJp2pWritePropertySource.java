@@ -31,6 +31,8 @@ extends AbstractJp2pPropertySource implements IJp2pWritePropertySource<IJp2pProp
 		if( select == null ){
 			select = new ManagedProperty<IJp2pProperties, Object>( this, id, value, derived );
 			super.setManagedProperty( select );
+		}else{
+			select.setValue(value);
 		}
 		return select;
 	}

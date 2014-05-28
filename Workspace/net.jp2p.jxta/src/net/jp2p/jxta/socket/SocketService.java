@@ -13,7 +13,6 @@ import java.io.InputStream;
 import net.jp2p.container.component.AbstractJp2pService;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
-import net.jp2p.jxta.pipe.PipeAdvertisementPropertySource;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketProperties;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketTypes;
 import net.jxta.peergroup.PeerGroup;
@@ -25,11 +24,13 @@ import net.jxta.socket.JxtaSocket;
 
 public class SocketService extends AbstractJp2pService<PipeMsgListener>{
 
-	private SocketFactory factory;
+	private PeerGroup peerGroup;
+	private PipeAdvertisement pipeAdv;
 
-	public SocketService( SocketFactory factory ) {
-		super(( IJp2pWritePropertySource<IJp2pProperties> ) factory.getPropertySource(), null );
-		this.factory = factory;
+	public SocketService( SocketPropertySource ps, PeerGroup peerGroup, PipeAdvertisement pipeadv ) {
+		super(( IJp2pWritePropertySource<IJp2pProperties> ) ps, null );
+		this.peerGroup = peerGroup;
+		this.pipeAdv = pipeadv;
 	}
 
 	@Override
@@ -38,9 +39,7 @@ public class SocketService extends AbstractJp2pService<PipeMsgListener>{
 		SocketTypes type = (SocketTypes) source.getProperty( SocketProperties.TYPE );
 		int time_out = (int) source.getProperty( SocketProperties.TIME_OUT );
 		PipeMsgListener socket = null;
-		PeerGroup peerGroup = factory.getPeerGroup();
 		try {
-			PipeAdvertisement pipeAdv = PipeAdvertisementPropertySource.createPipeAdvertisement( factory.getPipePropertySource(), peerGroup);
 			switch( type ){
 			case CLIENT:
 				socket = new JxtaSocket(peerGroup, pipeAdv, time_out );
