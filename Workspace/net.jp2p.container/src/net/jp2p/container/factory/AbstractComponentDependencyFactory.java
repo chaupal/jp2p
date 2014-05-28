@@ -52,4 +52,23 @@ public abstract class AbstractComponentDependencyFactory<T extends Object, U ext
 		}
 		super.notifyChange(event);
 	}
+
+	/**
+	 * returns true if the event is spawned from an immediate child
+	 * @param event
+	 * @return
+	*/
+	protected boolean isChildEvent( ComponentBuilderEvent<?> event ){
+		return this.isChildFactory(event.getFactory() );
+	}
+
+	/**
+	 * returns true if the event is spawned from the parent
+	 * @param event
+	 * @return
+	*/
+	protected boolean isParentEvent( ComponentBuilderEvent<?> event ){
+		return this.isParentFactory(event.getFactory() );
+	}
+
 }

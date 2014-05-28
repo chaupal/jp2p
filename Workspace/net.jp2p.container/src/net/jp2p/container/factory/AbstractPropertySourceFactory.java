@@ -15,6 +15,7 @@ import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.container.utils.StringStyler;
 
 public abstract class AbstractPropertySourceFactory implements IPropertySourceFactory{
 
@@ -26,6 +27,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	private boolean canCreate;
 	private IContainerBuilder builder;
 	private int weight;
+	private String componentName;
 	
 	/**
 	 * Prepare the factory, by providing the necessary objects to embed the factory in the application
@@ -35,12 +37,12 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	 * @param attributes
 	 */
 	@Override
-	public void prepare( String componentName, IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, Map<String, String> attributes ){
+	public void prepare( String name, IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, Map<String, String> attributes ){
+		this.componentName = StringStyler.prettyString( name );
 		this.canCreate = false;
 		this.parentSource = parentSource;
 		this.builder = builder;
 		this.weight = Integer.MAX_VALUE;
-		
 	}
 
 	protected IJp2pPropertySource<IJp2pProperties> getParentSource() {
@@ -62,7 +64,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 
 	@Override
 	public String getComponentName() {
-		return source.getComponentName();
+		return this.componentName;
 	}
 
 	/**
@@ -162,6 +164,20 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 		if(( source == null ) || ( source.getParent() == null ))
 			return false;
 		return ( source.getParent().equals( this.getPropertySource()));
+	}
+
+	/**
+	 * Returns true if the given factory is the parent of this one
+	 * @param factory
+	 * @return
+	 */
+	protected boolean isParentFactory( IPropertySourceFactory factory ){
+		if( factory == null )
+			return false;
+		IJp2pPropertySource<IJp2pProperties> source = factory.getPropertySource();
+		if(( source == null ) || ( source.getParent() == null ))
+			return false;
+		return ( source.equals( this.getPropertySource().getParent()));
 	}
 
 	@Override

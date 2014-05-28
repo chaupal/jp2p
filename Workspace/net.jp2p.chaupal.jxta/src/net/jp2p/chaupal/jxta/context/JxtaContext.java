@@ -27,6 +27,7 @@ import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.network.NetworkManagerPreferences;
 import net.jp2p.jxta.peergroup.PeerGroupPreferences;
+import net.jp2p.jxta.socket.SocketPreferences;
 
 public class JxtaContext implements IJp2pContext {
 
@@ -109,19 +110,22 @@ public class JxtaContext implements IJp2pContext {
 		IPropertyConvertor<String, Object> convertor = null;
 		switch( component ){
 		case ADVERTISEMENT:
-			convertor = new AdvertisementPreferences( (IJp2pWritePropertySource<IJp2pProperties>) source );
+			convertor = new AdvertisementPreferences(( IJp2pWritePropertySource<IJp2pProperties>) source );
 			break;
 		case PIPE_SERVICE:
 			break;
 		case NET_PEERGROUP_SERVICE:
-			convertor = new NetworkManagerPreferences( (IJp2pWritePropertySource<IJp2pProperties>) source );
+			convertor = new NetworkManagerPreferences(( IJp2pWritePropertySource<IJp2pProperties>) source );
 			break;			
 		case DISCOVERY_SERVICE:
-			convertor = new DiscoveryPreferences( (IJp2pWritePropertySource<IJp2pProperties>) source );
+			convertor = new DiscoveryPreferences((IJp2pWritePropertySource<IJp2pProperties>) source );
 			break;			
 		case PEERGROUP_SERVICE:
-			convertor = new PeerGroupPreferences( (IJp2pWritePropertySource<IJp2pProperties>) source );
+			convertor = new PeerGroupPreferences(( IJp2pWritePropertySource<IJp2pProperties>) source );
 			break;			
+		case JXSE_SOCKET_SERVICE:
+			convertor = new SocketPreferences(( IJp2pWritePropertySource<IJp2pProperties>) source );
+			break;
 		case REGISTRATION_SERVICE:
 			break;
 		default:

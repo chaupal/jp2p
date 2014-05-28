@@ -19,8 +19,8 @@ import net.jp2p.jxta.peergroup.PeerGroupPropertySource;
 
 public class SocketPropertySource extends AdvertisementPropertySource{
 
-	public static final long DEFAULT_SOCKET_TIME_OUT = 30000;
-	public static final long DEFAULT_BACK_LOG = 20;
+	public static final int DEFAULT_SOCKET_TIME_OUT = 30000;
+	public static final int DEFAULT_BACK_LOG = 20;
 	
 	/**
 	 * Properties specific for pipe services

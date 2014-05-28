@@ -8,12 +8,18 @@
 package net.jp2p.jxta.socket;
 
 import net.jp2p.container.component.IJp2pComponent;
+import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
+import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
 import net.jp2p.jxta.factory.AbstractPeerGroupDependencyFactory;
+import net.jxta.peergroup.PeerGroup;
 import net.jxta.pipe.PipeMsgListener;
 
 public class SocketFactory extends AbstractPeerGroupDependencyFactory<PipeMsgListener>{
+	
+	private AdvertisementPropertySource pipeAdv;
+	private boolean canCreate;
 
 	@Override
 	protected SocketPropertySource onCreatePropertySource() {
@@ -22,6 +28,29 @@ public class SocketFactory extends AbstractPeerGroupDependencyFactory<PipeMsgLis
 
 	@Override
 	protected IJp2pComponent<PipeMsgListener> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
-		return new SocketService( (SocketPropertySource) super.getPropertySource(), super.getPeerGroup() );
+		return new SocketService( this );
+	}
+
+	@Override
+	public PeerGroup getPeerGroup() {
+		return super.getPeerGroup();
+	}
+
+	final AdvertisementPropertySource getPipePropertySource() {
+		return pipeAdv;
+	}
+
+	
+	@Override
+	public void notifyChange(ComponentBuilderEvent<Object> event) {
+		if( super.isChildEvent( event )){
+			pipeAdv = (AdvertisementPropertySource) event.getFactory().getPropertySource();
+		}
+		super.notifyChange(event);
+		if( this.pipeAdv == null )
+			return;
+		if( super.canCreate() )
+			this.canCreate = true;
+		super.setCanCreate(canCreate && (this.pipeAdv != null ));
 	}
 }
