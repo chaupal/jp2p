@@ -30,6 +30,21 @@ public interface IJp2pContainer extends IJp2pComponentNode<Object>, IJp2pService
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );
 		}
+		
+		/**
+		 * Returns true if the given key is valid for this enum
+		 * @param key
+		 * @return
+		 */
+		public static boolean isValidKey( IJp2pProperties key ){
+			if( key instanceof ContainerProperties )
+				return true;
+			for( ContainerProperties sp: ContainerProperties.values()){
+				if( sp.name().equals(key.name()))
+					return true;
+			}
+			return false;
+		}
 	}
 
 	/**

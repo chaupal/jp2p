@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JP2P Container
 Bundle-SymbolicName: net.jp2p.container
-Bundle-Version: 1.0.0.v20140523
+Bundle-Version: 1.0.0.v20140602
 Bundle-Vendor: Condast
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: net.jp2p.container,

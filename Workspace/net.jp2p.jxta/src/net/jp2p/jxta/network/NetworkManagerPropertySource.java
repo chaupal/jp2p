@@ -143,13 +143,13 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 	/**
 	 * convert the given context property to a networkManagerProperty, or null if there is
 	 * no relation between them
-	 * @param context
+	 * @param id
 	 * @return
 	 */
-	public IJp2pProperties convertFrom( IJp2pProperties context ){
-		if(!( context instanceof ContainerProperties ))
-			return context;
-		ContainerProperties key = (ContainerProperties) context;
+	public IJp2pProperties convertFrom( IJp2pProperties id ){
+		if(!ContainerProperties.isValidKey(id))
+			return id;
+		ContainerProperties key = ContainerProperties.valueOf( id.name() );
 		switch( key ){
 		case HOME_FOLDER:
 			return NetworkManagerProperties.INSTANCE_HOME;

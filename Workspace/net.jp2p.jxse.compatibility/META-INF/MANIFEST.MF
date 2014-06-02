@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JXTA Compatibility for Equinox
 Bundle-SymbolicName: net.jp2p.jxse.compatibility
-Bundle-Version: 1.0.1.v20140523
+Bundle-Version: 1.0.1.v20140602
 Bundle-Activator: net.jp2p.jxse.compatibility.Activator
 Bundle-Vendor: Condast
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
