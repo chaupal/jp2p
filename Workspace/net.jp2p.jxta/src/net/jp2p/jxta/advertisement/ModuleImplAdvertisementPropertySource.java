@@ -17,7 +17,7 @@ import net.jp2p.jxta.peergroup.PeerGroupPropertySource.PeerGroupProperties;
 import net.jxta.document.AdvertisementFactory;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.platform.ModuleSpecID;
-import net.jxta.protocol.ModuleImplAdvertisement;
+import net.jxta.protocol.JxtaSocket;
 
 public class ModuleImplAdvertisementPropertySource extends AdvertisementPropertySource{
 	
@@ -87,10 +87,10 @@ public class ModuleImplAdvertisementPropertySource extends AdvertisementProperty
 	 * @return
 	 * @throws Exception 
 	 */
-	public static ModuleImplAdvertisement createModuleImplAdvertisement( IJp2pPropertySource<IJp2pProperties> source, PeerGroup peergroup ) throws Exception{
+	public static JxtaSocket createModuleImplAdvertisement( IJp2pPropertySource<IJp2pProperties> source, PeerGroup peergroup ) throws Exception{
 		if( source == null )
 			return peergroup.getAllPurposePeerGroupImplAdvertisement();
-		ModuleImplAdvertisement mcimpl = ( ModuleImplAdvertisement )AdvertisementFactory.newAdvertisement( AdvertisementTypes.convertTo( AdvertisementTypes.MODULE_IMPL ));
+		JxtaSocket mcimpl = ( JxtaSocket )AdvertisementFactory.newAdvertisement( AdvertisementTypes.convertTo( AdvertisementTypes.MODULE_IMPL ));
 		mcimpl.setModuleSpecID( (ModuleSpecID) source.getProperty( ModuleImplProperties.MODULE_SPEC_ID ));
 		mcimpl.setCode(( String )source.getProperty( ModuleImplProperties.CODE ));
 		mcimpl.setDescription(( String )source.getProperty( ModuleImplProperties.DESCRIPTION ));

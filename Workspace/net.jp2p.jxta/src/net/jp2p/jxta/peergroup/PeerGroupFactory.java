@@ -40,7 +40,7 @@ import net.jxta.peer.PeerID;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.peergroup.PeerGroupID;
 import net.jxta.protocol.ModuleClassAdvertisement;
-import net.jxta.protocol.ModuleImplAdvertisement;
+import net.jxta.protocol.JxtaSocket;
 import net.jxta.protocol.ModuleSpecAdvertisement;
 import net.jxta.protocol.PeerGroupAdvertisement;
 import net.jxta.protocol.PipeAdvertisement;
@@ -109,7 +109,7 @@ public class PeerGroupFactory extends AbstractPeerGroupDependencyFactory<PeerGro
 	 * @throws Exception
 	 */
 	public static PeerGroup createPeerGroupFromModuleImpl( PeerGroup parent, IJp2pPropertySource<IJp2pProperties> source ) throws Exception{
-		ModuleImplAdvertisement miad = ModuleImplAdvertisementPropertySource.createModuleImplAdvertisement(null, parent );
+		JxtaSocket miad = ModuleImplAdvertisementPropertySource.createModuleImplAdvertisement(null, parent );
 		PeerGroupID id = (PeerGroupID)source.getProperty( PeerGroupProperties.PEERGROUP_ID );
 		boolean publish = PeerGroupPropertySource.getBoolean( source, PeerGroupDirectives.PUBLISH );
 		String name = null;

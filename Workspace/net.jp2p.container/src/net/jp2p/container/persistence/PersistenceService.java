@@ -47,6 +47,7 @@ public class PersistenceService<T,U extends Object> extends AbstractJp2pService<
 					break;
 				default:
 					properties.setProperty( source, mp.getKey(), convertor.convertFrom( mp.getKey() ));
+					break;
 				}
 			}
 		};

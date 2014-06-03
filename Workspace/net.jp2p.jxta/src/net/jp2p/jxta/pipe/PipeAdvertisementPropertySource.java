@@ -18,6 +18,7 @@ import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
 import net.jp2p.jxta.advertisement.ModuleImplAdvertisementPropertySource.ModuleImplProperties;
+import net.jp2p.jxta.pipe.PipePropertySource.PipeServiceTypes;
 import net.jxta.document.AdvertisementFactory;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.protocol.PipeAdvertisement;
@@ -88,11 +89,12 @@ public class PipeAdvertisementPropertySource extends AdvertisementPropertySource
 		PipeAdvertisement pipead = ( PipeAdvertisement )AdvertisementFactory.newAdvertisement( AdvertisementTypes.convertTo( AdvertisementTypes.PIPE ));
 		String name = (String) source.getProperty( AdvertisementProperties.NAME );
 		pipead.setName(name);
-		pipead.setType(( String )source.getProperty( PipeAdvertisementProperties.TYPE ));
+		PipeServiceTypes type = ( PipeServiceTypes )source.getProperty( PipeAdvertisementProperties.TYPE );
+		if( type == null )
+			type = PipeServiceTypes.UNICAST;
+		pipead.setType( PipeServiceTypes.convert( type ));
 		pipead.setDescription(( String )source.getProperty( PipeAdvertisementProperties.DESCRIPTION ));
 		pipead.setPipeID( preferences.getPipeID());
 		return pipead;
-	}
-
-	
+	}	
 }

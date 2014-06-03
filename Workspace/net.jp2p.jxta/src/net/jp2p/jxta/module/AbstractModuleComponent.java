@@ -30,7 +30,7 @@ import net.jxta.impl.peergroup.CompatibilityUtils;
 import net.jxta.platform.Module;
 import net.jxta.platform.ModuleClassID;
 import net.jxta.platform.ModuleSpecID;
-import net.jxta.protocol.ModuleImplAdvertisement;
+import net.jxta.protocol.JxtaSocket;
 
 public abstract class AbstractModuleComponent<T extends Module> extends Jp2pComponent<T> implements IJxtaModuleService<T> {
 
@@ -39,7 +39,7 @@ public abstract class AbstractModuleComponent<T extends Module> extends Jp2pComp
 
 	public static final String S_RESOURCE_LOCATION = "/services/net.jxta.platform.Module";
 
-    private ModuleImplAdvertisement implAdv;
+    private JxtaSocket implAdv;
      
     protected AbstractModuleComponent( IJp2pPropertySource<IJp2pProperties> source, T module  ) {
 		super(source, module );
@@ -50,7 +50,7 @@ public abstract class AbstractModuleComponent<T extends Module> extends Jp2pComp
      * Create the advertisement
      * @return
      */
-    protected abstract ModuleImplAdvertisement onCreateAdvertisement();
+    protected abstract JxtaSocket onCreateAdvertisement();
     
     private final void init(){
     	this.implAdv = this.onCreateAdvertisement();
@@ -70,7 +70,7 @@ public abstract class AbstractModuleComponent<T extends Module> extends Jp2pComp
 	}
 
 	@Override
-	public ModuleImplAdvertisement getModuleImplAdvertisement() {
+	public JxtaSocket getModuleImplAdvertisement() {
 		return implAdv;
 	}
 
@@ -103,11 +103,11 @@ public abstract class AbstractModuleComponent<T extends Module> extends Jp2pComp
      * @return list of discovered ModuleImplAdvertisements for the specified
      *  ModuleSpecID, or null if no results were found.
      */
-    protected static Collection<ModuleImplAdvertisement> locateModuleImplementations( URL providers) {
+    protected static Collection<JxtaSocket> locateModuleImplementations( URL providers) {
 
         Logger logger = Logger.getLogger( AbstractModuleComponent.class.getName());
 
-        Collection<ModuleImplAdvertisement> result = new ArrayList<ModuleImplAdvertisement>();
+        Collection<JxtaSocket> result = new ArrayList<JxtaSocket>();
         InputStream urlStream = null;
         try {
             urlStream = providers.openStream();
@@ -133,7 +133,7 @@ public abstract class AbstractModuleComponent<T extends Module> extends Jp2pComp
         		if (0 == provider.length())
         			continue;
         		try {
-        			ModuleImplAdvertisement mAdv = null;
+        			JxtaSocket mAdv = null;
         			String[] parts = provider.split("\\s", 3);
         			if (parts.length == 1) {
         				// Standard Jar SPI format:  Class name
@@ -178,13 +178,13 @@ public abstract class AbstractModuleComponent<T extends Module> extends Jp2pComp
      * @return ModuleImplAdvertisement found by introspection, or null if
      *  the ModuleImplAdvertisement could not be discovered in this manner
      */
-    private static ModuleImplAdvertisement locateModuleImplAdvertisement( String className) {
+    private static JxtaSocket locateModuleImplAdvertisement( String className) {
         Logger logger = Logger.getLogger( AbstractModuleComponent.class.getName());
         try {
             Class<?> moduleClass = (Class<?>) Class.forName(className);
             Class<? extends Module> modClass = verifyAndCast(moduleClass);
             Method getImplAdvMethod = modClass.getMethod("getDefaultModuleImplAdvertisement");
-            return (ModuleImplAdvertisement) getImplAdvMethod.invoke(null);
+            return (JxtaSocket) getImplAdvMethod.invoke(null);
         } catch(Exception ex) {
             logger.severe( ": Could not introspect Module for MIA: " + className );
         }
@@ -214,12 +214,12 @@ public abstract class AbstractModuleComponent<T extends Module> extends Jp2pComp
      * @param url
      * @return
      */
-    public static ModuleImplAdvertisement getAdvertisementFromResource( URL url, ModuleClassID id  ){
-		Collection<ModuleImplAdvertisement> advs = locateModuleImplementations( url );
+    public static JxtaSocket getAdvertisementFromResource( URL url, ModuleClassID id  ){
+		Collection<JxtaSocket> advs = locateModuleImplementations( url );
 		if(( advs == null ) || ( advs.isEmpty() ))
 			return null;
 		
-		for( ModuleImplAdvertisement adv: advs ){
+		for( JxtaSocket adv: advs ){
 			if( adv.getModuleSpecID().isOfSameBaseClass( id ))
 				return adv;
 		}
