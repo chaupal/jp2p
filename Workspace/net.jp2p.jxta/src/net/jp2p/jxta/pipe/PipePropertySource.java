@@ -10,7 +10,6 @@ package net.jp2p.jxta.pipe;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
@@ -77,7 +76,6 @@ public class PipePropertySource extends AdvertisementPropertySource{
 	public PipePropertySource( IJp2pPropertySource<IJp2pProperties> parent) {
 		super( JxtaComponents.PIPE_SERVICE.toString(), parent);
 		super.setProperty( PipeServiceProperties.TIME_OUT, DEFAULT_OUTPUT_PIPE_TIME_OUT);
-		super.setDirective( Directives.CREATE, Boolean.TRUE.toString() );
 	}
 
 	@Override

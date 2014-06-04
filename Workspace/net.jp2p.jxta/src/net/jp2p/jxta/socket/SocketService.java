@@ -33,19 +33,51 @@ public class SocketService extends AbstractJp2pService<PipeMsgListener>{
 		this.pipeAdv = pipeadv;
 	}
 
+	/**
+	 * Get the correct server socket by selecting the correct constructor
+	 * @return
+	 * @throws IOException
+	 */
+	protected JxtaSocket getSocket() throws IOException{
+		SocketPropertySource source = (SocketPropertySource) super.getPropertySource();
+		int time_out = (int) source.getProperty( SocketProperties.TIME_OUT );
+		//boolean reliable = (boolean)source.getProperty( SocketProperties.RELIABLE );
+		if( time_out <= 0 )
+			return new JxtaSocket( peerGroup, pipeAdv );
+		else
+			return new JxtaSocket( peerGroup, pipeAdv, time_out );
+	}
+
+	/**
+	 * Get the correct server socket by selecting the correct constructor
+	 * @return
+	 * @throws IOException
+	 */
+	protected JxtaServerSocket getServerSocket() throws IOException{
+		SocketPropertySource source = (SocketPropertySource) super.getPropertySource();
+		int back_log = (int) source.getProperty( SocketProperties.BACKLOG );
+		int time_out = (int) source.getProperty( SocketProperties.TIME_OUT );
+		boolean encrypt = (boolean)source.getProperty( SocketProperties.ENCRYPT );
+		if(( back_log <= 0 ) && ( time_out <= 0 ))
+			return new JxtaServerSocket( peerGroup, pipeAdv, encrypt );
+		if(( time_out <= 0 ))
+			return new JxtaServerSocket( peerGroup, pipeAdv, back_log, encrypt );
+		else
+			return new JxtaServerSocket( peerGroup, pipeAdv, back_log, time_out, encrypt );			
+	}
+	
 	@Override
 	protected void activate() {
 		SocketPropertySource source = (SocketPropertySource) super.getPropertySource();
-		SocketTypes type = (SocketTypes) source.getProperty( SocketProperties.TYPE );
-		int time_out = (int) source.getProperty( SocketProperties.TIME_OUT );
+		SocketTypes type = SocketPropertySource.getSocketType(source);
 		PipeMsgListener socket = null;
 		try {
 			switch( type ){
 			case CLIENT:
-				socket = new JxtaSocket(peerGroup, pipeAdv, time_out );
+				socket = this.getSocket();
 				break;
 			case SERVER:
-				socket = new JxtaServerSocket( peerGroup, pipeAdv, time_out);
+				socket = this.getServerSocket();
 				break;
 			case MULTICAST:
 				socket = new JxtaMulticastSocket( peerGroup, pipeAdv );

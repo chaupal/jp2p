@@ -10,7 +10,6 @@ import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jxta.peergroup.PeerGroup;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
-import net.jp2p.jxta.advertisement.AdvertisementPropertySource.AdvertisementTypes;
 
 public class AdvertisementServicePropertySource extends AdvertisementPropertySource {
 

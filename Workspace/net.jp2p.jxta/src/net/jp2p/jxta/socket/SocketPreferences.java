@@ -10,9 +10,7 @@ package net.jp2p.jxta.socket;
 import net.jp2p.container.persistence.AbstractPreferences;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
-import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketProperties;
-import net.jp2p.jxta.socket.SocketPropertySource.SocketTypes;
 
 public class SocketPreferences extends AbstractPreferences<String, Object>
 {
@@ -44,8 +42,6 @@ public class SocketPreferences extends AbstractPreferences<String, Object>
 		if( value == null )
 			return null;
 		switch( props ){
-		case TYPE:
-			return SocketTypes.valueOf( StringStyler.styleToEnum(value));
 		case BACKLOG:
 		case TIME_OUT:
 			return Integer.parseInt( value );

@@ -47,12 +47,7 @@ public class PipeAdvertisementPreferences extends AbstractPreferences<String, Ob
 		PipeServiceProperties pid = ( PipeServiceProperties )id;
 		switch( pid ){
 		case PIPE_ID:
-			URI uri = URI.create(value);
-			try {
-				return IDFactory.fromURI( uri );
-			} catch (URISyntaxException e) {
-				throw new RuntimeException( e );
-			}
+			return PipeID.create( URI.create(value));
 		case TYPE:
 			return PipePropertySource.PipeServiceTypes.valueOf( value );
 		default:
@@ -69,7 +64,7 @@ public class PipeAdvertisementPreferences extends AbstractPreferences<String, Ob
 	@Override
 	public Object createDefaultValue( IJp2pProperties id ){
 		if( !ManagedProperty.isCreated( super.getSource().getManagedProperty(id)))
-			return null;
+			return super.getSource().getProperty(id);
 		
 		if( !( id instanceof PipeServiceProperties ))
 			return null;

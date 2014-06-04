@@ -20,7 +20,7 @@ import net.jp2p.jxta.peergroup.PeerGroupPropertySource;
 public class SocketPropertySource extends AdvertisementPropertySource{
 
 	public static final int DEFAULT_SOCKET_TIME_OUT = 30000;
-	public static final int DEFAULT_BACK_LOG = 20;
+	public static final int DEFAULT_BACK_LOG = 50;
 	
 	/**
 	 * Properties specific for pipe services
@@ -30,12 +30,37 @@ public class SocketPropertySource extends AdvertisementPropertySource{
 	public enum SocketProperties implements IJp2pProperties{
 		BACKLOG,
 		TIME_OUT,
-		TYPE;
+		ENCRYPT,
+		RELIABLE;
 	
 		public static boolean isValidProperty( String str ){
 			if( Utils.isNull( str ))
 				return false;
 			for( SocketProperties dir: values() ){
+				if( dir.name().equals( str ))
+					return true;
+			}
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return StringStyler.prettyString( super.toString() );
+		}
+	}
+
+	/**
+	 * Properties specific for pipe services
+	 * @author Kees
+	 *
+	 */
+	public enum SocketDirectives implements IJp2pDirectives{
+		TYPE;
+	
+		public static boolean isValid( String str ){
+			if( Utils.isNull( str ))
+				return false;
+			for( SocketDirectives dir: values() ){
 				if( dir.name().equals( str ))
 					return true;
 			}
@@ -63,6 +88,9 @@ public class SocketPropertySource extends AdvertisementPropertySource{
 		super( JxtaComponents.JXSE_SOCKET_SERVICE.toString(), parent);
 		super.setProperty( SocketProperties.TIME_OUT, DEFAULT_SOCKET_TIME_OUT );
 		super.setProperty( SocketProperties.BACKLOG, DEFAULT_BACK_LOG );
+		super.setProperty( SocketProperties.ENCRYPT, true );
+		super.setProperty( SocketProperties.RELIABLE, true );
+		super.setDirective( SocketDirectives.TYPE, SocketTypes.CLIENT.name() );
 		super.setDirective( Directives.CREATE, Boolean.TRUE.toString() );
 	}
 
@@ -83,5 +111,18 @@ public class SocketPropertySource extends AdvertisementPropertySource{
 	@Override
 	public boolean validate(IJp2pProperties id, Object value) {
 		return SocketProperties.isValidProperty(id.toString());	
-	}	
+	}
+	
+	/**
+	 * Return the socket type 
+	 * @param source
+	 * @return
+	 */
+	public static SocketTypes getSocketType( SocketPropertySource source ){
+		String str = source.getDirective( SocketDirectives.TYPE );
+		if( Utils.isNull(str))
+			return SocketTypes.CLIENT;
+		SocketTypes type = SocketTypes.valueOf( StringStyler.styleToEnum( str ));
+		return type;
+	}
 }

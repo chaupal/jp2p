@@ -7,8 +7,6 @@
  *******************************************************************************/
 package net.jp2p.container.properties;
 
-import net.jp2p.container.properties.IJp2pDirectives.Directives;
-
 public abstract class AbstractJp2pWritePropertySource 
 extends AbstractJp2pPropertySource implements IJp2pWritePropertySource<IJp2pProperties> {
 
@@ -22,7 +20,6 @@ extends AbstractJp2pPropertySource implements IJp2pWritePropertySource<IJp2pProp
 
 	protected AbstractJp2pWritePropertySource( String componentName, IJp2pPropertySource<IJp2pProperties> parent ) {
 		super( componentName, parent );
-		setDirectiveFromParent( Directives.AUTO_START, this );
 	}
 
 	@Override

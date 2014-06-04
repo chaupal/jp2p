@@ -22,6 +22,7 @@ import net.jp2p.container.filter.IFilterChainListener;
 import net.jp2p.container.filter.FilterChain.Operators;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
+import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
@@ -204,7 +205,7 @@ public abstract class AbstractJxtaAdvertisementFactory<T extends Object, U exten
 			source = null;//new PeerAdvertisementPropertySource(super.getParentSource() );
 			break;
 		case PIPE:
-			adv = PipeAdvertisementPropertySource.createPipeAdvertisement(source, (PeerGroup) args[0] );
+			adv = PipeAdvertisementPropertySource.createPipeAdvertisement((IJp2pWritePropertySource<IJp2pProperties>) source, (PeerGroup) args[0] );
 			break;
 		default:
 			break;

@@ -18,9 +18,11 @@ import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
 import net.jp2p.jxta.advertisement.ModuleImplAdvertisementPropertySource.ModuleImplProperties;
+import net.jp2p.jxta.pipe.PipePropertySource.PipeServiceProperties;
 import net.jp2p.jxta.pipe.PipePropertySource.PipeServiceTypes;
 import net.jxta.document.AdvertisementFactory;
 import net.jxta.peergroup.PeerGroup;
+import net.jxta.pipe.PipeID;
 import net.jxta.protocol.PipeAdvertisement;
 
 public class PipeAdvertisementPropertySource extends AdvertisementPropertySource{
@@ -84,8 +86,8 @@ public class PipeAdvertisementPropertySource extends AdvertisementPropertySource
 	 * @return
 	 * @throws URISyntaxException 
 	 */
-	public static PipeAdvertisement createPipeAdvertisement( IJp2pPropertySource<IJp2pProperties> source, PeerGroup peergroup ) throws URISyntaxException{
-		PipeAdvertisementPreferences preferences = new PipeAdvertisementPreferences( (IJp2pWritePropertySource<IJp2pProperties>) source, peergroup );
+	public static PipeAdvertisement createPipeAdvertisement( IJp2pWritePropertySource<IJp2pProperties> source, PeerGroup peergroup ) throws URISyntaxException{
+		PipeAdvertisementPreferences preferences = new PipeAdvertisementPreferences( source, peergroup );
 		PipeAdvertisement pipead = ( PipeAdvertisement )AdvertisementFactory.newAdvertisement( AdvertisementTypes.convertTo( AdvertisementTypes.PIPE ));
 		String name = (String) source.getProperty( AdvertisementProperties.NAME );
 		pipead.setName(name);
@@ -94,7 +96,15 @@ public class PipeAdvertisementPropertySource extends AdvertisementPropertySource
 			type = PipeServiceTypes.UNICAST;
 		pipead.setType( PipeServiceTypes.convert( type ));
 		pipead.setDescription(( String )source.getProperty( PipeAdvertisementProperties.DESCRIPTION ));
-		pipead.setPipeID( preferences.getPipeID());
+		
+		PipeID pipeID = null;
+		Object value = source.getProperty(PipeServiceProperties.PIPE_ID );
+		if( value instanceof String ){
+			pipeID = (PipeID)preferences.convertTo( PipeServiceProperties.PIPE_ID, (String) value );
+			source.setProperty(PipeServiceProperties.PIPE_ID, pipeID );
+		}else
+			pipeID = (PipeID) value;
+		pipead.setPipeID( pipeID );
 		return pipead;
 	}	
 }

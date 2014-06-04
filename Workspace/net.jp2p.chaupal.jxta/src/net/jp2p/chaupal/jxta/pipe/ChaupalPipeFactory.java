@@ -52,7 +52,7 @@ public class ChaupalPipeFactory extends ChaupalAdvertisementFactory<PipeService,
 	protected PipeAdvertisement createAdvertisement( IJp2pPropertySource<IJp2pProperties> source) {
 		PipeAdvertisement pipeAd = null;
 		try {
-			pipeAd = PipeAdvertisementPropertySource.createPipeAdvertisement(source, super.getPeerGroup());
+			pipeAd = PipeAdvertisementPropertySource.createPipeAdvertisement((IJp2pWritePropertySource<IJp2pProperties>) source, super.getPeerGroup());
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
