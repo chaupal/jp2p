@@ -44,7 +44,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 	
 	@Override
 	protected Jp2pContainerPropertySource onCreatePropertySource() {
-		return new Jp2pContainerPropertySource( this.bundleId );
+		return new Jp2pContainerPropertySource( this.bundleId, null );
 	}
 
 	@Override

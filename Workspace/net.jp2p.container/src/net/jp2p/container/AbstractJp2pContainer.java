@@ -53,7 +53,7 @@ implements	IJp2pContainer{
 	private T module;
 	
 	protected AbstractJp2pContainer( String bundleId, String identifier) {
-		this( new Jp2pContainerPropertySource( bundleId ));
+		this( new Jp2pContainerPropertySource( bundleId, identifier ));
 	}
 
 	protected AbstractJp2pContainer( IJp2pPropertySource<IJp2pProperties> source ) {

@@ -21,7 +21,6 @@ import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.DefaultPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.network.NetworkManagerPropertyFacade;
 import net.jp2p.jxta.network.configurator.NetworkConfiguratorPropertyFacade;
 import net.jp2p.jxta.peergroup.PeerGroupPropertyFacade;
@@ -34,7 +33,7 @@ public abstract class AbstractJxseContainer extends AbstractJp2pContainer<Networ
 	private String identifier;
 	
 	protected AbstractJxseContainer( String bundle_id, String identifier ) {
-		super(new Jp2pContainerPropertySource( bundle_id ));
+		super(new Jp2pContainerPropertySource( bundle_id, identifier ));
 		this.identifier = identifier;
 	}
 

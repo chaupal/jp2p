@@ -6,6 +6,7 @@ import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.StringStyler;
+import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
 import net.jp2p.jxta.network.NetworkManagerPropertySource;
 import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
@@ -121,6 +122,8 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 				super.setProperty(nmp, value, true);
 			}
 		}
+		if( Utils.isNull( (String) super.getProperty( NetworkConfiguratorProperties.PRINCIPAL )))
+			super.setProperty( NetworkConfiguratorProperties.PRINCIPAL, getBundleId(source) );
 		super.setProperty( NetworkConfiguratorProperties.TCP_8ENABLED, source.isEnabled() );
 		super.setProperty( NetworkConfiguratorProperties.HTTP_8ENABLED, true );
 	}

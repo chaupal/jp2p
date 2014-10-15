@@ -12,6 +12,7 @@ import java.io.File;
 import net.jp2p.container.IJp2pContainer.ContainerProperties;
 import net.jp2p.container.context.Jp2pContext;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
+import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pProperties.Jp2pProperties;
 import net.jp2p.container.utils.ProjectFolderUtils;
@@ -20,9 +21,10 @@ public class Jp2pContainerPropertySource extends AbstractJp2pWritePropertySource
 
 	public static final String DEF_HOME_FOLDER = "${user.home}/.jxse/${bundle-id}";
 	
-	public Jp2pContainerPropertySource( String bundleId) {
+	public Jp2pContainerPropertySource( String bundleId, String name ) {
 		super( bundleId, Jp2pContext.Components.JP2P_CONTAINER.toString() );
 		this.setProperty( ContainerProperties.HOME_FOLDER, ProjectFolderUtils.getParsedUserDir(DEF_HOME_FOLDER, bundleId), false);
+		this.setDirective( IJp2pDirectives.Directives.NAME, name);
 	}
 
 	/**

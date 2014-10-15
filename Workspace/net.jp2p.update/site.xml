@@ -4,7 +4,7 @@
       This site contains the core JP2P bundles and a compatibility
 bundle for existing JXTA applications
    </description>
-   <feature url="features/net.jp2p.feature_1.0.1.v20140523.jar" id="net.jp2p.feature" version="1.0.1.v20140523">
+   <feature url="features/net.jp2p.feature_1.0.1.v20141015.jar" id="net.jp2p.feature" version="1.0.1.v20141015">
       <category name="Chaupal"/>
    </feature>
    <category-def name="Chaupal" label="Chaupal JP2P">

@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Chaupal Project Defs
+Bundle-SymbolicName: net.jp2p.project
+Bundle-Version: 1.0.0.v20131013
+Bundle-Vendor: Chaupal
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

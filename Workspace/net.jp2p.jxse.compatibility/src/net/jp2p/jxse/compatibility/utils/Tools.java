@@ -10,9 +10,12 @@ package net.jp2p.jxse.compatibility.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import net.jp2p.jxse.compatibility.service.MessageBoxPetitioner;
 import net.jp2p.jxse.compatibility.service.MessageBoxPetitioner.MessageTypes;
@@ -25,6 +28,7 @@ import net.jxta.endpoint.Message.ElementIterator;
 import net.jxta.endpoint.MessageElement;
 import net.jxta.peer.PeerID;
 import net.jxta.platform.NetworkConfigurator;
+import net.jxta.platform.NetworkManager;
 import net.jxta.rendezvous.RendezVousService;
 
 public class Tools {
@@ -82,28 +86,33 @@ public class Tools {
     public static void CheckForMulticastUsage(String name, NetworkConfigurator TheNC) throws IOException {
         MessageBoxPetitioner petitioner = MessageBoxPetitioner.getInstance();
     	petitioner.petition( MessageTypes.QUESTION, name, "Do you want to enable multicasting?");
-        //if (JOptionPane.YES_OPTION==PopYesNoQuestion(Name, "Do you want to enable multicasting?")) {
-        //    TheNC.setUseMulticast(true);          
-        //} else {          
-        //    TheNC.setUseMulticast(false);         
-        //}      
+       	if( !petitioner.noProvidersFound())
+       		return;
+        if (JOptionPane.YES_OPTION==PopYesNoQuestion(name, "Do you want to enable multicasting?")) {
+            TheNC.setUseMulticast(true);          
+        } else {          
+            TheNC.setUseMulticast(false);         
+        }      
     }
     
     public static void CheckForRendezVousSeedAddition(String name, String theSeed, NetworkConfigurator TheNC) {
         
         MessageBoxPetitioner petitioner = MessageBoxPetitioner.getInstance();
     	petitioner.petition( MessageTypes.QUESTION, name, "Do you want to add seed: " + theSeed + "?");
-        //if (JOptionPane.YES_OPTION==PopYesNoQuestion(Name, "Do you want to add seed: " + TheSeed + "?")) {
-        //    URI LocalSeedingRendezVousURI = URI.create(TheSeed);
-        //    TheNC.addSeedRendezvous(LocalSeedingRendezVousURI);
-        //}
+       	if( !petitioner.noProvidersFound())
+       		return;
+        if (JOptionPane.YES_OPTION==PopYesNoQuestion(name, "Do you want to add seed: " + theSeed + "?")) {
+            URI LocalSeedingRendezVousURI = URI.create(theSeed);
+            TheNC.addSeedRendezvous(LocalSeedingRendezVousURI);
+        }
     };
     
     public static void PopInformationMessage(String name, String message) {
         
         MessageBoxPetitioner petitioner = MessageBoxPetitioner.getInstance();
     	petitioner.petition( MessageTypes.INFO, name, message );
-        //JOptionPane.showMessageDialog(null, Message, Name, JOptionPane.INFORMATION_MESSAGE);
+    	if( petitioner.noProvidersFound())
+    		JOptionPane.showMessageDialog(null, message, name, JOptionPane.INFORMATION_MESSAGE);
         
     }
     
@@ -126,13 +135,15 @@ public class Tools {
     public static void CheckForExistingConfigurationDeletion(String name, File ConfigurationFile) throws IOException {
         MessageBoxPetitioner petitioner = MessageBoxPetitioner.getInstance();
         petitioner.petition( MessageTypes.QUESTION, name, "Do you want to delete the existing configuration in:\n\n"  + ConfigurationFile.getCanonicalPath()); 
+       	if( !petitioner.noProvidersFound())
+       		return;
         
-        //if (JOptionPane.YES_OPTION==PopYesNoQuestion(Name, "Do you want to delete the existing configuration in:\n\n"
-        //        + ConfigurationFile.getCanonicalPath())) {
+        if (JOptionPane.YES_OPTION==PopYesNoQuestion(name, "Do you want to delete the existing configuration in:\n\n"
+                + ConfigurationFile.getCanonicalPath())) {
 
-//            NetworkManager.RecursiveDelete(ConfigurationFile);
+            NetworkManager.RecursiveDelete(ConfigurationFile);
             
-        //}
+        }
         
     }
     

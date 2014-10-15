@@ -51,6 +51,13 @@ public class MessageBoxPetitioner extends AbstractPetitioner<String, String[], S
 		super.petition(petition);
 	}
 
+	/**
+	 * Returns true if no providers wer found
+	 * @return
+	 */
+	public boolean noProvidersFound(){
+		return super.getCollection().isEmpty();
+	}
 	public String getAnswer() {
 		return answer;
 	}

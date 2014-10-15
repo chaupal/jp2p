@@ -2,7 +2,7 @@
 <feature
       id="net.jp2p.feature"
       label="JP2P Core Bundles"
-      version="1.0.1.v20141013"
+      version="1.0.1.v20141015"
       provider-name="Chaupal">
 
    <description url="https://github.com/chaupal">
@@ -72,7 +72,7 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <url>
-      <update label="JP2P Core Bundles" url="http://89.31.96.252/download.condast.org/jp2p-releases/net.jp2p.update/site.xml"/>
+      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/2.8.0/jp2p_core/milestone/20141013/site.xml"/>
    </url>
 
    <includes
@@ -84,9 +84,10 @@ END OF TERMS AND CONDITIONS
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.equinox.preferences"/>
       <import plugin="org.eclipse.osgi" version="3.8.0" match="greaterOrEqual"/>
-      <import plugin="net.jxse"/>
       <import plugin="org.eclipse.equinox.ds" version="1.4.0" match="greaterOrEqual"/>
       <import plugin="net.jp2p.chaupal.jxta" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.9.1" match="greaterOrEqual"/>
+      <import plugin="jxse"/>
    </requires>
 
    <plugin
@@ -137,6 +138,62 @@ END OF TERMS AND CONDITIONS
          install-size="0"
          version="0.0.0"
          fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.chaupal.jxse.platform.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.chaupal.jxta.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.chaupal.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.container.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.jxse.compatibility.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.jxta.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.project"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.project.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

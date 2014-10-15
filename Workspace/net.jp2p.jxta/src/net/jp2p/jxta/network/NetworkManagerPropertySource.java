@@ -14,6 +14,7 @@ import net.jp2p.container.utils.ProjectFolderUtils;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
+import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 
 public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySource
 	implements IJp2pWritePropertySource<IJp2pProperties>
@@ -98,6 +99,8 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 			}
 		}	
 		super.setProperty(NetworkManagerProperties.INSTANCE_NAME, name);
+		if( Utils.isNull( (String) super.getProperty( NetworkConfiguratorProperties.PRINCIPAL )))
+			super.setProperty( NetworkConfiguratorProperties.PRINCIPAL, AbstractJp2pPropertySource.getBundleId(this) );
 		
 		//Determine the properties and directives to take over from the parent 
 		this.setDirective( Directives.AUTO_START, parent.getDirective( Directives.AUTO_START ));

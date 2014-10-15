@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+
+<target name="target" sequenceNumber="31">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.platform.ide" version="4.4.1.M20140925-0400"/>
+<unit id="org.eclipse.platform.sdk" version="4.4.1.M20140925-0400"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="net.jxse.feature.feature.group" version="1.0.3.v20141015"/>
+<repository location="https://chaupal.github.io/releases/jxse-osgi/2.8.0/milestone/20141013/site.xml"/>
+</location>
+<location path="F:\Windows\Target\Broker" type="Directory"/>
+<location path="F:\Windows\Export\JP2P\20141015" type="Directory"/>
+</locations>
+</target>
