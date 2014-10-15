@@ -4,15 +4,15 @@ import net.jxse.module.IJxtaModuleService;
 import net.jxta.platform.Module;
 import net.jxta.platform.ModuleClassID;
 import net.jxta.platform.ModuleSpecID;
-import net.jxta.protocol.JxtaSocket;
+import net.jxta.protocol.ModuleImplAdvertisement;
 
 public abstract class AbstractJxtaService<T extends Module> extends
 		AbstractModuleService<T> implements IJxtaModuleService<T> {
 
-	private JxtaSocket implAdv;
+	private ModuleImplAdvertisement implAdv;
 	private T module;
 	
-	protected AbstractJxtaService(JxtaSocket implAdv, T module) {
+	protected AbstractJxtaService(ModuleImplAdvertisement implAdv, T module) {
 		super(implAdv.getCode());
 		this.implAdv = implAdv;
 		this.module = module;
@@ -40,7 +40,7 @@ public abstract class AbstractJxtaService<T extends Module> extends
 	}
 
 	@Override
-	public JxtaSocket getModuleImplAdvertisement() {
+	public ModuleImplAdvertisement getModuleImplAdvertisement() {
 		return this.implAdv;
 	}
 

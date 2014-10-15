@@ -18,7 +18,7 @@ import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jxta.discovery.DiscoveryService;
 import net.jxta.document.Advertisement;
 import net.jxta.protocol.ModuleClassAdvertisement;
-import net.jxta.protocol.JxtaSocket;
+import net.jxta.protocol.ModuleImplAdvertisement;
 import net.jxta.protocol.ModuleSpecAdvertisement;
 import net.jxta.protocol.PeerAdvertisement;
 import net.jxta.protocol.PeerGroupAdvertisement;
@@ -56,7 +56,7 @@ public class AdvertisementPropertySource extends AbstractJp2pWritePropertySource
 			case MODULE_SPEC:
 				return ModuleSpecAdvertisement.getAdvertisementType();
 			case MODULE_IMPL:
-				return JxtaSocket.getAdvertisementType();
+				return ModuleImplAdvertisement.getAdvertisementType();
 			default:
 				return Advertisement.getAdvertisementType();
 			}
@@ -118,7 +118,7 @@ public class AdvertisementPropertySource extends AbstractJp2pWritePropertySource
 			case MODULE_SPEC:
 				return ModuleSpecAdvertisement.getAdvertisementType();
 			case MODULE_IMPL:
-				return JxtaSocket.getAdvertisementType();
+				return ModuleImplAdvertisement.getAdvertisementType();
 			default:
 				return null;
 			}

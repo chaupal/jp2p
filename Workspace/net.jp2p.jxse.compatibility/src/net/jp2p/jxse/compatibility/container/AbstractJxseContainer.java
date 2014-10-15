@@ -96,9 +96,6 @@ public abstract class AbstractJxseContainer extends AbstractJp2pContainer<Networ
 		IJp2pPropertySource<IJp2pProperties> properties = null;
 		String bundleId = AbstractJp2pPropertySource.getBundleId( container.getPropertySource() );
 		if( module instanceof NetworkManager ){
-			NetworkManager manager = (NetworkManager) module;
-			if( Utils.isNull( manager.getInstanceName()))
-				manager.setInstanceName( container.getIdentifier() );
 			properties = new NetworkManagerPropertyFacade( bundleId, (NetworkManager) module );
 		}else if( module instanceof NetworkConfigurator ){
 			properties =  new NetworkConfiguratorPropertyFacade( bundleId, (NetworkConfigurator)module );

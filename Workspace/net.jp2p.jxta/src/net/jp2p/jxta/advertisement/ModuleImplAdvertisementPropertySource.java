@@ -17,7 +17,7 @@ import net.jp2p.jxta.peergroup.PeerGroupPropertySource.PeerGroupProperties;
 import net.jxta.document.AdvertisementFactory;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.platform.ModuleSpecID;
-import net.jxta.protocol.JxtaSocket;
+import net.jxta.protocol.ModuleImplAdvertisement;
 
 public class ModuleImplAdvertisementPropertySource extends AdvertisementPropertySource{
 	
@@ -87,15 +87,19 @@ public class ModuleImplAdvertisementPropertySource extends AdvertisementProperty
 	 * @return
 	 * @throws Exception 
 	 */
-	public static JxtaSocket createModuleImplAdvertisement( IJp2pPropertySource<IJp2pProperties> source, PeerGroup peergroup ) throws Exception{
+	public static ModuleImplAdvertisement createModuleImplAdvertisement( IJp2pPropertySource<IJp2pProperties> source, PeerGroup peergroup ) throws Exception{
+		ModuleImplAdvertisement miadv = null;
 		if( source == null )
-			return peergroup.getAllPurposePeerGroupImplAdvertisement();
-		JxtaSocket mcimpl = ( JxtaSocket )AdvertisementFactory.newAdvertisement( AdvertisementTypes.convertTo( AdvertisementTypes.MODULE_IMPL ));
-		mcimpl.setModuleSpecID( (ModuleSpecID) source.getProperty( ModuleImplProperties.MODULE_SPEC_ID ));
-		mcimpl.setCode(( String )source.getProperty( ModuleImplProperties.CODE ));
-		mcimpl.setDescription(( String )source.getProperty( ModuleImplProperties.DESCRIPTION ));
-		mcimpl.setProvider(( String )source.getProperty( ModuleImplProperties.PROVIDER ));
-		mcimpl.setUri(( String )source.getProperty( ModuleImplProperties.URI ));
-		return mcimpl;
+			miadv = peergroup.getAllPurposePeerGroupImplAdvertisement();
+		else {
+				
+			miadv = (ModuleImplAdvertisement) AdvertisementFactory.newAdvertisement( AdvertisementTypes.convertTo( AdvertisementTypes.MODULE_IMPL ));
+			miadv.setModuleSpecID( (ModuleSpecID) source.getProperty( ModuleImplProperties.MODULE_SPEC_ID ));
+			miadv.setCode(( String )source.getProperty( ModuleImplProperties.CODE ));
+			miadv.setDescription(( String )source.getProperty( ModuleImplProperties.DESCRIPTION ));
+			miadv.setProvider(( String )source.getProperty( ModuleImplProperties.PROVIDER ));
+			miadv.setUri(( String )source.getProperty( ModuleImplProperties.URI ));
+		}
+		return miadv;
 	}	
 }
