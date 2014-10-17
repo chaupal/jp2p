@@ -1,18 +1,8 @@
-/*******************************************************************************
- * Copyright (c) 2014 Chaupal.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution, and is available at
- * http://www.apache.org/licenses/LICENSE-2.0.html
- *******************************************************************************/
 package net.jp2p.jxta.socket;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.jp2p.container.component.AbstractJp2pService;
-import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketProperties;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketTypes;
 import net.jxta.peergroup.PeerGroup;
@@ -22,30 +12,35 @@ import net.jxta.socket.JxtaMulticastSocket;
 import net.jxta.socket.JxtaServerSocket;
 import net.jxta.socket.JxtaSocket;
 
-public class SocketService extends AbstractJp2pService<PipeMsgListener>{
+class SocketService<T extends PipeMsgListener> implements
+		ISocketService<T> {
 
+	private SocketPropertySource source;
 	private PeerGroup peerGroup;
-	private PipeAdvertisement pipeAdv;
-
-	public SocketService( SocketPropertySource ps, PeerGroup peerGroup, PipeAdvertisement pipeadv ) {
-		super(( IJp2pWritePropertySource<IJp2pProperties> ) ps, null );
+	private PipeAdvertisement pipead;
+	
+	public SocketService( SocketPropertySource source, PeerGroup peerGroup, PipeAdvertisement pipead ) {
+		this.source = source;
+		this.pipead = pipead;
 		this.peerGroup = peerGroup;
-		this.pipeAdv = pipeadv;
 	}
 
+	private T socket;
+	
 	/**
 	 * Get the correct server socket by selecting the correct constructor
 	 * @return
 	 * @throws IOException
 	 */
-	protected JxtaSocket getSocket() throws IOException{
-		SocketPropertySource source = (SocketPropertySource) super.getPropertySource();
+	protected JxtaSocket getSocket( PipeAdvertisement pipeAdv) throws IOException{
 		int time_out = (int) source.getProperty( SocketProperties.TIME_OUT );
 		//boolean reliable = (boolean)source.getProperty( SocketProperties.RELIABLE );
+		JxtaSocket socket;
 		if( time_out <= 0 )
-			return new JxtaSocket( peerGroup, pipeAdv );
+			socket = new JxtaSocket( peerGroup, pipeAdv );
 		else
-			return new JxtaSocket( peerGroup, pipeAdv, time_out );
+			socket = new JxtaSocket( peerGroup, pipeAdv, time_out );
+		return socket;
 	}
 
 	/**
@@ -53,8 +48,7 @@ public class SocketService extends AbstractJp2pService<PipeMsgListener>{
 	 * @return
 	 * @throws IOException
 	 */
-	protected JxtaServerSocket getServerSocket() throws IOException{
-		SocketPropertySource source = (SocketPropertySource) super.getPropertySource();
+	protected JxtaServerSocket getServerSocket( PipeAdvertisement pipeAdv ) throws IOException{
 		int back_log = (int) source.getProperty( SocketProperties.BACKLOG );
 		int time_out = (int) source.getProperty( SocketProperties.TIME_OUT );
 		boolean encrypt = (boolean)source.getProperty( SocketProperties.ENCRYPT );
@@ -65,34 +59,33 @@ public class SocketService extends AbstractJp2pService<PipeMsgListener>{
 		else
 			return new JxtaServerSocket( peerGroup, pipeAdv, back_log, time_out, encrypt );			
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void activate() {
-		SocketPropertySource source = (SocketPropertySource) super.getPropertySource();
-		SocketTypes type = SocketPropertySource.getSocketType(source);
+	public T createSocket() {
 		PipeMsgListener socket = null;
+		SocketTypes type = SocketPropertySource.getSocketType(source);
 		try {
 			switch( type ){
 			case CLIENT:
-				socket = this.getSocket();
+				socket = this.getSocket( pipead);
 				break;
 			case SERVER:
-				socket = this.getServerSocket();
+				socket = this.getServerSocket( pipead);
 				break;
 			case MULTICAST:
-				socket = new JxtaMulticastSocket( peerGroup, pipeAdv );
+				socket = new JxtaMulticastSocket( peerGroup, pipead );
 				break;
 			}
-			super.setModule( socket );
-			super.activate();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		catch( Exception ex ){
+			ex.printStackTrace();
+		}
+		return (T) socket;
 	}
 
 	@Override
-	protected void deactivate() {
-		PipeMsgListener socket = super.getModule();
+	public void close() {
 		try {
 			if( socket instanceof JxtaSocket ){
 				JxtaSocket js = (JxtaSocket) socket;
@@ -109,7 +102,6 @@ public class SocketService extends AbstractJp2pService<PipeMsgListener>{
 				js.close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}	

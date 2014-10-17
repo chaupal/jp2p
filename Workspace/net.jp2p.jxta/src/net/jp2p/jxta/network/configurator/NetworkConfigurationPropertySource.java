@@ -52,7 +52,6 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		MULTICAST_8USE_ONLY_RENDEZVOUS_SEEDS,
 		NAME,
 		PEER_ID,
-		PRINCIPAL,
 		SECURITY_8AUTHENTICATION_TYPE,
 		SECURITY_8CERTFICATE,
 		SECURITY_8CERTIFICATE_CHAIN,
@@ -122,8 +121,8 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 				super.setProperty(nmp, value, true);
 			}
 		}
-		if( Utils.isNull( (String) super.getProperty( NetworkConfiguratorProperties.PRINCIPAL )))
-			super.setProperty( NetworkConfiguratorProperties.PRINCIPAL, getBundleId(source) );
+		if( Utils.isNull( (String) super.getProperty( NetworkConfiguratorProperties.SECURITY_8PRINCIPAL )))
+			super.setProperty( NetworkConfiguratorProperties.SECURITY_8PRINCIPAL, getBundleId(source) );
 		super.setProperty( NetworkConfiguratorProperties.TCP_8ENABLED, source.isEnabled() );
 		super.setProperty( NetworkConfiguratorProperties.HTTP_8ENABLED, true );
 	}

@@ -2,7 +2,7 @@
 <feature
       id="net.jp2p.feature"
       label="JP2P Core Bundles"
-      version="1.0.1.v20141015"
+      version="1.0.1.v20141016"
       provider-name="Chaupal">
 
    <description url="https://github.com/chaupal">
@@ -72,7 +72,7 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <url>
-      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/2.8.0/jp2p_core/milestone/20141013/site.xml"/>
+      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/2.8.0/milestone/20141015/jp2p-core/site.xml"/>
    </url>
 
    <includes

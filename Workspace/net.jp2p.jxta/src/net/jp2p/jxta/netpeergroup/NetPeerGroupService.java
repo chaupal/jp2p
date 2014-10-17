@@ -42,5 +42,4 @@ public class NetPeerGroupService extends AbstractJp2pService<PeerGroup>{
 		manager.stopNetwork();
 	}
 	
-	
 }

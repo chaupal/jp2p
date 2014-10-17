@@ -58,6 +58,9 @@ public class PersistedProperties extends AbstractPersistedProperty<String,Object
 	@Override
 	public String getProperty( IJp2pPropertySource<IJp2pProperties> source, IJp2pProperties id ){
 		IPreferencesService service = Platform.getPreferencesService();
+		if( service == null ){
+			return null;
+		}
 		Preferences pref1 = scope.getNode( AbstractJp2pPropertySource.getBundleId(source) + "." + AbstractJp2pPropertySource.getIdentifier(source));
 		Preferences[] nodes = new Preferences[] {pref1};
 		String defaultValue = convertor.convertFrom( id );

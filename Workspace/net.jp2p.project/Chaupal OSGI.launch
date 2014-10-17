@@ -23,5 +23,5 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="net.jp2p.chaupal.jxse.platform@default:false,net.jp2p.chaupal.jxta@default:default,net.jp2p.chaupal@default:default,net.jp2p.container@default:default,net.jp2p.jxse.compatibility@default:default,net.jp2p.jxta@default:default,org.condast.rdv@default:default"/>
+<stringAttribute key="workspace_bundles" value="net.jp2p.chaupal.jxse.platform@default:false,net.jp2p.chaupal.jxta@default:default,net.jp2p.chaupal@default:default,net.jp2p.container@default:default,net.jp2p.jxse.compatibility@default:default,net.jp2p.jxta@default:default,org.chaupal.jp2p.ui.jxta@default:default,org.chaupal.jp2p.ui@default:default,org.condast.rdv@default:default,org.saight.socket@default:default"/>
 </launchConfiguration>
