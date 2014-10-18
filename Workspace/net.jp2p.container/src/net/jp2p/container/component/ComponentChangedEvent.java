@@ -10,15 +10,34 @@ package net.jp2p.container.component;
 import java.util.EventObject;
 
 import net.jp2p.container.AbstractJp2pContainer.ServiceChange;
+import net.jp2p.container.utils.Utils;
 
-public class ComponentChangedEvent extends EventObject {
+public class ComponentChangedEvent<T extends Object> extends EventObject {
 	private static final long serialVersionUID = 1L;
 
+	private String identifier;
 	private ServiceChange change;
-	
-	public ComponentChangedEvent(Object arg0, ServiceChange change ) {
+	private T target;
+
+	public ComponentChangedEvent(T arg0, String identifier, ServiceChange change ) {
+		this( arg0, arg0, identifier, change );
+	}
+
+	public ComponentChangedEvent(Object arg0, T target, String identifier, ServiceChange change ) {
 		super(arg0);
 		this.change = change;
+		this.target = target;
+		this.identifier = identifier;
+	}
+
+	public boolean isMatched( String id ){
+		if( Utils.isNull( this.identifier))
+			return false;
+		return this.identifier.equals( id );
+	}
+	
+	public T getTarget() {
+		return target;
 	}
 
 	public ServiceChange getChange() {

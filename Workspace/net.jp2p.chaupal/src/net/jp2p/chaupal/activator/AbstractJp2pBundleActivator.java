@@ -16,7 +16,9 @@ import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.activator.IJp2pBundleActivator;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
+import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.IComponentChangedListener;
+import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.log.Jp2pLevel;
 
 import org.osgi.framework.BundleActivator;
@@ -36,7 +38,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	private IJp2pContainer container;
 
 	private String bundle_id;
-	private IComponentChangedListener observer;
+	private Collection<IComponentChangedListener<IJp2pComponent<?>>> observers;
 	
 	private ServiceTracker<BundleContext,LogService> logServiceTracker;
 	private LogService logService;
@@ -44,28 +46,35 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	
 	protected AbstractJp2pBundleActivator( String bundle_id ) {
 		listeners = new ArrayList<IContainerBuilderListener>();
+		observers = new ArrayList<IComponentChangedListener<IJp2pComponent<?>>>();
 		this.bundle_id = bundle_id;
 	}
 
 	@Override
-	public String getBundleId() {
+	public final String getBundleId() {
 		return bundle_id;
 	}
 	
-	public IComponentChangedListener getObserver() {
-		return observer;
+	public final void addObserver(IComponentChangedListener<IJp2pComponent<?>> observer) {
+		this.observers.add( observer );
 	}
 
-	public void setObserver(IComponentChangedListener observer) {
-		this.observer = observer;
+	public final void removeObserver(IComponentChangedListener<IJp2pComponent<?>> observer) {
+		this.observers.remove( observer );
 	}
 
-
-	public void addContainerBuilderListener( IContainerBuilderListener listener ){
+	protected final void notifyObservers( ComponentChangedEvent<IJp2pComponent<?>> event ){
+		if(!event.isMatched( this.bundle_id ))
+			return;
+		for(IComponentChangedListener<IJp2pComponent<?>> observer: this.observers )
+			observer.notifyServiceChanged(event);
+	}
+	
+	public final void addContainerBuilderListener( IContainerBuilderListener listener ){
 		listeners.add( listener );
 	}
 
-	public void removeContainerBuilderListener( IContainerBuilderListener listener ){
+	public final void removeContainerBuilderListener( IContainerBuilderListener listener ){
 		listeners.remove( listener );
 	}
 

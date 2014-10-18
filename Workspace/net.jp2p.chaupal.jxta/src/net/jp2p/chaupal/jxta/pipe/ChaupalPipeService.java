@@ -21,6 +21,7 @@ import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.component.IJp2pComponent;
+import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jxta.pipe.InputPipe;
@@ -31,14 +32,18 @@ import net.jp2p.jxta.pipe.PipePropertySource.PipeServiceProperties;
 
 public class ChaupalPipeService extends AbstractJp2pServiceNode<PipeService>{
 
-	private IComponentChangedListener listener;
+	private IComponentChangedListener<IJp2pComponent<PipeService>> listener;
 	
 	private PipeAdvertisement pipead;
 	private IJp2pService<PipeAdvertisement> adService;
 	
+	private static IJp2pComponent<PipeService> service;
+
+	
 	public ChaupalPipeService( IJp2pWritePropertySource<IJp2pProperties> source, PipeService pipeService, IJp2pService<PipeAdvertisement> adService ) {
 		super( source, pipeService );
 		this.adService = adService;
+		service = this;
 	}
 		
 	/**
@@ -62,16 +67,17 @@ public class ChaupalPipeService extends AbstractJp2pServiceNode<PipeService>{
 	@Override
 	public boolean start() {
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-		this.listener = new IComponentChangedListener(){
-
+		this.listener = new IComponentChangedListener<IJp2pComponent<PipeService>>(){
+			
 			@Override
-			public void notifyServiceChanged(ComponentChangedEvent event) {
+			public void notifyServiceChanged(ComponentChangedEvent<IJp2pComponent<PipeService>> event) {
 				if( event.getSource().equals( adService )){
 					if( event.getChange().equals( AbstractJp2pContainer.ServiceChange.COMPONENT_EVENT )){
 						pipead = adService.getModule();
 						if( pipead != null ){
+							String identifier = AbstractJp2pPropertySource.getBundleId( getPropertySource());
 							ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-							dispatcher.serviceChanged( new ComponentChangedEvent( this, ServiceChange.COMPONENT_EVENT));
+							dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<PipeService>>( service, identifier, ServiceChange.COMPONENT_EVENT));
 						}
 					}	
 				}

@@ -12,27 +12,28 @@ import java.util.Collection;
 
 public class ComponentEventDispatcher {
 
-	private Collection<IComponentChangedListener> listeners;
-
+	private Collection<IComponentChangedListener<?>> listeners;
+	
 	private static ComponentEventDispatcher dispatcher = new ComponentEventDispatcher();
 	
 	private ComponentEventDispatcher() {
-		this.listeners = new ArrayList<IComponentChangedListener>();
+		this.listeners = new ArrayList<IComponentChangedListener<?>>();
 	}
 	
 	public static ComponentEventDispatcher getInstance(){
 		return dispatcher;
 	}
 
-	public void addServiceChangeListener( IComponentChangedListener listener ){
+	public void addServiceChangeListener( IComponentChangedListener<?> listener ){
 		this.listeners.add( listener );
 	}
 
-	public void removeServiceChangeListener( IComponentChangedListener listener ){
+	public void removeServiceChangeListener( IComponentChangedListener<?> listener ){
 		this.listeners.remove( listener );
 	}
 	
-	public synchronized void serviceChanged( ComponentChangedEvent event ){
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public synchronized void serviceChanged( ComponentChangedEvent<?> event ){
 		for( IComponentChangedListener listener: this.listeners )
 			listener.notifyServiceChanged(event);
 	}

@@ -36,7 +36,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	private IJp2pContainer container;
 
 	private String bundle_id;
-	private IComponentChangedListener observer;
+	private IComponentChangedListener<T> observer;
 	
 	private ServiceTracker<BundleContext,LogService> logServiceTracker;
 	private LogService logService;
@@ -51,11 +51,11 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 		return bundle_id;
 	}
 	
-	public IComponentChangedListener getObserver() {
+	public IComponentChangedListener<T> getObserver() {
 		return observer;
 	}
 
-	public void setObserver(IComponentChangedListener observer) {
+	public void setObserver(IComponentChangedListener<T> observer) {
 		this.observer = observer;
 	}
 

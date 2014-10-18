@@ -32,7 +32,7 @@ public class PeerGroupService extends AbstractJp2pServiceNode<PeerGroup>{
 	private ChaupalDiscoveryService disco;
 	private PeerGroup parent;
 	private PeerGroupAdvertisement pgad;
-	private IComponentChangedListener listener;
+	private IComponentChangedListener<ChaupalDiscoveryService> listener;
 
 	public PeerGroupService( PeerGroupPropertySource source, PeerGroupAdvertisement pgad, PeerGroup parent, ChaupalDiscoveryService disco ) {
 		super( source, null );
@@ -58,10 +58,10 @@ public class PeerGroupService extends AbstractJp2pServiceNode<PeerGroup>{
 	 */
 	protected void startDiscovery(){
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-		this.listener = new IComponentChangedListener(){
+		this.listener = new IComponentChangedListener<ChaupalDiscoveryService>(){
 
 			@Override
-			public void notifyServiceChanged(ComponentChangedEvent event) {
+			public void notifyServiceChanged(ComponentChangedEvent<ChaupalDiscoveryService> event) {
 				if(!( event.getSource().equals( disco )))
 					return;
 				switch( disco.getStatus() ){

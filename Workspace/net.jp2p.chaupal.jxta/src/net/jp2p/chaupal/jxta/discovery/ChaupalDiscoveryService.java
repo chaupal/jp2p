@@ -185,7 +185,8 @@ public class ChaupalDiscoveryService extends AbstractJp2pServiceNode<DiscoverySe
 						count--;
 					source.setProperty( DiscoveryProperties.COUNTER, count);
 					ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-					dispatcher.serviceChanged( new ComponentChangedEvent( service, AbstractJp2pContainer.ServiceChange.COMPONENT_EVENT ));
+					String identifier = AbstractJp2pPropertySource.getBundleId( getPropertySource());
+					dispatcher.serviceChanged( new ComponentChangedEvent<ChaupalDiscoveryService>( service, identifier, AbstractJp2pContainer.ServiceChange.COMPONENT_EVENT ));
 				}
 				stop();
 				if( size > 0)

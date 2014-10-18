@@ -12,6 +12,7 @@ import java.util.Collection;
 
 import net.jp2p.container.AbstractJp2pContainer;
 import net.jp2p.container.factory.IComponentFactory;
+import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 
@@ -48,17 +49,19 @@ public abstract class AbstractJp2pServiceNode<T extends Object>
 	@Override
 	public boolean addChild( IJp2pComponent<?> child ){
 		this.children.add( child );
-		notifyComponentChanged( new ComponentChangedEvent( this, AbstractJp2pContainer.ServiceChange.CHILD_ADDED ));
+		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
+		notifyComponentChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, child, identifier, AbstractJp2pContainer.ServiceChange.CHILD_ADDED ));
 		return true;
 	}
 
 	@Override
 	public void removeChild( IJp2pComponent<?> child ){
 		this.children.remove( child );
-		notifyComponentChanged( new ComponentChangedEvent( this, AbstractJp2pContainer.ServiceChange.CHILD_REMOVED ));
+		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
+		notifyComponentChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, child, identifier, AbstractJp2pContainer.ServiceChange.CHILD_REMOVED ));
 	}
 
-	protected void notifyComponentChanged( ComponentChangedEvent event){
+	protected void notifyComponentChanged( ComponentChangedEvent<?> event){
 		dispatcher.serviceChanged( event );		
 	}
 	

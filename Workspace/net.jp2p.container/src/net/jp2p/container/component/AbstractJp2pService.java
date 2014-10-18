@@ -14,6 +14,7 @@ import net.jp2p.container.AbstractJp2pContainer;
 import net.jp2p.container.activator.AbstractActivator;
 import net.jp2p.container.activator.IJp2pService;
 import net.jp2p.container.factory.IComponentFactory;
+import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.DefaultPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -138,9 +139,11 @@ implements IJp2pService<T>{
 	}
 	
 	@Override
-	protected void notifyListeners(Status previous, Status status) {
+	protected void notifyListeners( Status previous, Status status) {
 		super.notifyListeners(previous, status);
-		ComponentChangedEvent event = new ComponentChangedEvent( this, AbstractJp2pContainer.ServiceChange.STATUS_CHANGE );
+		String identifier = AbstractJp2pPropertySource.getBundleId(source);
+		ComponentChangedEvent<IJp2pService<T>> event = 
+				new ComponentChangedEvent<IJp2pService<T>>( this, identifier, AbstractJp2pContainer.ServiceChange.STATUS_CHANGE );
 		dispatcher.serviceChanged(event);
 	}
 }

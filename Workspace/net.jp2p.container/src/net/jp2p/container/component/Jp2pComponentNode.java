@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.jp2p.container.AbstractJp2pContainer;
+import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 
@@ -27,14 +28,16 @@ public class Jp2pComponentNode<T extends Object> extends Jp2pComponent<T> implem
 	@Override
 	public boolean addChild( IJp2pComponent<?> child ){
 		this.children.add( child );
-		dispatcher.serviceChanged( new ComponentChangedEvent( this, AbstractJp2pContainer.ServiceChange.CHILD_ADDED ));
+		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
+		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, identifier, AbstractJp2pContainer.ServiceChange.CHILD_ADDED ));
 		return true;
 	}
 
 	@Override
 	public void removeChild( IJp2pComponent<?> child ){
 		this.children.remove( child );
-		dispatcher.serviceChanged( new ComponentChangedEvent( this, AbstractJp2pContainer.ServiceChange.CHILD_REMOVED ));
+		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
+		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, identifier, AbstractJp2pContainer.ServiceChange.CHILD_REMOVED ));
 	}
 
 	@Override

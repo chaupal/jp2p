@@ -255,7 +255,7 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		ExecutorService executor = Executors.newCachedThreadPool();
 		StartRunnable runnable = new StartRunnable( this );
 		executor.execute( runnable );
-		return true;
+		return runnable.isResult();
 	}
 
 	/**
@@ -279,28 +279,32 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		}
 		return retval;
 	}
-}
-
-class StartRunnable implements Runnable{
-
-	private AbstractComponentFactory<?> factory;
 	
-	private boolean result;
-	
-	StartRunnable( AbstractComponentFactory<?> factory ){
-		this.factory = factory;
-		this.result = false;
+	/**
+	 * The class runs the service that the factory has made
+	 * @author Kees
+	 *
+	 */
+	private class StartRunnable implements Runnable{
+
+		private AbstractComponentFactory<?> factory;
+		
+		private boolean result;
+		
+		StartRunnable( AbstractComponentFactory<?> factory ){
+			this.factory = factory;
+			this.result = false;
+		}
+		
+		public boolean isResult() {
+			return result;
+		}
+
+
+		@Override
+		public void run(){
+			result = this.factory.createAndStartComponent();
+		}
 	}
-	
-	boolean isResult() {
-		return result;
-	}
 
-
-	@Override
-	public void run(){
-		result = this.factory.createAndStartComponent();
-	}
-	
-	
 }

@@ -8,7 +8,7 @@
 package net.jp2p.container.component;
 
 
-public interface IComponentChangedListener {
+public interface IComponentChangedListener<T extends Object> {
 
-	public void notifyServiceChanged( ComponentChangedEvent event );
+	public void notifyServiceChanged( ComponentChangedEvent<T> event );
 }

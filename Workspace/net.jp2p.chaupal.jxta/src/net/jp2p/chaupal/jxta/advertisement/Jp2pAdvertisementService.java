@@ -26,6 +26,7 @@ import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.component.IJp2pComponentNode;
 import net.jp2p.container.log.Jp2pLevel;
+import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.StringStyler;
@@ -38,7 +39,7 @@ import net.jp2p.jxta.discovery.DiscoveryPropertySource.DiscoveryProperties;
 
 public class Jp2pAdvertisementService<T extends Advertisement> extends AbstractJp2pServiceNode<T> implements IJp2pComponentNode<T>{
 
-	private IComponentChangedListener listener;
+	private IComponentChangedListener<Jp2pAdvertisementService<T>> listener;
 	private ActivatorListener actListener;;
 	private ChaupalDiscoveryService discovery;
 	private Jp2pAdvertisementService<T> service;
@@ -74,7 +75,8 @@ public class Jp2pAdvertisementService<T extends Advertisement> extends AbstractJ
 				break;
 			}
 			ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-			dispatcher.serviceChanged( new ComponentChangedEvent( service, AbstractJp2pContainer.ServiceChange.COMPONENT_EVENT ));			
+			String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
+			dispatcher.serviceChanged( new ComponentChangedEvent<Jp2pAdvertisementService<T>>( service, identifier, AbstractJp2pContainer.ServiceChange.COMPONENT_EVENT ));			
 		} catch (Exception e) {
 			log.log( Level.SEVERE, e.getMessage() );
 			e.printStackTrace();
@@ -111,10 +113,10 @@ public class Jp2pAdvertisementService<T extends Advertisement> extends AbstractJ
 			};
 		}
 		if( this.listener == null ){
-			this.listener = new IComponentChangedListener(){
+			this.listener = new IComponentChangedListener<Jp2pAdvertisementService<T>>(){
 
 				@Override
-				public void notifyServiceChanged(ComponentChangedEvent event) {
+				public void notifyServiceChanged(ComponentChangedEvent<Jp2pAdvertisementService<T>> event) {
 					if( event.getSource().equals( discovery )){
 						if( event.getChange().equals( AbstractJp2pContainer.ServiceChange.COMPONENT_EVENT )){
 							Advertisement[] advertisements = discovery.getAdvertisements();

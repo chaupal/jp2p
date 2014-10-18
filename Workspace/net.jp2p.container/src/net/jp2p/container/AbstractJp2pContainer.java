@@ -145,14 +145,16 @@ implements	IJp2pContainer{
 	@Override
 	public boolean addChild( IJp2pComponent<?> child ){
 		this.children.add( child );
-		dispatcher.serviceChanged( new ComponentChangedEvent( this, AbstractJp2pContainer.ServiceChange.CHILD_ADDED ));
+		String identifier = Jp2pContainerPropertySource.getBundleId(source);
+		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, child, identifier, AbstractJp2pContainer.ServiceChange.CHILD_ADDED ));
 		return true;
 	}
 
 	@Override
 	public void removeChild( IJp2pComponent<?> child ){
 		this.children.remove( child );
-		dispatcher.serviceChanged( new ComponentChangedEvent( this, AbstractJp2pContainer.ServiceChange.CHILD_REMOVED ));
+		String identifier = Jp2pContainerPropertySource.getBundleId(source);
+		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>> ( this, child, identifier, AbstractJp2pContainer.ServiceChange.CHILD_REMOVED ));
 	}
 
 	@Override
