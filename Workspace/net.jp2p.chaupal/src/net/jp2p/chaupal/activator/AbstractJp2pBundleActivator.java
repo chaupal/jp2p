@@ -9,6 +9,8 @@ package net.jp2p.chaupal.activator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,10 +34,10 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	private static final String S_JP2P_INF = "/JP2P-INF";
 	private static final String S_MSG_LOG = "Logging at JXSE LEVEL!!!!";
 	
-	private Jp2pActivator<T> jp2pActivator;
+	private Jp2pActivator jp2pActivator;
 
 	private BundleContext bundleContext;
-	private IJp2pContainer container;
+	private IJp2pContainer<T> container;
 
 	private String bundle_id;
 	private Collection<IComponentChangedListener<IJp2pComponent<?>>> observers;
@@ -86,7 +88,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	/**
 	 * Create the container;
 	 */
-	protected abstract IJp2pContainer onCreateContainer();
+	protected abstract IJp2pContainer<T> onCreateContainer();
 
 	/**
 	 * Create the container;
@@ -96,12 +98,12 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	}
 
 	@Override
-	public IJp2pContainer getContainer() {
+	public IJp2pContainer<T> getContainer() {
 		return this.container;
 	}
 
 	
-	protected void setContainer(IJp2pContainer container) {
+	protected void setContainer(IJp2pContainer<T> container) {
 		this.container = container;
 	}
 
@@ -129,7 +131,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 		if(logService != null)
 			logService.log(LogService.LOG_INFO, "Logging service started");
 
-		jp2pActivator = new Jp2pActivator<T>( this );
+		jp2pActivator = new Jp2pActivator( this );
 		jp2pActivator.start();
 	}
 
@@ -160,5 +162,43 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 		logServiceTracker.close();
 		logServiceTracker = null;
 		this.bundleContext=  null;
+	}
+
+	private class Jp2pActivator implements Runnable {
+
+		private AbstractJp2pBundleActivator<T> activator;
+		
+		private ExecutorService executor;
+			
+		public Jp2pActivator( AbstractJp2pBundleActivator<T> activator ) {
+			this.activator = activator;
+			executor = Executors.newSingleThreadExecutor();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+		 */
+		public void start(){
+			executor.execute(this);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+		 */
+		public void stop(){
+			executor.shutdown();
+		}
+
+		@Override
+		public void run() {
+			try{
+				activator.createContainer();
+			}
+			catch( Exception ex ){
+				ex.printStackTrace();
+			}
+		}
 	}
 }

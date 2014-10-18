@@ -2,7 +2,7 @@
 <feature
       id="net.jp2p.feature"
       label="JP2P Core Bundles"
-      version="1.0.1.v20141016"
+      version="1.0.1.v20141021"
       provider-name="Chaupal">
 
    <description url="https://github.com/chaupal">
@@ -75,19 +75,14 @@ END OF TERMS AND CONDITIONS
       <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/2.8.0/milestone/20141015/jp2p-core/site.xml"/>
    </url>
 
-   <includes
-         id="net.jxse.feature"
-         version="0.0.0"
-         name="JXSE feature bundle"/>
-
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.equinox.preferences"/>
-      <import plugin="org.eclipse.osgi" version="3.8.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.equinox.ds" version="1.4.0" match="greaterOrEqual"/>
-      <import plugin="net.jp2p.chaupal.jxta" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.9.1" match="greaterOrEqual"/>
       <import plugin="jxse"/>
+      <import plugin="org.eclipse.equinox.ds" version="1.4.0" match="greaterOrEqual"/>
+      <import plugin="net.jp2p.chaupal.jxta" version="1.0.0" match="greaterOrEqual"/>
+      <import feature="net.jxse.feature" version="1.0.3.v20141020"/>
    </requires>
 
    <plugin

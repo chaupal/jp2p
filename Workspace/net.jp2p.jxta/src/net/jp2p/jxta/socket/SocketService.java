@@ -2,7 +2,10 @@ package net.jp2p.jxta.socket;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import net.jp2p.container.component.AbstractJp2pService;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketProperties;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketTypes;
 import net.jxta.peergroup.PeerGroup;
@@ -12,28 +15,27 @@ import net.jxta.socket.JxtaMulticastSocket;
 import net.jxta.socket.JxtaServerSocket;
 import net.jxta.socket.JxtaSocket;
 
-class SocketService<T extends PipeMsgListener> implements
-		ISocketService<T> {
+public class SocketService<T extends PipeMsgListener> extends AbstractJp2pService<T>{
 
-	private SocketPropertySource source;
 	private PeerGroup peerGroup;
 	private PipeAdvertisement pipead;
+	private ExecutorService executor;
+	private Runnable runnable;
 	
 	public SocketService( SocketPropertySource source, PeerGroup peerGroup, PipeAdvertisement pipead ) {
-		this.source = source;
+		super( source, null );
 		this.pipead = pipead;
 		this.peerGroup = peerGroup;
+		executor = Executors.newCachedThreadPool();
 	}
 
-	private T socket;
-	
 	/**
 	 * Get the correct server socket by selecting the correct constructor
 	 * @return
 	 * @throws IOException
 	 */
 	protected JxtaSocket getSocket( PipeAdvertisement pipeAdv) throws IOException{
-		int time_out = (int) source.getProperty( SocketProperties.TIME_OUT );
+		int time_out = (int) super.getPropertySource().getProperty( SocketProperties.TIME_OUT );
 		//boolean reliable = (boolean)source.getProperty( SocketProperties.RELIABLE );
 		JxtaSocket socket;
 		if( time_out <= 0 )
@@ -49,6 +51,7 @@ class SocketService<T extends PipeMsgListener> implements
 	 * @throws IOException
 	 */
 	protected JxtaServerSocket getServerSocket( PipeAdvertisement pipeAdv ) throws IOException{
+		SocketPropertySource source = (SocketPropertySource) super.getPropertySource();
 		int back_log = (int) source.getProperty( SocketProperties.BACKLOG );
 		int time_out = (int) source.getProperty( SocketProperties.TIME_OUT );
 		boolean encrypt = (boolean)source.getProperty( SocketProperties.ENCRYPT );
@@ -60,32 +63,56 @@ class SocketService<T extends PipeMsgListener> implements
 			return new JxtaServerSocket( peerGroup, pipeAdv, back_log, time_out, encrypt );			
 	}
 
+	/**
+	 * Activate the super class
+	 */
+	protected final void superActivate(){
+		super.activate();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
-	public T createSocket() {
-		PipeMsgListener socket = null;
-		SocketTypes type = SocketPropertySource.getSocketType(source);
-		try {
-			switch( type ){
-			case CLIENT:
-				socket = this.getSocket( pipead);
-				break;
-			case SERVER:
-				socket = this.getServerSocket( pipead);
-				break;
-			case MULTICAST:
-				socket = new JxtaMulticastSocket( peerGroup, pipead );
-				break;
+	protected final void activate() {
+		runnable = new Runnable(){
+
+			@Override
+			public void run() {
+				T socket=  null;
+				try{
+					SocketTypes type = SocketPropertySource.getSocketType((SocketPropertySource) getPropertySource());
+					
+					try {
+						switch( type ){
+						case CLIENT:
+							socket = (T) getSocket( pipead);
+							break;
+						case SERVER:
+							socket = (T) getServerSocket( pipead);
+							break;
+						case MULTICAST:
+							socket = (T) new JxtaMulticastSocket( peerGroup, pipead );
+							break;
+						}
+					}
+					catch( Exception ex ){
+						ex.printStackTrace();
+					}
+					setModule( socket );
+					superActivate();
+				}
+				catch( Exception ex ){
+					ex.printStackTrace();
+				}
 			}
-		}
-		catch( Exception ex ){
-			ex.printStackTrace();
-		}
-		return (T) socket;
+		};
+		executor.execute( runnable);
 	}
 
 	@Override
-	public void close() {
+	protected void deactivate() {
+		T socket = super.getModule();
+		if( socket == null )
+			return;
 		try {
 			if( socket instanceof JxtaSocket ){
 				JxtaSocket js = (JxtaSocket) socket;
@@ -104,5 +131,5 @@ class SocketService<T extends PipeMsgListener> implements
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}	
+	}
 }

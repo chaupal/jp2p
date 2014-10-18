@@ -33,13 +33,13 @@ class ServiceHandler extends DefaultHandler implements IContextEntities{
 		
 	private Stack<String> stack;
 	private Collection<ServiceInfo> services;
-	private ContextLoader contexts;
+	//private ContextLoader contexts;
 	
 	private boolean skip;
 
 	public ServiceHandler( ContextLoader contexts ) {
 		this.skip = false;
-		this.contexts = contexts;
+		//this.contexts = contexts;
 		this.stack = new Stack<String>();
 		this.services = new ArrayList<ServiceInfo>();
 	}

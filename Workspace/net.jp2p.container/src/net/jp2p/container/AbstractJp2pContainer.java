@@ -11,13 +11,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.jp2p.container.Jp2pContainerPropertySource;
-import net.jp2p.container.activator.AbstractActivator;
 import net.jp2p.container.activator.IActivator;
 import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.IJp2pComponentNode;
-import net.jp2p.container.factory.IComponentFactory;
+import net.jp2p.container.component.Jp2pComponent;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
@@ -25,8 +24,8 @@ import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 
-public class AbstractJp2pContainer<T extends Object> extends AbstractActivator 
-implements	IJp2pContainer{
+public class AbstractJp2pContainer<T extends Object> extends Jp2pComponent<T> 
+implements	IJp2pContainer<T>{
 
 	public static enum ServiceChange{
 		CHILD_ADDED,
@@ -45,41 +44,17 @@ implements	IJp2pContainer{
 	public static final String S_SERVICE_CONTAINER = "JXSE Container";
 	
 	private Collection<IJp2pComponent<?>> children;
-	private IJp2pPropertySource<IJp2pProperties> source;
-	
+
 	//Takes care of all the messaging through the container
 	private ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-	
-	private T module;
 	
 	protected AbstractJp2pContainer( String bundleId, String identifier) {
 		this( new Jp2pContainerPropertySource( bundleId, identifier ));
 	}
 
-	protected AbstractJp2pContainer( IJp2pPropertySource<IJp2pProperties> source ) {
-		super();
+	protected AbstractJp2pContainer( IJp2pWritePropertySource<IJp2pProperties> source ) {
+		super( source, null );
 		this.children = new ArrayList<IJp2pComponent<?>>();
-		this.source = source;
-	}
-
-	@Override
-	public IJp2pPropertySource<IJp2pProperties> getPropertySource() {
-		return source;
-	}
-
-	@Override
-	public String getId() {
-		return this.source.getDirective( Directives.ID );
-	}
-
-	/**
-	 * Get a String label for this component. This can be used for display options and 
-	 * is not meant to identify the component;
-	 * @return
-	 */
-	@Override
-	public String getComponentLabel(){
-		return this.source.getComponentName();
 	}
 
 	/**
@@ -91,44 +66,31 @@ implements	IJp2pContainer{
 		return dispatcher;
 	}
 	
-	@Override
-	protected boolean onInitialising() {
-		return false;
-	}
-
-	@Override
-	protected void onFinalising() {
-	}
-
 	public void clearModules(){
 		children.clear();
 	}
-
-	protected void setProperties(IJp2pWritePropertySource<IJp2pProperties> properties) {
-		this.source = properties;
+	@Override
+	public String getIdentifier() {
+		IJp2pPropertySource<IJp2pProperties> source = super.getPropertySource();
+		return source.getDirective( Directives.NAME );
 	}
-
+	
 	/**
 	 * Get the category for the given key
 	 * @param key
 	 * @return
 	 */
 	public String getCategory( Object key ){
-		return this.source.getCategory( (IJp2pProperties) key );
+		IJp2pPropertySource<IJp2pProperties> source = super.getPropertySource();
+		return source.getCategory( (IJp2pProperties) key );
 	}
 
-	@Override
-	public String getIdentifier() {
-		return this.source.getDirective( Directives.NAME );
-	}
-	
 	@Override
 	public boolean isRoot() {
 		return true;
 	}
 
-	@Override
-	protected void deactivate() {
+	public void deactivate() {
 		for( IJp2pComponent<?> component: this.children ){
 			if( component instanceof IActivator ){
 				IActivator service = (IActivator )component;
@@ -145,6 +107,7 @@ implements	IJp2pContainer{
 	@Override
 	public boolean addChild( IJp2pComponent<?> child ){
 		this.children.add( child );
+		IJp2pPropertySource<IJp2pProperties> source = super.getPropertySource();
 		String identifier = Jp2pContainerPropertySource.getBundleId(source);
 		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, child, identifier, AbstractJp2pContainer.ServiceChange.CHILD_ADDED ));
 		return true;
@@ -153,6 +116,7 @@ implements	IJp2pContainer{
 	@Override
 	public void removeChild( IJp2pComponent<?> child ){
 		this.children.remove( child );
+		IJp2pPropertySource<IJp2pProperties> source = super.getPropertySource();
 		String identifier = Jp2pContainerPropertySource.getBundleId(source);
 		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>> ( this, child, identifier, AbstractJp2pContainer.ServiceChange.CHILD_REMOVED ));
 	}
@@ -162,35 +126,11 @@ implements	IJp2pContainer{
 		return !this.children.isEmpty();
 	}
 
-	/**
-	 * Validate the component, and return false if the container cannot proceed.
-	 * @param factory
-	 * @param component
-	 * @return
-	 */
-	protected boolean validateComponent( IComponentFactory<?> factory, IJp2pComponent<?> component ){
-		if( !factory.isCompleted() ){
-			super.setStatus( Status.AVAILABLE );
-			return false;
-		}
-		return true;
-	}
-
 	protected static void removeModule( AbstractJp2pContainer<?> context, Object module ){
 		for( IJp2pComponent<?> component: context.getChildren() ){
 			if( component.getModule().equals( module ))
 				context.removeChild(component);
 		}
-	}
-
-	
-	protected void setModule(T module) {
-		this.module = module;
-	}
-
-	@Override
-	public T getModule() {
-		return module;
 	}
 	
 	/**

@@ -22,6 +22,7 @@ public interface IJp2pDirectives{
 		ID,
 		NAME,
 		CLASS,
+		TYPE,
 		FILE,
 		VISIBLE,
 		CONTEXT,

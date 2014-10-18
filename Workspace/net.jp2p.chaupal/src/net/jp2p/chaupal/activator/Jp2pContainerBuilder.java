@@ -31,7 +31,7 @@ public class Jp2pContainerBuilder{
 	private Collection<IContainerBuilderListener> listeners;
 	private Jp2pBundleActivator activator;
 	private Collection<ContextServiceParser> parsers;
-	private IJp2pContainer container;
+	private IJp2pContainer<Object> container;
 	private IContextLoaderListener listener;
 
 	protected Jp2pContainerBuilder( Jp2pBundleActivator activator, ContextLoader contextLoader ) {
@@ -43,7 +43,7 @@ public class Jp2pContainerBuilder{
 	}
 
 	
-	public IJp2pContainer getContainer() {
+	public IJp2pContainer<Object> getContainer() {
 		return container;
 	}
 

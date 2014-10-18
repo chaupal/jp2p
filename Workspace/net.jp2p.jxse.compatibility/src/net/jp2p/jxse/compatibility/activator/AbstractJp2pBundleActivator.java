@@ -33,7 +33,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	private Jp2pActivator<T> jp2pActivator;
 
 	private BundleContext bundleContext;
-	private IJp2pContainer container;
+	private IJp2pContainer<Object> container;
 
 	private String bundle_id;
 	private IComponentChangedListener<T> observer;
@@ -76,23 +76,22 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	/**
 	 * Create the container;
 	 */
-	protected abstract IJp2pContainer onCreateContainer();
+	protected abstract IJp2pContainer<Object> onCreateContainer();
 
 	/**
 	 * Create the container;
 	 */
 	protected void createContainer(){
 		container = this.onCreateContainer();
-		container.start();
 	}
 
 	@Override
-	public IJp2pContainer getContainer() {
+	public IJp2pContainer<Object> getContainer() {
 		return this.container;
 	}
 
 	
-	protected void setContainer(IJp2pContainer container) {
+	protected void setContainer(IJp2pContainer<Object> container) {
 		this.container = container;
 	}
 
@@ -146,7 +145,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 			jp2pActivator.stop();
 		
 		if( this.container != null )
-			container.stop();
+			container.deactivate();
 		
 		if(logService != null)
 			logService.log(LogService.LOG_INFO, "Logging service Stopped");

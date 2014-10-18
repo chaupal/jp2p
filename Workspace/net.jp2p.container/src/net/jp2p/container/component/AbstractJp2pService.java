@@ -86,30 +86,27 @@ implements IJp2pService<T>{
 		return source;
 	}
 
-	/**
-	 * Make public
-	 */
-	@Override
-	public void initialise() {
-		super.initialise();
-	}
-
 	
 	@Override
+	protected void setStatus(Status status) {
+		super.setStatus(status);
+		this.source.setProperty( IJp2pProperties.Jp2pProperties.STATUS, super.getStatus());
+	}
+
+	@Override
 	protected boolean onInitialising() {
+		this.source.setProperty( IJp2pProperties.Jp2pProperties.STATUS, super.getStatus());
 		return true;	
 	}
 
-	/**
-	 * Make public
-	 */
 	@Override
-	public void finalise() {
-		super.finalise();
+	protected void activate() {
+		// DO NOTHING: default behaviour 		
 	}
 
 	@Override
 	protected void onFinalising(){
+		this.source.setProperty( IJp2pProperties.Jp2pProperties.STATUS, super.getStatus());
 		this.module = null;
 	}
 
@@ -140,6 +137,7 @@ implements IJp2pService<T>{
 	
 	@Override
 	protected void notifyListeners( Status previous, Status status) {
+		this.source.setProperty( IJp2pProperties.Jp2pProperties.STATUS, status);
 		super.notifyListeners(previous, status);
 		String identifier = AbstractJp2pPropertySource.getBundleId(source);
 		ComponentChangedEvent<IJp2pService<T>> event = 

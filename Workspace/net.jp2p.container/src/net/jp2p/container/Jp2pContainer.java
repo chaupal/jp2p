@@ -9,13 +9,13 @@ package net.jp2p.container;
 
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.container.properties.IJp2pPropertySource;
+import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.startup.Jp2pStartupService;
 
-public class Jp2pContainer extends AbstractJp2pContainer<Jp2pStartupService>{
+public class Jp2pContainer extends AbstractJp2pContainer<Object>{
 
-	public Jp2pContainer( IJp2pPropertySource<IJp2pProperties> iJxsePropertySource ) {
-		super( iJxsePropertySource );
+	public Jp2pContainer( IJp2pWritePropertySource<IJp2pProperties> source ) {
+		super( source );
 	}
 
 	@Override
@@ -30,34 +30,11 @@ public class Jp2pContainer extends AbstractJp2pContainer<Jp2pStartupService>{
 				return ( Jp2pStartupService )component.getModule();
 			}
 		}
-		return super.getModule();
+		return (Jp2pStartupService) super.getModule();
 	}
 
 	protected void removeModule( Object module ){
 		removeModule( this, module );
-	}
-
-	/**
-	 * Make public
-	 */
-	@Override
-	public void initialise() {
-		super.initialise();
-	}
-
-	@Override
-	protected void activate() {
-		super.activate();
-	}
-	
-	@Override
-	protected void onFinalising() {
-		// DO NOTHING AS DEFAULT ACTION		
-	}
-
-	@Override
-	protected boolean onInitialising() {
-		return true;
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class Utils
 	 */
 	public static String getLabel( IJp2pComponent<?> component) {
 		if( component instanceof IJp2pContainer ){
-			IJp2pContainer container = (IJp2pContainer )component;
+			IJp2pContainer<?> container = (IJp2pContainer<?> )component;
 			return container.getIdentifier();			
 		}
 		if(( component == null ) || ( component.getPropertySource() == null ))

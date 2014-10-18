@@ -54,7 +54,7 @@ public class HttpServiceFactory extends AbstractFilterFactory<Module> {
 		return new HttpService( this );
 	}
 
-	private static class Filter extends AbstractComponentFilter<IJp2pComponent<Module>, IJp2pContainer>{
+	private static class Filter extends AbstractComponentFilter<IJp2pComponent<Module>, IJp2pContainer<Module>>{
 
 		public Filter(IComponentFactory<IJp2pComponent<Module>> factory) {
 			super( BuilderEvents.COMPONENT_CREATED, factory);
@@ -62,7 +62,7 @@ public class HttpServiceFactory extends AbstractFilterFactory<Module> {
 
 		@Override
 		protected boolean checkComponent(
-				IComponentFactory<IJp2pContainer> factory) {
+				IComponentFactory<IJp2pContainer<Module>> factory) {
 			return factory.getComponent() instanceof IJp2pContainer;
 		}
 		

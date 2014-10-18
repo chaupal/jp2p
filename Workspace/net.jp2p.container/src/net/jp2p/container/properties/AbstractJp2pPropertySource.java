@@ -386,6 +386,15 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 	}
 
 	/**
+	 * Get the bundle id for the given source
+	 * @param source
+	 * @return
+	 */
+	public static String getType( IJp2pPropertySource<IJp2pProperties> source ){
+		return source.getDirective( IJp2pDirectives.Directives.TYPE );
+	}
+
+	/**
 	 * Get the extended property iterator. This iterator adds the category before the key:
 	 *   category.key
 	 * @return

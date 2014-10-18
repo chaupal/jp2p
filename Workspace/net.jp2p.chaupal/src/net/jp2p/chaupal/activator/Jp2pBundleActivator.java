@@ -70,7 +70,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	}
 
 	@Override
-	protected IJp2pContainer onCreateContainer() {
+	protected IJp2pContainer<Object> onCreateContainer() {
 		//Add contexts, both default as the ones provided through DS
 		contextLoader = ContextLoader.getInstance();
 

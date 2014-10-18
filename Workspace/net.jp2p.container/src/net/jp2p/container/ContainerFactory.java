@@ -10,6 +10,7 @@ package net.jp2p.container;
 import java.util.Map;
 
 import net.jp2p.container.builder.IContainerBuilder;
+import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.context.Jp2pContext;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
@@ -52,17 +53,17 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 		this.onPropertySourceCreated();
 		super.extendContainer();	
 	}
+	
+	@Override
+	protected Jp2pContainer onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
+		Jp2pContainer context = new Jp2pContainer( (IJp2pWritePropertySource<IJp2pProperties>) super.getPropertySource() );
+		return context;
+	}
 
 	
 	@Override
-	public Jp2pContainer createComponent() {
-		return (Jp2pContainer) super.createComponent();
-	}
-
-	@Override
-	protected Jp2pContainer onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
-		Jp2pContainer context = new Jp2pContainer( super.getPropertySource() );
-		return context;
+	public synchronized IJp2pComponent<Object> createComponent() {
+		return super.createComponent();
 	}
 
 	//Make public

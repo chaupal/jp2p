@@ -81,7 +81,20 @@ public class SocketPropertySource extends AdvertisementPropertySource{
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString());
-		}	
+		}
+		
+		/**
+		 * Get the correct type, or a default one
+		 * @param typeStr
+		 * @return
+		 */
+		public static SocketTypes getType( String typeStr ){
+			for( SocketTypes type: values()){
+				if( type.name().equals( StringStyler.styleToEnum( typeStr )))
+						return type;
+			}
+			return SocketTypes.CLIENT;
+		}
 	}
 
 	public SocketPropertySource( IJp2pPropertySource<IJp2pProperties> parent) {
@@ -90,7 +103,7 @@ public class SocketPropertySource extends AdvertisementPropertySource{
 		super.setProperty( SocketProperties.BACKLOG, DEFAULT_BACK_LOG );
 		super.setProperty( SocketProperties.ENCRYPT, true );
 		super.setProperty( SocketProperties.RELIABLE, true );
-		super.setDirective( SocketDirectives.TYPE, SocketTypes.CLIENT.name() );
+		super.setDirective( SocketDirectives.TYPE, SocketTypes.CLIENT.toString() );
 		super.setDirective( Directives.CREATE, Boolean.TRUE.toString() );
 	}
 

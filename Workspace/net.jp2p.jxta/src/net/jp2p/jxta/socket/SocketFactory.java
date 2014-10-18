@@ -10,7 +10,6 @@ package net.jp2p.jxta.socket;
 import java.net.URISyntaxException;
 
 import net.jp2p.container.component.IJp2pComponent;
-import net.jp2p.container.component.Jp2pComponentNode;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -21,7 +20,7 @@ import net.jp2p.jxta.pipe.PipeAdvertisementPropertySource;
 import net.jxta.pipe.PipeMsgListener;
 import net.jxta.protocol.PipeAdvertisement;
 
-public class SocketFactory extends AbstractPeerGroupDependencyFactory<ISocketService<PipeMsgListener>>{
+public class SocketFactory extends AbstractPeerGroupDependencyFactory<PipeMsgListener>{
 	
 	private AdvertisementPropertySource pipeSource;
 	private boolean canCreate;
@@ -34,13 +33,12 @@ public class SocketFactory extends AbstractPeerGroupDependencyFactory<ISocketSer
 
 
 	@Override
-	protected IJp2pComponent<ISocketService<PipeMsgListener>> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
+	protected IJp2pComponent<PipeMsgListener> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		PipeAdvertisement pipead;
 		try {
 			SocketPropertySource source = (SocketPropertySource) super.getPropertySource();
 			pipead = PipeAdvertisementPropertySource.createPipeAdvertisement( this.pipeSource, super.getPeerGroup() );
-			return new Jp2pComponentNode<ISocketService<PipeMsgListener>>( source, 
-					new SocketService<PipeMsgListener>( source, super.getPeerGroup(), pipead ));
+			return new SocketService<PipeMsgListener>( source, super.getPeerGroup(), pipead );
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

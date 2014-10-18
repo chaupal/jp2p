@@ -143,4 +143,10 @@ public class RegistrationService extends AbstractActivator implements IJp2pServi
 	@Override
 	protected void onFinalising() {
 	}
+
+	@Override
+	protected void activate() {
+		// TODO Auto-generated method stub
+		
+	}
 }

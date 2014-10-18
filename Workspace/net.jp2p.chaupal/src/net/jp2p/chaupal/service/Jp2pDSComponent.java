@@ -23,7 +23,7 @@ import org.eclipselabs.osgi.ds.broker.service.AbstractProvider;
 
 public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implements IJp2pDSComponent {
 
-	private Jp2pContainerProvider provider;
+	private Jp2pContainerProvider<Object> provider;
 	private String introduction;
 	private String token;
 	private IJp2pBundleActivator activator;
@@ -40,7 +40,7 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 		this.setActivator();
 	}
 
-	private synchronized void provideContainer( IJp2pContainer container ){
+	private synchronized void provideContainer( IJp2pContainer<Object> container ){
 		try{
 			provider.setContainer( container );		
 		}
@@ -52,8 +52,9 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 	/**
 	 * set the activator
 	 */
+	@SuppressWarnings("unchecked")
 	private final void setActivator() {
-		provider = new Jp2pContainerProvider( activator.getBundleId() + S_CONTAINER, introduction, token );
+		provider = new Jp2pContainerProvider<Object>( activator.getBundleId() + S_CONTAINER, introduction, token );
 		if( activator.getContainer() != null ){
 			provideContainer( activator.getContainer() );
 			return;
@@ -62,7 +63,7 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 
 			@Override
 			public void notifyContainerBuilt(ContainerBuilderEvent event) {
-				IJp2pContainer container = event.getContainer();
+				IJp2pContainer<Object> container = event.getContainer();
 				provideContainer( container );
 			}
 		};
@@ -90,9 +91,9 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
  * @author Kees
  *
  */
-class Jp2pContainerProvider extends AbstractProvider<String, Object, IJp2pContainer> {
+class Jp2pContainerProvider<T extends Object> extends AbstractProvider<String, Object, IJp2pContainer<T>> {
 
-	private IJp2pContainer  container;
+	private IJp2pContainer<T>  container;
 	
 	Jp2pContainerProvider( String bundleId, String introduction, String token ) {
 		super( new Palaver( introduction, token ));
@@ -103,7 +104,7 @@ class Jp2pContainerProvider extends AbstractProvider<String, Object, IJp2pContai
 	 * Get the container
 	 * @return
 	 */
-	IJp2pContainer getContainer() {
+	IJp2pContainer<T> getContainer() {
 		return container;
 	}
 
@@ -111,7 +112,7 @@ class Jp2pContainerProvider extends AbstractProvider<String, Object, IJp2pContai
 	 * Add a container and 
 	 * @param container
 	 */
-	void setContainer( IJp2pContainer  container) {
+	void setContainer( IJp2pContainer<T>  container) {
 		if( container == null )
 			throw new NullPointerException();
 		this.container = container;

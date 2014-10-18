@@ -38,11 +38,6 @@ public abstract class AbstractJxseContainer extends AbstractJp2pContainer<Networ
 	}
 
 	@Override
-	protected boolean onInitialising() {
-		return true;
-	}
-	
-	@Override
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -56,7 +51,7 @@ public abstract class AbstractJxseContainer extends AbstractJp2pContainer<Networ
 	}
 
 	@Override
-	protected void onFinalising() {
+	public void deactivate() {
 		this.getModule().stopNetwork();
 	}
 
@@ -66,11 +61,10 @@ public abstract class AbstractJxseContainer extends AbstractJp2pContainer<Networ
 	 */
 	protected abstract void main(String[] args);
 
-	@Override
 	public boolean start() {
 		String[] args = Platform.getCommandLineArgs();
 		main( args );
-		return super.start();
+		return true;
 	}
 
 	/**
@@ -78,7 +72,7 @@ public abstract class AbstractJxseContainer extends AbstractJp2pContainer<Networ
 	 * @param container
 	 * @param module
 	 */
-	protected static void addModule( IJp2pContainer container, Object module ){
+	protected static void addModule( IJp2pContainer<?> container, Object module ){
 		IJp2pComponent<?> component = getComponent( container, module );
 		if( module instanceof NetworkManager){
 			NetworkManager manager = (NetworkManager) module;
@@ -91,7 +85,7 @@ public abstract class AbstractJxseContainer extends AbstractJp2pContainer<Networ
 		container.addChild(component);
 	}
 	
-	protected static IJp2pComponent<?> getComponent( IJp2pContainer container, Object module ){
+	protected static IJp2pComponent<?> getComponent( IJp2pContainer<?> container, Object module ){
 		IJp2pPropertySource<IJp2pProperties> properties = null;
 		String bundleId = AbstractJp2pPropertySource.getBundleId( container.getPropertySource() );
 		if( module instanceof NetworkManager ){

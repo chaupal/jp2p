@@ -7,13 +7,12 @@
  *******************************************************************************/
 package net.jp2p.container;
 
-import net.jp2p.container.activator.IJp2pService;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IJp2pComponentNode;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.utils.StringStyler;
 
-public interface IJp2pContainer extends IJp2pComponentNode<Object>, IJp2pService<Object> {
+public interface IJp2pContainer<T extends Object> extends IJp2pComponentNode<T> {
 
 	/**
 	 * The properties supported by the container
@@ -74,4 +73,9 @@ public interface IJp2pContainer extends IJp2pComponentNode<Object>, IJp2pService
 	 * @return
 	 */
 	public ComponentEventDispatcher getDispatcher();
+	
+	/**
+	 * Fotrece deactivation of the child nodes
+	 */
+	public void deactivate();
 }

@@ -271,7 +271,8 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 			IActivator activator = (IActivator)component;
 			if( !activator.getStatus().equals( Status.INITIALISED))
 				return false;
-			retval = activator.start();
+			if( AbstractJp2pPropertySource.isAutoStart(super.getPropertySource()))
+				retval = activator.start();
 			this.updateState( BuilderEvents.COMPONENT_STARTED);
 		}
 		catch( Exception ex ){

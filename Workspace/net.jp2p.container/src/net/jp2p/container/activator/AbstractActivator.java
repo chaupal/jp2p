@@ -134,7 +134,7 @@ public abstract class AbstractActivator implements IActivator
 		if( this.status.equals( Status.AVAILABLE ) || 
 				this.status.equals( Status.INITIALISED )){
 			this.setStatus( Status.ACTIVATING );
-		  this.activate();
+			this.activate();
 		}
 		this.setStatus( Status.ACTIVE );
 		return true;
@@ -166,9 +166,7 @@ public abstract class AbstractActivator implements IActivator
 	/**
 	 * Activate the activator
 	*/
-	protected void activate(){
-		this.setStatus( Status.ACTIVE );
-	}
+	protected abstract void activate();
 	
 	/**
 	 * Shut the activator down

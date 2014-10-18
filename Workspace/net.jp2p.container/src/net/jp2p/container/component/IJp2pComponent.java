@@ -14,6 +14,7 @@ import net.jp2p.container.utils.StringStyler;
 public interface IJp2pComponent<T extends Object>{
 	
 	public enum ModuleProperties implements IJp2pProperties{
+		STATUS,
 		CREATE_DATE;
 
 		@Override

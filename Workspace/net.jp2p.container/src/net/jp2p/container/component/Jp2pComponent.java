@@ -59,6 +59,14 @@ public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Compa
 	}
 
 	/**
+	 * Set the module
+	 * @param module
+	 */
+	protected void setModule(T module) {
+		this.module = module;
+	}
+
+	/**
 	 * Get the category for the given key
 	 * @param key
 	 * @return

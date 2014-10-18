@@ -69,7 +69,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 		
 		//Last create the container and the components
 		ContainerFactory factory = (ContainerFactory) containerBuilder.getFactory( Jp2pContext.Components.JP2P_CONTAINER.toString() );
-		return factory.createComponent();
+		return (Jp2pContainer) factory.createComponent();
 	}
 
 	/**
