@@ -11,6 +11,8 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
 
+import net.jp2p.container.utils.StringStyler;
+
 
 public class SeedInfo implements ISeedInfo{
 
@@ -18,26 +20,28 @@ public class SeedInfo implements ISeedInfo{
 	 
 	private SeedTypes seedType;
 	
+	private String name;
 	private String url;
 	
 	private boolean commentedOut;
 	
-	public SeedInfo() {
+	public SeedInfo( String key ) {
 		this.commentedOut = false;
+		this.seedType = SeedTypes.valueOf( StringStyler.styleToEnum( key ));
 	}
 
 	public SeedInfo( String key, String value ) {
-		this();
+		this( key );
 		parse( key, value );
 	}
 
-	public void parse( String key, String value ){
+	protected void parse( String key, String value ){
 		if( key.startsWith("//") || key.startsWith("/*)")){
 			this.commentedOut = true;
 			return;
 		}
 		String[] split = value.split("[,]");
-		seedType = SeedTypes.valueOf(split[0].trim());
+		name = split[0].trim();
 		url = split[1].trim();
 	}
 
@@ -49,6 +53,10 @@ public class SeedInfo implements ISeedInfo{
 		return this.commentedOut;
 	}
 	
+	protected String getName() {
+		return name;
+	}
+
 	@Override
 	public SeedTypes getSeedType() {
 		return seedType;

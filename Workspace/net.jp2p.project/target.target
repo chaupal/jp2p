@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="target" sequenceNumber="45">
+<target name="target" sequenceNumber="50">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.platform.ide" version="4.4.1.M20140925-0400"/>
@@ -20,7 +20,7 @@
 </location>
 <location path="F:\Windows\Export\JP2P\20141015" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="net.jxse.feature.feature.group" version="1.0.3.v20141020"/>
+<unit id="net.jxse.feature.feature.group" version="1.0.3.v20141023"/>
 <repository location="https://chaupal.github.io/releases/2.8.0/milestone/20141015/jxse-osgi/site.xml"/>
 </location>
 </locations>

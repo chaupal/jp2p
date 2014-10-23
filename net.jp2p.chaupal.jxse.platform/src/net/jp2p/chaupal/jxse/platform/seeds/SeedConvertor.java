@@ -36,8 +36,7 @@ public class SeedConvertor extends AbstractPreferences<String, Object> implement
 	 */
 	@Override
 	public Object convertTo( IJp2pProperties key, String value ){
-		SeedInfo seedInfo = new SeedInfo();
-		seedInfo.parse( key.toString(), value );
+		SeedInfo seedInfo = new SeedInfo( key.toString(), value );
 		return seedInfo;
 	}	
 

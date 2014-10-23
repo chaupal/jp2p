@@ -45,7 +45,7 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 		if( in == null )
 			return;
 		Properties props = new Properties();
-		SeedInfo seedInfo = new SeedInfo();
+		SeedInfo seedInfo = null;
 		try {
 			props.load( in );
 			Enumeration<?> enm = props.keys();
@@ -53,7 +53,7 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 			while( enm.hasMoreElements() ){
 				key = ( String )enm.nextElement();
 				value = (String) props.get(key);
-				seedInfo.parse(key, value );
+				seedInfo = new SeedInfo(key, value );
 				if( seedInfo.isCommentedOut() )
 					continue;
 				this.setProperty( new StringProperty( key ), seedInfo );
