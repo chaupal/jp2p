@@ -24,9 +24,11 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.network.NetworkManagerPropertyFacade;
 import net.jp2p.jxta.network.configurator.NetworkConfiguratorPropertyFacade;
 import net.jp2p.jxta.peergroup.PeerGroupPropertyFacade;
+import net.jp2p.jxta.rendezvous.RendezVousPropertyFacade;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.platform.NetworkConfigurator;
 import net.jxta.platform.NetworkManager;
+import net.jxta.rendezvous.RendezVousService;
 
 public abstract class AbstractJxseContainer extends AbstractJp2pContainer<NetworkManager>{
 
@@ -94,6 +96,8 @@ public abstract class AbstractJxseContainer extends AbstractJp2pContainer<Networ
 			properties =  new NetworkConfiguratorPropertyFacade( bundleId, (NetworkConfigurator)module );
 		}else if( module instanceof PeerGroup ){
 			properties =  new PeerGroupPropertyFacade( bundleId, (PeerGroup)module );
+		} if( module instanceof RendezVousService ){
+			properties = new RendezVousPropertyFacade( bundleId, (RendezVousService) module );
 		}else{
 			properties = new DefaultPropertySource( bundleId, module.getClass().getSimpleName());
 		}

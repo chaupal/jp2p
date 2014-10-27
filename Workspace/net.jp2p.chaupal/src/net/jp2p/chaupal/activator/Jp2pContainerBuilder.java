@@ -28,7 +28,7 @@ public class Jp2pContainerBuilder{
 	private ContextLoader contextLoader;
 
 	private Collection<ServiceInfo> services;
-	private Collection<IContainerBuilderListener> listeners;
+	private Collection<IContainerBuilderListener<Object>> listeners;
 	private Jp2pBundleActivator activator;
 	private Collection<ContextServiceParser> parsers;
 	private IJp2pContainer<Object> container;
@@ -38,7 +38,7 @@ public class Jp2pContainerBuilder{
 		this.contextLoader = contextLoader;
 		this.activator = activator;
 		services = new ArrayList<ServiceInfo>();
-		listeners = new ArrayList<IContainerBuilderListener>();
+		listeners = new ArrayList<IContainerBuilderListener<Object>>();
 		parsers = new ArrayList<ContextServiceParser>();
 	}
 
@@ -47,16 +47,16 @@ public class Jp2pContainerBuilder{
 		return container;
 	}
 
-	public void addContainerBuilderListener( IContainerBuilderListener listener ){
+	public void addContainerBuilderListener( IContainerBuilderListener<Object> listener ){
 		listeners.add( listener );
 	}
 
-	public void removeContainerBuilderListener( IContainerBuilderListener listener ){
+	public void removeContainerBuilderListener( IContainerBuilderListener<Object> listener ){
 		listeners.remove( listener );
 	}
 
-	private final void notifyListeners( ContainerBuilderEvent event ){
-		for( IContainerBuilderListener listener: listeners )
+	private final void notifyListeners( ContainerBuilderEvent<Object> event ){
+		for( IContainerBuilderListener<Object> listener: listeners )
 			listener.notifyContainerBuilt(event);
 	}
 	
@@ -144,7 +144,7 @@ public class Jp2pContainerBuilder{
 
 		XMLContainerBuilder builder = new XMLContainerBuilder( activator.getBundleId(), activator.getClass(), contextLoader );
 		this.container = builder.build();
-		this.notifyListeners( new ContainerBuilderEvent(this, container));
+		this.notifyListeners( new ContainerBuilderEvent<Object>(this, container));
 		return true;
 	}
 	

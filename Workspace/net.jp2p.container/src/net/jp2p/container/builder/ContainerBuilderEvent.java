@@ -11,17 +11,17 @@ import java.util.EventObject;
 
 import net.jp2p.container.IJp2pContainer;
 
-public class ContainerBuilderEvent extends EventObject {
+public class ContainerBuilderEvent<T extends Object> extends EventObject {
 	private static final long serialVersionUID = -1266257260044093122L;
 
-	private IJp2pContainer container;
+	private IJp2pContainer<T> container;
 	
-	public ContainerBuilderEvent(Object source, IJp2pContainer container) {
+	public ContainerBuilderEvent(Object source, IJp2pContainer<T> container) {
 		super(source);
 		this.container = container;
 	}
 
-	public IJp2pContainer getContainer() {
+	public IJp2pContainer<T> getContainer() {
 		return container;
 	}
 }

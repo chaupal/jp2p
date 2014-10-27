@@ -120,7 +120,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	 * Notify that the property sources have been created after parsing the XML
 	 * file. This allows for more fine-grained tuning of the property sources.
 	 * Factories can add additional resource if they need it, and properties can be filled in,
-	 * which are corresponded with other factories.
+	 * which corresponded with other factories.
 	 * The extension consists of three steps:
 	 * 
 	 * Step 1: perform the early start

@@ -5,9 +5,15 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container.builder;
+package net.jp2p.jxta.rendezvous;
 
-public interface IContainerBuilderListener<T extends Object> {
+import net.jp2p.container.component.Jp2pComponent;
+import net.jxta.peergroup.PeerGroup;
+import net.jxta.rendezvous.RendezVousService;
 
-	public void notifyContainerBuilt( ContainerBuilderEvent<T> event );
+public class Jp2pRendezvousService extends Jp2pComponent<RendezVousService>{
+
+	public Jp2pRendezvousService( RendezVousPropertySource source, PeerGroup peergroup ) {
+		super(source, peergroup.getRendezVousService() );
+	}	
 }

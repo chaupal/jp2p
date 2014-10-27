@@ -10,7 +10,7 @@
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="default_auto_start" value="true"/>
 <intAttribute key="default_start_level" value="4"/>
-<stringAttribute key="deselected_workspace_plugins" value="net.jp2p.project,org.chaupal.practical.jxta,org.chaupal.rcp,org.condast.anna,org.condast.rcp,org.test"/>
+<stringAttribute key="deselected_workspace_plugins" value="net.jp2p.jxse.compatibility,net.jp2p.project,org.chaupal.jp2p.ui,org.chaupal.jp2p.ui.jxta,org.chaupal.jp2p.ui.template,org.chaupal.practical.jxta,org.chaupal.rcp,org.condast.anna,org.saight.socket,org.saight.socket.server,org.test"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
@@ -23,5 +23,5 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="net.jp2p.chaupal.jxse.platform@default:false,net.jp2p.chaupal.jxta@default:default,net.jp2p.chaupal@default:default,net.jp2p.container@default:default,net.jp2p.jxse.compatibility@default:default,net.jp2p.jxta@default:default,org.chaupal.jp2p.ui.jxta@default:default,org.chaupal.jp2p.ui@default:default,org.condast.rdv@default:default,org.saight.socket@default:default"/>
+<stringAttribute key="workspace_bundles" value="net.jp2p.chaupal.jxse.platform@default:false,net.jp2p.chaupal.jxta@default:default,net.jp2p.chaupal@default:default,net.jp2p.container@default:default,net.jp2p.jxta@default:default,org.condast.rdv@default:default"/>
 </launchConfiguration>

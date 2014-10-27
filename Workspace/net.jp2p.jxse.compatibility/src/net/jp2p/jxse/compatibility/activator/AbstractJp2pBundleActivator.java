@@ -24,7 +24,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
-public abstract class AbstractJp2pBundleActivator<T extends Object> implements IJp2pBundleActivator, BundleActivator {
+public abstract class AbstractJp2pBundleActivator<T extends Object> implements IJp2pBundleActivator<T>, BundleActivator {
 
 	private static final String S_MSG_NOT_A_JP2P_BUNDLE = "\n\nThis bundle is not a valid JP2P Bundle. A JP2P-INF directory is required!\n\n";
 	private static final String S_JP2P_INF = "/JP2P-INF";
@@ -40,10 +40,10 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	
 	private ServiceTracker<BundleContext,LogService> logServiceTracker;
 	private LogService logService;
-	private Collection<IContainerBuilderListener> listeners;
+	private Collection<IContainerBuilderListener<T>> listeners;
 	
 	protected AbstractJp2pBundleActivator( String bundle_id ) {
-		listeners = new ArrayList<IContainerBuilderListener>();
+		listeners = new ArrayList<IContainerBuilderListener<T>>();
 		this.bundle_id = bundle_id;
 	}
 
@@ -60,16 +60,16 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	}
 
 
-	public void addContainerBuilderListener( IContainerBuilderListener listener ){
+	public void addContainerBuilderListener( IContainerBuilderListener<T> listener ){
 		listeners.add( listener );
 	}
 
-	public void removeContainerBuilderListener( IContainerBuilderListener listener ){
+	public void removeContainerBuilderListener( IContainerBuilderListener<T> listener ){
 		listeners.remove( listener );
 	}
 
-	protected final void notifyListeners( ContainerBuilderEvent event ){
-		for( IContainerBuilderListener listener: listeners )
+	protected final void notifyListeners( ContainerBuilderEvent<T> event ){
+		for( IContainerBuilderListener<T> listener: listeners )
 			listener.notifyContainerBuilt(event);		
 	}
 

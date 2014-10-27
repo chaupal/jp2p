@@ -23,11 +23,11 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 
 	private Jp2pContainerProvider provider;
 
-	protected Jp2pDSComponent( IJp2pBundleActivator activator ) {
+	protected Jp2pDSComponent( IJp2pBundleActivator<Object> activator ) {
 		this( S_IJP2P_CONTAINER_PACKAGE_ID, S_IP2P_TOKEN, activator);
 	}
 
-	protected Jp2pDSComponent( String introduction, String token, IJp2pBundleActivator activator ) {
+	protected Jp2pDSComponent( String introduction, String token, IJp2pBundleActivator<Object> activator ) {
 		provider = new Jp2pContainerProvider( activator, introduction, token );
 	}
 
@@ -42,12 +42,12 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
  * @author Kees
  *
  */
-class Jp2pContainerProvider extends AbstractProvider<String, Object, IJp2pContainer> {
+class Jp2pContainerProvider extends AbstractProvider<String, Object, IJp2pContainer<Object>> {
 
-	private IJp2pBundleActivator activator;
-	private IJp2pContainer  container;
+	private IJp2pBundleActivator<Object> activator;
+	private IJp2pContainer<Object>  container;
 	
-	Jp2pContainerProvider( IJp2pBundleActivator activator, String introduction, String token ) {
+	Jp2pContainerProvider( IJp2pBundleActivator<Object> activator, String introduction, String token ) {
 		super( new Palaver( introduction, token ));
 		this.activator = activator;
 		this.setIdentifier( activator.getBundleId()  + Jp2pDSComponent.S_CONTAINER);
@@ -57,16 +57,17 @@ class Jp2pContainerProvider extends AbstractProvider<String, Object, IJp2pContai
 	 * Get the container
 	 * @return
 	 */
-	IJp2pContainer getContainer() {
+	IJp2pContainer<Object> getContainer() {
 		return container;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onDataReceived( Object msg ){
 		if(!( msg instanceof String ))
 			return;
 		if( activator.getContainer() != null )
-			super.provide( activator.getContainer());
+			super.provide( (IJp2pContainer<Object>) activator.getContainer());
 	}	
 
 	/**

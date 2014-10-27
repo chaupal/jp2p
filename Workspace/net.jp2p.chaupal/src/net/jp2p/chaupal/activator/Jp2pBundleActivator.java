@@ -34,7 +34,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	
 	
 	private Jp2pContainerBuilder builder;
-	private IContainerBuilderListener listener;
+	private IContainerBuilderListener<Object> listener;
 	
 	private IComponentChangedListener<?> componentListener;
 	
@@ -76,10 +76,10 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
 		contextService = new Jp2pContextService( contextLoader, super.getBundleContext() );
 		builder = new Jp2pContainerBuilder( this, contextLoader );
-		listener = new IContainerBuilderListener(){
+		listener = new IContainerBuilderListener<Object>(){
 
 			@Override
-			public void notifyContainerBuilt(ContainerBuilderEvent event) {
+			public void notifyContainerBuilt(ContainerBuilderEvent<Object> event) {
 				setContainer( builder.getContainer() );
 				notifyListeners(event);
 			}	

@@ -7,21 +7,30 @@
  *******************************************************************************/
 package net.jp2p.jxta.netpeergroup;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import net.jp2p.container.component.AbstractJp2pService;
+import net.jp2p.container.component.IJp2pComponent;
+import net.jp2p.container.component.IJp2pComponentNode;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.jxta.netpeergroup.NetPeerGroupFactory;
 import net.jp2p.jxta.peergroup.PeerGroupPreferences;
 import net.jxta.peergroup.PeerGroup;
+import net.jxta.platform.Module;
 import net.jxta.platform.NetworkManager;
 
-public class NetPeerGroupService extends AbstractJp2pService<PeerGroup>{
+public class NetPeerGroupService extends AbstractJp2pService<PeerGroup> implements IJp2pComponentNode<PeerGroup>{
 
 	private NetworkManager manager;
+	
+	private Collection<IJp2pComponent<?>> modules;
 
 	public NetPeerGroupService( NetPeerGroupFactory factory, NetworkManager manager ) {
 		super(( IJp2pWritePropertySource<IJp2pProperties> ) factory.getPropertySource(), null );
 		this.manager = manager;
+		modules = new ArrayList<IJp2pComponent<?>>();
 	}
 
 	@Override
@@ -41,5 +50,29 @@ public class NetPeerGroupService extends AbstractJp2pService<PeerGroup>{
 	protected void deactivate() {
 		manager.stopNetwork();
 	}
-	
+
+	@Override
+	public boolean isRoot() {
+		return false;
+	}
+
+	@Override
+	public boolean addChild(IJp2pComponent<?> child) {
+		return modules.add( child );
+	}
+
+	@Override
+	public void removeChild(IJp2pComponent<?> child) {
+		modules.remove( child );
+	}
+
+	@Override
+	public IJp2pComponent<?>[] getChildren() {
+		return (IJp2pComponent<?>[]) modules.toArray( new IJp2pComponent[ modules.size()]);
+	}
+
+	@Override
+	public boolean hasChildren() {
+		return !modules.isEmpty();
+	}	
 }

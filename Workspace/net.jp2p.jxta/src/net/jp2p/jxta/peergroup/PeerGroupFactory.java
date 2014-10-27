@@ -8,17 +8,20 @@
 package net.jp2p.jxta.peergroup;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Stack;
 
 import net.jp2p.container.IJp2pContainer;
+import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.IJp2pComponentNode;
-import net.jp2p.container.component.Jp2pComponent;
+import net.jp2p.container.component.Jp2pComponentNode;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IManagedPropertyListener.PropertyEvents;
 import net.jp2p.container.utils.SimpleNode;
 import net.jp2p.container.utils.Utils;
@@ -29,12 +32,14 @@ import net.jp2p.jxta.advertisement.ModuleSpecAdvertisementPropertySource;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource.AdvertisementTypes;
 import net.jp2p.jxta.discovery.DiscoveryPropertySource;
 import net.jp2p.jxta.factory.AbstractPeerGroupDependencyFactory;
+import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.peergroup.PeerGroupFactory;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource.PeerGroupDirectives;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource.PeerGroupProperties;
 import net.jp2p.jxta.pipe.PipeAdvertisementPropertySource;
+import net.jp2p.jxta.rendezvous.RendezVousPropertySource;
 import net.jxta.id.IDFactory;
 import net.jxta.peer.PeerID;
 import net.jxta.peergroup.PeerGroup;
@@ -55,6 +60,15 @@ public class PeerGroupFactory extends AbstractPeerGroupDependencyFactory<PeerGro
 	@Override
 	protected PeerGroupPropertySource onCreatePropertySource() {
 		return new PeerGroupPropertySource( super.getParentSource());
+	}
+
+	
+	@Override
+	public void extendContainer() {
+		IContainerBuilder builder = super.getBuilder();
+		RendezVousPropertySource rdvps = (RendezVousPropertySource) JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getParentSource(), JxtaComponents.RENDEZVOUS_SERVICE.toString(), true ).getPropertySource();
+		rdvps.setDirective( Directives.AUTO_START, this.getPropertySource().getDirective( Directives.AUTO_START ));
+		super.extendContainer();
 	}
 
 	@Override
@@ -91,7 +105,7 @@ public class PeerGroupFactory extends AbstractPeerGroupDependencyFactory<PeerGro
 			PeerGroup peergroup = createPeerGroupFromModuleImpl( super.getPeerGroup(), super.getPropertySource() );
 			PeerGroupAdvertisement pgadv = peergroup.getPeerGroupAdvertisement();
 			IJp2pWritePropertySource<IJp2pProperties> ws = (IJp2pWritePropertySource<IJp2pProperties>) super.getPropertySource();
-			component = new Jp2pComponent<PeerGroup>( super.getPropertySource(), peergroup );
+			component = new Jp2pComponentNode<PeerGroup>( super.getPropertySource(), peergroup );
 			if( publish ){
 				peergroup.publishGroup(name, description);
 				return component;
@@ -202,7 +216,7 @@ public class PeerGroupFactory extends AbstractPeerGroupDependencyFactory<PeerGro
 	 * @param container
 	 * @return
 	 */
-	public static PeerGroupNode createPeerGroupTree( IJp2pContainer container){
+	public static PeerGroupNode createPeerGroupTree( IJp2pContainer<?> container){
 		Stack<PeerGroupNode> stack = new Stack<PeerGroupNode>();
 		findPeerGroups(container, stack);
 		for( PeerGroupNode node: stack ){
