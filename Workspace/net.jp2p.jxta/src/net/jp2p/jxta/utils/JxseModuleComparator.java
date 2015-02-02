@@ -9,7 +9,7 @@ package net.jp2p.jxta.utils;
 
 import java.util.Comparator;
 
-import net.jxta.platform.Module;
+import net.jxta.peergroup.core.Module;
 import net.jxta.platform.NetworkConfigurator;
 import net.jxta.platform.NetworkManager;
 

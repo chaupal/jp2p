@@ -19,7 +19,7 @@ import net.jp2p.container.factory.filter.AbstractComponentFilter;
 import net.jp2p.container.factory.filter.IComponentFactoryFilter;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jxta.platform.Module;
+import net.jxta.peergroup.core.Module;
 
 public class HttpServiceFactory extends AbstractFilterFactory<Module> {
 

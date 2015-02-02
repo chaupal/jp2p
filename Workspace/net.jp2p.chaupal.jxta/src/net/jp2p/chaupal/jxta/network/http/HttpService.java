@@ -13,7 +13,7 @@ package net.jp2p.chaupal.jxta.network.http;
 import net.jp2p.container.component.AbstractJp2pService;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
-import net.jxta.platform.Module;
+import net.jxta.peergroup.core.Module;
 
 public class HttpService extends AbstractJp2pService<Module>{
 	

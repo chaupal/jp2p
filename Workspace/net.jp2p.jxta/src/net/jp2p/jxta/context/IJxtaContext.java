@@ -8,7 +8,7 @@
 package net.jp2p.jxta.context;
 
 import net.jp2p.container.context.IJp2pContext;
-import net.jxta.platform.ModuleClassID;
+import net.jxta.peergroup.core.ModuleClassID;
 
 public interface IJxtaContext extends IJp2pContext {
 

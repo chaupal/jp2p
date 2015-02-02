@@ -17,10 +17,8 @@ import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
-import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
-import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.context.ContextLoader;
 
 public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
@@ -89,14 +87,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 		builder.build();
 
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-		this.componentListener = new IComponentChangedListener<IJp2pComponent<?>>(){
-
-			@Override
-			public void notifyServiceChanged(
-					ComponentChangedEvent<IJp2pComponent<?>> event) {
-						notifyObservers(event);	
-			}
-		};
+		this.componentListener = new ComponentChangedListener();
 		dispatcher.addServiceChangeListener( this.componentListener);
 		
 		contextService.open();		

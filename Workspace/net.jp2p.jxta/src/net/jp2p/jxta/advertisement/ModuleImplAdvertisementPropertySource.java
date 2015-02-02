@@ -16,7 +16,7 @@ import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource.PeerGroupProperties;
 import net.jxta.document.AdvertisementFactory;
 import net.jxta.peergroup.PeerGroup;
-import net.jxta.platform.ModuleSpecID;
+import net.jxta.peergroup.core.ModuleSpecID;
 import net.jxta.protocol.ModuleImplAdvertisement;
 
 public class ModuleImplAdvertisementPropertySource extends AdvertisementPropertySource{

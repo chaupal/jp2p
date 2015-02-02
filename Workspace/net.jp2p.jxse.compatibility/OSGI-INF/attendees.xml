@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="net.osgi.jxta.petitioner.messagebox">
-   <implementation class="net.jp2p.jxse.compatibility.service.AttendeeComponent"/>
-   <reference bind="setAttendeeService" cardinality="1..1" interface="org.eclipselabs.osgi.ds.broker.IAttendeeService" name="IAttendeeService" policy="static" unbind="unsetAttendeeService"/>
-</scr:component>

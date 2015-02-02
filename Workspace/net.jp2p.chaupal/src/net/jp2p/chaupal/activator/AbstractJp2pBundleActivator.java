@@ -28,7 +28,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
-public abstract class AbstractJp2pBundleActivator<T extends Object> implements IJp2pBundleActivator, BundleActivator {
+public abstract class AbstractJp2pBundleActivator<T extends Object> implements IJp2pBundleActivator<T>, BundleActivator {
 
 	private static final String S_MSG_NOT_A_JP2P_BUNDLE = "\n\nThis bundle is not a valid JP2P Bundle. A JP2P-INF directory is required!\n\n";
 	private static final String S_JP2P_INF = "/JP2P-INF";
@@ -44,10 +44,10 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	
 	private ServiceTracker<BundleContext,LogService> logServiceTracker;
 	private LogService logService;
-	private Collection<IContainerBuilderListener> listeners;
+	private Collection<IContainerBuilderListener<T>> listeners;
 	
 	protected AbstractJp2pBundleActivator( String bundle_id ) {
-		listeners = new ArrayList<IContainerBuilderListener>();
+		listeners = new ArrayList<IContainerBuilderListener<T>>();
 		observers = new ArrayList<IComponentChangedListener<IJp2pComponent<?>>>();
 		this.bundle_id = bundle_id;
 	}
@@ -72,16 +72,18 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 			observer.notifyServiceChanged(event);
 	}
 	
-	public final void addContainerBuilderListener( IContainerBuilderListener listener ){
+	@Override
+	public final void addContainerBuilderListener( IContainerBuilderListener<T> listener ){
 		listeners.add( listener );
 	}
 
-	public final void removeContainerBuilderListener( IContainerBuilderListener listener ){
+	@Override
+	public final void removeContainerBuilderListener( IContainerBuilderListener<T> listener ){
 		listeners.remove( listener );
 	}
 
-	protected final void notifyListeners( ContainerBuilderEvent event ){
-		for( IContainerBuilderListener listener: listeners )
+	protected final void notifyListeners( ContainerBuilderEvent<T> event ){
+		for( IContainerBuilderListener<T> listener: listeners )
 			listener.notifyContainerBuilt(event);		
 	}
 
@@ -201,4 +203,19 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 			}
 		}
 	}
+	
+	/**
+	 * a default listener for component change events
+	 * @author Kees
+	 *
+	 */
+	protected class ComponentChangedListener implements IComponentChangedListener<IJp2pComponent<?>>{
+
+		@Override
+		public void notifyServiceChanged(
+				ComponentChangedEvent<IJp2pComponent<?>> event) {
+					notifyObservers(event);	
+		}
+	};
+ 
 }

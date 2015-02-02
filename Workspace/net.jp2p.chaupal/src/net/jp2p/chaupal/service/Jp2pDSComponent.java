@@ -82,8 +82,6 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 		activator = null;
 		super.finalise();
 	}
-
-
 }
 
 /**

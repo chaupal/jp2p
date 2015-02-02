@@ -16,7 +16,7 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.jxta.advertisement.ModuleClassAdvertisementPropertySource.ModuleClassProperties;
 import net.jxta.id.IDFactory;
-import net.jxta.platform.ModuleClassID;
+import net.jxta.peergroup.core.ModuleClassID;
 
 public class ModuleClassAdvertisementPreferences extends AbstractPreferences<String, Object>{
 

@@ -12,8 +12,8 @@ import java.util.HashSet;
 
 import net.jp2p.container.context.ContextLoader;
 import net.jp2p.container.context.IJp2pContext;
-import net.jxta.platform.ModuleClassID;
-import net.jxta.platform.ModuleSpecID;
+import net.jxta.peergroup.core.ModuleClassID;
+import net.jxta.peergroup.core.ModuleSpecID;
 
 public class JxtaContextUtils {
 
