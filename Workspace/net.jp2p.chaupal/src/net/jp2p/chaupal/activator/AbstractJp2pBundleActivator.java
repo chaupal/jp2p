@@ -209,7 +209,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements I
 	 * @author Kees
 	 *
 	 */
-	protected class ComponentChangedListener implements IComponentChangedListener<IJp2pComponent<?>>{
+	public class ComponentChangedListener implements IComponentChangedListener<IJp2pComponent<?>>{
 
 		@Override
 		public void notifyServiceChanged(

@@ -19,7 +19,7 @@ public class Component extends AbstractJxseComponent{
 	private static JxtaLoaderModuleManager<Module> manager;
 	
 	public Component() {
-		manager = JxtaLoaderModuleManager.getRoot( this.getClass(), true );	
+		manager = JxtaLoaderModuleManager.getRoot( Component.class, true );	
 	}
 
 	public void registerBuilder(IModuleBuilder<Module> builder) {
