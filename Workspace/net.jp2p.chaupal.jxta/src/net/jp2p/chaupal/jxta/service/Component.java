@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.Collection;
 
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
-import net.jxse.osgi.AbstractJxseComponent;
 import net.jxta.impl.loader.JxtaLoaderModuleManager;
 import net.jxta.impl.loader.RefJxtaLoader;
 import net.jxta.impl.modulemanager.AbstractJxtaModuleDescriptor;
@@ -14,7 +13,7 @@ import net.jxta.peergroup.core.Module;
 import net.jxta.protocol.ModuleImplAdvertisement;
 import net.jxta.util.cardinality.Cardinality.Denominator;
 
-public class Component extends AbstractJxseComponent{
+public class Component{
 
 	private static JxtaLoaderModuleManager<Module> manager;
 	
@@ -36,11 +35,6 @@ public class Component extends AbstractJxseComponent{
     	return true;//manager.canBuild(descriptor);
 	}
 
-	@Override
-	protected void onRunJxse() {
-		
-	}
-	
 	private static class PlatformDescriptor extends AbstractJxtaModuleDescriptor {
 
 		public static final String S_DESCRIPTION = "Standard World PeerGroup Reference Implementation";

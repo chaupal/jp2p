@@ -12,11 +12,12 @@ package net.jp2p.chaupal.activator;
 
 import org.osgi.framework.BundleContext;
 
+import net.jp2p.chaupal.builder.Jp2pContainerBuilder;
 import net.jp2p.chaupal.context.Jp2pContextService;
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
-import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
+import net.jp2p.container.builder.IJp2pContainerBuilder;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.context.ContextLoader;
@@ -24,26 +25,19 @@ import net.jp2p.container.context.ContextLoader;
 public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
 	protected Jp2pBundleActivator(String bundle_id) {
-		super(bundle_id);
+		super( bundle_id );
 	}
 
 	private static Jp2pContextService contextService; 
 	private ContextLoader contextLoader;
 	
-	
-	private Jp2pContainerBuilder builder;
 	private IContainerBuilderListener<Object> listener;
 	
 	private IComponentChangedListener<?> componentListener;
 	
-	
-	@Override
-	public void start(BundleContext bundleContext) throws Exception {
-		super.start(bundleContext);
-	}
-
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
+		IJp2pContainerBuilder<Object> builder = super.getBuilder();
 		if(( builder != null ) && ( listener != null )){
 			builder.removeContainerBuilderListener(listener);
 			listener = null;
@@ -68,29 +62,27 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	}
 
 	@Override
-	protected IJp2pContainer<Object> onCreateContainer() {
+	protected void createContainer() {
 		//Add contexts, both default as the ones provided through DS
 		contextLoader = ContextLoader.getInstance();
 
 		contextService = new Jp2pContextService( contextLoader, super.getBundleContext() );
-		builder = new Jp2pContainerBuilder( this, contextLoader );
+		Jp2pContainerBuilder<Object> builder = new Jp2pContainerBuilder<Object>( this, contextLoader );
 		listener = new IContainerBuilderListener<Object>(){
 
 			@Override
 			public void notifyContainerBuilt(ContainerBuilderEvent<Object> event) {
-				setContainer( builder.getContainer() );
 				notifyListeners(event);
 			}	
 		};
 		builder.addContainerBuilderListener(listener);
 		
 		builder.build();
-
+		super.setContainer( builder.getContainer());
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 		this.componentListener = new ComponentChangedListener();
 		dispatcher.addServiceChangeListener( this.componentListener);
 		
 		contextService.open();		
-		return super.getContainer();
 	}
 }

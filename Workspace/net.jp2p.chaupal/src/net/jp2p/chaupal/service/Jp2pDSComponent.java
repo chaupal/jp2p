@@ -12,9 +12,9 @@ package net.jp2p.chaupal.service;
 
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.IJp2pDSComponent;
-import net.jp2p.container.activator.IJp2pBundleActivator;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
+import net.jp2p.container.builder.IJp2pContainerBuilder;
 
 import org.eclipselabs.osgi.ds.broker.service.AbstractAttendeeProviderComponent;
 import org.eclipselabs.osgi.ds.broker.service.AbstractPalaver;
@@ -24,39 +24,31 @@ import org.eclipselabs.osgi.ds.broker.service.AbstractProvider;
 public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implements IJp2pDSComponent {
 
 	private Jp2pContainerProvider<Object> provider;
+	private String bundle_id;
 	private String introduction;
 	private String token;
-	private IJp2pBundleActivator<Object> activator;
+	private IJp2pContainerBuilder<Object> builder;
 	private IContainerBuilderListener<Object> listener;
 
-	protected Jp2pDSComponent( IJp2pBundleActivator<Object> activator ) {
-		this( S_IJP2P_CONTAINER_PACKAGE_ID, S_IP2P_TOKEN, activator);
+	protected Jp2pDSComponent( String bundle_id, IJp2pContainerBuilder<Object> activator ) {
+		this( bundle_id, S_IJP2P_CONTAINER_PACKAGE_ID, S_IP2P_TOKEN, activator);
 	}
 
-	protected Jp2pDSComponent( String introduction, String token, IJp2pBundleActivator<Object> activator ) {
+	protected Jp2pDSComponent( String bundle_id, String introduction, String token, IJp2pContainerBuilder<Object> builder ) {
+		this.bundle_id = bundle_id;
 		this.token = token;
 		this.introduction = introduction;
-		this.activator = activator;
+		this.builder = builder;
 		this.setActivator();
-	}
-
-	private synchronized void provideContainer( IJp2pContainer<Object> container ){
-		try{
-			provider.setContainer( container );		
-		}
-		catch( Exception ex ){
-			ex.printStackTrace();
-		}
 	}
 
 	/**
 	 * set the activator
 	 */
-	@SuppressWarnings("unchecked")
 	private final void setActivator() {
-		provider = new Jp2pContainerProvider<Object>( activator.getBundleId() + S_CONTAINER, introduction, token );
-		if( activator.getContainer() != null ){
-			provideContainer( (IJp2pContainer<Object>) activator.getContainer() );
+		provider = new Jp2pContainerProvider<Object>( this.bundle_id + S_CONTAINER, introduction, token );
+		if( builder.getContainer() != null ){
+			provider.setContainer( builder.getContainer() );
 			return;
 		}
 		listener = new IContainerBuilderListener<Object>() {
@@ -64,10 +56,10 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 			@Override
 			public void notifyContainerBuilt(ContainerBuilderEvent<Object> event) {
 				IJp2pContainer<Object> container = event.getContainer();
-				provideContainer( container );
+				provider.setContainer( container );
 			}
 		};
-		activator.addContainerBuilderListener(listener);
+		builder.addContainerBuilderListener(listener);
 	}
 
 	@Override
@@ -77,9 +69,9 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 
 	@Override
 	protected void finalise() {
-		activator.removeContainerBuilderListener(listener);
+		builder.removeContainerBuilderListener(listener);
 		listener = null;
-		activator = null;
+		builder = null;
 		super.finalise();
 	}
 }

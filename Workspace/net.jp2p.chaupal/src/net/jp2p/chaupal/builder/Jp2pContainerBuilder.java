@@ -1,4 +1,4 @@
-package net.jp2p.chaupal.activator;
+package net.jp2p.chaupal.builder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.osgi.service.log.LogService;
 
+import net.jp2p.chaupal.activator.Jp2pBundleActivator;
 import net.jp2p.chaupal.context.ContextServiceParser;
 import net.jp2p.chaupal.context.ServiceInfo;
 import net.jp2p.chaupal.xml.XMLContainerBuilder;
@@ -17,53 +18,57 @@ import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.builder.IFactoryBuilder;
+import net.jp2p.container.builder.IJp2pContainerBuilder;
 import net.jp2p.container.context.ContextLoader;
 import net.jp2p.container.context.ContextLoaderEvent;
 import net.jp2p.container.context.IContextLoaderListener;
 
-public class Jp2pContainerBuilder{
+public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBuilder<T>{
 
 	public static final String S_CONTEXT_FOUND = "The following context was found and registered: ";
 	
 	private ContextLoader contextLoader;
 
 	private Collection<ServiceInfo> services;
-	private Collection<IContainerBuilderListener<Object>> listeners;
+	private Collection<IContainerBuilderListener<T>> listeners;
 	private Jp2pBundleActivator activator;
 	private Collection<ContextServiceParser> parsers;
-	private IJp2pContainer<Object> container;
+	private IJp2pContainer<T> container;
 	private IContextLoaderListener listener;
 
-	protected Jp2pContainerBuilder( Jp2pBundleActivator activator, ContextLoader contextLoader ) {
+	public Jp2pContainerBuilder( Jp2pBundleActivator activator, ContextLoader contextLoader ) {
 		this.contextLoader = contextLoader;
 		this.activator = activator;
 		services = new ArrayList<ServiceInfo>();
-		listeners = new ArrayList<IContainerBuilderListener<Object>>();
+		listeners = new ArrayList<IContainerBuilderListener<T>>();
 		parsers = new ArrayList<ContextServiceParser>();
 	}
 
 	
-	public IJp2pContainer<Object> getContainer() {
+	public IJp2pContainer<T> getContainer() {
 		return container;
 	}
 
-	public void addContainerBuilderListener( IContainerBuilderListener<Object> listener ){
+	@Override
+	public void addContainerBuilderListener( IContainerBuilderListener<T> listener ){
 		listeners.add( listener );
 	}
 
-	public void removeContainerBuilderListener( IContainerBuilderListener<Object> listener ){
+	@Override
+	public void removeContainerBuilderListener( IContainerBuilderListener<T> listener ){
 		listeners.remove( listener );
 	}
 
-	private final void notifyListeners( ContainerBuilderEvent<Object> event ){
-		for( IContainerBuilderListener<Object> listener: listeners )
+	private final void notifyListeners( ContainerBuilderEvent<T> event ){
+		for( IContainerBuilderListener<T> listener: listeners )
 			listener.notifyContainerBuilt(event);
 	}
 	
 	/**
 	 * Build the container
+	 * @return 
 	 */
-	public void build(){
+	public boolean buildA(){
 
 		//We first parse the jp2p xml file to see which services we need, and then include the contexts we find
 		try {
@@ -92,7 +97,7 @@ public class Jp2pContainerBuilder{
 						if(( info.getContext() == null ) || ( context.equals( info.getContext() ))){
 							info.setContext( event.getContext().getName());
 							info.setFound( true );
-							if( buildContainer() )
+							if( build() )
 								return;
 						}
 					}
@@ -112,7 +117,8 @@ public class Jp2pContainerBuilder{
 			}
 		};
 		
-		contextLoader.addContextLoaderListener(listener);		
+		contextLoader.addContextLoaderListener(listener);
+		return true;
 	}
 
 	public void close(){
@@ -138,13 +144,14 @@ public class Jp2pContainerBuilder{
 	/**
 	 * Try to build the container. Returns false if the container cannot be built
 	 */
-	private boolean buildContainer(){
+	@SuppressWarnings("unchecked")
+	public boolean build(){
 		if( !isCompleted())
 			return false;
 
 		XMLContainerBuilder builder = new XMLContainerBuilder( activator.getBundleId(), activator.getClass(), contextLoader );
-		this.container = builder.build();
-		this.notifyListeners( new ContainerBuilderEvent<Object>(this, container));
+		this.container = (IJp2pContainer<T>) builder.build();
+		this.notifyListeners( new ContainerBuilderEvent<T>(this, container));
 		return true;
 	}
 	

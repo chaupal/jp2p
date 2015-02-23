@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.v20140602
 Bundle-Vendor: Condast
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: net.jp2p.chaupal.activator,
+ net.jp2p.chaupal.builder,
  net.jp2p.chaupal.dispatcher,
  net.jp2p.chaupal.jxta.network,
  net.jp2p.chaupal.module,
@@ -26,6 +27,7 @@ Import-Package: net.jp2p.chaupal.activator,
  net.jp2p.container.xml,
  net.jp2p.jxta.advertisement,
  net.jp2p.jxta.advertisement.service,
+ net.jp2p.jxta.builder,
  net.jp2p.jxta.discovery,
  net.jp2p.jxta.factory,
  net.jp2p.jxta.netpeergroup,
@@ -33,8 +35,8 @@ Import-Package: net.jp2p.chaupal.activator,
  net.jp2p.jxta.peergroup,
  net.jp2p.jxta.pipe,
  net.jp2p.jxta.socket,
- net.jxse.osgi,
  net.jxse.osgi.compat,
+ net.jxse.osgi.platform.activator,
  net.jxta.discovery,
  net.jxta.document,
  net.jxta.exception,
@@ -56,12 +58,11 @@ Import-Package: net.jp2p.chaupal.activator,
  org.osgi.framework;version="1.7.0",
  org.osgi.service.log;version="1.3.0",
  org.osgi.util.tracker;version="1.5.1"
-Service-Component: OSGI-INF/chaupalcontext.xml, OSGI-INF/jxtacontext.xml, OSGI-INF/jxta.xml
+Service-Component: OSGI-INF/chaupalcontext.xml, OSGI-INF/jxtacontext.xml
 Export-Package: net.jp2p.chaupal.jxta.activator,
  net.jp2p.chaupal.jxta.advertisement,
  net.jp2p.chaupal.jxta.discovery,
  net.jp2p.chaupal.jxta.network,
- net.jp2p.chaupal.jxta.osgi,
  net.jp2p.chaupal.jxta.peergroup
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: net.jp2p.chaupal.jxta.Activator
