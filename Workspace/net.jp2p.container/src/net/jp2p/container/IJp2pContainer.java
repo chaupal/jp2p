@@ -75,7 +75,7 @@ public interface IJp2pContainer<T extends Object> extends IJp2pComponentNode<T> 
 	public ComponentEventDispatcher getDispatcher();
 	
 	/**
-	 * Fotrece deactivation of the child nodes
+	 * Force deactivation of the child nodes
 	 */
 	public void deactivate();
 }

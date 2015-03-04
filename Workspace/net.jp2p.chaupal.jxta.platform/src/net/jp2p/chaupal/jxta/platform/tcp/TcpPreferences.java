@@ -10,10 +10,10 @@ package net.jp2p.chaupal.jxta.platform.tcp;
 import java.util.Iterator;
 
 import net.jp2p.chaupal.jxta.platform.INetworkPreferences;
-import net.jp2p.chaupal.jxta.root.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.container.partial.PartialPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jxta.refplatform.platform.NetworkConfigurator;
+import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
+import net.jxta.platform.NetworkConfigurator;
 
 public class TcpPreferences implements INetworkPreferences {
 

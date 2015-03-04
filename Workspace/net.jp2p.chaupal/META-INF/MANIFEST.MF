@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Chaupal OSGI Services for JP2P Container
 Bundle-SymbolicName: net.jp2p.chaupal;singleton:=true
-Bundle-Version: 1.0.0.v20140602
-Bundle-Vendor: Condast
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Chaupal.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/jp2pcontext.xml
 Export-Package: net.jp2p.chaupal,
@@ -18,7 +18,6 @@ Export-Package: net.jp2p.chaupal,
  net.jp2p.chaupal.utils,
  net.jp2p.chaupal.xml
 Import-Package: net.jp2p.container,
- net.jp2p.container.activator,
  net.jp2p.container.builder,
  net.jp2p.container.component,
  net.jp2p.container.context,
@@ -28,10 +27,7 @@ Import-Package: net.jp2p.container,
  net.jp2p.container.persistence,
  net.jp2p.container.properties,
  net.jp2p.container.utils,
- net.jp2p.jxta.builder,
- net.jxse.osgi.compat,
- org.eclipse.core.runtime;version="3.4.0",
- org.eclipse.core.runtime.preferences;version="3.3.0",
+ org.eclipse.core.runtime.preferences;version="[3.3.0,3.9.9)",
  org.eclipselabs.osgi.ds.broker.service,
  org.osgi.framework;version="1.7.0",
  org.osgi.service.log;version="1.3.0",
@@ -39,3 +35,4 @@ Import-Package: net.jp2p.container,
  org.osgi.util.tracker;version="1.5.1"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: net.jp2p.chaupal.Activator
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.0.0,4.0.0)"

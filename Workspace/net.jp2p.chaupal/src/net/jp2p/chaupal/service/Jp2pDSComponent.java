@@ -20,7 +20,13 @@ import org.eclipselabs.osgi.ds.broker.service.AbstractAttendeeProviderComponent;
 import org.eclipselabs.osgi.ds.broker.service.AbstractPalaver;
 import org.eclipselabs.osgi.ds.broker.service.AbstractProvider;
 
-
+/**
+ * This component is used to register a provider in declarative services, and monitors the build process
+ * that is offered through the activator. A listener regiters itself with the builder and sets the container
+ * so that it can be provided
+ * @author Kees
+ *
+ */
 public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implements IJp2pDSComponent {
 
 	private Jp2pContainerProvider<Object> provider;

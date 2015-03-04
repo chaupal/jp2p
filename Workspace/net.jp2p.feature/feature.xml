@@ -2,8 +2,8 @@
 <feature
       id="net.jp2p.feature"
       label="JP2P Core Bundles"
-      version="1.0.1.v20141021"
-      provider-name="Chaupal">
+      version="1.0.0.qualifier"
+      provider-name="Chaupal.org">
 
    <description url="https://github.com/chaupal">
       This feauture contains the UI Tools for Chaupal applications:
@@ -72,17 +72,16 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <url>
-      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/2.8.0/milestone/20141015/jp2p-core/site.xml"/>
+      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/2.8.0/milestone/20150303/jp2p/site.xml"/>
    </url>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.runtime" version="3.0.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.preferences"/>
+      <import plugin="org.eclipselabs.osgi.ds.broker"/>
       <import plugin="org.eclipse.osgi" version="3.9.1" match="greaterOrEqual"/>
-      <import plugin="jxse"/>
-      <import plugin="org.eclipse.equinox.ds" version="1.4.0" match="greaterOrEqual"/>
-      <import plugin="net.jp2p.chaupal.jxta" version="1.0.0" match="greaterOrEqual"/>
-      <import feature="net.jxse.feature" version="1.0.3.v20141020"/>
+      <import plugin="net.jxse.osgi"/>
+      <import plugin="net.jxse.osgi.platform"/>
    </requires>
 
    <plugin
@@ -107,85 +106,7 @@ END OF TERMS AND CONDITIONS
          unpack="false"/>
 
    <plugin
-         id="net.jp2p.jxse.compatibility"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="net.jp2p.jxta"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipselabs.osgi.ds.broker"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jp2p.chaupal.jxse.platform"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="net.jp2p.chaupal.jxse.platform.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jp2p.chaupal.jxta.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jp2p.chaupal.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jp2p.container.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jp2p.jxse.compatibility.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jp2p.jxta.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jp2p.project"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.jp2p.project.source"
          download-size="0"
          install-size="0"
          version="0.0.0"

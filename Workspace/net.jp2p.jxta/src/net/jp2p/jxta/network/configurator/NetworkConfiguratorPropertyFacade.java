@@ -19,7 +19,7 @@ public class NetworkConfiguratorPropertyFacade extends AbstractPropertyFacade<Ne
 	@Override
 	public Object getProperty( IJp2pProperties id) {
 		NetworkConfigurator configurator = super.getModule();
-		if(!( id instanceof NetworkManagerProperties ))
+		if(!( id instanceof NetworkConfiguratorProperties ))
 			return null;
 		NetworkConfiguratorProperties property = ( NetworkConfiguratorProperties )id;
 		switch( property ){

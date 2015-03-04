@@ -12,9 +12,9 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
-import net.jp2p.chaupal.jxta.root.network.configurator.NetworkConfigurationPropertySource;
-import net.jp2p.chaupal.jxta.root.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
-import net.jxta.refplatform.platform.NetworkConfigurator;
+import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource;
+import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
+import net.jxta.platform.NetworkConfigurator;
 
 public class SecurityConfiguration {
 

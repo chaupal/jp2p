@@ -9,13 +9,10 @@ package net.jp2p.chaupal.jxta.platform.factory;
 
 import java.util.Collection;
 
-import net.jp2p.chaupal.jxta.module.AbstractModuleFactory;
 import net.jp2p.chaupal.jxta.platform.Activator;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jxse.module.IJxtaModuleService;
-import net.jxta.platform.Module;
-import net.jxta.refplatform.platform.NetworkConfigurator;
+import net.jxta.platform.NetworkConfigurator;
 
 public class NetworkModuleFactory extends AbstractModuleFactory<Module> {
 

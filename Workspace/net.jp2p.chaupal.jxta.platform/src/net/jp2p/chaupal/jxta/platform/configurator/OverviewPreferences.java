@@ -13,19 +13,19 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 
 import net.jp2p.chaupal.jxta.platform.INetworkPreferences;
-import net.jp2p.chaupal.jxta.root.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.container.persistence.AbstractPreferences;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource;
 import net.jxta.id.IDFactory;
 import net.jxta.peer.PeerID;
 import net.jxta.peergroup.PeerGroupID;
-import net.jxta.refplatform.platform.NetworkConfigurator;
-import net.jxta.refplatform.platform.NetworkManager.ConfigMode;
+import net.jxta.platform.NetworkConfigurator;
+import net.jxta.platform.NetworkManager;
 
 public class OverviewPreferences extends AbstractPreferences<String, Object> implements INetworkPreferences{
 
@@ -53,7 +53,7 @@ public class OverviewPreferences extends AbstractPreferences<String, Object> imp
 		NetworkConfiguratorProperties id = (NetworkConfiguratorProperties) key;
 		switch( id ){
 		case CONFIG_MODE:
-			return ConfigMode.valueOf( value );
+			return NetworkManager.ConfigMode.valueOf( value );
 		case STORE_HOME:
 			return  URI.create(value);
 		case PEER_ID:
@@ -134,7 +134,7 @@ public class OverviewPreferences extends AbstractPreferences<String, Object> imp
 		NetworkConfiguratorProperties id = (NetworkConfiguratorProperties) key;		
 		switch( id ){
 		case CONFIG_MODE:
-			configurator.setMode((( ConfigMode )value).ordinal() );
+			configurator.setMode((( NetworkManager.ConfigMode )value).ordinal() );
 			break;
 		case PEER_ID:
 			configurator.setPeerID(( PeerID ) value );

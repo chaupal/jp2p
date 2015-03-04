@@ -47,6 +47,7 @@ import net.jp2p.jxta.peergroup.PeerGroupPropertySource;
 import net.jxta.id.IDFactory;
 import net.jxta.peer.PeerID;
 import net.jxta.peergroup.PeerGroupID;
+import net.jxta.platform.JxtaApplication;
 import net.jxta.platform.NetworkManager;
 
 public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>{
@@ -127,7 +128,7 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 			//Load the http module
 			//IJp2pContext context = Activator.getLoader().
 			File file = path.toFile();
-			NetworkManager manager = new NetworkManager( preferences.getConfigMode(), name, file.toURI());
+			NetworkManager manager = JxtaApplication.getNetworkManager( preferences.getConfigMode(), name, file.toURI());
 			NetworkModuleFactory factory = new NetworkModuleFactory( properties, manager.getConfigurator() );
 			factory.createModules();
 			return new Jp2pComponentNode<NetworkManager>( super.getPropertySource(), manager );
