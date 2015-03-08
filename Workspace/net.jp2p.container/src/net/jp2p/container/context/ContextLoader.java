@@ -9,6 +9,7 @@ package net.jp2p.container.context;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,6 +21,8 @@ import net.jp2p.container.utils.Utils;
 
 public class ContextLoader {
 
+	private static final String S_CONTEXTS_AVAILABLE = "The following JP2P contexts are available";
+	
 	private Collection<IJp2pContext> contexts;
 	
 	private static ContextLoader contextLoader = new ContextLoader();
@@ -29,7 +32,7 @@ public class ContextLoader {
 	private Lock lock = new ReentrantLock();
 	
 	private ContextLoader() {
-		contexts = new ArrayList<IJp2pContext>();
+		contexts = new TreeSet<IJp2pContext>();
 		this.listeners = new ArrayList<IContextLoaderListener>();
 	}
 
@@ -157,6 +160,19 @@ public class ContextLoader {
 				return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Print the available contexts
+	 * @return
+	 */
+	public String printContexts(){
+		StringBuffer buffer = new StringBuffer();
+		buffer.append( S_CONTEXTS_AVAILABLE + "\n");
+		for( IJp2pContext context : contexts ){
+			buffer.append( "\t" + context.getName() + "\n" );
+		}
+		return buffer.toString();
 	}
 
 	/**

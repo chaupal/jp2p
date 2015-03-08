@@ -159,4 +159,10 @@ public class ChaupalContext implements IJp2pContext {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public int compareTo(IJp2pContext o) {
+		return this.getName().compareTo( o.getName());
+	}
+
 }

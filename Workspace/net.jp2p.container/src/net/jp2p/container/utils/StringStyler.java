@@ -117,4 +117,15 @@ public class StringStyler
 			return null;
 		return str.replace("_", "-").toLowerCase();
 	}
+
+	/**
+	 * Create a pretty string from the given one
+	 * @param strng
+	 * @return
+	 */
+	public static String prettyStringFromXml( String strng ){
+		String str = styleToEnum(strng);
+		return prettyString(str);
+	}
+
 }

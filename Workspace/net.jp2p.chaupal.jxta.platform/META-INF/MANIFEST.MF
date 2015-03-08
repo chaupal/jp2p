@@ -5,7 +5,6 @@ Bundle-SymbolicName: net.jp2p.chaupal.jxta.platform
 Bundle-Version: 1.0.0.v20140323
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: Chaupal
-Bundle-Activator: net.jp2p.chaupal.jxta.platform.Activator
 Import-Package: net.jp2p.chaupal,
  net.jp2p.chaupal.activator,
  net.jp2p.chaupal.context,
@@ -33,14 +32,19 @@ Import-Package: net.jp2p.chaupal,
  net.jxta.document,
  net.jxta.id,
  net.jxta.impl.content,
+ net.jxta.impl.loader,
+ net.jxta.impl.modulemanager,
  net.jxta.impl.peergroup,
  net.jxta.impl.protocol,
+ net.jxta.module,
  net.jxta.peer,
  net.jxta.peergroup,
  net.jxta.peergroup.core,
  net.jxta.platform,
  net.jxta.protocol,
  net.jxta.service,
+ net.jxta.util.cardinality,
+ org.eclipse.osgi.framework.console;version="1.1.0",
  org.osgi.framework,
  org.osgi.service.log;version="1.3.0",
  org.osgi.util.tracker;version="1.5.1"
@@ -49,5 +53,4 @@ Export-Package: net.jp2p.chaupal.jxta.platform.configurator.partial,
  net.jp2p.chaupal.jxta.platform.rdvrel,
  net.jp2p.chaupal.jxta.platform.security,
  net.jp2p.chaupal.jxta.platform.tcp
-Bundle-ActivationPolicy: lazy
-Service-Component: OSGI-INF/context.xml, OSGI-INF/moduleloader.xml 
+Service-Component: OSGI-INF/jxta.xml, OSGI-INF/jxtaplatformcontext.xml 

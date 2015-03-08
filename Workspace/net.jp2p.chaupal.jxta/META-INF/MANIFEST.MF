@@ -49,7 +49,7 @@ Import-Package: net.jp2p.chaupal.activator,
  org.osgi.framework;version="1.7.0",
  org.osgi.service.log;version="1.3.0",
  org.osgi.util.tracker;version="1.5.1"
-Service-Component: OSGI-INF/chaupalcontext.xml, OSGI-INF/jxtacontext.xml
+Service-Component: OSGI-INF/chaupalcontext.xml, OSGI-INF/jxtacontext.xml, OSGI-INF/jxta.xml 
 Export-Package: net.jp2p.chaupal.jxta.activator,
  net.jp2p.chaupal.jxta.advertisement,
  net.jp2p.chaupal.jxta.discovery,

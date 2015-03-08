@@ -190,4 +190,9 @@ public class Jp2pContext implements IJp2pContext {
 		}
 		return factory;
 	}
+
+	@Override
+	public int compareTo(IJp2pContext o) {
+		return this.getName().compareTo( o.getName());
+	}
 }

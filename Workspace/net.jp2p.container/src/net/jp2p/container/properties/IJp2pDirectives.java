@@ -21,6 +21,7 @@ public interface IJp2pDirectives{
 		SCHEMA_LOCATION,
 		ID,
 		NAME,
+		ENABLED,
 		CLASS,
 		TYPE,
 		FILE,

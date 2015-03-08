@@ -13,10 +13,12 @@ import java.util.Collection;
 import net.jp2p.chaupal.jxta.platform.configurator.OverviewPreferences;
 import net.jp2p.chaupal.jxta.platform.http.Http2Preferences;
 import net.jp2p.chaupal.jxta.platform.http.HttpPreferences;
+import net.jp2p.chaupal.jxta.platform.internal.Component;
 import net.jp2p.chaupal.jxta.platform.multicast.MulticastPreferences;
 import net.jp2p.chaupal.jxta.platform.security.SecurityPreferences;
 import net.jp2p.chaupal.jxta.platform.tcp.TcpPreferences;
 import net.jp2p.chaupal.jxta.platform.utils.JxtaFactoryUtils;
+import net.jp2p.container.context.IJp2pContext;
 import net.jp2p.container.context.Jp2pContext;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.partial.PartialPropertySource;
@@ -31,9 +33,9 @@ import net.jp2p.container.xml.IJp2pHandler;
 import net.jp2p.jxta.context.IJxtaContext;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
 import net.jp2p.jxta.network.NetworkManagerPreferences;
-import net.jp2p.jxta.seeds.SeedListPropertySource;
+//import net.jp2p.jxta.seeds.SeedListPropertySource;
 import net.jxta.peergroup.IModuleDefinitions.DefaultModules;
-import net.jxta.platform.ModuleClassID;
+import net.jxta.peergroup.core.ModuleClassID;
 
 public class JxtaNetworkContext implements IJxtaContext {
 
@@ -53,7 +55,8 @@ public class JxtaNetworkContext implements IJxtaContext {
 		JxtaNetworkComponents[] components = JxtaNetworkComponents.values();
 		String[] names = new String[ components.length ];
 		for( int i=0; i<components.length; i++ )
-			names[i] = components[i].toString();
+			if( Component.canBuild( components[i]))
+				names[i] = components[i].toString();
 		return names;
 	}
 
@@ -129,7 +132,7 @@ public class JxtaNetworkContext implements IJxtaContext {
 			convertor = new OverviewPreferences( (IJp2pWritePropertySource<IJp2pProperties>) source );
 			break;
 		case SEED_LIST:
-			SeedListPropertySource slps = (SeedListPropertySource) source;
+			//SeedListPropertySource slps = (SeedListPropertySource) source;
 			//SeedInfo seedInfo = new SeedInfo((( IJp2pProperties )source.getKey()).name(), ( String )value );
 			//slps.setProperty( (IJp2pProperties) property.getKey(), seedInfo );
 			break;
@@ -158,5 +161,11 @@ public class JxtaNetworkContext implements IJxtaContext {
 	public IJp2pHandler getHandler() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int compareTo(IJp2pContext o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

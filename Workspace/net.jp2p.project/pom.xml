@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <tycho.version>0.20.0</tycho.version>
+        <tycho.version>0.22.0</tycho.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
         <luna-repo.url>http://download.eclipse.org/releases/luna</luna-repo.url>
         <jxse-repo.url>https://chaupal.github.io/releases/2.8.0/milestone/20150303/alpha/jxse-osgi</jxse-repo.url>        

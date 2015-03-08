@@ -48,10 +48,10 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 	protected AbstractJp2pPropertySource( String bundleId, String componentName, int depth ) {
 		this.properties = new TreeMap<IJp2pProperties,ManagedProperty<IJp2pProperties,Object>>( new SimpleComparator<IJp2pProperties>());
 		this.properties.put( Jp2pProperties.BUNDLE_ID, new ManagedProperty<IJp2pProperties,Object>( this, Jp2pProperties.BUNDLE_ID, bundleId, S_JP2P ));
-		this.properties.put( Jp2pProperties.ENABLED, new ManagedProperty<IJp2pProperties,Object>( this, Jp2pProperties.ENABLED, Boolean.TRUE, S_JP2P ));
 		this.directives = new TreeMap<IJp2pDirectives,String>(new SimpleComparator<IJp2pDirectives>());
 		this.directives.put( IJp2pDirectives.Directives.ID, bundleId + "." + componentName.toLowerCase() );
 		this.directives.put( IJp2pDirectives.Directives.CREATE, Boolean.TRUE.toString() );
+		this.directives.put( IJp2pDirectives.Directives.ENABLED, Boolean.TRUE.toString() );
 		this.componentName = componentName;
 		this.children = new ArrayList<IJp2pPropertySource<?>>();
 		this.listeners = new ArrayList<IManagedPropertyListener<IJp2pProperties, Object>>();
@@ -98,10 +98,10 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 
 	@Override
 	public boolean isEnabled() {
-		ManagedProperty<IJp2pProperties,Object> prop = this.properties.get( Jp2pProperties.ENABLED );
-		if( prop == null )
+		String directive = this.getDirective( Directives.ENABLED );
+		if( directive == null )
 			return true;
-		return (boolean) prop.getValue();
+		return Boolean.valueOf(directive);
 	}
 
 	@Override

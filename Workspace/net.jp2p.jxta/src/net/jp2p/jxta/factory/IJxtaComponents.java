@@ -32,7 +32,7 @@ public interface IJxtaComponents{
 			if(( str == null ) || ( str.length() == 0 ))
 				return false;
 			for( JxtaComponents comp: values()){
-				if( comp.name().equals( str.toUpperCase() ))
+				if( comp.name().equals( str ))
 					return true;
 			}
 			return false;
@@ -60,7 +60,7 @@ public interface IJxtaComponents{
 			if(( str == null ) || ( str.length() == 0 ))
 				return false;
 			for( JxtaNetworkComponents comp: values()){
-				if( comp.name().equals( str.toUpperCase() ))
+				if( comp.name().equals( str ))
 					return true;
 			}
 			return false;

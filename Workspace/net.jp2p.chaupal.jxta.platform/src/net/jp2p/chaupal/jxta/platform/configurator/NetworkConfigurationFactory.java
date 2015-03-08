@@ -36,14 +36,14 @@ import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
 import net.jp2p.jxta.network.NetworkManagerPropertySource;
 import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource;
 import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
-import net.jp2p.jxta.seeds.SeedListFactory;
-import net.jp2p.jxta.seeds.SeedListPropertySource;
+//import net.jp2p.jxta.seeds.SeedListFactory;
+//import net.jp2p.jxta.seeds.SeedListPropertySource;
 import net.jxta.platform.NetworkConfigurator;
 import net.jxta.platform.NetworkManager;
 
 public class NetworkConfigurationFactory extends AbstractDependencyFactory<NetworkConfigurator, IJp2pComponent<NetworkManager>> {
 
-	private Collection<SeedListPropertySource> seedlists;
+	//private Collection<SeedListPropertySource> seedlists;
 	
 	@Override
 	public String getComponentName() {
@@ -53,10 +53,10 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	@Override
 	protected NetworkConfigurationPropertySource onCreatePropertySource() {
 		NetworkConfigurationPropertySource source = new NetworkConfigurationPropertySource( (NetworkManagerPropertySource) super.getParentSource() );
-		seedlists = new ArrayList<SeedListPropertySource>();
-		SeedListPropertySource slps = new SeedListPropertySource( source, source.getClass() );
-		if( slps.hasSeeds() )
-			seedlists.add(slps);
+		//seedlists = new ArrayList<SeedListPropertySource>();
+		//SeedListPropertySource slps = new SeedListPropertySource( source, source.getClass() );
+		//if( slps.hasSeeds() )
+		//	seedlists.add(slps);
 		return source;
 	}
 	
@@ -79,7 +79,7 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 				return;
 			if( !AbstractJp2pPropertySource.isChild(super.getPropertySource(), event.getFactory().getPropertySource()))
 				return;
-			seedlists.add( (SeedListPropertySource) event.getFactory().getPropertySource() );
+			//seedlists.add( (SeedListPropertySource) event.getFactory().getPropertySource() );
 			break;
 		default:
 			break;
@@ -99,9 +99,9 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 			this.fillPartialConfigurator(configurator, properties);
 			configurator.clearRelaySeeds();
 			configurator.clearRendezvousSeeds();
-			for( SeedListPropertySource source: this.seedlists )
-				SeedListFactory.fillSeeds(configurator, source);
-			configurator.save();
+			//for( SeedListPropertySource source: this.seedlists )
+			//	SeedListFactory.fillSeeds(configurator, source);
+			//configurator.save();
 		} catch (IOException e) {
 			Logger log = Logger.getLogger( this.getClass().getName() );
 			log.log( Level.SEVERE, e.getMessage() );
@@ -114,8 +114,8 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	@SuppressWarnings({ "unchecked" })
 	private void fillPartialConfigurator( NetworkConfigurator configurator, IJp2pPropertySource<?> source ) throws IOException{
 		INetworkPreferences preferences;
-		if( source instanceof SeedListPropertySource )
-			return;
+		//if( source instanceof SeedListPropertySource )
+		//	return;
 		
 		if( source instanceof PartialPropertySource ){
 			preferences = getPreferences(( PartialPropertySource )source);

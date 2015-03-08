@@ -15,7 +15,7 @@ import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.xml.IJp2pHandler;
 
-public interface IJp2pContext {
+public interface IJp2pContext extends Comparable<IJp2pContext>{
 
 	/**
 	 * Directives give additional clues on how to create the component

@@ -139,7 +139,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		if( Utils.isNull( contextName )){
 			contextName = AbstractJp2pPropertySource.findFirstAncestorDirective( parentSource, Directives.CONTEXT );
 		}
-		IJp2pContext context = getContext( contexts, contextName );
+		IJp2pContext context = getContext( contexts, contextName, StringStyler.prettyStringFromXml( componentName ));
 		if( context == null )
 			context = this.contexts.getContextForComponent( contextName, componentName);
 		IPropertySourceFactory factory = context.getFactory(componentName);
@@ -310,10 +310,14 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	 * @param source
 	 * @return
 	 */
-	private static IJp2pContext getContext( ContextLoader contexts, String contextName ){
-		if( Utils.isNull( contextName ))
-			return null;
-		return contexts.getContext(contextName);
+	private static IJp2pContext getContext( ContextLoader contexts, String contextName, String componentName ){
+		if( !Utils.isNull( contextName ))
+			return contexts.getContext(contextName);
+		for( IJp2pContext context: contexts.getContexts() ){
+			if( context.isValidComponentName(contextName, componentName))
+				return context;
+		}
+		return null;
 	}
 
 	/**

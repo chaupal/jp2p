@@ -34,7 +34,16 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	private IContainerBuilderListener<Object> listener;
 	
 	private IComponentChangedListener<?> componentListener;
+
 	
+	@Override
+	public void start(BundleContext bundleContext) throws Exception {
+		contextLoader = ContextLoader.getInstance();
+		contextService = new Jp2pContextService( contextLoader, bundleContext );
+		contextService.open();		
+		super.start(bundleContext);
+	}
+
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
 		IJp2pContainerBuilder<Object> builder = super.getBuilder();
@@ -64,9 +73,6 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	@Override
 	protected void createContainer() {
 		//Add contexts, both default as the ones provided through DS
-		contextLoader = ContextLoader.getInstance();
-
-		contextService = new Jp2pContextService( contextLoader, super.getBundleContext() );
 		Jp2pContainerBuilder<Object> builder = new Jp2pContainerBuilder<Object>( this, contextLoader );
 		listener = new IContainerBuilderListener<Object>(){
 
@@ -81,8 +87,6 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 		super.setContainer( builder.getContainer());
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 		this.componentListener = new ComponentChangedListener();
-		dispatcher.addServiceChangeListener( this.componentListener);
-		
-		contextService.open();		
+		dispatcher.addServiceChangeListener( this.componentListener);		
 	}
 }

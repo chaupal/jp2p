@@ -14,7 +14,7 @@ import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
-import net.jp2p.jxta.seeds.SeedListFactory;
+//import net.jp2p.jxta.seeds.SeedListFactory;
 
 public class JxtaFactoryUtils {
 
@@ -40,7 +40,7 @@ public class JxtaFactoryUtils {
 			factory = new NetworkConfigurationFactory( );
 			break;
 		case SEED_LIST:
-			factory = new SeedListFactory( );
+			//factory = new SeedListFactory( );
 			break;
 		case TCP:
 		case HTTP:

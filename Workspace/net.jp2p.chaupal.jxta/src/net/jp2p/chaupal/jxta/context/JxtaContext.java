@@ -21,7 +21,6 @@ import net.jp2p.container.utils.Utils;
 import net.jp2p.container.xml.IJp2pHandler;
 import net.jp2p.jxta.advertisement.AdvertisementPreferences;
 import net.jp2p.jxta.discovery.DiscoveryPreferences;
-import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
 import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.network.NetworkManagerPreferences;
@@ -43,11 +42,8 @@ public class JxtaContext implements IJp2pContext {
 		JxtaComponents[] components = JxtaComponents.values();
 		Collection<String> names = new ArrayList<String>();
 		for( int i=0; i<components.length; i++ )
-			names.add( components[i].toString() );
-		if( Component.canBuild( JxtaNetworkComponents.PLATFORM )){
-			JxtaNetworkComponents[] nc = JxtaNetworkComponents.values();
-			for( int i=0; i<nc.length; i++ )
-				names.add( nc[i].toString() );			
+			if( Component.canBuild( components[i])){
+				names.add( components[i].toString() );
 		}
 		return names.toArray( new String[ names.size() ]);
 	}
@@ -136,6 +132,11 @@ public class JxtaContext implements IJp2pContext {
 	public IJp2pHandler getHandler() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int compareTo(IJp2pContext o) {
+		return this.getName().compareTo( o.getName());
 	}
 
 }

@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.jp2p.chaupal.jxta.platform.factory.NetworkModuleFactory;
 import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -129,8 +128,8 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 			//IJp2pContext context = Activator.getLoader().
 			File file = path.toFile();
 			NetworkManager manager = JxtaApplication.getNetworkManager( preferences.getConfigMode(), name, file.toURI());
-			NetworkModuleFactory factory = new NetworkModuleFactory( properties, manager.getConfigurator() );
-			factory.createModules();
+			//NetworkModuleFactory factory = new NetworkModuleFactory( properties, manager.getConfigurator() );
+			//factory.createModules();
 			return new Jp2pComponentNode<NetworkManager>( super.getPropertySource(), manager );
 		} catch (Exception e) {
 			Logger log = Logger.getLogger( this.getClass().getName() );
