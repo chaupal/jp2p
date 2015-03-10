@@ -84,7 +84,6 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 			return;
 		}
 		//The name is not a group. try the default JP2P components
-		logger.info( "Parsing " + qName);
 		if( Jp2pContext.Components.isComponent( qName )){
 			IJp2pComponents current = Jp2pContext.Components.valueOf( StringStyler.styleToEnum( qName ));
 			switch(( Jp2pContext.Components )current ){

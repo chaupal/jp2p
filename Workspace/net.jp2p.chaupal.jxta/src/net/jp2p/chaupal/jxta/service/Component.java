@@ -17,9 +17,9 @@ public class Component{
 		this.canBuild = false;
 	}
 
-	public void activate(){};
+	public void activate(){ /* DO NOTHING */ }
 	
-	public void decativate(){}
+	public void deactivate(){ /* DO NOTHING */ }
 	
 	public void registerBuilder(IModuleBuilder<Module> builder) {
 		manager.registerBuilder( builder);

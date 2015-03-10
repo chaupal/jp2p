@@ -16,6 +16,8 @@ import net.jp2p.chaupal.jxta.platform.http.HttpPreferences;
 import net.jp2p.chaupal.jxta.platform.internal.Component;
 import net.jp2p.chaupal.jxta.platform.multicast.MulticastPreferences;
 import net.jp2p.chaupal.jxta.platform.security.SecurityPreferences;
+import net.jp2p.chaupal.jxta.platform.seeds.SeedInfo;
+import net.jp2p.chaupal.jxta.platform.seeds.SeedListPropertySource;
 import net.jp2p.chaupal.jxta.platform.tcp.TcpPreferences;
 import net.jp2p.chaupal.jxta.platform.utils.JxtaFactoryUtils;
 import net.jp2p.container.context.IJp2pContext;
@@ -33,7 +35,6 @@ import net.jp2p.container.xml.IJp2pHandler;
 import net.jp2p.jxta.context.IJxtaContext;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
 import net.jp2p.jxta.network.NetworkManagerPreferences;
-//import net.jp2p.jxta.seeds.SeedListPropertySource;
 import net.jxta.peergroup.IModuleDefinitions.DefaultModules;
 import net.jxta.peergroup.core.ModuleClassID;
 
@@ -44,7 +45,7 @@ public class JxtaNetworkContext implements IJxtaContext {
 
 	@Override
 	public String getName() {
-		return Contexts.JXTA.toString();
+		return Contexts.PLATFORM.toString();
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class JxtaNetworkContext implements IJxtaContext {
 		JxtaNetworkComponents[] components = JxtaNetworkComponents.values();
 		String[] names = new String[ components.length ];
 		for( int i=0; i<components.length; i++ )
-			if( Component.canBuild( components[i]))
+			//if( Component.canBuild( components[i]))
 				names[i] = components[i].toString();
 		return names;
 	}
@@ -165,7 +166,6 @@ public class JxtaNetworkContext implements IJxtaContext {
 
 	@Override
 	public int compareTo(IJp2pContext o) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.getName().compareTo( o.getName() );
 	}
 }

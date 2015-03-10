@@ -21,9 +21,9 @@ public class Component{
 		manager = JxtaLoaderModuleManager.getRoot( Component.class, true );	
 	}
 
-	public void activate(){};
+	public void activate(){}
 	
-	public void decativate(){}
+	public void deactivate(){}
 
 	public void registerBuilder(IModuleBuilder<Module> builder) {
 		manager.registerBuilder( builder);

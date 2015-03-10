@@ -65,10 +65,10 @@ public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBui
 	}
 	
 	/**
-	 * Build the container
+	 * Build the services
 	 * @return 
 	 */
-	public boolean buildA(){
+	public boolean build(){
 
 		//We first parse the jp2p xml file to see which services we need, and then include the contexts we find
 		try {
@@ -97,7 +97,7 @@ public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBui
 						if(( info.getContext() == null ) || ( context.equals( info.getContext() ))){
 							info.setContext( event.getContext().getName());
 							info.setFound( true );
-							if( build() )
+							if( buildContainer() )
 								return;
 						}
 					}
@@ -145,7 +145,7 @@ public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBui
 	 * Try to build the container. Returns false if the container cannot be built
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean build(){
+	protected boolean buildContainer(){
 		if( !isCompleted())
 			return false;
 

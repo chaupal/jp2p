@@ -5,12 +5,12 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.chaupal.jxse.platform.seeds;
+package net.jp2p.chaupal.jxta.platform.seeds;
 
 import java.util.Iterator;
 
-import net.jp2p.chaupal.jxse.platform.network.INetworkPreferences;
-import net.jp2p.chaupal.jxse.platform.seeds.ISeedInfo.SeedTypes;
+import net.jp2p.chaupal.jxta.platform.INetworkPreferences;
+import net.jp2p.chaupal.jxta.platform.seeds.ISeedInfo.SeedTypes;
 import net.jp2p.container.persistence.AbstractPreferences;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
