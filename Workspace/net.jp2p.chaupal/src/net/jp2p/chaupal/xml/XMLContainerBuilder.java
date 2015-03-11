@@ -21,8 +21,8 @@ import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.builder.IFactoryBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener.BuilderEvents;
-import net.jp2p.container.context.ContextLoader;
-import net.jp2p.container.context.Jp2pContext;
+import net.jp2p.container.context.IJp2pServiceBuilder;
+import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
@@ -33,11 +33,11 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	private String plugin_id;
 	private Class<?> clss;
 	private Collection<ICompositeBuilder<ContainerFactory>> builders;
-	private ContextLoader contexts;
+	private Jp2pServiceLoader contexts;
 	
 	private Collection<ICompositeBuilderListener<?>> listeners;
 	
-	public XMLContainerBuilder( String plugin_id, Class<?> clss, ContextLoader contexts) {
+	public XMLContainerBuilder( String plugin_id, Class<?> clss, Jp2pServiceLoader contexts) {
 		this.plugin_id = plugin_id;
 		this.clss = clss;	
 		this.contexts = contexts;
@@ -68,7 +68,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 		this.notifyPropertyCreated( containerBuilder);
 		
 		//Last create the container and the components
-		ContainerFactory factory = (ContainerFactory) containerBuilder.getFactory( Jp2pContext.Components.JP2P_CONTAINER.toString() );
+		ContainerFactory factory = (ContainerFactory) containerBuilder.getFactory( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() );
 		return (Jp2pContainer) factory.createComponent();
 	}
 

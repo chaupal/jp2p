@@ -18,9 +18,8 @@ import java.util.logging.Logger;
 import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.builder.ComponentNode;
 import net.jp2p.container.builder.IContainerBuilder;
-import net.jp2p.container.context.ContextLoader;
-import net.jp2p.container.context.IJp2pContext;
-import net.jp2p.container.context.Jp2pContext;
+import net.jp2p.container.context.IJp2pServiceBuilder;
+import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.factory.IPropertySourceFactory;
@@ -49,7 +48,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	private ManagedProperty<IJp2pProperties,Object> property;
 
 	private IContainerBuilder builder;
-	private ContextLoader contexts;
+	private Jp2pServiceLoader loader;
 	private ContainerFactory root;
 	private FactoryNode node;
 	private String bundleId;
@@ -58,10 +57,10 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 
 	private static Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 
-	public Jp2pHandler( IContainerBuilder builder, ContextLoader contexts, String bundleId, Class<?> clss ) {
+	public Jp2pHandler( IContainerBuilder builder, Jp2pServiceLoader loader, String bundleId, Class<?> clss ) {
 		this.bundleId = bundleId;
 		this.builder = builder;
-		this.contexts = contexts;
+		this.loader = loader;
 		this.clss = clss;
 		this.stack = new Stack<String>();
 	}
@@ -84,15 +83,15 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 			return;
 		}
 		//The name is not a group. try the default JP2P components
-		if( Jp2pContext.Components.isComponent( qName )){
-			IJp2pComponents current = Jp2pContext.Components.valueOf( StringStyler.styleToEnum( qName ));
-			switch(( Jp2pContext.Components )current ){
+		if( IJp2pServiceBuilder.Components.isComponent( qName )){
+			IJp2pComponents current = IJp2pServiceBuilder.Components.valueOf( StringStyler.styleToEnum( qName ));
+			switch(( IJp2pServiceBuilder.Components )current ){
 			case JP2P_CONTAINER:
-				factory = builder.getFactory( Jp2pContext.Components.JP2P_CONTAINER.toString() );
+				factory = builder.getFactory( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() );
 				if( factory == null ){
 					factory = new ContainerFactory( bundleId );
 				}
-				factory.prepare( Jp2pContext.Components.JP2P_CONTAINER.toString(), null, builder, new HashMap<String, String>());
+				factory.prepare( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString(), null, builder, new HashMap<String, String>());
 				this.root = (ContainerFactory) factory;
 				break;
 			case CONTEXT:
@@ -102,7 +101,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 				factory = this.getFactory( qName, attributes, node.getData().getPropertySource());
 				if( factory instanceof IContextFactory ){
 					IContextFactory cf = (IContextFactory) factory;
-					cf.setLoader(contexts);
+					cf.setLoader(loader);
 				}		
 				break;			
 			default:
@@ -138,10 +137,8 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		if( Utils.isNull( contextName )){
 			contextName = AbstractJp2pPropertySource.findFirstAncestorDirective( parentSource, Directives.CONTEXT );
 		}
-		IJp2pContext context = getContext( contexts, contextName, StringStyler.prettyStringFromXml( componentName ));
-		if( context == null )
-			context = this.contexts.getContextForComponent( contextName, componentName);
-		IPropertySourceFactory factory = context.getFactory(componentName);
+		String str = StringStyler.prettyStringFromXml( componentName );
+		IPropertySourceFactory factory = builder.getFactory( str );
 		if( factory != null ){
 			factory.prepare(componentName, (IJp2pPropertySource<IJp2pProperties>) parentSource, builder, convertAttributes(attributes));
 		}
@@ -248,9 +245,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		if(( property == null ) || ( property.getKey() == null ))
 			return;
 		IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) node.getData().getPropertySource();
-		String contextName = source.getDirective( Directives.CONTEXT );
-		IJp2pContext context = contexts.getContextForComponent(contextName, source.getComponentName());
-		IPropertyConvertor<String, Object> convertor = context.getConvertor(source);
+		IPropertyConvertor<String, Object> convertor = loader.getConvertor(source);
 		if( convertor != null )
 			convertor.setPropertyFromConverion( property.getKey(), value);
 		else
@@ -302,21 +297,6 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		if( Utils.isNull(attr))
 			return false;
 		return Boolean.parseBoolean( attr );
-	}
-
-	/**
-	 * Get the context, or try to load it if none was found
-	 * @param source
-	 * @return
-	 */
-	private static IJp2pContext getContext( ContextLoader contexts, String contextName, String componentName ){
-		if( !Utils.isNull( contextName ))
-			return contexts.getContext(contextName);
-		for( IJp2pContext context: contexts.getContexts() ){
-			if( context.isValidComponentName(contextName, componentName))
-				return context;
-		}
-		return null;
 	}
 
 	/**

@@ -13,35 +13,37 @@ import java.util.TreeSet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import net.jp2p.container.context.ContextLoaderEvent.LoaderEvent;
+import net.jp2p.container.context.Jp2pLoaderEvent.LoaderEvent;
+import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.Utils;
 
-public class ContextLoader {
+public class Jp2pServiceLoader{
 
-	private static final String S_CONTEXTS_AVAILABLE = "The following JP2P contexts are available";
+	private static final String S_CONTEXTS_AVAILABLE = "The following JP2P builders are available";
 	
-	private Collection<IJp2pContext> contexts;
+	private Collection<IJp2pServiceBuilder> builders;
 	
-	private static ContextLoader contextLoader = new ContextLoader();
+	private static Jp2pServiceLoader loader = new Jp2pServiceLoader();
 
 	private Collection<IContextLoaderListener> listeners;
 	
 	private Lock lock = new ReentrantLock();
 	
-	private ContextLoader() {
-		contexts = new TreeSet<IJp2pContext>();
+	private Jp2pServiceLoader() {
+		builders = new TreeSet<IJp2pServiceBuilder>();
 		this.listeners = new ArrayList<IContextLoaderListener>();
 	}
 
-	public static ContextLoader getInstance(){
-		return contextLoader;
+	public static Jp2pServiceLoader getInstance(){
+		return loader;
 	}
 
 	public void clear(){
-		contexts.clear();
+		builders.clear();
 	}
 
 	public synchronized void addContextLoaderListener( IContextLoaderListener listener ){
@@ -64,7 +66,7 @@ public class ContextLoader {
 		}
 	}
 
-	private synchronized final void notifyContextChanged( ContextLoaderEvent event ){
+	private synchronized final void notifyContextChanged( Jp2pLoaderEvent event ){
 		lock.lock();
 		try{
 			for( IContextLoaderListener listener: listeners){
@@ -83,53 +85,59 @@ public class ContextLoader {
 		}
 	}
 
-	public void addContext( IJp2pContext context ){
-		this.contexts.add( context );
-		notifyContextChanged( new ContextLoaderEvent( this, LoaderEvent.REGISTERED, context ));		
+	public void addBuilder( IJp2pServiceBuilder builder ){
+		this.builders.add( builder );
+		notifyContextChanged( new Jp2pLoaderEvent( this, LoaderEvent.REGISTERED, builder ));		
 	}
 
-	public void removeContext( IJp2pContext context ){
-		this.contexts.remove( context );
-		notifyContextChanged( new ContextLoaderEvent( this, LoaderEvent.UNREGISTERED, context ));		
+	public void removeBuilder( IJp2pServiceBuilder builder ){
+		this.builders.remove( builder );
+		notifyContextChanged( new Jp2pLoaderEvent( this, LoaderEvent.UNREGISTERED, builder ));		
 	}
-	
-	/**
-	 * get the contexts
-	 * @return
-	 */
-	public IJp2pContext[] getContexts(){
-		return this.contexts.toArray( new IJp2pContext[ this.contexts.size() ]);
-	}
-	
+		
 	/**
 	 * Get the context for the given name
-	 * @param contextName
+	 * @param name
 	 * @return
 	 */
-	public IJp2pContext getContext( String contextName ){
-		for( IJp2pContext context: this.contexts ){
-			if( Utils.isNull( contextName ))
+	protected IJp2pServiceBuilder getBuilder( String name ){
+		for( IJp2pServiceBuilder context: this.builders ){
+			if( Utils.isNull( name ))
 				continue;
-			if( context.getName().toLowerCase().equals( contextName.toLowerCase() ))
+			if( context.getName().toLowerCase().equals( name.toLowerCase() ))
 				return context;
 		}
 		return null;
 	}
 
 	/**
+	 * Returns true if the loader supports a factory with the given name
+	 * @param componentName
+	 * @return
+	 */
+	public boolean hasFactory( String componentName ){
+		for( IJp2pServiceBuilder builder: this.builders ){
+			if( builder.hasFactory( componentName))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Get the context for the given componentname
 	 * @param contextName
 	 * @return
 	 */
-	public synchronized IJp2pContext getContextForComponent( String contextName, String componentName ){
+	public synchronized IPropertyConvertor<String, Object> getConvertor( String contextName, IJp2pPropertySource<IJp2pProperties> source ){
+		String componentName = source.getComponentName();
 		if( Utils.isNull( componentName ))
-			return new Jp2pContext();
+			return null;
 		
-		for( IJp2pContext context: this.contexts ){
-			if(context.isValidComponentName(contextName, componentName))
-				return context;
+		for( IJp2pServiceBuilder builder: this.builders ){
+			if( builder.getName().equals( contextName ) && builder.hasFactory( componentName))
+				return builder.getConvertor(source);
 		}
-		return new Jp2pContext();
+		return null;
 	}
 
 	/**
@@ -138,28 +146,15 @@ public class ContextLoader {
 	 * @return
 	 */
 	public IPropertyConvertor<String,Object> getConvertor( IJp2pPropertySource<IJp2pProperties> source ){
-		for( IJp2pContext context: this.contexts ){
-			IPropertyConvertor<String,Object> convertor = context.getConvertor( source);
+		String contextName = source.getDirective( Directives.CONTEXT );
+		for( IJp2pServiceBuilder builder: this.builders ){
+			if( !builder.getName().equals( contextName ))
+				continue;
+			IPropertyConvertor<String,Object> convertor = builder.getConvertor( source);
 			if(convertor != null )
 				return convertor;
 		}
 		return null;
-	}
-
-	/**
-	 * Get the context for the given componentname
-	 * @param contextName
-	 * @return
-	 */
-	public boolean isLoadedComponent( String contextName, String componentName ){
-		if( Utils.isNull( componentName ))
-			return false;
-		
-		for( IJp2pContext context: this.contexts ){
-			if(context.isValidComponentName(contextName, componentName))
-				return true;
-		}
-		return false;
 	}
 
 	/**
@@ -169,10 +164,23 @@ public class ContextLoader {
 	public String printContexts(){
 		StringBuffer buffer = new StringBuffer();
 		buffer.append( S_CONTEXTS_AVAILABLE + "\n");
-		for( IJp2pContext context : contexts ){
-			buffer.append( "\t" + context.getName() + "\n" );
+		for( IJp2pServiceBuilder builder : builders ){
+			buffer.append( builder.printFactories() );
 		}
 		return buffer.toString();
+	}
+
+	/**
+	 * Get the context, or try to load it if none was found
+	 * @param source
+	 * @return
+	 */
+	public IPropertySourceFactory getFactory( String contextName, String componentName ){
+		if( Utils.isNull( contextName ))
+		return null;
+		
+		IJp2pServiceBuilder builder = getBuilder(contextName);
+		return builder.getFactory(componentName);
 	}
 
 	/**
@@ -181,14 +189,14 @@ public class ContextLoader {
 	 * @param className
 	 * @return
 	*/
-	public static IJp2pContext loadContext( Object source, String className ){
+	public static IJp2pServiceBuilder loadContext( Object source, String className ){
 		if( Utils.isNull( className ))
 			return null;
 		Class<?> clss;
-		IJp2pContext context = null;
+		IJp2pServiceBuilder context = null;
 		try {
 			clss = source.getClass().getClassLoader().loadClass( className );
-			context = (IJp2pContext) clss.newInstance();
+			context = (IJp2pServiceBuilder) clss.newInstance();
 			System.out.println("URL found: " + ( clss != null ));
 		}
 		catch ( Exception e1) {

@@ -7,10 +7,10 @@
  *******************************************************************************/
 package net.jp2p.container.persistence;
 
-import net.jp2p.container.context.ContextLoader;
+import net.jp2p.container.context.Jp2pServiceLoader;
 
 public interface IContextFactory {
 
-	public abstract void setLoader(ContextLoader loader);
+	public abstract void setLoader(Jp2pServiceLoader loader);
 
 }

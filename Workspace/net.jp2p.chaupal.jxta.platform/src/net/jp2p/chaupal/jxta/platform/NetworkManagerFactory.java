@@ -23,7 +23,7 @@ import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.Jp2pComponentNode;
-import net.jp2p.container.context.Jp2pContext;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.AbstractFilterFactory;
 import net.jp2p.container.factory.filter.ComponentCreateFilter;
 import net.jp2p.container.factory.filter.IComponentFactoryFilter;
@@ -60,7 +60,7 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 	
 	@Override
 	protected IComponentFactoryFilter createFilter() {
-		return new ComponentCreateFilter<IJp2pComponent<NetworkManager>, ContainerFactory>( BuilderEvents.COMPONENT_CREATED, Jp2pContext.Components.JP2P_CONTAINER.toString(), this );
+		return new ComponentCreateFilter<IJp2pComponent<NetworkManager>, ContainerFactory>( BuilderEvents.COMPONENT_CREATED, IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString(), this );
 	}
 
 	@Override

@@ -9,7 +9,7 @@ package net.jp2p.container.context;
 
 import java.util.EventObject;
 
-public class ContextLoaderEvent extends EventObject {
+public class Jp2pLoaderEvent extends EventObject {
 	private static final long serialVersionUID = -7007824760022520347L;
 
 	public enum LoaderEvent{
@@ -18,19 +18,19 @@ public class ContextLoaderEvent extends EventObject {
 	}
 	
 	private LoaderEvent type;
-	private IJp2pContext context;
+	private IJp2pServiceBuilder builder;
 	
-	public ContextLoaderEvent( Object source, LoaderEvent type, IJp2pContext context) {
+	public Jp2pLoaderEvent( Object source, LoaderEvent type, IJp2pServiceBuilder builder) {
 		super(source);
 		this.type = type;
-		this.context = context;
+		this.builder = builder;
 	}
 
 	public LoaderEvent getType() {
 		return type;
 	}
 
-	public IJp2pContext getContext() {
-		return context;
+	public IJp2pServiceBuilder getBuilder() {
+		return builder;
 	}
 }

@@ -7,10 +7,10 @@
  *******************************************************************************/
 package net.jp2p.jxta.context;
 
-import net.jp2p.container.context.IJp2pContext;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jxta.peergroup.core.ModuleClassID;
 
-public interface IJxtaContext extends IJp2pContext {
+public interface IJxtaBuilder extends IJp2pServiceBuilder {
 
 	/**
 	 * Get the names of the module class ids that are supported by this context

@@ -12,15 +12,15 @@ package net.jp2p.chaupal.activator;
 
 import org.osgi.framework.BundleContext;
 
+import net.jp2p.chaupal.builder.Jp2pBuilderService;
 import net.jp2p.chaupal.builder.Jp2pContainerBuilder;
-import net.jp2p.chaupal.context.Jp2pContextService;
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.builder.IJp2pContainerBuilder;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
-import net.jp2p.container.context.ContextLoader;
+import net.jp2p.container.context.Jp2pServiceLoader;
 
 public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
@@ -28,8 +28,8 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 		super( bundle_id );
 	}
 
-	private static Jp2pContextService contextService; 
-	private ContextLoader contextLoader;
+	private static Jp2pBuilderService jp2pBuilderService; 
+	private Jp2pServiceLoader loader;
 	
 	private IContainerBuilderListener<Object> listener;
 	
@@ -38,9 +38,9 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
-		contextLoader = ContextLoader.getInstance();
-		contextService = new Jp2pContextService( contextLoader, bundleContext );
-		contextService.open();		
+		loader = Jp2pServiceLoader.getInstance();
+		jp2pBuilderService = new Jp2pBuilderService( loader, bundleContext );
+		jp2pBuilderService.open();		
 		super.start(bundleContext);
 	}
 
@@ -52,14 +52,14 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 			listener = null;
 		}
 
-		if( contextService != null ){
-			contextService.close();
-			contextService = null;
+		if( jp2pBuilderService != null ){
+			jp2pBuilderService.close();
+			jp2pBuilderService = null;
 		}
 		
-		if( contextLoader != null ){
-			contextLoader.clear();
-			contextLoader = null;
+		if( loader != null ){
+			loader.clear();
+			loader = null;
 		}
 
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
@@ -73,7 +73,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	@Override
 	protected void createContainer() {
 		//Add contexts, both default as the ones provided through DS
-		Jp2pContainerBuilder<Object> builder = new Jp2pContainerBuilder<Object>( this, contextLoader );
+		Jp2pContainerBuilder<Object> builder = new Jp2pContainerBuilder<Object>( this, loader );
 		listener = new IContainerBuilderListener<Object>(){
 
 			@Override

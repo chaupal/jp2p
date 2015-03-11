@@ -5,13 +5,13 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.chaupal.context;
+package net.jp2p.chaupal.builder;
 
 import org.osgi.framework.BundleContext;
 
 import net.jp2p.chaupal.module.AbstractService;
-import net.jp2p.container.context.ContextLoader;
-import net.jp2p.container.context.IJp2pContext;
+import net.jp2p.container.context.IJp2pServiceBuilder;
+import net.jp2p.container.context.Jp2pServiceLoader;
 
 /**
  * <p>
@@ -29,15 +29,15 @@ import net.jp2p.container.context.IJp2pContext;
  * PROP_DIR service property.
  * </p>
  */
-public class Jp2pContextService extends AbstractService<IJp2pContext>{
+public class Jp2pBuilderService extends AbstractService<IJp2pServiceBuilder>{
 
 	//in the component.xml file you will use target="(jp2p.context=contextName)"
-   private static String filter = "(jp2p.context=*)"; 
+   private static String filter = "(jp2p.builder=*)"; 
 
-	private ContextLoader loader;
+	private Jp2pServiceLoader loader;
 	
-	public Jp2pContextService(ContextLoader loader, BundleContext bc) {
-		super( bc, IJp2pContext.class, filter );
+	public Jp2pBuilderService(Jp2pServiceLoader loader, BundleContext bc) {
+		super( bc, IJp2pServiceBuilder.class, filter );
 		this.loader = loader;
 	}
 	
@@ -47,13 +47,13 @@ public class Jp2pContextService extends AbstractService<IJp2pContext>{
 	}
 
 	@Override
-	protected void onDataRegistered(IJp2pContext context) {
-		loader.addContext(context);
+	protected void onDataRegistered(IJp2pServiceBuilder context) {
+		loader.addBuilder(context);
 	}
 
 	@Override
-	protected void onDataUnRegistered(IJp2pContext context) {
-		loader.removeContext(context);
+	protected void onDataUnRegistered(IJp2pServiceBuilder context) {
+		loader.removeBuilder(context);
 	}
 
 	@Override

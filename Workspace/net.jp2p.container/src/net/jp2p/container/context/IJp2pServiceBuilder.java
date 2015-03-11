@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.jp2p.container.context;
 
+import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -15,7 +16,7 @@ import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.xml.IJp2pHandler;
 
-public interface IJp2pContext extends Comparable<IJp2pContext>{
+public interface IJp2pServiceBuilder extends Comparable<IJp2pServiceBuilder>{
 
 	/**
 	 * Directives give additional clues on how to create the component
@@ -43,6 +44,30 @@ public interface IJp2pContext extends Comparable<IJp2pContext>{
 		}
 	}
 
+	public static enum Components implements IJp2pComponents{
+		JP2P_CONTAINER,
+		CONTEXT,
+		STARTUP_SERVICE,
+		PERSISTENCE_SERVICE,
+		LOGGER_SERVICE;
+	
+		@Override
+		public String toString() {
+			return StringStyler.prettyString( super.toString() );
+		}	
+		
+		public static boolean isComponent( String str ){
+			str = StringStyler.styleToEnum(str);
+			if(( str == null ) || ( str.length() == 0 ))
+				return false;
+			for( Components comp: values()){
+				if( comp.name().equals( str.toUpperCase() ))
+					return true;
+			}
+			return false;
+		}
+	}
+
 	//The name of the context
 	public String getName();
 	
@@ -57,7 +82,7 @@ public interface IJp2pContext extends Comparable<IJp2pContext>{
 	 * @param componentName
 	 * @return
 	 */
-	public boolean isValidComponentName( String contextName, String componentName );
+	public boolean hasFactory( String componentName );
 
 	//Get the factory that is created
 	public IPropertySourceFactory getFactory( String componentName);
@@ -83,4 +108,10 @@ public interface IJp2pContext extends Comparable<IJp2pContext>{
 	 * @return
 	 */
 	public Object createValue( String componentName, IJp2pProperties id );
+	
+	/**
+	 * Print the supported factories, and whether they are available
+	 * @return
+	 */
+	public String printFactories();
 }

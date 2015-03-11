@@ -9,7 +9,7 @@ package net.jp2p.container.startup;
 
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.IJp2pContainer.ContainerProperties;
-import net.jp2p.container.context.Jp2pContext;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
@@ -27,7 +27,7 @@ public class Jp2pStartupPropertySource extends AbstractJp2pWritePropertySource{
 	}
 	
 	public Jp2pStartupPropertySource( Jp2pContainerPropertySource parent ) {
-		super( Jp2pContext.Components.STARTUP_SERVICE.toString(), parent );
+		super( IJp2pServiceBuilder.Components.STARTUP_SERVICE.toString(), parent );
 		super.setDirective( Directives.AUTO_START, parent.getDirective( Directives.AUTO_START ));
 		super.setProperty( StartupProperties.RETRIES, 10 );
 	}

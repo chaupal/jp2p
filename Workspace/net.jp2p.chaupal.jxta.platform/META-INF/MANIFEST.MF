@@ -54,4 +54,4 @@ Export-Package: net.jp2p.chaupal.jxta.platform.configurator.partial,
  net.jp2p.chaupal.jxta.platform.rdvrel,
  net.jp2p.chaupal.jxta.platform.security,
  net.jp2p.chaupal.jxta.platform.tcp
-Service-Component: OSGI-INF/jxta.xml, OSGI-INF/jxtaplatformcontext.xml 
+Service-Component: OSGI-INF/jxta.xml, OSGI-INF/jxtaplatformbuilder.xml 

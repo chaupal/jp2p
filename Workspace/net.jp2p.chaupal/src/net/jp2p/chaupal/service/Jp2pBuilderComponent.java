@@ -18,31 +18,31 @@
  *******************************************************************************/
 package net.jp2p.chaupal.service;
 
-import net.jp2p.container.context.ContextLoader;
-import net.jp2p.container.context.IJp2pContext;
+import net.jp2p.container.context.Jp2pServiceLoader;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
 
-public class ContextComponent implements CommandProvider{
+public class Jp2pBuilderComponent implements CommandProvider{
 
-	private ContextLoader loader = ContextLoader.getInstance();
+	private Jp2pServiceLoader loader = Jp2pServiceLoader.getInstance();
 	
-	public void addContext( IJp2pContext context ){
-		loader.addContext(context);
+	public void addBuilder( IJp2pServiceBuilder context ){
+		loader.addBuilder(context);
 	}
 
-	public void removeContext( IJp2pContext context ){
-		loader.removeContext(context);
+	public void removeBuilder( IJp2pServiceBuilder context ){
+		loader.removeBuilder(context);
 	}
 
-	public Object _jp2p_contexts( CommandInterpreter ci ){
+	public Object _jp2p( CommandInterpreter ci ){
 		return loader.printContexts();		
 	}
 	
 	@Override
 	public String getHelp() {
-		return "\tjp2p_contexts - Provides information about the registered JP2P Contexts.";
+		return "\tjp2p - Provides information about the registered JP2P Service Builders.";
 	}
 
 }

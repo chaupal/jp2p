@@ -14,8 +14,8 @@ import java.util.Stack;
 import java.util.logging.Logger;
 
 import net.jp2p.chaupal.xml.IContextEntities;
-import net.jp2p.container.context.ContextLoader;
-import net.jp2p.container.context.Jp2pContext;
+import net.jp2p.container.context.IJp2pServiceBuilder;
+import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
@@ -37,7 +37,7 @@ class ServiceHandler extends DefaultHandler implements IContextEntities{
 	
 	private boolean skip;
 
-	public ServiceHandler( ContextLoader contexts ) {
+	public ServiceHandler( Jp2pServiceLoader loaders ) {
 		this.skip = false;
 		//this.contexts = contexts;
 		this.stack = new Stack<String>();
@@ -64,9 +64,9 @@ class ServiceHandler extends DefaultHandler implements IContextEntities{
 			skip = true;
 			return;
 		}
-		if( Jp2pContext.Components.isComponent( qName )){
-			IJp2pComponents current = Jp2pContext.Components.valueOf( StringStyler.styleToEnum( qName ));
-			switch(( Jp2pContext.Components )current ){
+		if( IJp2pServiceBuilder.Components.isComponent( qName )){
+			IJp2pComponents current = IJp2pServiceBuilder.Components.valueOf( StringStyler.styleToEnum( qName ));
+			switch(( IJp2pServiceBuilder.Components )current ){
 			case CONTEXT:
 				stack.push( qName );
 				skip = true;

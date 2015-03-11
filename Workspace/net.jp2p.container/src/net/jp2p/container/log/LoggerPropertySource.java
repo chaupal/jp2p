@@ -7,7 +7,7 @@
  *******************************************************************************/
 package net.jp2p.container.log;
 
-import net.jp2p.container.context.Jp2pContext;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -25,6 +25,6 @@ public class LoggerPropertySource extends AbstractJp2pWritePropertySource{
 	}
 	
 	public LoggerPropertySource( IJp2pPropertySource<IJp2pProperties> parent) {
-		super( Jp2pContext.Components.LOGGER_SERVICE.toString(), parent);
+		super( IJp2pServiceBuilder.Components.LOGGER_SERVICE.toString(), parent);
 	}
 }

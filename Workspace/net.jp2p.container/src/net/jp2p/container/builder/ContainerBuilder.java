@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.jp2p.container.context.Jp2pContext;
+import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
@@ -137,7 +137,7 @@ public class ContainerBuilder implements IContainerBuilder{
 		IJp2pWritePropertySource<IJp2pProperties> ncp = (IJp2pWritePropertySource<IJp2pProperties>) parentSource.getChild( str );
 		if( ncp != null )
 			return null;
-		IPropertySourceFactory factory = Jp2pContext.getDefaultFactory( componentName );
+		IPropertySourceFactory factory = ContainerFactory.getDefaultFactory( componentName );
 		factory.prepare(componentName, parentSource, this, null);
 		addFactory(factory);
 		if(!createSource )

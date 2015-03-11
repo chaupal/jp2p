@@ -11,15 +11,19 @@ import java.util.Map;
 
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
-import net.jp2p.container.context.Jp2pContext;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IPropertySourceFactory;
+import net.jp2p.container.persistence.SimplePersistenceFactory;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
+import net.jp2p.container.startup.StartupServiceFactory;
+import net.jp2p.container.utils.StringStyler;
+import net.jp2p.container.utils.Utils;
 
 public class ContainerFactory extends AbstractComponentFactory<Object>
 {
@@ -40,7 +44,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 
 	@Override
 	public String getComponentName() {
-		return Jp2pContext.Components.JP2P_CONTAINER.toString();
+		return IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString();
 	}
 	
 	@Override
@@ -81,7 +85,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 		boolean autostart = AbstractJp2pPropertySource.isAutoStart(this.getPropertySource());
 		if( autostart)
 			return true;
-		String comp = Jp2pContext.Components.STARTUP_SERVICE.toString();
+		String comp = IJp2pServiceBuilder.Components.STARTUP_SERVICE.toString();
 		IPropertySourceFactory startup = container.getFactory( comp );
 		return (( startup != null ) &&  AbstractJp2pPropertySource.isAutoStart(startup.getPropertySource() ));
 	}
@@ -89,15 +93,43 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 	private void onPropertySourceCreated(){
 		IContainerBuilder builder = super.getBuilder();
 		boolean autostart = AbstractJp2pPropertySource.isAutoStart(this.getPropertySource());
-		String comp = Jp2pContext.Components.STARTUP_SERVICE.toString();
+		String comp = IJp2pServiceBuilder.Components.STARTUP_SERVICE.toString();
 		IPropertySourceFactory startup = builder.getFactory( comp );
 		if( !autostart || ( startup != null ))
 			return;
 		
-		startup = Jp2pContext.getDefaultFactory( comp);
+		startup = getDefaultFactory( comp);
 		startup.prepare( comp, super.getPropertySource(), builder, null );
 		IJp2pWritePropertySource<IJp2pProperties> props = (IJp2pWritePropertySource<IJp2pProperties>) startup.createPropertySource();
 		props.setDirective( Directives.AUTO_START, Boolean.TRUE.toString());
 		builder.addFactory(startup);
 	}
+
+	/* (non-Javadoc)
+	 * @see net.osgi.jp2p.builder.IContainerBuilder#getDefaultFactory(net.osgi.jp2p.properties.IJp2pPropertySource, java.lang.String)
+	*/
+	public static IPropertySourceFactory getDefaultFactory( String componentName ){
+		if( Utils.isNull(componentName))
+			return null;
+		String comp = StringStyler.styleToEnum(componentName);
+		if( !IJp2pServiceBuilder.Components.isComponent( comp ))
+			return null;
+		IJp2pServiceBuilder.Components component = IJp2pServiceBuilder.Components.valueOf(comp);
+		IPropertySourceFactory factory = null;
+		switch( component ){
+		case STARTUP_SERVICE:
+			factory = new StartupServiceFactory();
+			break;
+		case PERSISTENCE_SERVICE:
+			factory = new SimplePersistenceFactory();
+			break;
+		case LOGGER_SERVICE:
+//			factory = new LoggerFactory();
+			break;
+		default:
+			break;
+		}
+		return factory;
+	}
+
 }

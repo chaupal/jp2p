@@ -9,7 +9,8 @@ package net.jp2p.container.log;
 
 import java.util.logging.Logger;
 
-import net.jp2p.container.context.Jp2pContext;
+import net.jp2p.container.context.AbstractJp2pServiceBuilder;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -27,7 +28,7 @@ public class LoggerFactory extends
 
 	@Override
 	public String getComponentName() {
-		return Jp2pContext.Components.LOGGER_SERVICE.toString();
+		return IJp2pServiceBuilder.Components.LOGGER_SERVICE.toString();
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class LoggerFactory extends
 	
 	@Override
 	public void notifyChange(ComponentBuilderEvent<Object> event) {
-		String contextName = Jp2pContext.getContextName( event.getFactory().getPropertySource() );
+		String contextName = AbstractJp2pServiceBuilder.getContextName( event.getFactory().getPropertySource() );
 		String msg = event.getBuilderEvent().toString() + ": <" + contextName + ">:" + event.getFactory().getComponentName();
 		logger.log( Jp2pLevel.JP2PLEVEL, msg );
 		System.out.println(msg);

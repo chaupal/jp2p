@@ -9,8 +9,8 @@ package net.jp2p.container.context;
 
 public interface IContextLoaderListener {
 
-	public void notifyRegisterContext( ContextLoaderEvent event );
+	public void notifyRegisterContext( Jp2pLoaderEvent event );
 
-	public void notifyUnregisterContext( ContextLoaderEvent event );
+	public void notifyUnregisterContext( Jp2pLoaderEvent event );
 
 }

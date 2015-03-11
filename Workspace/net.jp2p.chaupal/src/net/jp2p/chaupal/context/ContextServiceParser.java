@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
 import net.jp2p.container.builder.IFactoryBuilder;
-import net.jp2p.container.context.ContextLoader;
+import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.utils.IOUtils;
 import net.jp2p.container.utils.Utils;
 
@@ -46,11 +46,11 @@ public class ContextServiceParser{
 		
 	private boolean failed;
 	private URL url;
-	private ContextLoader contexts;
+	private Jp2pServiceLoader loaders;
 	
 	private Logger logger = Logger.getLogger( ContextServiceParser.class.getName() );
 	
-	public ContextServiceParser( ContextLoader contexts, Class<?> clss ) {
+	public ContextServiceParser( Jp2pServiceLoader contexts, Class<?> clss ) {
 		this( contexts, clss.getResource( IFactoryBuilder.S_DEFAULT_LOCATION ), clss );
 	}
 
@@ -61,10 +61,10 @@ public class ContextServiceParser{
 	 * @param location
 	 * @param builder
 	 */
-	public ContextServiceParser(  ContextLoader contexts, URL url, Class<?> clss ) {
+	public ContextServiceParser(  Jp2pServiceLoader contexts, URL url, Class<?> clss ) {
 		this.url = url;
 		this.failed = false;
-		this.contexts = contexts;
+		this.loaders = contexts;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class ContextServiceParser{
 			
 			//saxParser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA); 
 			//saxParser.setProperty(JAXP_SCHEMA_SOURCE, new File(JP2P_XSD_SCHEMA)); 
-			ServiceHandler handler = new ServiceHandler( contexts );
+			ServiceHandler handler = new ServiceHandler( loaders );
 			saxParser.parse( in, handler);
 			services = handler.getServices();
 			return services;

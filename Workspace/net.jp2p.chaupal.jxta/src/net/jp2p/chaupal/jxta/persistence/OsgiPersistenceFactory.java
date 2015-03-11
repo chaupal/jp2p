@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 
 import net.jp2p.chaupal.persistence.PersistedProperties;
 import net.jp2p.container.component.IJp2pComponent;
-import net.jp2p.container.context.Jp2pContext.Components;
+import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.persistence.IPersistedProperties;
 import net.jp2p.container.persistence.PersistenceService;
 import net.jp2p.container.persistence.SimplePersistenceFactory;

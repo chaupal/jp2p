@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import net.jp2p.container.component.IJp2pComponent;
-import net.jp2p.container.context.ContextLoader;
+import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.filter.BuilderEventFilter;
@@ -29,7 +29,7 @@ import net.jp2p.container.properties.ManagedProperty;
 public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedPropertyListener<IJp2pProperties, Object>> implements IContextFactory {
 
 	private Stack<IPropertyEventDispatcher> stack;
-	private ContextLoader loader;
+	private Jp2pServiceLoader loader;
 	
 	private IComponentFactoryFilter filter = new BuilderEventFilter<IJp2pComponent<IManagedPropertyListener<IJp2pProperties, Object>>>( BuilderEvents.PROPERTY_SOURCE_PREPARED, this );
 
@@ -37,7 +37,7 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 		stack = new Stack<IPropertyEventDispatcher>();
 	}
 
-	protected ContextLoader getLoader() {
+	protected Jp2pServiceLoader getLoader() {
 		return loader;
 	}
 
@@ -45,7 +45,7 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 	 * @see net.jp2p.container.persistence.IContextFactory#setLoader(net.jp2p.container.context.ContextLoader)
 	 */
 	@Override
-	public void setLoader(ContextLoader loader) {
+	public void setLoader(Jp2pServiceLoader loader) {
 		this.loader = loader;
 	}
 

@@ -10,19 +10,19 @@ package net.jp2p.chaupal.jxta.platform.context;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.jp2p.chaupal.jxta.platform.NetworkManagerFactory;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.chaupal.jxta.platform.configurator.OverviewPreferences;
+import net.jp2p.chaupal.jxta.platform.configurator.partial.PartialNetworkConfigFactory;
 import net.jp2p.chaupal.jxta.platform.http.Http2Preferences;
 import net.jp2p.chaupal.jxta.platform.http.HttpPreferences;
-import net.jp2p.chaupal.jxta.platform.internal.Component;
 import net.jp2p.chaupal.jxta.platform.multicast.MulticastPreferences;
 import net.jp2p.chaupal.jxta.platform.security.SecurityPreferences;
 import net.jp2p.chaupal.jxta.platform.seeds.SeedInfo;
 import net.jp2p.chaupal.jxta.platform.seeds.SeedListPropertySource;
 import net.jp2p.chaupal.jxta.platform.tcp.TcpPreferences;
-import net.jp2p.chaupal.jxta.platform.utils.JxtaFactoryUtils;
-import net.jp2p.container.context.IJp2pContext;
-import net.jp2p.container.context.Jp2pContext;
-import net.jp2p.container.factory.IPropertySourceFactory;
+import net.jp2p.container.context.AbstractJp2pServiceBuilder;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.partial.PartialPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -30,22 +30,24 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.IJp2pDirectives.Contexts;
 import net.jp2p.container.utils.StringStyler;
-import net.jp2p.container.utils.Utils;
 import net.jp2p.container.xml.IJp2pHandler;
-import net.jp2p.jxta.context.IJxtaContext;
+import net.jp2p.jxta.context.IJxtaBuilder;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
 import net.jp2p.jxta.network.NetworkManagerPreferences;
 import net.jxta.peergroup.IModuleDefinitions.DefaultModules;
 import net.jxta.peergroup.core.ModuleClassID;
 
-public class JxtaNetworkContext implements IJxtaContext {
+public class JxtaPlatformBuilder extends AbstractJp2pServiceBuilder implements IJxtaBuilder {
 
-	public JxtaNetworkContext() {
+	public JxtaPlatformBuilder() {
+		super( Contexts.PLATFORM.toString());
 	}
 
 	@Override
-	public String getName() {
-		return Contexts.PLATFORM.toString();
+	protected void prepare() {
+		super.addFactory( new NetworkManagerFactory( ));
+		super.addFactory( new NetworkConfigurationFactory( ));
+		super.addFactory( new PartialNetworkConfigFactory<Object>());
 	}
 
 	/**
@@ -76,35 +78,6 @@ public class JxtaNetworkContext implements IJxtaContext {
 			}
 		}		
 		return ids.toArray( new ModuleClassID[ ids.size() ]);
-	}
-
-	/**
-	 * Returns true if the given component name is valid for this context
-	 * @param componentName
-	 * @return
-	 */
-	@Override
-	public boolean isValidComponentName( String contextName, String componentName ){
-		if( !Utils.isNull( contextName ) && !Jp2pContext.isContextNameEqual(Contexts.JXTA.toString(), contextName ))
-			return false;
-		return JxtaNetworkComponents.isComponent( componentName );
-	}
-
-	/**
-	 * Change the factory to a Chaupal factory if required and available
-	 * @param factory
-	 * @return
-	 */
-	@Override
-	public IPropertySourceFactory getFactory( String componentName ){
-		JxtaNetworkComponents component = JxtaNetworkComponents.valueOf( StringStyler.styleToEnum(componentName));
-		String[] attrs;
-		switch( component ){
-		default:
-			attrs = new String[0];
-		}
-		IPropertySourceFactory factory = JxtaFactoryUtils.getDefaultFactory(componentName);
-		return factory;
 	}
 
 	@Override
@@ -165,7 +138,7 @@ public class JxtaNetworkContext implements IJxtaContext {
 	}
 
 	@Override
-	public int compareTo(IJp2pContext o) {
+	public int compareTo(IJp2pServiceBuilder o) {
 		return this.getName().compareTo( o.getName() );
 	}
 }

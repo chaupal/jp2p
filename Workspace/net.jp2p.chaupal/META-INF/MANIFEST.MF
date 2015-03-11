@@ -5,8 +5,8 @@ Bundle-SymbolicName: net.jp2p.chaupal;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Chaupal.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Service-Component: OSGI-INF/jp2pcontext.xml,
- OSGI-INF/contexts.xml
+Service-Component: OSGI-INF/jp2pbuilders.xml,
+ OSGI-INF/jp2pbuilder.xml
 Export-Package: net.jp2p.chaupal,
  net.jp2p.chaupal.activator,
  net.jp2p.chaupal.builder,
@@ -27,7 +27,9 @@ Import-Package: net.jp2p.container,
  net.jp2p.container.partial,
  net.jp2p.container.persistence,
  net.jp2p.container.properties,
+ net.jp2p.container.startup,
  net.jp2p.container.utils,
+ net.jp2p.container.xml,
  org.eclipse.core.runtime.preferences;version="[3.3.0,3.9.9)",
  org.eclipselabs.osgi.ds.broker.service,
  org.osgi.framework;version="1.7.0",

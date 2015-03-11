@@ -12,8 +12,7 @@ import java.util.Map;
 import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
-import net.jp2p.container.context.Jp2pContext;
-import net.jp2p.container.context.Jp2pContext.Components;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
@@ -35,7 +34,7 @@ public class StartupServiceFactory extends AbstractPropertySourceFactory
 
 	@Override
 	public String getComponentName() {
-		return Jp2pContext.Components.STARTUP_SERVICE.toString();
+		return IJp2pServiceBuilder.Components.STARTUP_SERVICE.toString();
 	}
 
 	@Override
@@ -47,16 +46,16 @@ public class StartupServiceFactory extends AbstractPropertySourceFactory
 	@Override
 	public void extendContainer() {
 		IContainerBuilder builder = super.getBuilder();
-		IPropertySourceFactory factory = builder.getFactory( Jp2pContext.Components.JP2P_CONTAINER.toString() );
+		IPropertySourceFactory factory = builder.getFactory( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() );
 		ContainerFactory cf = (ContainerFactory) factory;
 		if( !cf.isAutoStart() )
 			return;
 		IJp2pWritePropertySource<IJp2pProperties> props = (IJp2pWritePropertySource<IJp2pProperties>) factory.getPropertySource();
 		props.setDirective( Directives.AUTO_START, Boolean.TRUE.toString());
 		AbstractJp2pPropertySource.setParentDirective(Directives.AUTO_START, super.getPropertySource());
-		factory = builder.getFactory( Jp2pContext.Components.PERSISTENCE_SERVICE.toString() );
+		factory = builder.getFactory( IJp2pServiceBuilder.Components.PERSISTENCE_SERVICE.toString() );
 		if( factory == null ){
-			builder.addFactoryToContainer( Components.PERSISTENCE_SERVICE.toString(), super.getParentSource(), true, true);
+			builder.addFactoryToContainer( IJp2pServiceBuilder.Components.PERSISTENCE_SERVICE.toString(), super.getParentSource(), true, true);
 		}
 			
 	}

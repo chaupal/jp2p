@@ -30,7 +30,7 @@ import net.jp2p.container.builder.ICompositeBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.builder.IFactoryBuilder;
-import net.jp2p.container.context.ContextLoader;
+import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.utils.IOUtils;
 import net.jp2p.container.utils.Utils;
 
@@ -51,7 +51,7 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 	private boolean completed, failed;
 	private URL url;
 	private IContainerBuilder builder;
-	private ContextLoader contexts;
+	private Jp2pServiceLoader loader;
 	private String bundleId;
 	private Class<?> clss;
 	
@@ -59,8 +59,8 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 		
 	private Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 	
-	public XMLFactoryBuilder( String bundleId, Class<?> clss, IContainerBuilder builder, ContextLoader contexts ) {
-		this( bundleId, clss.getResource( S_DEFAULT_LOCATION ), clss, builder, contexts );
+	public XMLFactoryBuilder( String bundleId, Class<?> clss, IContainerBuilder builder, Jp2pServiceLoader cloader ) {
+		this( bundleId, clss.getResource( S_DEFAULT_LOCATION ), clss, builder, cloader );
 	}
 
 	/**
@@ -70,10 +70,10 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 	 * @param location
 	 * @param builder
 	 */
-	public XMLFactoryBuilder( String bundleId, URL url, Class<?> clss, IContainerBuilder builder, ContextLoader contexts ) {
+	public XMLFactoryBuilder( String bundleId, URL url, Class<?> clss, IContainerBuilder builder, Jp2pServiceLoader loader ) {
 		this.bundleId = bundleId;
 		this.builder = builder;
-		this.contexts = contexts;
+		this.loader = loader;
 		this.url = url;
 		this.clss = clss;
 		this.completed = false;
@@ -156,7 +156,7 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 			
 			//saxParser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA); 
 			//saxParser.setProperty(JAXP_SCHEMA_SOURCE, new File(JP2P_XSD_SCHEMA)); 
-			Jp2pHandler handler = new Jp2pHandler( builder, contexts, bundleId, clss );
+			Jp2pHandler handler = new Jp2pHandler( builder, loader, bundleId, clss );
 			saxParser.parse( in, handler);
 			root = handler.getRoot();
 			logger.info("JP2P Bundle Parsed: " + this.bundleId );
