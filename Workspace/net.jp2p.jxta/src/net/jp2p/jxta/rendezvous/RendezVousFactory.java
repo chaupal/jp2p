@@ -19,9 +19,8 @@ import net.jxta.rendezvous.RendezVousService;
 
 public class RendezVousFactory extends AbstractPeerGroupDependencyFactory<RendezVousService>{
 
-	@Override
-	public String getComponentName() {
-		return JxtaComponents.RENDEZVOUS_SERVICE.toString();
+	public RendezVousFactory() {
+		super( JxtaComponents.RENDEZVOUS_SERVICE.toString());
 	}	
 
 	@Override

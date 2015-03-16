@@ -24,17 +24,15 @@ import net.jp2p.container.properties.IJp2pDirectives.Directives;
 public class StartupServiceFactory extends AbstractPropertySourceFactory
 {
 	
-	@Override
-	public void prepare(String componentName,
-			IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, Map<String, String> attributes) {
-		super.prepare(componentName, parentSource, builder, attributes);
-		super.setCanCreate( builder != null );
+	public StartupServiceFactory() {
+		super(  IJp2pServiceBuilder.Components.STARTUP_SERVICE.toString() );
 	}
 
 	@Override
-	public String getComponentName() {
-		return IJp2pServiceBuilder.Components.STARTUP_SERVICE.toString();
+	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource,
+			IContainerBuilder builder, Map<String, String> attributes) {
+		super.prepare( parentSource, builder, attributes);
+		super.setCanCreate( builder != null );
 	}
 
 	@Override

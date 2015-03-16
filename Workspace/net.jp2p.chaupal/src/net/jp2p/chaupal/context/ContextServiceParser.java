@@ -114,7 +114,7 @@ public class ContextServiceParser{
 			
 			SAXParser saxParser = factory.newSAXParser();
 			if( !saxParser.isNamespaceAware() )
-				logger.warning( S_WRN_NOT_NAMESPACE_AWARE );
+				logger.fine( S_WRN_NOT_NAMESPACE_AWARE );
 			
 			//saxParser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA); 
 			//saxParser.setProperty(JAXP_SCHEMA_SOURCE, new File(JP2P_XSD_SCHEMA)); 

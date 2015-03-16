@@ -23,12 +23,8 @@ public class LoggerFactory extends
 
 	
 	public LoggerFactory() {
+		super( IJp2pServiceBuilder.Components.LOGGER_SERVICE.toString() );
 		super.setCanCreate(true);
-	}
-
-	@Override
-	public String getComponentName() {
-		return IJp2pServiceBuilder.Components.LOGGER_SERVICE.toString();
 	}
 
 	@Override

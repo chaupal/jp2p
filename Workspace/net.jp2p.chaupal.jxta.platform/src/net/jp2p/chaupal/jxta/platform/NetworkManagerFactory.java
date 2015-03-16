@@ -53,9 +53,8 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 		
 	public static final String S_WRN_NO_CONFIGURATOR = "Could not add network configurator";
 	
-	@Override
-	public String getComponentName() {
-		return JxtaNetworkComponents.NETWORK_MANAGER.toString();
+	public NetworkManagerFactory() {
+		super( JxtaNetworkComponents.NETWORK_MANAGER.toString());
 	}
 	
 	@Override

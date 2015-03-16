@@ -16,24 +16,21 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 
 public class PartialNetworkConfigFactory<T extends Object> extends AbstractPropertySourceFactory {
 
-	private String componentName;
 	
+	public PartialNetworkConfigFactory() {
+		super( null );
+	}
+
+
 	@Override
-	public void prepare(String componentName,
-			IJp2pPropertySource<IJp2pProperties> parentSource,
+	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource,
 			IContainerBuilder builder, Map<String, String> attributes) {
-		super.prepare(componentName, parentSource, builder, attributes);
-		this.componentName = componentName;
+		super.prepare( parentSource, builder, attributes);
 	}
 
-
-	@Override
-	public String getComponentName() {
-		return componentName;
-	}
 
 	@Override
 	protected PartialNetworkConfigPropertySource onCreatePropertySource() {
-		return new PartialNetworkConfigPropertySource( this.componentName, super.getParentSource() );
+		return new PartialNetworkConfigPropertySource( super.getComponentName(), super.getParentSource() );
 	}
 }

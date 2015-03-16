@@ -10,32 +10,33 @@
  *******************************************************************************/
 package net.jp2p.chaupal.activator;
 
-import org.osgi.framework.BundleActivator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.osgi.framework.BundleContext;
 
+import net.jp2p.chaupal.builder.IServiceManagerListener;
 import net.jp2p.chaupal.builder.Jp2pBuilderService;
 import net.jp2p.chaupal.builder.Jp2pServiceManager;
+import net.jp2p.chaupal.builder.ServiceManagerEvent;
 import net.jp2p.chaupal.xml.XMLContainerBuilder;
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
 import net.jp2p.container.IJp2pContainer;
-import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
-import net.jp2p.container.builder.IJp2pContainerBuilder;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
-import net.jp2p.container.context.IContextLoaderListener;
-import net.jp2p.container.context.Jp2pLoaderEvent;
 import net.jp2p.container.context.Jp2pServiceLoader;
 
 public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
 	private static Jp2pBuilderService jp2pBuilderService; 
 	private Jp2pServiceLoader loader;
-	private Jp2pServiceManager<Object> manager;
+	private Jp2pServiceManager manager;
 	
-	private IContainerBuilderListener<Object> listener;
-	
+	private IServiceManagerListener listener;	
 	private IComponentChangedListener<?> componentListener;
+	
+	private ExecutorService service;
 
 	protected Jp2pBundleActivator(String bundle_id) {
 		super( bundle_id );
@@ -45,20 +46,21 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		loader = Jp2pServiceLoader.getInstance();
-		manager = new Jp2pServiceManager<Object>(this, loader);
+		
+		//Passes the builders through to the loader
 		jp2pBuilderService = new Jp2pBuilderService( bundleContext, loader );
-		jp2pBuilderService.open();		
+		jp2pBuilderService.open();	
+		
 		super.start(bundleContext);
 	}
 
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
-		IJp2pContainerBuilder<Object> builder = super.getBuilder();
-		if(( builder != null ) && ( listener != null )){
-			builder.removeContainerBuilderListener(listener);
+		if(( manager != null ) && ( listener != null )){
+			manager.removeListener(listener);
 			listener = null;
 		}
-
+		
 		if( jp2pBuilderService != null ){
 			jp2pBuilderService.close();
 			jp2pBuilderService = null;
@@ -77,23 +79,49 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 		super.stop(bundleContext);
 	}
 
-	@Override
-	protected void createContainer() {
+	/**
+	 * Build the container
+	 */
+	protected void build() {
 		//Add contexts, both default as the ones provided through DS
-		Jp2pServiceManager<Object> builder = new Jp2pServiceManager<Object>( this, loader );
-		listener = new IContainerBuilderListener<Object>(){
+		manager = new Jp2pServiceManager(this, loader);
+		listener = new IServiceManagerListener(){
 
 			@Override
-			public void notifyContainerBuilt(ContainerBuilderEvent<Object> event) {
-				notifyListeners(event);
+			public void notifyContainerBuilt(ServiceManagerEvent event) {
+				Runnable runnable = new Runnable(){
+
+					@Override
+					public void run() {
+						XMLContainerBuilder builder = new XMLContainerBuilder( getBundleId(), getClass(), loader );
+						IJp2pContainer<Object> container = (IJp2pContainer<Object>) builder.build();
+						setContainer( container );
+						ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
+						componentListener = new ComponentChangedListener();
+						dispatcher.addServiceChangeListener( componentListener);		
+					}
+					
+				};
+				service = Executors.newSingleThreadExecutor();
+				service.execute( runnable );		
 			}	
 		};
-		//builder.addContainerBuilderListener(listener);
+		manager.addListener(listener);
+	}
+
+
+	@Override
+	public void addContainerBuilderListener(
+			IContainerBuilderListener<Object> listener) {
+		// TODO Auto-generated method stub
 		
-		builder.build();
-		super.setContainer( builder.getContainer());
-		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-		this.componentListener = new ComponentChangedListener();
-		dispatcher.addServiceChangeListener( this.componentListener);		
+	}
+
+
+	@Override
+	public void removeContainerBuilderListener(
+			IContainerBuilderListener<Object> listener) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -56,7 +56,7 @@ public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder 
 	public Jp2pServiceDescriptor[] getSupportedServices() {
 		Collection<Jp2pServiceDescriptor> descriptors = new ArrayList<Jp2pServiceDescriptor>();
 		for( IPropertySourceFactory factory: this.factories )
-			descriptors.add( new Jp2pServiceDescriptor( this.getName(), factory.getComponentName() ));
+			descriptors.add( new Jp2pServiceDescriptor( factory.getComponentName(), this.getName() ));
 		return descriptors.toArray( new Jp2pServiceDescriptor[ descriptors.size()]);
 	}
 	
@@ -102,8 +102,13 @@ public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder 
 	
 	@Override
 	public IJp2pHandler getHandler() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	
+	@Override
+	public String toString() {
+		return this.name + ":" + super.toString();
 	}
 
 	/**

@@ -84,7 +84,7 @@ public class JxtaFactoryUtils {
 		if( child != null )
 			return builder.getFactory(child );
 		IPropertySourceFactory factory = getDefaultFactory(componentName );
-		factory.prepare(componentName, parentSource, builder, attributes);
+		factory.prepare( parentSource, builder, attributes);
 		if( createSource )
 			factory.createPropertySource();
 		builder.addFactory( factory );

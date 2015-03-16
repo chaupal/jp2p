@@ -52,9 +52,8 @@ import net.jxta.protocol.PipeAdvertisement;
 
 public class PeerGroupFactory extends AbstractPeerGroupDependencyFactory<PeerGroup> 
 {
-	@Override
-	public String getComponentName() {
-		return JxtaComponents.PEERGROUP_SERVICE.toString();
+	public PeerGroupFactory() {
+		super( JxtaComponents.PEERGROUP_SERVICE.toString());
 	}
 	
 	@Override

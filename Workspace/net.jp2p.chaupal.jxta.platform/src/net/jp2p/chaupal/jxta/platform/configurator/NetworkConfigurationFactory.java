@@ -46,9 +46,8 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 
 	private Collection<SeedListPropertySource> seedlists;
 	
-	@Override
-	public String getComponentName() {
-		return JxtaNetworkComponents.NETWORK_CONFIGURATOR.toString();
+	public  NetworkConfigurationFactory() {
+		super( JxtaNetworkComponents.NETWORK_CONFIGURATOR.toString());
 	}
 	
 	@Override

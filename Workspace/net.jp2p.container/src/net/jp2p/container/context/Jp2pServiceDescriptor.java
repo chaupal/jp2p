@@ -7,16 +7,24 @@
  *******************************************************************************/
 package net.jp2p.container.context;
 
-public class Jp2pServiceDescriptor {
+import net.jp2p.container.utils.Utils;
+
+public class Jp2pServiceDescriptor implements Comparable<Jp2pServiceDescriptor>{
 
 	String name;
 	String context;
+	boolean optional = false;
 	boolean found;
-	
-	public Jp2pServiceDescriptor( String name, String context) {
+
+	public Jp2pServiceDescriptor( String name, String context ) {
+		this( name, context, false );
+	}
+
+	public Jp2pServiceDescriptor( String name, String context, boolean optional) {
 		super();
 		this.name = name;
 		this.context = context;
+		this.optional = optional;
 		this.found = false;
 	}
 
@@ -34,6 +42,10 @@ public class Jp2pServiceDescriptor {
 
 	public void setContext(String context) {
 		this.context = context;
+	}
+
+	public boolean isOptional() {
+		return optional;
 	}
 
 	public boolean isFound() {
@@ -61,10 +73,22 @@ public class Jp2pServiceDescriptor {
 			return true;
 		if( !( obj instanceof Jp2pServiceDescriptor))
 			return false;
-		Jp2pServiceDescriptor descriptor = (Jp2pServiceDescriptor) obj;
-		if( !this.context.equals( descriptor.getContext() ))
+		
+		if( Utils.isNull( this.context ))
 			return false;
+		Jp2pServiceDescriptor descriptor = (Jp2pServiceDescriptor) obj;		
 		return this.name.equals( descriptor.getName() );
+	}
+
+	@Override
+	public int compareTo(Jp2pServiceDescriptor o) {
+		if(( context == null ) && ( o.getContext() != null ))
+			return -1; 
+		if(( context != null ) && ( o.getContext() == null ))
+			return 1; 
+		if(( context != null ) && ( o.getContext() != null ))
+			return this.context.compareTo( o.getContext()); 
+		return this.name.compareTo( o.getName() );
 	}
 	
 	

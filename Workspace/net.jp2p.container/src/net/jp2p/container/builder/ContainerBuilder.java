@@ -138,7 +138,7 @@ public class ContainerBuilder implements IContainerBuilder{
 		if( ncp != null )
 			return null;
 		IPropertySourceFactory factory = ContainerFactory.getDefaultFactory( componentName );
-		factory.prepare(componentName, parentSource, this, null);
+		factory.prepare( parentSource, this, null);
 		addFactory(factory);
 		if(!createSource )
 			return factory;

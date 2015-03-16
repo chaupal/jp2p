@@ -91,7 +91,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 				if( factory == null ){
 					factory = new ContainerFactory( bundleId );
 				}
-				factory.prepare( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString(), null, builder, new HashMap<String, String>());
+				factory.prepare( null, builder, new HashMap<String, String>());
 				this.root = (ContainerFactory) factory;
 				break;
 			case CONTEXT:
@@ -140,7 +140,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		String str = StringStyler.prettyStringFromXml( componentName );
 		IPropertySourceFactory factory = builder.getFactory( str );
 		if( factory != null ){
-			factory.prepare(componentName, (IJp2pPropertySource<IJp2pProperties>) parentSource, builder, convertAttributes(attributes));
+			factory.prepare((IJp2pPropertySource<IJp2pProperties>) parentSource, builder, convertAttributes(attributes));
 		}
 		return factory;
 	}

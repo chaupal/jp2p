@@ -13,7 +13,6 @@ import java.util.Collection;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerFactory;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.chaupal.jxta.platform.configurator.OverviewPreferences;
-import net.jp2p.chaupal.jxta.platform.configurator.partial.PartialNetworkConfigFactory;
 import net.jp2p.chaupal.jxta.platform.http.Http2Preferences;
 import net.jp2p.chaupal.jxta.platform.http.HttpPreferences;
 import net.jp2p.chaupal.jxta.platform.multicast.MulticastPreferences;
@@ -47,7 +46,6 @@ public class JxtaPlatformBuilder extends AbstractJp2pServiceBuilder implements I
 	protected void prepare() {
 		super.addFactory( new NetworkManagerFactory( ));
 		super.addFactory( new NetworkConfigurationFactory( ));
-		super.addFactory( new PartialNetworkConfigFactory<Object>());
 	}
 
 	@Override

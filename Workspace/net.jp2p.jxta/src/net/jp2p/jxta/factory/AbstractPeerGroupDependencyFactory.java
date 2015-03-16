@@ -16,6 +16,11 @@ import net.jxta.peergroup.PeerGroup;
 public abstract class AbstractPeerGroupDependencyFactory<T extends Object> extends
 		AbstractComponentDependencyFactory<T, IJp2pComponent<PeerGroup>> {
 
+	
+	protected AbstractPeerGroupDependencyFactory(String componentName) {
+		super(componentName);
+	}
+
 	@Override
 	protected IComponentFactoryFilter createFilter() {
 		return new PeerGroupFilter<IJp2pComponent<T>>( this );

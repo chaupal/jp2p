@@ -5,18 +5,9 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container.partial;
+package net.jp2p.chaupal.builder;
 
-import net.jp2p.container.factory.AbstractPropertySourceFactory;
+public interface IServiceManagerListener {
 
-public class PartialFactory<T extends Object> extends AbstractPropertySourceFactory {
-
-	public PartialFactory( String componentName ){
-		super( componentName );
-	}
-
-	@Override
-	protected PartialPropertySource onCreatePropertySource() {
-		return new PartialPropertySource( super.getComponentName(), super.getParentSource() );
-	}
+	public void notifyContainerBuilt( ServiceManagerEvent event );
 }

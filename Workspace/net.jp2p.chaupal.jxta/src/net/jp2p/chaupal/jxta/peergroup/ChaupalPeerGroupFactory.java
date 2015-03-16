@@ -13,6 +13,7 @@ package net.jp2p.chaupal.jxta.peergroup;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.jp2p.chaupal.jxta.IChaupalComponents.ChaupalComponents;
 import net.jp2p.chaupal.jxta.advertisement.ChaupalAdvertisementFactory;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
@@ -41,13 +42,17 @@ import net.jp2p.jxta.pipe.PipeAdvertisementPropertySource;
 
 public class ChaupalPeerGroupFactory extends ChaupalAdvertisementFactory<PeerGroup, PeerGroupAdvertisement>{
 
+	
+	public ChaupalPeerGroupFactory() {
+		super( ChaupalComponents.ADVERTISEMENT_SERVICE.toString() );
+	}
+
 	@Override
-	public void prepare(String componentName,
-			IJp2pPropertySource<IJp2pProperties> parentSource,
+	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource,
 			IContainerBuilder builder, Map<String,String> attributes) {
 		Map<String, String> attrs = new HashMap<String, String>();
 		attrs.put( AdvertisementDirectives.TYPE.toLowerCase() , AdvertisementTypes.PEERGROUP.toString());
-		super.prepare(componentName, parentSource, builder, attrs);
+		super.prepare(parentSource, builder, attrs);
 	}
 
 

@@ -16,7 +16,8 @@ public abstract class AbstractFilterFactory<T extends Object> extends
 
 	private IComponentFactoryFilter filter;
 
-	public AbstractFilterFactory() {
+	protected AbstractFilterFactory( String componentName ) {
+		super( componentName );
 		filter = this.createFilter();
 	}
 

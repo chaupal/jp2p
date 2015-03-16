@@ -30,23 +30,17 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 	private String bundleId;
 	
 	public ContainerFactory( String bundleId) {
+		super( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() );
 		this.bundleId = bundleId;
 	}	
 	
 	@Override
-	public void prepare(String componentName,
-			IJp2pPropertySource<IJp2pProperties> parentSource,
+	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource,
 			IContainerBuilder builder, Map<String, String> attributes) {
-		super.prepare(componentName, parentSource, builder, attributes);
+		super.prepare( parentSource, builder, attributes);
 		super.setCanCreate(true);
 	}
 
-
-	@Override
-	public String getComponentName() {
-		return IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString();
-	}
-	
 	@Override
 	protected Jp2pContainerPropertySource onCreatePropertySource() {
 		return new Jp2pContainerPropertySource( this.bundleId, null );
@@ -99,7 +93,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 			return;
 		
 		startup = getDefaultFactory( comp);
-		startup.prepare( comp, super.getPropertySource(), builder, null );
+		startup.prepare( super.getPropertySource(), builder, null );
 		IJp2pWritePropertySource<IJp2pProperties> props = (IJp2pWritePropertySource<IJp2pProperties>) startup.createPropertySource();
 		props.setDirective( Directives.AUTO_START, Boolean.TRUE.toString());
 		builder.addFactory(startup);

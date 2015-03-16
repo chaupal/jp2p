@@ -23,9 +23,8 @@ import net.jxta.discovery.DiscoveryService;
 public class DiscoveryServiceFactory extends
 		AbstractPeerGroupDependencyFactory<DiscoveryService> {
 
-	@Override
-	public String getComponentName() {
-		return JxtaComponents.DISCOVERY_SERVICE.toString();
+	public DiscoveryServiceFactory() {
+		super( JxtaComponents.DISCOVERY_SERVICE.toString());
 	}
 
 	@Override
@@ -48,7 +47,7 @@ public class DiscoveryServiceFactory extends
 		IJp2pPropertySource<IJp2pProperties> source = (IJp2pPropertySource<IJp2pProperties>) PeerGroupPropertySource.findPropertySource( root, JxtaComponents.NET_PEERGROUP_SERVICE.toString() );
 		if( source == null ){
 			factory =  new NetPeerGroupFactory();
-			factory.prepare(JxtaComponents.NET_PEERGROUP_SERVICE.toString() , (IJp2pPropertySource<IJp2pProperties>) source, super.getBuilder(), null);
+			factory.prepare((IJp2pPropertySource<IJp2pProperties>) source, super.getBuilder(), null);
 			super.getBuilder().addFactory( factory );
 			factory.createPropertySource();
 		}

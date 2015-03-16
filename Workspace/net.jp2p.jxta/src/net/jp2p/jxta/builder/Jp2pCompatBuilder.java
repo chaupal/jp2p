@@ -74,29 +74,10 @@ public class Jp2pCompatBuilder<T extends Object> extends PlatformJxseBuilder<T> 
 	/**
 	 * Create the container;
 	 */
-	@Override
-	public boolean build(){
+	public void build(){
 		container = new JxtaContainer<T>( this.bundle_id, compat );
 		notifyListeners( new ContainerBuilderEvent<T>(this, container));
-		return true;
 	}
-
-	@Override
-	protected void onRunJxse() {
-		ICompatibilityListener cl = new ICompatibilityListener(){
-
-			@Override
-			public void notifyNodeChanged(CompatibilityEvent event) {
-				notifyListeners( new ContainerBuilderEvent<T>(this, container));
-			}	
-		};
-		
-		this.compat.addListener(cl);
-		build();
-		super.onRunJxse();
-		this.compat.removeListener( cl);	
-	}
-
 
 	private static class JxtaContainer<T extends Object> extends AbstractJp2pContainer<T> {
 

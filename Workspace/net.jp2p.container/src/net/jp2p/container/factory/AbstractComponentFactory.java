@@ -41,7 +41,8 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	
 	private Stack<Object> stack;
 
-	protected AbstractComponentFactory() {
+	protected AbstractComponentFactory( String componentName ) {
+		super( componentName );
 		this.completed = false;
 		this.failed = false;
 		stack = new Stack<Object>();

@@ -13,11 +13,4 @@ public interface IJp2pContainerBuilder<T extends Object>{
 	 * @return
 	 */
 	public IJp2pContainer<T> getContainer();
-
-	/**
-	 * get the container
-	 * @return
-	 */
-	public boolean build();
-
 }

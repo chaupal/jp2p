@@ -44,6 +44,11 @@ public abstract class ChaupalAdvertisementFactory<T extends Object, U extends Ad
 	private Jp2pAdvertisementService<U> jas;
 	private U advertisement;
 	
+	
+	protected ChaupalAdvertisementFactory(String componentName) {
+		super(componentName);
+	}
+
 	@Override
 	protected AdvertisementPropertySource onCreatePropertySource() {
 		AdvertisementPropertySource source = super.onCreatePropertySource();
@@ -58,7 +63,7 @@ public abstract class ChaupalAdvertisementFactory<T extends Object, U extends Ad
 		IPropertySourceFactory df = builder.getFactory( componentName);
 		if( df == null ){
 			df = JxtaFactoryUtils.getDefaultFactory(  componentName );
-			df.prepare(componentName, super.getPropertySource(), builder, new HashMap<String, String>());
+			df.prepare( super.getPropertySource(), builder, new HashMap<String, String>());
 			df.createPropertySource();
 			builder.addFactory( df ); 
 		}

@@ -14,6 +14,11 @@ import net.jp2p.container.factory.IComponentFactory;
 public abstract class AbstractDependencyFactory<T extends Object, U extends Object> extends
 		AbstractComponentFactory<T> {
 
+	
+	protected AbstractDependencyFactory(String componentName) {
+		super(componentName);
+	}
+
 	private U dependency;
 
 	/**

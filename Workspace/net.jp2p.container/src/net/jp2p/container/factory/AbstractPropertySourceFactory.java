@@ -15,7 +15,6 @@ import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.ManagedProperty;
-import net.jp2p.container.utils.StringStyler;
 
 public abstract class AbstractPropertySourceFactory implements IPropertySourceFactory{
 
@@ -29,6 +28,11 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	private int weight;
 	private String componentName;
 	
+	
+	protected AbstractPropertySourceFactory( String componentName ) {
+		this.componentName = componentName;
+	}
+
 	/**
 	 * Prepare the factory, by providing the necessary objects to embed the factory in the application
 	 * @param componentName
@@ -37,8 +41,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	 * @param attributes
 	 */
 	@Override
-	public void prepare( String name, IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, Map<String, String> attributes ){
-		this.componentName = StringStyler.prettyString( name );
+	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, Map<String, String> attributes ){
 		this.canCreate = false;
 		this.parentSource = parentSource;
 		this.builder = builder;

@@ -16,6 +16,7 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
 import net.jp2p.jxta.factory.AbstractPeerGroupDependencyFactory;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.pipe.PipeAdvertisementPropertySource;
 import net.jxta.pipe.PipeMsgListener;
 import net.jxta.protocol.PipeAdvertisement;
@@ -24,6 +25,10 @@ public class SocketFactory extends AbstractPeerGroupDependencyFactory<PipeMsgLis
 	
 	private AdvertisementPropertySource pipeSource;
 	private boolean canCreate;
+
+	public SocketFactory() {
+		super( JxtaComponents.JXSE_SOCKET_SERVICE.toString() );
+	}
 
 	
 	@Override

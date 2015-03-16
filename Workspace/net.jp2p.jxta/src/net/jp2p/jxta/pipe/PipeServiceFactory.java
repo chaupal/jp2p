@@ -12,11 +12,17 @@ import net.jp2p.container.component.Jp2pComponentNode;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.factory.AbstractPeerGroupDependencyFactory;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.pipe.PipePropertySource;
 import net.jxta.pipe.PipeService;
 
 public class PipeServiceFactory extends
 		AbstractPeerGroupDependencyFactory<PipeService> {
+
+	
+	public PipeServiceFactory() {
+		super(JxtaComponents.PIPE_SERVICE.toString() );
+	}
 
 	@Override
 	protected PipePropertySource onCreatePropertySource() {

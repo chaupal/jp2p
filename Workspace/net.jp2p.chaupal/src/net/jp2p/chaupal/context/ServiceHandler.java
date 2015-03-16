@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import net.jp2p.chaupal.xml.IContextEntities;
 import net.jp2p.container.context.IJp2pServiceBuilder;
+import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.IJp2pComponents;
@@ -77,7 +78,10 @@ class ServiceHandler extends DefaultHandler implements IContextEntities{
 			}
 		}
 		String serviceName = StringStyler.styleToEnum(qName);
-		Jp2pServiceDescriptor info = new Jp2pServiceDescriptor( StringStyler.prettyString( serviceName ), attributes.getValue(Directives.CONTEXT.toString().toLowerCase()));
+		String context = attributes.getValue(Directives.CONTEXT.toString().toLowerCase());
+		String name = StringStyler.prettyStringFromXml( qName );
+		boolean optional = Components.JP2P_CONTAINER.toString().equals( name );
+		Jp2pServiceDescriptor info = new Jp2pServiceDescriptor( StringStyler.prettyString( serviceName ), context, optional );
 		services.add( info );
 		stack.push( qName );
 	}

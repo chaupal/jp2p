@@ -13,9 +13,7 @@ package net.jp2p.chaupal.jxta.activator;
 import org.osgi.framework.BundleContext;
 
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
-import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
-import net.jp2p.container.builder.IJp2pContainerBuilder;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.component.IJp2pComponent;
@@ -23,14 +21,6 @@ import net.jp2p.jxta.builder.Jp2pCompatBuilder;
 import net.jxse.osgi.compat.IJP2PCompatibility;
 
 public class Jp2pCompatBundleActivator<T extends Object> extends AbstractJp2pBundleActivator<T> {
-
-	private IContainerBuilderListener<T> listener = new IContainerBuilderListener<T>(){
-
-		@Override
-		public void notifyContainerBuilt(ContainerBuilderEvent<T> event) {
-			notifyListeners(event);
-		}	
-	};
 	
 	private IComponentChangedListener<IJp2pComponent<T>> componentListener;
 	
@@ -45,9 +35,8 @@ public class Jp2pCompatBundleActivator<T extends Object> extends AbstractJp2pBun
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);		
-		this.builder.addContainerBuilderListener(listener);
 		try{
-		this.builder.start(bundleContext);
+			this.builder.start(bundleContext);
 		}
 		catch( Exception ex ){
 			ex.printStackTrace();
@@ -57,13 +46,7 @@ public class Jp2pCompatBundleActivator<T extends Object> extends AbstractJp2pBun
 
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
-		this.builder.removeContainerBuilderListener(listener);
 		this.builder.stop(bundleContext);
-		IJp2pContainerBuilder<T> builder = super.getBuilder();
-		if(( builder != null ) && ( listener != null )){
-			builder.removeContainerBuilderListener(listener);
-			listener = null;
-		}
 
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 		
@@ -75,11 +58,26 @@ public class Jp2pCompatBundleActivator<T extends Object> extends AbstractJp2pBun
 
 	
 	@Override
-	protected void createContainer() {
+	protected void build() {
+		builder.build();
 		super.setContainer( builder.getContainer());
 
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 		this.componentListener = new ComponentChangedListener();
 		dispatcher.addServiceChangeListener( this.componentListener);
+	}
+
+
+	@Override
+	public void addContainerBuilderListener(
+			IContainerBuilderListener<T> listener) {
+		builder.addContainerBuilderListener(listener);
+	}
+
+
+	@Override
+	public void removeContainerBuilderListener(
+			IContainerBuilderListener<T> listener) {
+		builder.removeContainerBuilderListener(listener);
 	}
 }

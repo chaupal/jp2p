@@ -10,6 +10,7 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.network.http;
 
+import net.jp2p.chaupal.jxta.IChaupalComponents.ChaupalComponents;
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.factory.AbstractFilterFactory;
@@ -22,6 +23,10 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jxta.peergroup.core.Module;
 
 public class HttpServiceFactory extends AbstractFilterFactory<Module> {
+
+	public HttpServiceFactory() {
+		super(ChaupalComponents.HTTP_SERVICE.toString());
+	}
 
 	@Override
 	protected IJp2pPropertySource<IJp2pProperties> onCreatePropertySource() {

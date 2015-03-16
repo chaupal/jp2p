@@ -18,9 +18,8 @@ import net.jp2p.jxta.registration.RegistrationService;
 public class RegistrationServiceFactory extends
 		AbstractComponentFactory<RegistrationService> {
 
-	@Override
-	public String getComponentName() {
-		return JxtaComponents.REGISTRATION_SERVICE.toString();
+	public  RegistrationServiceFactory() {
+		super( JxtaComponents.REGISTRATION_SERVICE.toString());
 	}
 
 	@Override

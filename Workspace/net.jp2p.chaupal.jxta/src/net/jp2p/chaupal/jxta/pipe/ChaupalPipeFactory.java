@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.jp2p.chaupal.jxta.IChaupalComponents.ChaupalComponents;
 import net.jp2p.chaupal.jxta.advertisement.ChaupalAdvertisementFactory;
 import net.jp2p.container.activator.IJp2pService;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -31,13 +32,16 @@ import net.jp2p.jxta.pipe.PipePropertySource;
 
 public class ChaupalPipeFactory extends ChaupalAdvertisementFactory<PipeService, PipeAdvertisement>{
 
+	public ChaupalPipeFactory() {
+		super( ChaupalComponents.PIPE_SERVICE.toString());
+	}
+
 	@Override
-	public void prepare(String componentName,
-			IJp2pPropertySource<IJp2pProperties> parentSource,
+	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource,
 			IContainerBuilder builder, Map<String, String> attributes) {
 		Map<String, String> attrs = new HashMap<String, String>();
 		attrs.put( AdvertisementDirectives.TYPE.toLowerCase() , AdvertisementTypes.PIPE.toString());
-		super.prepare(componentName, parentSource, builder, attrs);
+		super.prepare( parentSource, builder, attrs);
 	}
 
 	@Override

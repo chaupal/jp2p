@@ -9,14 +9,10 @@ package net.jp2p.chaupal.activator;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.container.IJp2pContainer;
-import net.jp2p.container.builder.ContainerBuilderEvent;
-import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.builder.IJp2pContainerBuilder;
 import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.IComponentChangedListener;
@@ -41,26 +37,10 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 	
 	private ServiceTracker<BundleContext,LogService> logServiceTracker;
 	private LogService logService;
-	private Collection<IContainerBuilderListener<T>> listeners;
 	
 	private IJp2pContainer<T> container;
 	
-	private ExecutorService service = Executors.newCachedThreadPool();
-	private Runnable runnable = new Runnable() {
-
-		@Override
-		public void run() {
-			try{
-				createContainer();
-			}
-			catch( Exception ex ){
-				ex.printStackTrace();
-			}
-		}
-	};
-
 	protected AbstractJp2pBundleActivator( String bundle_id ) {
-		listeners = new ArrayList<IContainerBuilderListener<T>>();
 		observers = new ArrayList<IComponentChangedListener<IJp2pComponent<T>>>();
 		this.bundle_id = bundle_id;
 	}
@@ -77,32 +57,10 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 		this.container = container;
 	}
 
-	@Override
-	public void addContainerBuilderListener( IContainerBuilderListener<T> listener ){
-		listeners.add( listener );
-	}
-
-	@Override
-	public void removeContainerBuilderListener( IContainerBuilderListener<T> listener ){
-		listeners.remove( listener );
-	}
-
-	protected final IJp2pContainerBuilder<T> getBuilder() {
-		return this;
-	}
-
-	//This is not used
-	@Override
-	public boolean build() {
-		return false;
-	}
-
 	/**
-	 * Create the container
+	 * Build the container
 	 */
-	protected abstract void createContainer();
-	
-	
+	protected abstract void build();
 	
 	public final void addObserver(IComponentChangedListener<IJp2pComponent<T>> observer) {
 		this.observers.add( observer );
@@ -119,11 +77,6 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 			observer.notifyServiceChanged(event);
 	}
 	
-	protected final void notifyListeners( ContainerBuilderEvent<T> event ){
-		for( IContainerBuilderListener<T> listener: listeners )
-			listener.notifyContainerBuilt(event);		
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
@@ -147,8 +100,8 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 
 		if(logService != null)
 			logService.log(LogService.LOG_INFO, "Logging service started");
-
-		service.execute( runnable );
+		
+		build();
 	}
 
 	/**
@@ -169,7 +122,6 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 	 */
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {		
-		service.shutdown();
 		if(logService != null)
 			logService.log(LogService.LOG_INFO, "Logging service Stopped");
 		

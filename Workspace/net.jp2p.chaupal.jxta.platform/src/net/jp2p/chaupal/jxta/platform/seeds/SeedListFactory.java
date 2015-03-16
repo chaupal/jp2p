@@ -15,12 +15,11 @@ import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
 import net.jxta.platform.NetworkConfigurator;
 
 public class SeedListFactory extends AbstractPropertySourceFactory{
-
-	@Override
-	public String getComponentName() {
-		return JxtaNetworkComponents.SEED_LIST.toString();
-	}
 	
+	public SeedListFactory() {
+		super(JxtaNetworkComponents.SEED_LIST.toString());
+	}
+
 	@Override
 	protected SeedListPropertySource onCreatePropertySource() {
 		return new SeedListPropertySource( super.getParentSource() );

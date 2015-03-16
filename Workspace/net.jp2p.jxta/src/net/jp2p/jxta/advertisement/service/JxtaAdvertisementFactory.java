@@ -11,12 +11,18 @@ import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jxta.document.Advertisement;
 
 public class JxtaAdvertisementFactory extends
 		AbstractJxtaAdvertisementFactory<Advertisement, Advertisement> {
 
+
 	
+	public JxtaAdvertisementFactory() {
+		super( JxtaComponents.ADVERTISEMENT.toString());
+	}
+
 	@Override
 	protected AdvertisementPropertySource onCreatePropertySource() {
 		return super.onCreatePropertySource();

@@ -27,9 +27,8 @@ import net.jxta.platform.NetworkManager;
 
 public class NetPeerGroupFactory extends AbstractComponentDependencyFactory<PeerGroup, IJp2pComponent<NetworkManager>>{
 
-	@Override
-	public String getComponentName() {
-		return JxtaComponents.NET_PEERGROUP_SERVICE.toString();
+	public NetPeerGroupFactory() {
+		super( JxtaComponents.NET_PEERGROUP_SERVICE.toString());
 	}	
 
 	@Override

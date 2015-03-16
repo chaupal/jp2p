@@ -32,8 +32,8 @@ public class Jp2pBuilderComponent implements CommandProvider{
 		loader.addBuilder(context);
 	}
 
-	public void removeBuilder( IJp2pServiceBuilder context ){
-		loader.removeBuilder(context);
+	public void removeBuilder( IJp2pServiceBuilder builder ){
+		loader.removeBuilder( builder );
 	}
 
 	public Object _jp2p( CommandInterpreter ci ){
@@ -44,5 +44,4 @@ public class Jp2pBuilderComponent implements CommandProvider{
 	public String getHelp() {
 		return "\tjp2p - Provides information about the registered JP2P Service Builders.";
 	}
-
 }
