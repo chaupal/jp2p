@@ -10,36 +10,43 @@
  *******************************************************************************/
 package net.jp2p.chaupal.activator;
 
+import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import net.jp2p.chaupal.builder.Jp2pBuilderService;
-import net.jp2p.chaupal.builder.Jp2pContainerBuilder;
+import net.jp2p.chaupal.builder.Jp2pServiceManager;
+import net.jp2p.chaupal.xml.XMLContainerBuilder;
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
+import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.builder.IJp2pContainerBuilder;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
+import net.jp2p.container.context.IContextLoaderListener;
+import net.jp2p.container.context.Jp2pLoaderEvent;
 import net.jp2p.container.context.Jp2pServiceLoader;
 
 public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
-	protected Jp2pBundleActivator(String bundle_id) {
-		super( bundle_id );
-	}
-
 	private static Jp2pBuilderService jp2pBuilderService; 
 	private Jp2pServiceLoader loader;
+	private Jp2pServiceManager<Object> manager;
 	
 	private IContainerBuilderListener<Object> listener;
 	
 	private IComponentChangedListener<?> componentListener;
 
+	protected Jp2pBundleActivator(String bundle_id) {
+		super( bundle_id );
+	}
+
 	
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		loader = Jp2pServiceLoader.getInstance();
-		jp2pBuilderService = new Jp2pBuilderService( loader, bundleContext );
+		manager = new Jp2pServiceManager<Object>(this, loader);
+		jp2pBuilderService = new Jp2pBuilderService( bundleContext, loader );
 		jp2pBuilderService.open();		
 		super.start(bundleContext);
 	}
@@ -73,7 +80,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	@Override
 	protected void createContainer() {
 		//Add contexts, both default as the ones provided through DS
-		Jp2pContainerBuilder<Object> builder = new Jp2pContainerBuilder<Object>( this, loader );
+		Jp2pServiceManager<Object> builder = new Jp2pServiceManager<Object>( this, loader );
 		listener = new IContainerBuilderListener<Object>(){
 
 			@Override
@@ -81,7 +88,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 				notifyListeners(event);
 			}	
 		};
-		builder.addContainerBuilderListener(listener);
+		//builder.addContainerBuilderListener(listener);
 		
 		builder.build();
 		super.setContainer( builder.getContainer());

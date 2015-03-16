@@ -1,12 +1,8 @@
 package net.jp2p.chaupal.jxta.context;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import net.jp2p.chaupal.jxta.advertisement.ChaupalAdvertisementFactory;
 import net.jp2p.chaupal.jxta.discovery.ChaupalDiscoveryServiceFactory;
 import net.jp2p.chaupal.jxta.pipe.ChaupalPipeFactory;
-import net.jp2p.chaupal.jxta.service.Component;
 import net.jp2p.container.context.AbstractJp2pServiceBuilder;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -48,21 +44,6 @@ public class Jp2pJxtaBuilder extends AbstractJp2pServiceBuilder {
 		super.addFactory(  new JxtaAdvertisementFactory());
 		super.addFactory(  new SocketFactory());
 		super.addFactory(  new RendezVousFactory());
-	}
-
-
-	/**
-	 * Get the supported services
-	 */
-	@Override
-	public String[] getSupportedServices() {
-		JxtaComponents[] components = JxtaComponents.values();
-		Collection<String> names = new ArrayList<String>();
-		for( int i=0; i<components.length; i++ )
-			if( Component.canBuild( components[i])){
-				names.add( components[i].toString() );
-		}
-		return names.toArray( new String[ names.size() ]);
 	}
 
 	/**

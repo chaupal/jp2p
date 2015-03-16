@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import net.jp2p.chaupal.xml.IContextEntities;
 import net.jp2p.container.context.IJp2pServiceBuilder;
+import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.properties.ManagedProperty;
@@ -32,7 +33,7 @@ class ServiceHandler extends DefaultHandler implements IContextEntities{
 	public static final int MAX_COUNT = 200;
 		
 	private Stack<String> stack;
-	private Collection<ServiceInfo> services;
+	private Collection<Jp2pServiceDescriptor> services;
 	//private ContextLoader contexts;
 	
 	private boolean skip;
@@ -41,14 +42,14 @@ class ServiceHandler extends DefaultHandler implements IContextEntities{
 		this.skip = false;
 		//this.contexts = contexts;
 		this.stack = new Stack<String>();
-		this.services = new ArrayList<ServiceInfo>();
+		this.services = new ArrayList<Jp2pServiceDescriptor>();
 	}
 
 	/**
 	 * Get the root factory 
 	 * @return
 	 */
-	Collection<ServiceInfo> getServices() {
+	Collection<Jp2pServiceDescriptor> getServices() {
 		return services;
 	}
 	
@@ -76,7 +77,7 @@ class ServiceHandler extends DefaultHandler implements IContextEntities{
 			}
 		}
 		String serviceName = StringStyler.styleToEnum(qName);
-		ServiceInfo info = new ServiceInfo( StringStyler.prettyString( serviceName ), attributes.getValue(Directives.CONTEXT.toString().toLowerCase()));
+		Jp2pServiceDescriptor info = new Jp2pServiceDescriptor( StringStyler.prettyString( serviceName ), attributes.getValue(Directives.CONTEXT.toString().toLowerCase()));
 		services.add( info );
 		stack.push( qName );
 	}

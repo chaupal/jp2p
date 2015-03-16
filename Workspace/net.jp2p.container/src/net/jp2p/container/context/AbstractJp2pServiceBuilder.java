@@ -49,6 +49,16 @@ public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder 
 		factories.remove( factory );
 	}
 
+	/**
+	 * Get the supported services
+	 */
+	@Override
+	public Jp2pServiceDescriptor[] getSupportedServices() {
+		Collection<Jp2pServiceDescriptor> descriptors = new ArrayList<Jp2pServiceDescriptor>();
+		for( IPropertySourceFactory factory: this.factories )
+			descriptors.add( new Jp2pServiceDescriptor( this.getName(), factory.getComponentName() ));
+		return descriptors.toArray( new Jp2pServiceDescriptor[ descriptors.size()]);
+	}
 	
 	/**
 	 * Returns true if the given component name is valid for this context
@@ -56,9 +66,9 @@ public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder 
 	 * @return
 	 */
 	@Override
-	public boolean hasFactory( String componentName ){
-		for( String name: getSupportedServices() ){
-			if( name.equals( componentName ))
+	public boolean hasFactory( Jp2pServiceDescriptor descriptor ){
+		for( Jp2pServiceDescriptor desc: getSupportedServices() ){
+			if( desc.equals( descriptor ))
 				return true;
 		}
 		return false;

@@ -25,18 +25,6 @@ public interface IJp2pPropertySource< T extends Object> extends IDescendant<T, I
 	public T getIdFromString( String key );
 	
 	/**
-	 * Get the plugin ID
-	 * @return
-	 */
-	//public String getBundleId();
-
-	/**
-	 * Get the identifier
-	 * @return
-	 */
-	//public String getIdentifier();
-
-	/**
 	 * Get the component name
 	 * @return
 	 */

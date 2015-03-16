@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
 import net.jp2p.container.builder.IFactoryBuilder;
+import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.utils.IOUtils;
 import net.jp2p.container.utils.Utils;
@@ -86,7 +87,7 @@ public class ContextServiceParser{
 	/* (non-Javadoc)
 	 * @see net.osgi.jp2p.chaupal.xml.IFactoryBuilder#build()
 	 */
-	public Collection<ServiceInfo> parse() {
+	public Collection<Jp2pServiceDescriptor> parse() {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		//URL schema_in = ContextServiceParser.class.getResource( IFactoryBuilder.S_SCHEMA_LOCATION); 
 		//if( schema_in == null )
@@ -98,7 +99,7 @@ public class ContextServiceParser{
 		// note that if your XML already declares the XSD to which it has to conform, then there's no need to create a validator from a Schema object
 		Source schemaFile = new StreamSource( ServiceHandler.class.getResourceAsStream( IFactoryBuilder.S_SCHEMA_LOCATION ));
 		InputStream in;
-		Collection<ServiceInfo> services = new ArrayList<ServiceInfo>();
+		Collection<Jp2pServiceDescriptor> services = new ArrayList<Jp2pServiceDescriptor>();
 		try {
 			in = url.openStream();
 		} catch (IOException e1) {

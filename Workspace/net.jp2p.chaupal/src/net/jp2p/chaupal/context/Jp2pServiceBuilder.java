@@ -38,18 +38,6 @@ public class Jp2pServiceBuilder extends AbstractJp2pServiceBuilder {
 	}
 
 	/**
-	 * Get the supported services
-	 */
-	@Override
-	public String[] getSupportedServices() {
-		IJp2pServiceBuilder.Components[] components = IJp2pServiceBuilder.Components.values();
-		String[] names = new String[ components.length ];
-		for( int i=0; i<components.length; i++ )
-			names[i] = components[i].toString();
-		return names;
-	}
-
-	/**
 	 * Get the handler for this context
 	 * @return
 	 */

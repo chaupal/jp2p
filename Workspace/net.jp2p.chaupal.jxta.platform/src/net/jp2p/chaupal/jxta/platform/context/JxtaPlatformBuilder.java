@@ -50,20 +50,6 @@ public class JxtaPlatformBuilder extends AbstractJp2pServiceBuilder implements I
 		super.addFactory( new PartialNetworkConfigFactory<Object>());
 	}
 
-	/**
-	 * Get the supported services
-	 */
-	@Override
-	public String[] getSupportedServices() {
-		JxtaNetworkComponents[] components = JxtaNetworkComponents.values();
-		String[] names = new String[ components.length ];
-		for( int i=0; i<components.length; i++ )
-			//if( Component.canBuild( components[i]))
-				names[i] = components[i].toString();
-		return names;
-	}
-
-	
 	@Override
 	public ModuleClassID[] getSupportedModuleClassIDs() {
 		Collection<ModuleClassID> ids = new ArrayList<ModuleClassID>();

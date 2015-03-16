@@ -75,14 +75,14 @@ public interface IJp2pServiceBuilder extends Comparable<IJp2pServiceBuilder>{
 	 * Get the names of the services that are available
 	 * @return
 	 */
-	public String[] getSupportedServices();
+	public Jp2pServiceDescriptor[] getSupportedServices();
 	
 	/**
 	 * Returns true if the given component name is valid for this context
-	 * @param componentName
+	 * @param descriptor
 	 * @return
 	 */
-	public boolean hasFactory( String componentName );
+	public boolean hasFactory( Jp2pServiceDescriptor descriptor );
 
 	//Get the factory that is created
 	public IPropertySourceFactory getFactory( String componentName);

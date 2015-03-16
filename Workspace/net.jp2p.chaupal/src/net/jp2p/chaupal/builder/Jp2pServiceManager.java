@@ -12,61 +12,104 @@ import org.osgi.service.log.LogService;
 
 import net.jp2p.chaupal.activator.Jp2pBundleActivator;
 import net.jp2p.chaupal.context.ContextServiceParser;
-import net.jp2p.chaupal.context.ServiceInfo;
 import net.jp2p.chaupal.xml.XMLContainerBuilder;
 import net.jp2p.container.IJp2pContainer;
-import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.builder.IFactoryBuilder;
-import net.jp2p.container.builder.IJp2pContainerBuilder;
+import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.context.Jp2pLoaderEvent;
 import net.jp2p.container.context.IContextLoaderListener;
+import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.container.context.Jp2pServiceLoader;
 
-public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBuilder<T>{
+public class Jp2pServiceManager<T extends Object>{
 
 	public static final String S_CONTEXT_FOUND = "The following context was found and registered: ";
 	public static final String S_INFO_BUILDING = "All the required services have been found. Start to build the container ";
 	
-	private Jp2pServiceLoader contextLoader;
+	private Jp2pServiceLoader loader;
 
-	private Collection<ServiceInfo> services;
+	private Collection<Jp2pServiceDescriptor> descriptors;
 	private Collection<IContainerBuilderListener<T>> listeners;
 	private Jp2pBundleActivator activator;
 	private Collection<ContextServiceParser> parsers;
 	private IJp2pContainer<T> container;
-	private IContextLoaderListener listener;
-	
+
+	private IContextLoaderListener listener = new IContextLoaderListener(){
+
+		@Override
+		public void notifyRegisterContext(Jp2pLoaderEvent event) {
+			createServiceDescriptors( event.getBuilder() );
+			if( isCompleted() ){
+				XMLContainerBuilder xmlbuilder = new XMLContainerBuilder( activator.getBundleId(), activator.getClass(), loader );
+				//container = (IJp2pContainer<T>) builder.build();
+				//this.notifyListeners( new ContainerBuilderEvent<T>(this, container));
+
+			}
+		}
+
+		@Override
+		public void notifyUnregisterContext(Jp2pLoaderEvent event) {
+			Jp2pServiceManager<Object> builder = new Jp2pServiceManager<Object>( activator, loader );
+			builder.createServiceDescriptors( event.getBuilder() );
+		}
+		
+	};
+
 	private Logger logger = Logger.getLogger( this.getClass().getName() );
 
-	public Jp2pContainerBuilder( Jp2pBundleActivator activator, Jp2pServiceLoader contextLoader ) {
-		this.contextLoader = contextLoader;
+	public Jp2pServiceManager( Jp2pBundleActivator activator, Jp2pServiceLoader contextLoader ) {
+		this.loader = contextLoader;
+		this.loader.addContextLoaderListener(listener);
 		this.activator = activator;
-		services = new ArrayList<ServiceInfo>();
+		descriptors = new ArrayList<Jp2pServiceDescriptor>();
 		listeners = new ArrayList<IContainerBuilderListener<T>>();
 		parsers = new ArrayList<ContextServiceParser>();
 	}
 
-	
+	/**
+	 * First we load the service descriptors
+	 * by checking the available services
+	 * @param builder
+	 */
+	protected void loadServiceDescriptors() {
+		//We parse the jp2p xml file to see which services we need, and then include the contexts we find
+		try {
+			extendParsers( activator.getClass() );
+			extendParsers( Jp2pServiceManager.class );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		//first we parse the xml files to determine which services we need 
+		for(ContextServiceParser parser: parsers ){
+			descriptors.addAll( parser.parse() );
+		}
+	}
+
+	/**
+	 * Update the service descriptor objects that are needed to build the JP2P container,
+	 * by checking the available services
+	 * @param builder
+	 */
+	protected void createServiceDescriptors( IJp2pServiceBuilder builder ) {
+		
+		this.loadServiceDescriptors();
+		for( Jp2pServiceDescriptor info: descriptors ){
+			if( builder.hasFactory( info ) ){
+				String context = builder.getName().toLowerCase();
+				if(( info.getContext() == null ) || ( context.equals( info.getContext() ))){
+					info.setContext( builder.getName());
+					info.setFound( true );
+				}
+			}
+		}
+	}
+
 	public IJp2pContainer<T> getContainer() {
 		return container;
 	}
 
-	@Override
-	public void addContainerBuilderListener( IContainerBuilderListener<T> listener ){
-		listeners.add( listener );
-	}
-
-	@Override
-	public void removeContainerBuilderListener( IContainerBuilderListener<T> listener ){
-		listeners.remove( listener );
-	}
-
-	private final void notifyListeners( ContainerBuilderEvent<T> event ){
-		for( IContainerBuilderListener<T> listener: listeners )
-			listener.notifyContainerBuilt(event);
-	}
-	
 	/**
 	 * Build the services
 	 * @return 
@@ -76,14 +119,14 @@ public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBui
 		//We first parse the jp2p xml file to see which services we need, and then include the contexts we find
 		try {
 			this.extendParsers( activator.getClass() );
-			this.extendParsers( Jp2pContainerBuilder.class );
+			this.extendParsers( Jp2pServiceManager.class );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		//first we parse the xml files to determine which services we need 
 		for(ContextServiceParser parser: parsers ){
-			services.addAll( parser.parse() );
+			descriptors.addAll( parser.parse() );
 		}
 
 		//We listen until all the services are available
@@ -92,10 +135,9 @@ public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBui
 			@Override
 			public void notifyRegisterContext(Jp2pLoaderEvent event) {
 				activator.getLog().log( LogService.LOG_INFO, S_CONTEXT_FOUND + event.getBuilder().getName() );
-				for( ServiceInfo info: services ){
-					for( String name: event.getBuilder().getSupportedServices() ){
-						if( !info.getName().equals(name))
-							continue;
+				logger.info( "Builder registered: " + event.getBuilder().getName() );
+				for( Jp2pServiceDescriptor info: descriptors ){
+					if( event.getBuilder().hasFactory( info )){
 						String context = event.getBuilder().getName().toLowerCase();
 						if(( info.getContext() == null ) || ( context.equals( info.getContext() ))){
 							info.setContext( event.getBuilder().getName());
@@ -113,23 +155,20 @@ public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBui
 			
 			@Override
 			public void notifyUnregisterContext(Jp2pLoaderEvent event) {
-				for( String name: event.getBuilder().getSupportedServices() ){
-					for( ServiceInfo info: services ){
-						if( !info.getName().equals(name))
-							continue;
+				for( Jp2pServiceDescriptor info: descriptors ){
+					if( event.getBuilder().hasFactory(info))
 						if(( info.getContext() != null ) || ( event.getBuilder().getName().equals( info.getContext() )))
 							info.setFound( false );
-					}
 				}
 			}
 		};
 		
-		contextLoader.addContextLoaderListener(listener);
+		loader.addContextLoaderListener(listener);
 		return true;
 	}
 
 	public void close(){
-		contextLoader.removeContextLoaderListener(listener);
+		loader.removeContextLoaderListener(listener);
 		listener = null;
 	}
 	
@@ -138,7 +177,7 @@ public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBui
 	 */
 	private boolean isCompleted() {
 		Logger log = Logger.getLogger( this.getClass().getName() );
-		for( ServiceInfo info: services ){
+		for( Jp2pServiceDescriptor info: descriptors ){
 			if( !info.isFound()){
 				log.log( Level.WARNING, "waiting for: " + info.getName());
 				return false;
@@ -154,9 +193,9 @@ public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBui
 	@SuppressWarnings("unchecked")
 	protected boolean buildContainer(){
 
-		XMLContainerBuilder builder = new XMLContainerBuilder( activator.getBundleId(), activator.getClass(), contextLoader );
+		XMLContainerBuilder builder = new XMLContainerBuilder( activator.getBundleId(), activator.getClass(), loader );
 		this.container = (IJp2pContainer<T>) builder.build();
-		this.notifyListeners( new ContainerBuilderEvent<T>(this, container));
+		//this.notifyListeners( new ContainerBuilderEvent<T>(this, container));
 		return true;
 	}
 	
@@ -171,7 +210,7 @@ public class Jp2pContainerBuilder<T extends Object> implements IJp2pContainerBui
 		Enumeration<URL> enm = clss.getClassLoader().getResources( IFactoryBuilder.S_DEFAULT_LOCATION );
 		while( enm.hasMoreElements()){
 			URL url = enm.nextElement();
-			parsers.add( new ContextServiceParser( contextLoader, url, clss ));
+			parsers.add( new ContextServiceParser( loader, url, clss ));
 		}
 	}
 }

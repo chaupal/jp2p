@@ -5,15 +5,15 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.chaupal.context;
+package net.jp2p.container.context;
 
-public class ServiceInfo {
+public class Jp2pServiceDescriptor {
 
 	String name;
 	String context;
 	boolean found;
 	
-	public ServiceInfo( String name, String context) {
+	public Jp2pServiceDescriptor( String name, String context) {
 		super();
 		this.name = name;
 		this.context = context;
@@ -48,4 +48,24 @@ public class ServiceInfo {
 	public String toString() {
 		return this.context + ":" + this.name + "=" + found;
 	}
+
+	@Override
+	public int hashCode() {
+		String str = this.context + ":" + this.name; 
+		return str.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if( super.equals(obj))
+			return true;
+		if( !( obj instanceof Jp2pServiceDescriptor))
+			return false;
+		Jp2pServiceDescriptor descriptor = (Jp2pServiceDescriptor) obj;
+		if( !this.context.equals( descriptor.getContext() ))
+			return false;
+		return this.name.equals( descriptor.getName() );
+	}
+	
+	
 }

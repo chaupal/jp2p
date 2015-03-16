@@ -94,7 +94,7 @@ public class Jp2pServiceLoader{
 		this.builders.remove( builder );
 		notifyContextChanged( new Jp2pLoaderEvent( this, LoaderEvent.UNREGISTERED, builder ));		
 	}
-		
+	
 	/**
 	 * Get the context for the given name
 	 * @param name
@@ -115,9 +115,9 @@ public class Jp2pServiceLoader{
 	 * @param componentName
 	 * @return
 	 */
-	public boolean hasFactory( String componentName ){
+	public boolean hasFactory( Jp2pServiceDescriptor descriptor ){
 		for( IJp2pServiceBuilder builder: this.builders ){
-			if( builder.hasFactory( componentName))
+			if( builder.hasFactory( descriptor ))
 				return true;
 		}
 		return false;
@@ -128,17 +128,19 @@ public class Jp2pServiceLoader{
 	 * @param contextName
 	 * @return
 	 */
+	/*
 	public synchronized IPropertyConvertor<String, Object> getConvertor( String contextName, IJp2pPropertySource<IJp2pProperties> source ){
 		String componentName = source.getComponentName();
 		if( Utils.isNull( componentName ))
 			return null;
 		
-		for( IJp2pServiceBuilder builder: this.builders ){
-			if( builder.getName().equals( contextName ) && builder.hasFactory( componentName))
-				return builder.getConvertor(source);
-		}
+		//for( IJp2pServiceBuilder builder: this.builders ){
+		//	if( builder.getName().equals( contextName ) && builder.hasFactory( componentName))
+		//		return builder.getConvertor(source);
+		//}
 		return null;
 	}
+	*/
 
 	/**
 	 * Get the convertor for the given property source

@@ -36,7 +36,7 @@ public class Jp2pBuilderService extends AbstractService<IJp2pServiceBuilder>{
 
 	private Jp2pServiceLoader loader;
 	
-	public Jp2pBuilderService(Jp2pServiceLoader loader, BundleContext bc) {
+	public Jp2pBuilderService( BundleContext bc, Jp2pServiceLoader loader) {
 		super( bc, IJp2pServiceBuilder.class, filter );
 		this.loader = loader;
 	}
