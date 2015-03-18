@@ -7,7 +7,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
-import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jp2p.jxta.network.NetworkManagerPropertySource;
 import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jxta.platform.NetworkManager.ConfigMode;
@@ -105,7 +105,7 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 	}
 
 	public NetworkConfigurationPropertySource( NetworkManagerPropertySource nmps ) {
-		super( JxtaNetworkComponents.NETWORK_CONFIGURATOR.toString(), nmps );
+		super( JxtaPlatformComponents.NETWORK_CONFIGURATOR.toString(), nmps );
 		this.fill();
 	}
 

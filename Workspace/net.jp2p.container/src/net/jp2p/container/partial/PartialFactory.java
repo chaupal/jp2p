@@ -9,7 +9,7 @@ package net.jp2p.container.partial;
 
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 
-public class PartialFactory<T extends Object> extends AbstractPropertySourceFactory {
+public class PartialFactory extends AbstractPropertySourceFactory {
 
 	public PartialFactory( String componentName ){
 		super( componentName );

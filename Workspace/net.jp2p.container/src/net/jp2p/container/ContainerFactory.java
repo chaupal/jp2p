@@ -15,7 +15,6 @@ import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IPropertySourceFactory;
-import net.jp2p.container.persistence.SimplePersistenceFactory;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -58,7 +57,6 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 		return context;
 	}
 
-	
 	@Override
 	public synchronized IJp2pComponent<Object> createComponent() {
 		return super.createComponent();
@@ -71,7 +69,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 	}
 
 	/**
-	 * Returns true if the context can be autostarted 
+	 * Returns true if the context can be auto started 
 	 * @return
 	 */
 	public boolean isAutoStart(){
@@ -115,7 +113,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 			factory = new StartupServiceFactory();
 			break;
 		case PERSISTENCE_SERVICE:
-			factory = new SimplePersistenceFactory();
+			factory = null;//ew SimplePersistenceFactory();
 			break;
 		case LOGGER_SERVICE:
 //			factory = new LoggerFactory();

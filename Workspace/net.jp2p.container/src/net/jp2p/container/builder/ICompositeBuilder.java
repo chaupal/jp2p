@@ -13,5 +13,7 @@ public interface ICompositeBuilder<T extends Object> {
 
 	public abstract void removeListener(ICompositeBuilderListener<?> listener);
 
-	public T build();
+	public void build();
+
+	public abstract boolean isCompleted();
 }

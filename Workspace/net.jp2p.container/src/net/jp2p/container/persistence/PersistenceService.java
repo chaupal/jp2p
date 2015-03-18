@@ -41,9 +41,10 @@ public class PersistenceService<T,U extends Object> extends AbstractJp2pService<
 				properties.setConvertor(convertor);
 				switch( event.getEvent() ){
 				case DEFAULT_VALUE_SET:
-					Object value = convertor.convertTo( mp.getKey(), properties.getProperty( mp.getSource(), mp.getKey() )); 
-					mp.setValue( value );
-					mp.reset();
+					IJp2pProperties key = mp.getKey();
+					//Object value = convertor.convertTo( key, properties.getProperty( mp.getSource(), key )); 
+					//mp.setValue( value );
+					//mp.reset();
 					break;
 				default:
 					properties.setProperty( source, mp.getKey(), convertor.convertFrom( mp.getKey() ));

@@ -3,7 +3,7 @@ package net.jp2p.chaupal.jxta.platform.internal;
 import java.net.URL;
 import java.util.Collection;
 
-import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jxta.impl.loader.JxtaLoaderModuleManager;
 import net.jxta.impl.loader.RefJxtaLoader;
 import net.jxta.impl.modulemanager.AbstractJxtaModuleDescriptor;
@@ -34,7 +34,7 @@ public class Component{
     }
 
     
-    public static final boolean canBuild( JxtaNetworkComponents jxtaComponent ) {
+    public static final boolean canBuild( JxtaPlatformComponents jxtaComponent ) {
     	PlatformDescriptor descriptor = new PlatformDescriptor();
     	return manager.canBuild(descriptor);
 	}

@@ -5,9 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.chaupal.builder;
+package net.jp2p.chaupal.context;
 
-public interface IServiceManagerListener {
+import java.util.EventObject;
 
-	public void notifyContainerBuilt( ServiceManagerEvent event );
+public class ServiceManagerEvent extends EventObject {
+	private static final long serialVersionUID = -1266257260044093122L;
+
+	public ServiceManagerEvent(Object source) {
+		super(source);
+	}
 }

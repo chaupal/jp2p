@@ -49,8 +49,7 @@ Import-Package: net.jp2p.chaupal,
  org.osgi.framework,
  org.osgi.service.log;version="1.3.0",
  org.osgi.util.tracker;version="1.5.1"
-Export-Package: net.jp2p.chaupal.jxta.platform.configurator.partial,
- net.jp2p.chaupal.jxta.platform.multicast,
+Export-Package: net.jp2p.chaupal.jxta.platform.multicast,
  net.jp2p.chaupal.jxta.platform.rdvrel,
  net.jp2p.chaupal.jxta.platform.security,
  net.jp2p.chaupal.jxta.platform.tcp

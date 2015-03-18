@@ -12,7 +12,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 
+import net.jp2p.chaupal.context.Jp2pServiceManager;
 import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.Jp2pContainer;
 import net.jp2p.container.builder.ContainerBuilder;
@@ -21,37 +23,46 @@ import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.builder.IFactoryBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener.BuilderEvents;
-import net.jp2p.container.context.IJp2pServiceBuilder;
-import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
 
+/**
+ * The container builder sees that all the factories that are needed to build the container are present.
+ * First it loads all the required factories from the composite builders, then it appends the collection
+ * with facotries that are also needed,
+ * @author Kees
+ *
+ */
 public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 
-	private String plugin_id;
+	private String bundle_id;
 	private Class<?> clss;
 	private Collection<ICompositeBuilder<ContainerFactory>> builders;
-	private Jp2pServiceLoader contexts;
+	private Jp2pServiceManager manager;
+	private boolean completed = false;
+	private Jp2pContainer container;
 	
 	private Collection<ICompositeBuilderListener<?>> listeners;
 	
-	public XMLContainerBuilder( String plugin_id, Class<?> clss, Jp2pServiceLoader contexts) {
-		this.plugin_id = plugin_id;
+	public XMLContainerBuilder( String bundle_id, Class<?> clss, Jp2pServiceManager manager) {
+		this.bundle_id = bundle_id;
 		this.clss = clss;	
-		this.contexts = contexts;
+		this.manager = manager;
 		builders = new ArrayList<ICompositeBuilder<ContainerFactory>>();
 		this.listeners = new ArrayList<ICompositeBuilderListener<?>>();
 	}
 	
 	@Override
-	public Jp2pContainer build() {
+	public void build() {
 		
 		//First register all the discovered builders
-		ContainerBuilder containerBuilder = new ContainerBuilder();
+		IContainerBuilder containerBuilder = new ContainerBuilder();
+		ContainerFactory factory = new ContainerFactory( this.bundle_id );
+		containerBuilder.addFactory( factory);
 		try {
-			this.extendBuilders(clss, containerBuilder);
+			this.extendBuilders( containerBuilder, clss);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -68,8 +79,18 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 		this.notifyPropertyCreated( containerBuilder);
 		
 		//Last create the container and the components
-		ContainerFactory factory = (ContainerFactory) containerBuilder.getFactory( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() );
-		return (Jp2pContainer) factory.createComponent();
+		this.completed = true;
+		this.container = (Jp2pContainer) factory.createComponent();
+	}
+
+	@Override
+	public boolean isCompleted() {
+		return this.completed;
+	}
+
+	
+	public final Jp2pContainer getContainer() {
+		return container;
 	}
 
 	/**
@@ -79,11 +100,11 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	 * @param containerBuilder
 	 * @throws IOException
 	 */
-	private void extendBuilders( Class<?> clss, IContainerBuilder containerBuilder ) throws IOException{
+	private void extendBuilders( IContainerBuilder builder, Class<?> clss ) throws IOException{
 		Enumeration<URL> enm = clss.getClassLoader().getResources( IFactoryBuilder.S_DEFAULT_LOCATION );
 		while( enm.hasMoreElements()){
 			URL url = enm.nextElement();
-			builders.add( new XMLFactoryBuilder( plugin_id, url, clss, containerBuilder, contexts ));
+			builders.add( new XMLFactoryBuilder( bundle_id, url, clss, builder, manager ));
 		}
 	}
 	
@@ -128,7 +149,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	 * Step 3: parse the properties
 	 * @param node
 	 */
-	private void extendContainer( ContainerBuilder containerBuilder){
+	private void extendContainer( IContainerBuilder containerBuilder){
 		IPropertySourceFactory[] factories = containerBuilder.getFactories();
 		for( IPropertySourceFactory factory: factories ){
 			if( factory instanceof IComponentFactory<?>)
@@ -147,7 +168,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	 * file. This allows for more fine-grained tuning of the property sources
 	 * @param node
 	 */
-	private void notifyPropertyCreated( ContainerBuilder containerBuilder){
+	private void notifyPropertyCreated( IContainerBuilder containerBuilder){
 		for( IPropertySourceFactory factory: containerBuilder.getFactories() ){
 			containerBuilder.updateRequest( new ComponentBuilderEvent<Object>(factory, BuilderEvents.PROPERTY_SOURCE_CREATED));
 		}

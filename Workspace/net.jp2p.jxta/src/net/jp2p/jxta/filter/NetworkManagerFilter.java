@@ -13,7 +13,7 @@ import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.filter.AbstractComponentFactoryFilter;
 import net.jp2p.container.utils.StringStyler;
-import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jxta.platform.NetworkManager;
 
 public class NetworkManagerFilter<T extends Object> extends AbstractComponentFactoryFilter<T> {
@@ -37,12 +37,12 @@ public class NetworkManagerFilter<T extends Object> extends AbstractComponentFac
 			return false;
 		IComponentFactory<?> factory = (IComponentFactory<?>) event.getFactory();
 		String name = StringStyler.styleToEnum( factory.getComponentName() );
-		if( JxtaNetworkComponents.NETWORK_MANAGER.name().equals(name) ){
+		if( JxtaPlatformComponents.NETWORK_MANAGER.name().equals(name) ){
 			acceptManager = true;
 			IJp2pComponent<NetworkManager> comp = (IJp2pComponent<NetworkManager>) factory.getComponent();
 			this.manager = comp.getModule();
 		}
-		if( JxtaNetworkComponents.NETWORK_CONFIGURATOR.name().equals(name) ){
+		if( JxtaPlatformComponents.NETWORK_CONFIGURATOR.name().equals(name) ){
 			acceptConfigurator = true;
 		}
 		return ( this.acceptManager && this.acceptConfigurator);

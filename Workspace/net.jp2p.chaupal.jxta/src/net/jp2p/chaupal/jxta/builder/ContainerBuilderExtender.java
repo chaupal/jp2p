@@ -13,7 +13,7 @@ import net.jp2p.container.builder.ContainerBuilder;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.factory.IComponentFactory;
 
-public class ContainerBuilderExtender {
+class ContainerBuilderExtender {
 
 	private static final String S_JP2P_INF = "/JP2P-INF/token.txt";
 

@@ -17,7 +17,6 @@ import net.jp2p.chaupal.xml.IContextEntities;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
-import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
@@ -35,13 +34,11 @@ class ServiceHandler extends DefaultHandler implements IContextEntities{
 		
 	private Stack<String> stack;
 	private Collection<Jp2pServiceDescriptor> services;
-	//private ContextLoader contexts;
 	
 	private boolean skip;
 
-	public ServiceHandler( Jp2pServiceLoader loaders ) {
+	public ServiceHandler() {
 		this.skip = false;
-		//this.contexts = contexts;
 		this.stack = new Stack<String>();
 		this.services = new ArrayList<Jp2pServiceDescriptor>();
 	}

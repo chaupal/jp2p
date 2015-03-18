@@ -13,12 +13,18 @@ import java.util.Collection;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerFactory;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.chaupal.jxta.platform.configurator.OverviewPreferences;
+import net.jp2p.chaupal.jxta.platform.http.Http2Factory;
 import net.jp2p.chaupal.jxta.platform.http.Http2Preferences;
+import net.jp2p.chaupal.jxta.platform.http.HttpFactory;
 import net.jp2p.chaupal.jxta.platform.http.HttpPreferences;
+import net.jp2p.chaupal.jxta.platform.multicast.MulticastFactory;
 import net.jp2p.chaupal.jxta.platform.multicast.MulticastPreferences;
+import net.jp2p.chaupal.jxta.platform.security.SecurityFactory;
 import net.jp2p.chaupal.jxta.platform.security.SecurityPreferences;
 import net.jp2p.chaupal.jxta.platform.seeds.SeedInfo;
+import net.jp2p.chaupal.jxta.platform.seeds.SeedListFactory;
 import net.jp2p.chaupal.jxta.platform.seeds.SeedListPropertySource;
+import net.jp2p.chaupal.jxta.platform.tcp.TcpFactory;
 import net.jp2p.chaupal.jxta.platform.tcp.TcpPreferences;
 import net.jp2p.container.context.AbstractJp2pServiceBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder;
@@ -31,7 +37,7 @@ import net.jp2p.container.properties.IJp2pDirectives.Contexts;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.xml.IJp2pHandler;
 import net.jp2p.jxta.context.IJxtaBuilder;
-import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jp2p.jxta.network.NetworkManagerPreferences;
 import net.jxta.peergroup.IModuleDefinitions.DefaultModules;
 import net.jxta.peergroup.core.ModuleClassID;
@@ -46,6 +52,12 @@ public class JxtaPlatformBuilder extends AbstractJp2pServiceBuilder implements I
 	protected void prepare() {
 		super.addFactory( new NetworkManagerFactory( ));
 		super.addFactory( new NetworkConfigurationFactory( ));
+		super.addFactory( new SecurityFactory());
+		super.addFactory( new TcpFactory() );
+		super.addFactory( new HttpFactory() );
+		super.addFactory( new Http2Factory() );
+		super.addFactory( new MulticastFactory() );
+		super.addFactory( new SeedListFactory());
 	}
 
 	@Override
@@ -78,9 +90,9 @@ public class JxtaPlatformBuilder extends AbstractJp2pServiceBuilder implements I
 	@Override
 	public IPropertyConvertor<String, Object> getConvertor( IJp2pPropertySource<IJp2pProperties> source ){
 		String comp = StringStyler.styleToEnum( source.getComponentName());
-		if( !JxtaNetworkComponents.isComponent( comp ))
+		if( !JxtaPlatformComponents.isComponent( comp ))
 			return null;
-		JxtaNetworkComponents component = JxtaNetworkComponents.valueOf(comp);
+		JxtaPlatformComponents component = JxtaPlatformComponents.valueOf(comp);
 		IPropertyConvertor<String, Object> convertor = null;
 		switch( component ){
 		case NETWORK_MANAGER:

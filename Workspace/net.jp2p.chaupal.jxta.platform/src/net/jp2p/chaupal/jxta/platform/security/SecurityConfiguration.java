@@ -18,7 +18,7 @@ import net.jxta.platform.NetworkConfigurator;
 
 public class SecurityConfiguration {
 
-	public static final String S_HTTP_CONFIGURATION = "Security Configuration";
+	public static final String S_SECURITY_CONFIGURATION = "Security Configuration";
 
 	private NetworkConfigurator configurator;
 	

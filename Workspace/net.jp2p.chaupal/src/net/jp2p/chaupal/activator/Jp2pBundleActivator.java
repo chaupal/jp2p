@@ -15,13 +15,12 @@ import java.util.concurrent.Executors;
 
 import org.osgi.framework.BundleContext;
 
-import net.jp2p.chaupal.builder.IServiceManagerListener;
 import net.jp2p.chaupal.builder.Jp2pBuilderService;
-import net.jp2p.chaupal.builder.Jp2pServiceManager;
-import net.jp2p.chaupal.builder.ServiceManagerEvent;
+import net.jp2p.chaupal.context.IServiceManagerListener;
+import net.jp2p.chaupal.context.Jp2pServiceManager;
+import net.jp2p.chaupal.context.ServiceManagerEvent;
 import net.jp2p.chaupal.xml.XMLContainerBuilder;
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
-import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
@@ -37,9 +36,12 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	private IComponentChangedListener<?> componentListener;
 	
 	private ExecutorService service;
+	
+	private Class<?> clss;
 
 	protected Jp2pBundleActivator(String bundle_id) {
 		super( bundle_id );
+		clss = this.getClass();
 	}
 
 	
@@ -58,6 +60,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	public void stop(BundleContext bundleContext) throws Exception {
 		if(( manager != null ) && ( listener != null )){
 			manager.removeListener(listener);
+			manager.close();
 			listener = null;
 		}
 		
@@ -93,12 +96,12 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
 					@Override
 					public void run() {
-						XMLContainerBuilder builder = new XMLContainerBuilder( getBundleId(), getClass(), loader );
-						IJp2pContainer<Object> container = (IJp2pContainer<Object>) builder.build();
-						setContainer( container );
+						XMLContainerBuilder builder = new XMLContainerBuilder( getBundleId(), clss, manager );
 						ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 						componentListener = new ComponentChangedListener();
 						dispatcher.addServiceChangeListener( componentListener);		
+						builder.build();
+						setContainer( builder.getContainer() );
 					}
 					
 				};
@@ -107,6 +110,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 			}	
 		};
 		manager.addListener(listener);
+		manager.open();
 	}
 
 

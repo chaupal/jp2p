@@ -73,6 +73,7 @@ public class Jp2pDSComponent extends AbstractAttendeeProviderComponent implement
 		super.addAttendee( this.provider );
 	}
 
+	
 	@Override
 	protected void finalise() {
 		builder.removeContainerBuilderListener(listener);

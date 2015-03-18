@@ -118,7 +118,7 @@ public class ContextServiceParser{
 			
 			//saxParser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA); 
 			//saxParser.setProperty(JAXP_SCHEMA_SOURCE, new File(JP2P_XSD_SCHEMA)); 
-			ServiceHandler handler = new ServiceHandler( loaders );
+			ServiceHandler handler = new ServiceHandler();
 			saxParser.parse( in, handler);
 			services = handler.getServices();
 			return services;

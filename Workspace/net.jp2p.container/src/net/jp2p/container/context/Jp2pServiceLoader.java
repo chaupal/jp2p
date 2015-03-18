@@ -178,8 +178,13 @@ public class Jp2pServiceLoader{
 	 * @return
 	 */
 	public IPropertySourceFactory getFactory( String contextName, String componentName ){
-		if( Utils.isNull( contextName ))
-		return null;
+		if( Utils.isNull( contextName )){
+			Jp2pServiceDescriptor descriptor = new Jp2pServiceDescriptor( componentName, contextName );
+			for( IJp2pServiceBuilder builder: this.builders ){
+				if( builder.hasFactory( descriptor ))
+					return builder.getFactory(componentName);
+			}
+		}
 		
 		IJp2pServiceBuilder builder = getBuilder(contextName);
 		return builder.getFactory(componentName);

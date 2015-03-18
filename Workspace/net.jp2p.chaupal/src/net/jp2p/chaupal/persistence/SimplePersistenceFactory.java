@@ -5,18 +5,22 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container.persistence;
+package net.jp2p.chaupal.persistence;
 
 import java.util.Iterator;
 import java.util.Stack;
 
+import net.jp2p.chaupal.context.Jp2pServiceManager;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.context.IJp2pServiceBuilder;
-import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.filter.BuilderEventFilter;
 import net.jp2p.container.factory.filter.IComponentFactoryFilter;
+import net.jp2p.container.persistence.IPersistedProperties;
+import net.jp2p.container.persistence.PersistedProperties;
+import net.jp2p.container.persistence.PersistencePropertySource;
+import net.jp2p.container.persistence.PersistenceService;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -30,7 +34,7 @@ import net.jp2p.container.properties.ManagedProperty;
 public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedPropertyListener<IJp2pProperties, Object>> implements IContextFactory {
 
 	private Stack<IPropertyEventDispatcher> stack;
-	private Jp2pServiceLoader loader;
+	private Jp2pServiceManager manager;
 	
 	private IComponentFactoryFilter filter = new BuilderEventFilter<IJp2pComponent<IManagedPropertyListener<IJp2pProperties, Object>>>( BuilderEvents.PROPERTY_SOURCE_PREPARED, this );
 
@@ -39,16 +43,16 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 		stack = new Stack<IPropertyEventDispatcher>();
 	}
 
-	protected Jp2pServiceLoader getLoader() {
-		return loader;
+	protected Jp2pServiceManager getManager() {
+		return manager;
 	}
 
 	/* (non-Javadoc)
 	 * @see net.jp2p.container.persistence.IContextFactory#setLoader(net.jp2p.container.context.ContextLoader)
 	 */
 	@Override
-	public void setLoader(Jp2pServiceLoader loader) {
-		this.loader = loader;
+	public void setManager(Jp2pServiceManager manager) {
+		this.manager = manager;
 	}
 
 
@@ -92,7 +96,7 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 			if(!ManagedProperty.isPersisted( mp ))
 				continue;
 			IPersistedProperties<String,Object> properties = new PersistedProperties( (IJp2pWritePropertySource<IJp2pProperties>) source );
-			IPropertyConvertor<String, Object> convertor = loader.getConvertor( source); 
+			IPropertyConvertor<String, Object> convertor = manager.getConvertor( source); 
 			properties.setProperty( source, id, convertor.convertFrom( id ));	
 		}
 	}
@@ -106,7 +110,7 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 	protected IJp2pComponent<IManagedPropertyListener<IJp2pProperties, Object>> onCreateComponent(
 			IJp2pPropertySource<IJp2pProperties> source) {
 		IPersistedProperties<String,Object> properties = new PersistedProperties( (IJp2pWritePropertySource<IJp2pProperties>) source );
-		IPropertyConvertor<String, Object> convertor = loader.getConvertor( source); 
+		IPropertyConvertor<String, Object> convertor = manager.getConvertor( source); 
 		PersistenceService<String,Object> service = new PersistenceService<String,Object>( (IJp2pWritePropertySource<IJp2pProperties>) source, properties, convertor );
 		while( stack.size() > 0)
 			service.addDispatcher( stack.pop() );

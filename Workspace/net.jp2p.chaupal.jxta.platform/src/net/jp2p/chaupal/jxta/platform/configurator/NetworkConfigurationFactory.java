@@ -34,7 +34,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.StringStyler;
-import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jp2p.jxta.network.NetworkManagerPropertySource;
 import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource;
 import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
@@ -47,7 +47,7 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	private Collection<SeedListPropertySource> seedlists;
 	
 	public  NetworkConfigurationFactory() {
-		super( JxtaNetworkComponents.NETWORK_CONFIGURATOR.toString());
+		super( JxtaPlatformComponents.NETWORK_CONFIGURATOR.toString());
 	}
 	
 	@Override
@@ -71,11 +71,11 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	@Override
 	public void notifyChange(ComponentBuilderEvent<Object> event) {
 		String name = StringStyler.styleToEnum( event.getFactory().getComponentName() );
-		if( !JxtaNetworkComponents.isComponent(name ))
+		if( !JxtaPlatformComponents.isComponent(name ))
 			return;
 		switch( event.getBuilderEvent() ){
 		case PROPERTY_SOURCE_CREATED:
-			if( !isComponentFactory( JxtaNetworkComponents.SEED_LIST, event.getFactory() ))
+			if( !isComponentFactory( JxtaPlatformComponents.SEED_LIST, event.getFactory() ))
 				return;
 			if( !AbstractJp2pPropertySource.isChild(super.getPropertySource(), event.getFactory().getPropertySource()))
 				return;
@@ -134,7 +134,7 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	 * @return
 	 */
 	public static INetworkPreferences getPreferences( PartialPropertySource source ){
-		JxtaNetworkComponents component = JxtaNetworkComponents.valueOf( StringStyler.styleToEnum( source.getComponentName()));
+		JxtaPlatformComponents component = JxtaPlatformComponents.valueOf( StringStyler.styleToEnum( source.getComponentName()));
 		switch( component ){
 		case TCP:
 			return new TcpPreferences( source );

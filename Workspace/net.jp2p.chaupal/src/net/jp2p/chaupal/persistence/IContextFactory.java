@@ -5,12 +5,12 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container.persistence;
+package net.jp2p.chaupal.persistence;
 
-import net.jp2p.container.context.Jp2pServiceLoader;
+import net.jp2p.chaupal.context.Jp2pServiceManager;
 
 public interface IContextFactory {
 
-	public abstract void setLoader(Jp2pServiceLoader loader);
+	public abstract void setManager(Jp2pServiceManager manager);
 
 }

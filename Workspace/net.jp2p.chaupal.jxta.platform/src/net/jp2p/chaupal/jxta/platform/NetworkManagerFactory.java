@@ -35,7 +35,7 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IManagedPropertyListener.PropertyEvents;
 import net.jp2p.container.properties.ManagedProperty;
-import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.network.NetworkManagerPreferences;
@@ -54,7 +54,7 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 	public static final String S_WRN_NO_CONFIGURATOR = "Could not add network configurator";
 	
 	public NetworkManagerFactory() {
-		super( JxtaNetworkComponents.NETWORK_MANAGER.toString());
+		super( JxtaPlatformComponents.NETWORK_MANAGER.toString());
 	}
 	
 	@Override
@@ -72,7 +72,7 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 	@Override
 	public void extendContainer() {
 		IContainerBuilder builder = super.getBuilder();
-		JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getPropertySource(), JxtaNetworkComponents.NETWORK_CONFIGURATOR.toString(), true );
+		JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getPropertySource(), JxtaPlatformComponents.NETWORK_CONFIGURATOR.toString(), true );
 		PeerGroupPropertySource npps = (PeerGroupPropertySource) JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getParentSource(), JxtaComponents.NET_PEERGROUP_SERVICE.toString(), true ).getPropertySource();
 		npps.setDirective( Directives.AUTO_START, this.getPropertySource().getDirective( Directives.AUTO_START ));
 		super.extendContainer();
@@ -124,11 +124,8 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 			}
 			
 			//Load the http module
-			//IJp2pContext context = Activator.getLoader().
 			File file = path.toFile();
 			NetworkManager manager = JxtaApplication.getNetworkManager( preferences.getConfigMode(), name, file.toURI());
-			//NetworkModuleFactory factory = new NetworkModuleFactory( properties, manager.getConfigurator() );
-			//factory.createModules();
 			return new Jp2pComponentNode<NetworkManager>( super.getPropertySource(), manager );
 		} catch (Exception e) {
 			Logger log = Logger.getLogger( this.getClass().getName() );

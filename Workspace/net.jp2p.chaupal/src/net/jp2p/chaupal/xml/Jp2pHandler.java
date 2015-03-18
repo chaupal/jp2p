@@ -15,16 +15,15 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.jp2p.container.ContainerFactory;
+import net.jp2p.chaupal.context.Jp2pServiceManager;
+import net.jp2p.chaupal.persistence.IContextFactory;
 import net.jp2p.container.builder.ComponentNode;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder;
-import net.jp2p.container.context.Jp2pServiceLoader;
+import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.factory.IPropertySourceFactory;
-import net.jp2p.container.persistence.IContextFactory;
-import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -47,32 +46,23 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 
 	private ManagedProperty<IJp2pProperties,Object> property;
 
-	private IContainerBuilder builder;
-	private Jp2pServiceLoader loader;
-	private ContainerFactory root;
+	private Jp2pServiceManager manager;
 	private FactoryNode node;
-	private String bundleId;
 	private Class<?> clss;
 	private Stack<String> stack;
+	private IContainerBuilder builder;
+	private String context = null;
+
 
 	private static Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 
-	public Jp2pHandler( IContainerBuilder builder, Jp2pServiceLoader loader, String bundleId, Class<?> clss ) {
-		this.bundleId = bundleId;
+	public Jp2pHandler( IContainerBuilder builder, Jp2pServiceManager manager, String bundleId, Class<?> clss ) {
+		this.manager = manager;
 		this.builder = builder;
-		this.loader = loader;
 		this.clss = clss;
 		this.stack = new Stack<String>();
 	}
 
-	/**
-	 * Get the root factory 
-	 * @return
-	 */
-	ContainerFactory getRoot() {
-		return root;
-	}
-	
 	@Override
 	public void startElement(String uri, String localName, String qName, 
 			Attributes attributes) throws SAXException {
@@ -82,41 +72,41 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 			stack.push( qName );
 			return;
 		}
+		
+		String componentName = StringStyler.prettyStringFromXml( qName );
+		if( manager.hasFactory( this.context, componentName )){
+			factory = manager.getFactory( context, componentName );
+		}
+		
 		//The name is not a group. try the default JP2P components
 		if( IJp2pServiceBuilder.Components.isComponent( qName )){
 			IJp2pComponents current = IJp2pServiceBuilder.Components.valueOf( StringStyler.styleToEnum( qName ));
 			switch(( IJp2pServiceBuilder.Components )current ){
 			case JP2P_CONTAINER:
-				factory = builder.getFactory( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() );
-				if( factory == null ){
-					factory = new ContainerFactory( bundleId );
-				}
-				factory.prepare( null, builder, new HashMap<String, String>());
-				this.root = (ContainerFactory) factory;
+				factory = builder.getFactory(Components.JP2P_CONTAINER.toString());
 				break;
 			case CONTEXT:
 				stack.push( qName );
 				return;//skip, the contexts were parsed in the first round
 			case PERSISTENCE_SERVICE:
-				factory = this.getFactory( qName, attributes, node.getData().getPropertySource());
 				if( factory instanceof IContextFactory ){
 					IContextFactory cf = (IContextFactory) factory;
-					cf.setLoader(loader);
+					cf.setManager(manager);
 				}		
 				break;			
 			default:
-				factory = this.getFactory( qName, attributes, node.getData().getPropertySource());
 				break;
 			}
 		}
 		//Apparently the factory is available elsewhere
 		if( factory == null ){
 			factory = this.getFactoryFromClass(qName, attributes, node.getData().getPropertySource());
-			if( factory == null ){
-				factory = this.getFactory( qName, attributes, node.getData().getPropertySource());
-			}
 		}
+		
+		//The factory is either a service or a property
 		if( factory != null ){
+			IJp2pPropertySource<IJp2pProperties> source = ( node == null )? null:node.getData().getPropertySource(); 
+			factory.prepare( source, builder, convertAttributes(attributes));
 			node = this.processFactory(attributes, node, factory);
 			this.stack.push( qName );
 			return;
@@ -131,19 +121,6 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	protected synchronized IPropertySourceFactory getFactory( String componentName, Attributes attributes, IJp2pPropertySource<?> parentSource ){
-		String contextName = attributes.getValue(Directives.CONTEXT.toString().toLowerCase());
-		if( Utils.isNull( contextName )){
-			contextName = AbstractJp2pPropertySource.findFirstAncestorDirective( parentSource, Directives.CONTEXT );
-		}
-		String str = StringStyler.prettyStringFromXml( componentName );
-		IPropertySourceFactory factory = builder.getFactory( str );
-		if( factory != null ){
-			factory.prepare((IJp2pPropertySource<IJp2pProperties>) parentSource, builder, convertAttributes(attributes));
-		}
-		return factory;
-	}
 
 	/**
 	 * Create a factory from a class definition
@@ -245,7 +222,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		if(( property == null ) || ( property.getKey() == null ))
 			return;
 		IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) node.getData().getPropertySource();
-		IPropertyConvertor<String, Object> convertor = loader.getConvertor(source);
+		IPropertyConvertor<String, Object> convertor = manager.getConvertor(source);
 		if( convertor != null )
 			convertor.setPropertyFromConverion( property.getKey(), value);
 		else
@@ -327,7 +304,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	 * @param attributes
 	 * @return
 	 */
-	public static Map<String, String> convertAttributes( Attributes attributes ){
+	private static Map<String, String> convertAttributes( Attributes attributes ){
 		Map<String,String> attrs = new HashMap<String,String>();
 		for( int i=0; i<attributes.getLength(); i++  ){
 			if( !Utils.isNull( attributes.getLocalName(i))){

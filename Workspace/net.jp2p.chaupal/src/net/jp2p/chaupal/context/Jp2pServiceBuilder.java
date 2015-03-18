@@ -7,12 +7,12 @@
  *******************************************************************************/
 package net.jp2p.chaupal.context;
 
+import net.jp2p.chaupal.persistence.SimplePersistenceFactory;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.context.AbstractJp2pServiceBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.context.Jp2pContainerPreferences;
 import net.jp2p.container.log.LoggerFactory;
-import net.jp2p.container.persistence.SimplePersistenceFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;

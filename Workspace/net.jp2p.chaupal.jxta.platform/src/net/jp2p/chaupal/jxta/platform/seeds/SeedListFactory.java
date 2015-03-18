@@ -11,13 +11,13 @@ import java.util.Iterator;
 
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.jxta.factory.IJxtaComponents.JxtaNetworkComponents;
+import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jxta.platform.NetworkConfigurator;
 
 public class SeedListFactory extends AbstractPropertySourceFactory{
 	
 	public SeedListFactory() {
-		super(JxtaNetworkComponents.SEED_LIST.toString());
+		super(JxtaPlatformComponents.SEED_LIST.toString());
 	}
 
 	@Override

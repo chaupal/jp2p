@@ -39,7 +39,7 @@ public interface IJxtaComponents{
 		}
 	}
 
-	public enum JxtaNetworkComponents implements IJp2pComponents{
+	public enum JxtaPlatformComponents implements IJp2pComponents{
 		PLATFORM,
 		NETWORK_MANAGER,
 		NETWORK_CONFIGURATOR,
@@ -59,7 +59,7 @@ public interface IJxtaComponents{
 			str = StringStyler.styleToEnum(str);
 			if(( str == null ) || ( str.length() == 0 ))
 				return false;
-			for( JxtaNetworkComponents comp: values()){
+			for( JxtaPlatformComponents comp: values()){
 				if( comp.name().equals( str ))
 					return true;
 			}
