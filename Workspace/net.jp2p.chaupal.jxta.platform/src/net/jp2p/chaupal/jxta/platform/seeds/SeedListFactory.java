@@ -22,7 +22,7 @@ public class SeedListFactory extends AbstractPropertySourceFactory{
 
 	@Override
 	protected SeedListPropertySource onCreatePropertySource() {
-		return new SeedListPropertySource( super.getParentSource() );
+		return new SeedListPropertySource( super.getComponentName(), super.getParentSource() );
 	}
 
 	/**

@@ -16,21 +16,22 @@
  * Contributors:
  *     Kees Pieters - initial API and implementation
  *******************************************************************************/
-package net.jp2p.chaupal.jxta.platform.multicast;
+package net.jp2p.chaupal.jxta.platform.seeds;
 
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 
-public class MulticastFactory extends AbstractPropertySourceFactory {
+public class RelayFactory extends AbstractPropertySourceFactory {
 
-	public MulticastFactory() {
-		super(JxtaPlatformComponents.MULTICAST.toString());
+
+	public RelayFactory() {
+		super(JxtaPlatformComponents.RELAY.toString());
 	}
 
 	@Override
 	protected IJp2pPropertySource<IJp2pProperties> onCreatePropertySource() {
-		return new MulticastPropertySource(super.getComponentName(), super.getParentSource());
+		return new SeedListPropertySource( super.getComponentName(), super.getParentSource() );
 	}
 }

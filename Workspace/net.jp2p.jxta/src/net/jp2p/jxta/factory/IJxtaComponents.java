@@ -43,12 +43,15 @@ public interface IJxtaComponents{
 		PLATFORM,
 		NETWORK_MANAGER,
 		NETWORK_CONFIGURATOR,
+		INFRASTRUCTURE,
 		SEED_LIST,
 		SECURITY,
 		TCP,
 		HTTP,
 		HTTP2,
-		MULTICAST;
+		MULTICAST,
+		RENDEZVOUS,
+		RELAY;
 
 		@Override
 		public String toString() {

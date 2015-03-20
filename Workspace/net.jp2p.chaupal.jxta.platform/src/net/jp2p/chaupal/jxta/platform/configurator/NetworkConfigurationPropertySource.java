@@ -1,5 +1,7 @@
 package net.jp2p.chaupal.jxta.platform.configurator;
 
+import java.io.File;
+import java.net.URI;
 import java.util.Iterator;
 
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
@@ -10,8 +12,9 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
-import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
+import net.jxta.peer.PeerID;
+import net.jxta.platform.NetworkConfigurator;
 import net.jxta.platform.NetworkManager.ConfigMode;
 
 public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropertySource
@@ -22,36 +25,9 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		DESCRIPTION,
 		HOME,
 		CONFIG_MODE,
-		INFRASTRUCTURE_8NAME,
-		INFRASTRUCTURE_8DESCRIPTION,
-		INFRASTRUCTURE_8ID,
-		MULTICAST_8ENABLED,
-		MULTICAST_8ADDRESS,
-		MULTICAST_8INTERFACE,
-		MULTICAST_8POOL_SIZE,
-		MULTICAST_8PORT,
-		MULTICAST_8SIZE,
-		MULTICAST_8STATUS,
-		MULTICAST_8USE_ONLY_RELAY_SEEDS,
-		MULTICAST_8USE_ONLY_RENDEZVOUS_SEEDS,
 		NAME,
 		PEER_ID,
-		SECURITY_8AUTHENTICATION_TYPE,
-		SECURITY_8CERTFICATE,
-		SECURITY_8CERTIFICATE_CHAIN,
-		SECURITY_8KEY_STORE_LOCATION,
-		SECURITY_8PASSWORD,
-		SECURITY_8PRINCIPAL,
-		SECURITY_8PRIVATE_KEY,
-		RELAY_8MAX_CLIENTS,
-		RELAY_8SEEDING_URIS,
-		RELAY_8SEED_URIS,
-		RENDEZVOUS_8MAX_CLIENTS,
-		RENDEZVOUS_8SEEDING_URIS,
-		RENDEZVOUS_8SEED_URIS,
-		STORE_HOME,
-		USE_ONLY_RELAY_SEEDS,
-		USE_ONLY_RENDEZVOUS_SEEDS;
+		STORE_HOME;
 	
 		@Override
 		public String toString() {
@@ -96,8 +72,8 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 				super.setProperty(nmp, value, true);
 			}
 		}
-		if( Utils.isNull( (String) super.getProperty( NetworkConfiguratorProperties.SECURITY_8PRINCIPAL )))
-			super.setProperty( NetworkConfiguratorProperties.SECURITY_8PRINCIPAL, getBundleId(source) );
+		//if( Utils.isNull( (String) super.getProperty( NetworkConfiguratorProperties.SECURITY_8PRINCIPAL )))
+		//	super.setProperty( NetworkConfiguratorProperties.SECURITY_8PRINCIPAL, getBundleId(source) );
 		//super.setProperty( NetworkConfiguratorProperties.TCP_8ENABLED, source.isEnabled() );
 		//super.setProperty( NetworkConfiguratorProperties.HTTP_8ENABLED, true );
 	}
@@ -105,6 +81,32 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 	@Override
 	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
 		return new Convertor( this );
+	}
+
+	public static final void fillNetworkConfigurator( NetworkConfigurationPropertySource source, NetworkConfigurator configurator ){
+		Iterator<IJp2pProperties> iterator = source.propertyIterator();
+		while( iterator.hasNext() ){
+			NetworkConfiguratorProperties property = ( NetworkConfiguratorProperties ) iterator.next();
+			switch( property ){
+			case STORE_HOME:
+				configurator.setStoreHome((URI) source.getProperty( property ));
+				break;
+			case PEER_ID:
+				configurator.setPeerID(( PeerID ) source.getProperty( property ));
+				break;
+			case DESCRIPTION:
+				configurator.setDescription(( String )source.getProperty( property ));
+				break;
+			case NAME:
+				configurator.setName(( String ) source.getProperty( property ));
+				break;
+			case HOME:
+				configurator.setHome( (File ) source.getProperty( property ));
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -169,7 +171,7 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		return results;
 	}
 
-	private static class Convertor extends SimplePropertyConvertor{
+	private class Convertor extends SimplePropertyConvertor{
 
 		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
 			super(source);
@@ -179,5 +181,22 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		public NetworkConfiguratorProperties getIdFromString(String key) {
 			return NetworkConfiguratorProperties.valueOf( key );
 		}
+
+		@Override
+		public Object convertTo(IJp2pProperties id, String value) {
+			NetworkConfiguratorProperties property = ( NetworkConfiguratorProperties )id;
+			switch( property ){
+			case CONFIG_MODE:
+				String str = StringStyler.styleToEnum( value );
+				return ConfigMode.valueOf( str );
+			case PEER_ID:
+				return PeerID.create( URI.create( value ));
+			case HOME:
+				return new File( value );
+			default:
+				break;
+			}
+			return super.convertTo(id, value);
+		}		
 	}
 }

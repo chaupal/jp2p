@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.chaupal.jxta.platform.http.HttpPropertySource;
+import net.jp2p.chaupal.jxta.platform.multicast.MulticastPropertySource;
+import net.jp2p.chaupal.jxta.platform.security.SecurityPropertySource;
 import net.jp2p.chaupal.jxta.platform.seeds.SeedListFactory;
 import net.jp2p.chaupal.jxta.platform.seeds.SeedListPropertySource;
 import net.jp2p.chaupal.jxta.platform.tcp.TcpPropertySource;
@@ -89,6 +91,9 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 			String name = StringStyler.styleToEnum( source.getComponentName());
 			JxtaPlatformComponents comp = JxtaPlatformComponents.valueOf( name ); 
 			switch( comp ){
+			case NETWORK_CONFIGURATOR:
+				NetworkConfigurationPropertySource.fillNetworkConfigurator( (NetworkConfigurationPropertySource) source, configurator);
+				break;				
 			case HTTP:
 				HttpPropertySource.fillHttpNetworkConfigurator((HttpPropertySource) source, configurator);
 				break;
@@ -98,11 +103,24 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 			case TCP:
 				TcpPropertySource.fillTcpNetworkConfigurator((TcpPropertySource) source, configurator);
 				break;
+			case MULTICAST:
+				MulticastPropertySource.fillNetworkConfigurator((MulticastPropertySource) source, configurator);
+				break;
+			case RENDEZVOUS:
+				SeedListPropertySource.fillRendezvousNetworkConfigurator(( SeedListPropertySource) source, configurator);
+				break;				
+			case RELAY:
+				SeedListPropertySource.fillRelayNetworkConfigurator(( SeedListPropertySource) source, configurator);
+				break;				
+			case SECURITY:
+				SecurityPropertySource.fillNetworkConfigurator(( SecurityPropertySource) source, configurator);
+				break;				
 			default:
 				break;
 			}
 		}
 	}
+	
 	@Override
 	protected IJp2pComponent<NetworkConfigurator> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		NetworkConfigurator configurator = null;

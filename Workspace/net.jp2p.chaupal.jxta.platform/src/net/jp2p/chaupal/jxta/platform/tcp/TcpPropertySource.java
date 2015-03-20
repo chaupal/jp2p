@@ -90,7 +90,7 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 
 	public static final void fillTcpNetworkConfigurator( TcpPropertySource source, NetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
-		configurator.setHttpEnabled( source.isEnabled());
+		configurator.setTcpEnabled( source.isEnabled());
 		while( iterator.hasNext() ){
 			TransportProperties property = (TransportProperties) iterator.next();
 			switch( property ){
