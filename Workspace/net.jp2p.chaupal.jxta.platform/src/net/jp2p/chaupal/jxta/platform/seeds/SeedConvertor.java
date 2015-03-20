@@ -17,7 +17,7 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jxta.platform.NetworkConfigurator;
 
-public class SeedConvertor extends AbstractPreferences<String, Object> implements INetworkPreferences{
+public class SeedConvertor extends AbstractPreferences<IJp2pProperties, String, Object> implements INetworkPreferences{
 
 	public static final String S_SEEDS = "Seeds";
 

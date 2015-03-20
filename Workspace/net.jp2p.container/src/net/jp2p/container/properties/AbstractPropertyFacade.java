@@ -7,8 +7,6 @@
  *******************************************************************************/
 package net.jp2p.container.properties;
 
-import net.jp2p.container.utils.StringProperty;
-
 public abstract class AbstractPropertyFacade<T extends Object> extends AbstractJp2pPropertySource{
 
 	private T module;
@@ -22,11 +20,6 @@ public abstract class AbstractPropertyFacade<T extends Object> extends AbstractJ
 		return module;
 	}
 	
-	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		return new StringProperty( key );
-	}
-
 	@Override
 	public String getComponentName() {
 		return this.getModule().getClass().getSimpleName();

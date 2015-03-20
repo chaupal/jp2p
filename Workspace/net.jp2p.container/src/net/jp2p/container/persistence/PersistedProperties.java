@@ -25,7 +25,7 @@ import net.jp2p.container.utils.IOUtils;
 import net.jp2p.container.utils.ProjectFolderUtils;
 
 public class PersistedProperties extends
-		AbstractPersistedProperty<String,Object> {
+		AbstractPersistedProperty<IJp2pProperties, String,Object> {
 
 	public static final String S_PROPERTIES = "properties.txt";
 	
@@ -34,7 +34,7 @@ public class PersistedProperties extends
 	}
 	
 	@Override
-	public void setConvertor( IPropertyConvertor<String,Object> convertor ) {
+	public void setConvertor( IPropertyConvertor<IJp2pProperties, String,Object> convertor ) {
 		// TODO Auto-generated method stub		
 	}
 

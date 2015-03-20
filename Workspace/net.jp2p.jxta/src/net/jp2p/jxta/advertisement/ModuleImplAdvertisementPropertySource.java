@@ -9,6 +9,7 @@ package net.jp2p.jxta.advertisement;
 
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
@@ -71,10 +72,8 @@ public class ModuleImplAdvertisementPropertySource extends AdvertisementProperty
 	}
 
 	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		if( ModuleImplProperties.isValidProperty(key))
-			return ModuleImplProperties.valueOf(key);
-		return super.getIdFromString(key);
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new ModuleImplConvertor( this );
 	}
 
 	@Override
@@ -101,5 +100,21 @@ public class ModuleImplAdvertisementPropertySource extends AdvertisementProperty
 			miadv.setUri(( String )source.getProperty( ModuleImplProperties.URI ));
 		}
 		return miadv;
-	}	
+	}
+	
+	private static class ModuleImplConvertor extends SimplePropertyConvertor{
+
+		public ModuleImplConvertor(IJp2pPropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public IJp2pProperties getIdFromString(String key) {
+			if( ModuleImplProperties.isValidProperty(key))
+				return ModuleImplProperties.valueOf(key);
+			return super.getIdFromString(key);
+		}
+
+
+	}
 }

@@ -17,9 +17,10 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.ProjectFolderUtils;
+import net.jp2p.container.utils.StringProperty;
 import net.jp2p.container.utils.Utils;
 
-public class Jp2pContainerPreferences extends AbstractPreferences<String, Object>
+public class Jp2pContainerPreferences extends AbstractPreferences<IJp2pProperties, String, Object>
 {
 	public Jp2pContainerPreferences( Jp2pContainerPropertySource source )
 	{
@@ -63,5 +64,14 @@ public class Jp2pContainerPreferences extends AbstractPreferences<String, Object
 		default:
 			return value;
 		}
+	}
+
+	@Override
+	public IJp2pProperties getIdFromString(String key) {
+		IJp2pProperties id = new StringProperty( key );
+		if( ContainerProperties.isValidKey(id ))
+			return ContainerProperties.valueOf( key );
+		else
+			return id;
 	}
 }

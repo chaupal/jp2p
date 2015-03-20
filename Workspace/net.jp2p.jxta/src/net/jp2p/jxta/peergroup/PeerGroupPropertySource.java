@@ -11,6 +11,7 @@ import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
@@ -104,7 +105,19 @@ public class PeerGroupPropertySource extends AdvertisementPropertySource
 	}
 
 	@Override
-	public PeerGroupProperties getIdFromString(String key) {
-		return PeerGroupProperties.valueOf( key );
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new Convertor( this );
+	}
+
+	private static class Convertor extends SimplePropertyConvertor{
+
+		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public PeerGroupProperties getIdFromString(String key) {
+			return PeerGroupProperties.valueOf( key );
+		}
 	}
 }

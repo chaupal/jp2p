@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
@@ -67,17 +68,29 @@ public class PeerGroupAdvertisementPropertySource extends AdvertisementPropertyS
 	}
 
 	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		if( PeerGroupAdvertisementProperties.isValidProperty(key))
-			return PeerGroupAdvertisementProperties.valueOf(key);
-		return super.getIdFromString(key);
-	}
-
-	@Override
 	public boolean validate(IJp2pProperties id, Object value) {
 		return PeerGroupAdvertisementProperties.isValidProperty(id.toString());	
 	}	
-	
+
+	@Override
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new Convertor( this );
+	}
+
+	private static class Convertor extends SimplePropertyConvertor{
+
+		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public IJp2pProperties getIdFromString(String key) {
+			if( PeerGroupAdvertisementProperties.isValidProperty(key))
+				return PeerGroupAdvertisementProperties.valueOf(key);
+			return super.getIdFromString(key);
+		}
+	}
+
 	/**
 	 * Create a pipe advertisement
 	 * @return

@@ -17,7 +17,6 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Contexts;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.Utils;
-import net.jp2p.container.xml.IJp2pHandler;
 
 public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder {
 
@@ -98,13 +97,6 @@ public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder 
 		}
 		return buffer.toString();
 	}
-
-	
-	@Override
-	public IJp2pHandler getHandler() {
-		return null;
-	}
-
 	
 	@Override
 	public String toString() {

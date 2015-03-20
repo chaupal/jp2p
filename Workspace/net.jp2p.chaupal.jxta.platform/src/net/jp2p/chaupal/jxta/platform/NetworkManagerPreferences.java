@@ -8,28 +8,34 @@
  * Contributors:
  *     Kees Pieters - initial API and implementation
  *******************************************************************************/
-package net.jp2p.jxta.network;
+package net.jp2p.chaupal.jxta.platform;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.container.persistence.AbstractPreferences;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
-import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jxta.id.IDFactory;
 import net.jxta.peer.PeerID;
 import net.jxta.peergroup.PeerGroupID;
 import net.jxta.platform.NetworkManager.ConfigMode;
 
-public class NetworkManagerPreferences extends AbstractPreferences<String, Object>{
-	public NetworkManagerPreferences( IJp2pWritePropertySource<IJp2pProperties> source )
+public class NetworkManagerPreferences extends AbstractPreferences<IJp2pProperties, String, Object>{
+	public NetworkManagerPreferences( NetworkManagerPropertySource source )
 	{
 		super( source );
 	}
+
+	@Override
+	public NetworkManagerProperties getIdFromString(String key) {
+		return NetworkManagerProperties.valueOf( key );
+	}
+
 
 	/* (non-Javadoc)
 	 * @see net.osgi.jxta.preferences.IJxtaPreferences#getConfigMode()

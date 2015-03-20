@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container.partial;
+package net.jp2p.chaupal.jxta.platform.partial;
 
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 

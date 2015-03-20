@@ -91,11 +91,6 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 	}
 
 	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		return new StringProperty( key );
-	}
-
-	@Override
 	public boolean validate(IJp2pProperties id, Object value) {
 		return false;
 	}

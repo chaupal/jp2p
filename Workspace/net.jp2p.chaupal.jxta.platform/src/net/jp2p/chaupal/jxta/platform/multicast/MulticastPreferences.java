@@ -10,9 +10,9 @@ package net.jp2p.chaupal.jxta.platform.multicast;
 import java.util.Iterator;
 
 import net.jp2p.chaupal.jxta.platform.INetworkPreferences;
-import net.jp2p.container.partial.PartialPropertySource;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
+import net.jp2p.chaupal.jxta.platform.partial.PartialPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jxta.platform.NetworkConfigurator;
 
 public class MulticastPreferences implements INetworkPreferences{
@@ -121,5 +121,11 @@ public class MulticastPreferences implements INetworkPreferences{
 			break;
 		}	
 		return retval;
+	}
+
+	@Override
+	public IJp2pProperties getIdFromString(String key) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

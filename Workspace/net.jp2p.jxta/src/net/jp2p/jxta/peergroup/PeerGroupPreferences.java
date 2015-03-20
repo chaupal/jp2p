@@ -21,7 +21,7 @@ import net.jxta.id.IDFactory;
 import net.jxta.peer.PeerID;
 import net.jxta.peergroup.PeerGroupID;
 
-public class PeerGroupPreferences extends AbstractPreferences<String, Object>
+public class PeerGroupPreferences extends AbstractPreferences<IJp2pProperties, String, Object>
 {
 	public PeerGroupPreferences( IJp2pWritePropertySource<IJp2pProperties> source )
 	{

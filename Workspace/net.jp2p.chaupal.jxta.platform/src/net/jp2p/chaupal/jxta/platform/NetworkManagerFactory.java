@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerDirectives;
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -31,17 +33,12 @@ import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IManagedPropertyListener.PropertyEvents;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
-import net.jp2p.jxta.network.NetworkManagerPreferences;
-import net.jp2p.jxta.network.NetworkManagerPropertySource;
-import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerDirectives;
-import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource;
 import net.jxta.id.IDFactory;
 import net.jxta.peer.PeerID;
@@ -110,7 +107,7 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 	@Override
 	protected IJp2pComponent<NetworkManager> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		// Removing any existing configuration?
-		NetworkManagerPreferences preferences = new NetworkManagerPreferences( (IJp2pWritePropertySource<IJp2pProperties>) properties );
+		NetworkManagerPreferences preferences = new NetworkManagerPreferences( (NetworkManagerPropertySource) properties );
 		String name = preferences.getInstanceName();
 		try {
 			Path path = Paths.get( preferences.getHomeFolder() );
@@ -123,7 +120,7 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 				}
 			}
 			
-			//Load the http module
+			//Load the config file
 			File file = path.toFile();
 			NetworkManager manager = JxtaApplication.getNetworkManager( preferences.getConfigMode(), name, file.toURI());
 			return new Jp2pComponentNode<NetworkManager>( super.getPropertySource(), manager );

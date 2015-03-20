@@ -17,7 +17,7 @@ import net.jp2p.jxta.discovery.DiscoveryPropertySource.DiscoveryMode;
 import net.jp2p.jxta.registration.RegistrationPropertySource.RegistrationProperties;
 import net.jxta.peer.PeerID;
 
-public class RegistrationPreferences extends AbstractPreferences<String,Object>
+public class RegistrationPreferences extends AbstractPreferences<IJp2pProperties, String,Object>
 {
 	public RegistrationPreferences( IJp2pWritePropertySource<IJp2pProperties> source )
 	{

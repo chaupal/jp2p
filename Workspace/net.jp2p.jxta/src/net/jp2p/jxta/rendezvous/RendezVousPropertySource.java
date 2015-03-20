@@ -3,7 +3,9 @@ package net.jp2p.jxta.rendezvous;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
+import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
@@ -69,14 +71,27 @@ public class RendezVousPropertySource extends AbstractJp2pWritePropertySource
 	}
 
 	@Override
-	public RendezVousProperties getIdFromString(String key) {
-		return RendezVousProperties.valueOf( key );
-	}
-
-	
-	@Override
 	public boolean validate( IJp2pProperties id, Object value) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new Convertor( this );
+	}
+
+	private static class Convertor extends SimplePropertyConvertor{
+
+		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public RendezVousProperties getIdFromString(String key) {
+			return RendezVousProperties.valueOf( key );
+		}
+		
+	}
+	
 }

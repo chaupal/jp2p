@@ -36,15 +36,6 @@ public class Jp2pContainerPropertySource extends AbstractJp2pWritePropertySource
 	}
 	
 	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		IJp2pProperties id = super.getIdFromString(key);
-		if( id == null )
-			return ContainerProperties.valueOf( key );
-		else
-			return id;
-	}
-
-	@Override
 	public Object getDefault( IJp2pProperties id) {
 		if(!( id instanceof ContainerProperties ))
 			return null;

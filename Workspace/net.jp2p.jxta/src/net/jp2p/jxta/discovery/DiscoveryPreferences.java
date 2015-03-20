@@ -13,12 +13,13 @@ import java.net.URISyntaxException;
 import net.jp2p.container.persistence.AbstractPreferences;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.utils.StringProperty;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource.AdvertisementTypes;
 import net.jp2p.jxta.discovery.DiscoveryPropertySource.DiscoveryProperties;
 import net.jxta.peer.PeerID;
 
-public class DiscoveryPreferences extends AbstractPreferences<String, Object>
+public class DiscoveryPreferences extends AbstractPreferences<IJp2pProperties, String, Object>
 {
 	public DiscoveryPreferences( IJp2pWritePropertySource<IJp2pProperties> source )
 	{
@@ -60,5 +61,10 @@ public class DiscoveryPreferences extends AbstractPreferences<String, Object>
 		default:
 			return null;
 		}
+	}
+
+	@Override
+	public IJp2pProperties getIdFromString(String key) {
+		return new StringProperty( key );
 	}
 }

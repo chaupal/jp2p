@@ -1,13 +1,13 @@
-package net.jp2p.jxta.network.configurator;
+package net.jp2p.chaupal.jxta.platform.configurator;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.container.properties.AbstractPropertyFacade;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
-import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jxta.platform.NetworkConfigurator;
 
 public class NetworkConfiguratorPropertyFacade extends AbstractPropertyFacade<NetworkConfigurator> {
@@ -27,42 +27,6 @@ public class NetworkConfiguratorPropertyFacade extends AbstractPropertyFacade<Ne
 			return configurator.getHome();
 		case CONFIG_MODE:
 			return configurator.getMode();
-		case HTTP_8PUBLIC_ADDRESS:
-			return configurator.getHttpPublicAddress();
-		case HTTP_8ENABLED:
-			return configurator.isHttpEnabled();
-		case HTTP_8PUBLIC_ADDRESS_EXCLUSIVE:
-			return configurator.isHttpPublicAddressExclusive();
-		case HTTP_8INCOMING_STATUS:
-			return configurator.getHttpIncomingStatus();
-		case HTTP_8INTERFACE_ADDRESS:
-			return configurator.getHttpInterfaceAddress();
-		case HTTP_8OUTGOING_STATUS:
-			return configurator.getHttpOutgoingStatus();
-		case HTTP_8PORT:
-			return configurator.getHttp2Port();
-		case HTTP_8TO_PUBLIC_ADDRESS_EXCLUSIVE:
-			return configurator.isHttp2PublicAddressExclusive();
-		case HTTP2_8PUBLIC_ADDRESS:
-			return configurator.getHttp2PublicAddress();
-		case HTTP2_8ENABLED:
-			return configurator.isHttp2Enabled();
-		case HTTP2_8PUBLIC_ADDRESS_EXCLUSIVE:
-			return configurator.isHttp2PublicAddressExclusive();
-		case HTTP2_8INCOMING_STATUS:
-			return configurator.getHttp2IncomingStatus();
-		case HTTP2_8INTERFACE_ADDRESS:
-			return configurator.getHttp2InterfaceAddress();
-		case HTTP2_8OUTGOING_STATUS:
-			return configurator.getHttp2OutgoingStatus();
-		case HTTP2_8PORT:
-			return configurator.getHttp2Port();
-		case HTTP2_8END_PORT:
-			return configurator.getHttp2EndPort();
-		case HTTP2_8START_PORT:
-			return configurator.getHttp2StartPort();
-		case HTTP2_8TO_PUBLIC_ADDRESS_EXCLUSIVE:
-			return configurator.isHttp2PublicAddressExclusive();
 
 		case INFRASTRUCTURE_8DESCRIPTION:
 			return configurator.getInfrastructureDescriptionStr();
@@ -114,24 +78,6 @@ public class NetworkConfiguratorPropertyFacade extends AbstractPropertyFacade<Ne
 			return configurator.getRdvSeedingURIs();
 		case STORE_HOME:
 			return configurator.getStoreHome();
-		case TCP_8PUBLIC_ADDRESS:
-			return configurator.getTcpPublicAddress();
-		case TCP_8ENABLED:
-			return configurator.isTcpEnabled();
-		case TCP_8END_PORT:
-			return configurator.getTcpEndport();
-		case TCP_8PUBLIC_ADDRESS_EXCLUSIVE:
-			return configurator.isTcpPublicAddressExclusive();
-		case TCP_8INCOMING_STATUS:
-			return configurator.getTcpIncomingStatus();
-		case TCP_8INTERFACE_ADDRESS:
-			return configurator.getTcpInterfaceAddress();
-		case TCP_8OUTGOING_STATUS:
-			return configurator.getTcpOutgoingStatus();
-		case TCP_8PORT:
-			return configurator.getTcpPort();
-		case TCP_8START_PORT:
-			return configurator.getTcpStartPort();
 		case MULTICAST_8ENABLED:
 			return configurator.getMulticastStatus();
 		case USE_ONLY_RELAY_SEEDS:

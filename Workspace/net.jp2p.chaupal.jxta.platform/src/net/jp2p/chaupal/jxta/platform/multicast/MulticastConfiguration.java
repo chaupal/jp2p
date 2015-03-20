@@ -8,8 +8,8 @@
 package net.jp2p.chaupal.jxta.platform.multicast;
 
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
-import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource;
-import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jxta.platform.NetworkConfigurator;
 
 public class MulticastConfiguration {

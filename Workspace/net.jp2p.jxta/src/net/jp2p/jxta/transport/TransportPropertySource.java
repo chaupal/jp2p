@@ -11,6 +11,7 @@ import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
 
 public class TransportPropertySource extends AbstractJp2pWritePropertySource
@@ -30,8 +31,9 @@ public class TransportPropertySource extends AbstractJp2pWritePropertySource
 		INTERFACE_ADDRESS,
 		OUTGOING_STATUS,
 		PORT,
+		START_PORT,
+		END_PORT,
 		PUBLIC_ADDRESS,
-		TO_PUBLIC_ADDRESS_EXCLUSIVE,
 		PUBLIC_ADDRESS_EXCLUSIVE;
 	
 		@Override
@@ -68,14 +70,41 @@ public class TransportPropertySource extends AbstractJp2pWritePropertySource
 		super( transport, parent );
 	}
 
+	/**
+	 * Get the start ort
+	 * @return
+	 */
+	public int getStartPort(){
+		return (int) super.getProperty( TransportProperties.START_PORT );
+	}
 
-	@Override
-	public TransportProperties getIdFromString(String key) {
-		return TransportProperties.valueOf( key );
+	/**
+	 * Get the end port
+	 * @return
+	 */
+	public int getEndPort(){
+		return (int) super.getProperty( TransportProperties.END_PORT );
 	}
 
 	@Override
 	public boolean validate(IJp2pProperties id, Object value) {
 		return false;
+	}
+
+	@Override
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new Convertor( this );
+	}
+
+	private static class Convertor extends SimplePropertyConvertor{
+
+		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public TransportProperties getIdFromString(String key) {
+			return TransportProperties.valueOf( key );
+		}
 	}
 }

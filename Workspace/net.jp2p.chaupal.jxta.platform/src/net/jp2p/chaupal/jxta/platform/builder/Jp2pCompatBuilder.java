@@ -8,12 +8,14 @@
  * Contributors:
  *     Kees Pieters - initial API and implementation
  *******************************************************************************/
-package net.jp2p.jxta.builder;
+package net.jp2p.chaupal.jxta.platform.builder;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertyFacade;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfiguratorPropertyFacade;
 import net.jp2p.container.AbstractJp2pContainer;
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.ContainerBuilderEvent;
@@ -27,8 +29,6 @@ import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.jxta.network.NetworkManagerPropertyFacade;
-import net.jp2p.jxta.network.configurator.NetworkConfiguratorPropertyFacade;
 import net.jxse.osgi.compat.CompatibilityEvent;
 import net.jxse.osgi.compat.ICompatibilityListener;
 import net.jxse.osgi.compat.IJP2PCompatibility;

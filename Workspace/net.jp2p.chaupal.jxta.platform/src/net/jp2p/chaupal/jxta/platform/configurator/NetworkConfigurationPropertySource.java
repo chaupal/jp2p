@@ -1,15 +1,17 @@
-package net.jp2p.jxta.network.configurator;
+package net.jp2p.chaupal.jxta.platform.configurator;
 
 import java.util.Iterator;
 
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
+import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
-import net.jp2p.jxta.network.NetworkManagerPropertySource;
-import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jxta.platform.NetworkManager.ConfigMode;
 
 public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropertySource
@@ -20,24 +22,6 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		DESCRIPTION,
 		HOME,
 		CONFIG_MODE,
-		HTTP_8ENABLED,
-		HTTP_8INCOMING_STATUS,
-		HTTP_8INTERFACE_ADDRESS,
-		HTTP_8OUTGOING_STATUS,
-		HTTP_8PORT,
-		HTTP_8PUBLIC_ADDRESS,
-		HTTP_8TO_PUBLIC_ADDRESS_EXCLUSIVE,
-		HTTP_8PUBLIC_ADDRESS_EXCLUSIVE,
-		HTTP2_8ENABLED,
-		HTTP2_8START_PORT,
-		HTTP2_8END_PORT,
-		HTTP2_8INCOMING_STATUS,
-		HTTP2_8INTERFACE_ADDRESS,
-		HTTP2_8OUTGOING_STATUS,
-		HTTP2_8PORT,
-		HTTP2_8PUBLIC_ADDRESS,
-		HTTP2_8TO_PUBLIC_ADDRESS_EXCLUSIVE,
-		HTTP2_8PUBLIC_ADDRESS_EXCLUSIVE,
 		INFRASTRUCTURE_8NAME,
 		INFRASTRUCTURE_8DESCRIPTION,
 		INFRASTRUCTURE_8ID,
@@ -66,15 +50,6 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		RENDEZVOUS_8SEEDING_URIS,
 		RENDEZVOUS_8SEED_URIS,
 		STORE_HOME,
-		TCP_8ENABLED,
-		TCP_8END_PORT,
-		TCP_8INCOMING_STATUS,
-		TCP_8INTERFACE_ADDRESS,
-		TCP_8OUTGOING_STATUS,
-		TCP_8PORT,
-		TCP_8PUBLIC_ADDRESS,
-		TCP_8PUBLIC_ADDRESS_EXCLUSIVE,
-		TCP_8START_PORT,
 		USE_ONLY_RELAY_SEEDS,
 		USE_ONLY_RENDEZVOUS_SEEDS;
 	
@@ -123,13 +98,13 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		}
 		if( Utils.isNull( (String) super.getProperty( NetworkConfiguratorProperties.SECURITY_8PRINCIPAL )))
 			super.setProperty( NetworkConfiguratorProperties.SECURITY_8PRINCIPAL, getBundleId(source) );
-		super.setProperty( NetworkConfiguratorProperties.TCP_8ENABLED, source.isEnabled() );
-		super.setProperty( NetworkConfiguratorProperties.HTTP_8ENABLED, true );
+		//super.setProperty( NetworkConfiguratorProperties.TCP_8ENABLED, source.isEnabled() );
+		//super.setProperty( NetworkConfiguratorProperties.HTTP_8ENABLED, true );
 	}
 
 	@Override
-	public NetworkConfiguratorProperties getIdFromString(String key) {
-		return NetworkConfiguratorProperties.valueOf( key );
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new Convertor( this );
 	}
 
 	@Override
@@ -194,4 +169,15 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		return results;
 	}
 
+	private static class Convertor extends SimplePropertyConvertor{
+
+		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public NetworkConfiguratorProperties getIdFromString(String key) {
+			return NetworkConfiguratorProperties.valueOf( key );
+		}
+	}
 }

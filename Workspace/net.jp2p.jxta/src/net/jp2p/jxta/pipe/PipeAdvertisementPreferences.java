@@ -20,7 +20,7 @@ import net.jxta.id.IDFactory;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.pipe.PipeID;
 
-public class PipeAdvertisementPreferences extends AbstractPreferences<String, Object>{
+public class PipeAdvertisementPreferences extends AbstractPreferences<IJp2pProperties, String, Object>{
 
 	private PeerGroup peergroup;
 	

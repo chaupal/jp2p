@@ -1,7 +1,8 @@
-package net.jp2p.jxta.network;
+package net.jp2p.chaupal.jxta.platform;
 
 import java.util.Iterator;
 
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.IJp2pContainer.ContainerProperties;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
@@ -10,11 +11,11 @@ import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.ProjectFolderUtils;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
-import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 
 public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySource
 	implements IJp2pWritePropertySource<IJp2pProperties>
@@ -127,11 +128,6 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 	}
 
 	@Override
-	public NetworkManagerProperties getIdFromString(String key) {
-		return NetworkManagerProperties.valueOf( key );
-	}
-
-	@Override
 	public Object getDefault( IJp2pProperties id) {
 		Jp2pContainerPropertySource source = (Jp2pContainerPropertySource) super.getParent();
 		return source.getDefault( convertTo( id ));
@@ -142,6 +138,11 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new NetworkManagerPreferences( this );
+	}
 
 	/**
 	 * convert the given context property to a networkManagerProperty, or null if there is
@@ -149,7 +150,7 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 	 * @param id
 	 * @return
 	 */
-	public IJp2pProperties convertFrom( IJp2pProperties id ){
+	private IJp2pProperties convertFrom( IJp2pProperties id ){
 		if(!ContainerProperties.isValidKey(id))
 			return id;
 		ContainerProperties key = ContainerProperties.valueOf( id.name() );
@@ -168,7 +169,7 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 	 * @param context
 	 * @return
 	 */
-	public ContainerProperties convertTo( IJp2pProperties id ){
+	private ContainerProperties convertTo( IJp2pProperties id ){
 		if(!( id instanceof IJp2pProperties ))
 			return null;
 		NetworkManagerProperties props = (NetworkManagerProperties) id;

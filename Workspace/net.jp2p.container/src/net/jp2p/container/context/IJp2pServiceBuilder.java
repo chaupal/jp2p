@@ -11,10 +11,7 @@ import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
-import net.jp2p.container.xml.IJp2pHandler;
 
 public interface IJp2pServiceBuilder extends Comparable<IJp2pServiceBuilder>{
 
@@ -91,16 +88,8 @@ public interface IJp2pServiceBuilder extends Comparable<IJp2pServiceBuilder>{
 	 * Get the handler for this context
 	 * @return
 	 */
-	public IJp2pHandler getHandler();
+	//public IJp2pHandler getHandler();
 	
-	/**
-	 * Get the default factory for this container
-	 * @param parent
-	 * @param componentName
-	 * @return
-	 */
-	public IPropertyConvertor<String, Object> getConvertor( IJp2pPropertySource<IJp2pProperties> source );
-
 	/**
 	 * Create a value for the given component name and id
 	 * @param parent

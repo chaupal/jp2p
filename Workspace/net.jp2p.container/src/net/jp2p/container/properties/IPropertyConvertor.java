@@ -7,14 +7,22 @@
  *******************************************************************************/
 package net.jp2p.container.properties;
 
-public interface IPropertyConvertor<T, U extends Object> {
+public interface IPropertyConvertor<T, U,V extends Object> {
+
+	/**
+	 * Get the id from a string representation
+	 * @param key
+	 * @return
+	 */
+	public T getIdFromString( String key );
+	
 
 	/**
 	 * Convert the given id to value T
 	 * @param id
 	 * @return
 	 */
-	public T convertFrom(IJp2pProperties id);
+	public U convertFrom( T id);
 
 	/**
 	 * Convert the given value T to the correct internal value
@@ -22,7 +30,7 @@ public interface IPropertyConvertor<T, U extends Object> {
 	 * @param value
 	 * @return
 	 */
-	public U convertTo( IJp2pProperties id, T value );
+	public V convertTo( T id, U value );
 	
 	/**
 	 * Convert the given value T to the correct internal value, and store it in the property source.
@@ -31,5 +39,5 @@ public interface IPropertyConvertor<T, U extends Object> {
 	 * @param id
 	 * @param value
 	 */
-	public boolean setPropertyFromConverion( IJp2pProperties id, T value);
+	public boolean setPropertyFromConverion( T id, U value);
 }

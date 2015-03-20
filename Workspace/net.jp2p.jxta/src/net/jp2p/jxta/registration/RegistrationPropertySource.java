@@ -11,6 +11,7 @@ import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
@@ -67,15 +68,28 @@ public class RegistrationPropertySource extends AbstractJp2pWritePropertySource
 	}
 
 	@Override
-	public RegistrationProperties getIdFromString(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
 	public boolean validate(IJp2pProperties id, Object value) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new Convertor( this );
+	}
+
+	private static class Convertor extends SimplePropertyConvertor{
+
+		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public RegistrationProperties getIdFromString(String key) {
+			return null;
+		}
+
+
+	}
+
 }

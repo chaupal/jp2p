@@ -55,13 +55,12 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 		this.manager = manager;
 	}
 
-
 	@Override
 	protected IJp2pPropertySource<IJp2pProperties> onCreatePropertySource() {
 		IJp2pPropertySource<IJp2pProperties> source = new PersistencePropertySource( super.getParentSource() );
 		return source;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void notifyChange(ComponentBuilderEvent<Object> event) {
@@ -95,8 +94,8 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 			ManagedProperty<IJp2pProperties,Object> mp = source.getManagedProperty( id );
 			if(!ManagedProperty.isPersisted( mp ))
 				continue;
-			IPersistedProperties<String,Object> properties = new PersistedProperties( (IJp2pWritePropertySource<IJp2pProperties>) source );
-			IPropertyConvertor<String, Object> convertor = manager.getConvertor( source); 
+			IPersistedProperties<IJp2pProperties, String,Object> properties = new PersistedProperties( (IJp2pWritePropertySource<IJp2pProperties>) source );
+			IPropertyConvertor<IJp2pProperties, String, Object> convertor = source.getConvertor(); 
 			properties.setProperty( source, id, convertor.convertFrom( id ));	
 		}
 	}
@@ -109,9 +108,8 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 	@Override
 	protected IJp2pComponent<IManagedPropertyListener<IJp2pProperties, Object>> onCreateComponent(
 			IJp2pPropertySource<IJp2pProperties> source) {
-		IPersistedProperties<String,Object> properties = new PersistedProperties( (IJp2pWritePropertySource<IJp2pProperties>) source );
-		IPropertyConvertor<String, Object> convertor = manager.getConvertor( source); 
-		PersistenceService<String,Object> service = new PersistenceService<String,Object>( (IJp2pWritePropertySource<IJp2pProperties>) source, properties, convertor );
+		IPersistedProperties<IJp2pProperties, String,Object> properties = new PersistedProperties( (IJp2pWritePropertySource<IJp2pProperties>) source );
+		PersistenceService<String,Object> service = new PersistenceService<String,Object>( (IJp2pWritePropertySource<IJp2pProperties>) source, properties );
 		while( stack.size() > 0)
 			service.addDispatcher( stack.pop() );
 		service.start();

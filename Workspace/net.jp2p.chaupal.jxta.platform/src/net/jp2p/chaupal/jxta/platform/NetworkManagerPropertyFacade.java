@@ -1,12 +1,12 @@
-package net.jp2p.jxta.network;
+package net.jp2p.chaupal.jxta.platform;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.container.properties.AbstractPropertyFacade;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.jxta.network.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jxta.platform.NetworkManager;
 
 public class NetworkManagerPropertyFacade extends AbstractPropertyFacade<NetworkManager> {

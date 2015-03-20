@@ -15,10 +15,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import net.jp2p.container.context.Jp2pLoaderEvent.LoaderEvent;
 import net.jp2p.container.factory.IPropertySourceFactory;
-import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.container.properties.IPropertyConvertor;
-import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.Utils;
 
 public class Jp2pServiceLoader{
@@ -141,23 +137,6 @@ public class Jp2pServiceLoader{
 		return null;
 	}
 	*/
-
-	/**
-	 * Get the convertor for the given property source
-	 * @param contextName
-	 * @return
-	 */
-	public IPropertyConvertor<String,Object> getConvertor( IJp2pPropertySource<IJp2pProperties> source ){
-		String contextName = source.getDirective( Directives.CONTEXT );
-		for( IJp2pServiceBuilder builder: this.builders ){
-			if( !builder.getName().equals( contextName ))
-				continue;
-			IPropertyConvertor<String,Object> convertor = builder.getConvertor( source);
-			if(convertor != null )
-				return convertor;
-		}
-		return null;
-	}
 
 	/**
 	 * Print the available contexts

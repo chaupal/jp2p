@@ -28,7 +28,6 @@ import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
-import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringDirective;
@@ -195,7 +194,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		String id = StringStyler.styleToEnum( qName );
 		Object value = null;
 		IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) node.getData().getPropertySource();
-		ManagedProperty<IJp2pProperties,Object> prop = source.getOrCreateManagedProperty( source.getIdFromString( id ), value, false);
+		ManagedProperty<IJp2pProperties,Object> prop = source.getOrCreateManagedProperty( source.getConvertor().getIdFromString( id ), value, false);
 		for( int i=0; i<attributes.getLength(); i++  ){
 			if( !Utils.isNull( attributes.getLocalName(i)))
 				prop.addAttribute(attributes.getLocalName(i), attributes.getValue(i));
@@ -221,12 +220,8 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 
 		if(( property == null ) || ( property.getKey() == null ))
 			return;
-		IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) node.getData().getPropertySource();
-		IPropertyConvertor<String, Object> convertor = manager.getConvertor(source);
-		if( convertor != null )
-			convertor.setPropertyFromConverion( property.getKey(), value);
-		else
-			this.property.setValue(value);
+		IJp2pPropertySource<IJp2pProperties> source = node.getData().getPropertySource();
+		source.getConvertor().setPropertyFromConverion( property.getKey(), value);
 	}
 
 

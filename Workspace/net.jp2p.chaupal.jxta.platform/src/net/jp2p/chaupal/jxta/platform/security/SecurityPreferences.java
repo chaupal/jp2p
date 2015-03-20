@@ -13,9 +13,9 @@ import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
 import net.jp2p.chaupal.jxta.platform.INetworkPreferences;
-import net.jp2p.container.partial.PartialPropertySource;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
+import net.jp2p.chaupal.jxta.platform.partial.PartialPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jxta.platform.NetworkConfigurator;
 
 public class SecurityPreferences implements INetworkPreferences{
@@ -128,5 +128,11 @@ public class SecurityPreferences implements INetworkPreferences{
 		default:
 			return null;
 		}	
+	}
+
+	@Override
+	public IJp2pProperties getIdFromString(String key) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

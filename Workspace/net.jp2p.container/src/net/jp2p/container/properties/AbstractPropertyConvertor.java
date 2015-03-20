@@ -11,8 +11,8 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 
-public abstract class AbstractPropertyConvertor<T,U extends Object> implements
-		IPropertyConvertor<T,U> {
+public abstract class AbstractPropertyConvertor<T extends IJp2pProperties, U,V extends Object> implements
+		IPropertyConvertor<T,U,V> {
 
 	private  IJp2pWritePropertySource<IJp2pProperties> source;
 
@@ -35,7 +35,7 @@ public abstract class AbstractPropertyConvertor<T,U extends Object> implements
 	}
 
 	@Override
-	public boolean setPropertyFromConverion(IJp2pProperties id, T value) {
+	public boolean setPropertyFromConverion( T id, U value) {
 		source.getOrCreateManagedProperty(id, this.convertTo(id, value), false);
 		return false;
 	}

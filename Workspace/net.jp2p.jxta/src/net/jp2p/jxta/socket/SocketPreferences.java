@@ -12,7 +12,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketProperties;
 
-public class SocketPreferences extends AbstractPreferences<String, Object>
+public class SocketPreferences extends AbstractPreferences<IJp2pProperties, String, Object>
 {
 	public SocketPreferences( IJp2pWritePropertySource<IJp2pProperties> source )
 	{

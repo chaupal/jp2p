@@ -7,7 +7,9 @@
  *******************************************************************************/
 package net.jp2p.container.properties;
 
-public class SimplePropertyConvertor extends AbstractPropertyConvertor<String, Object> {
+import net.jp2p.container.utils.StringProperty;
+
+public class SimplePropertyConvertor extends AbstractPropertyConvertor<IJp2pProperties, String, Object> {
 
 	public SimplePropertyConvertor( IJp2pWritePropertySource<IJp2pProperties> source ) {
 		super( source );
@@ -24,5 +26,10 @@ public class SimplePropertyConvertor extends AbstractPropertyConvertor<String, O
 	@Override
 	public Object convertTo(IJp2pProperties id,String value) {
 		return null;
+	}
+
+	@Override
+	public IJp2pProperties getIdFromString(String key) {
+		return new StringProperty( key );
 	}
 }

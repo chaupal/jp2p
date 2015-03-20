@@ -65,13 +65,6 @@ public class ModuleClassAdvertisementPropertySource extends AdvertisementPropert
 	}
 
 	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		if( ModuleClassProperties.isValidProperty(key))
-			return ModuleClassProperties.valueOf(key);
-		return super.getIdFromString(key);
-	}
-
-	@Override
 	public boolean validate(IJp2pProperties id, Object value) {
 		return ModuleClassProperties.isValidProperty(id.toString());	
 	}

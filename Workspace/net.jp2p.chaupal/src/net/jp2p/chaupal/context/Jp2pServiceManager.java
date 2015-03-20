@@ -17,9 +17,6 @@ import net.jp2p.container.context.IContextLoaderListener;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.IPropertySourceFactory;
-import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.container.properties.IPropertyConvertor;
 
 public class Jp2pServiceManager{
 
@@ -100,10 +97,6 @@ public class Jp2pServiceManager{
 		return this.loader.getFactory(context, componentName);
 	}
 
-	public IPropertyConvertor<String, Object> getConvertor( IJp2pPropertySource<IJp2pProperties> source ){
-		return this.loader.getConvertor(source);
-	}
-	
 	public void addListener( IServiceManagerListener listener ){
 		this.listeners.add( listener );
 	}

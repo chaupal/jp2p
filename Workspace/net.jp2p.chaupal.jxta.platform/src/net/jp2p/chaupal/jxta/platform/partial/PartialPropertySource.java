@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container.partial;
+package net.jp2p.chaupal.jxta.platform.partial;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,8 +15,10 @@ import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.PropertySourceWrapper;
+import net.jp2p.container.properties.SimplePropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 
@@ -88,13 +90,6 @@ implements  IJp2pWritePropertySource<IJp2pProperties>{
 	}
 
 	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		String cat = this.getCategory().toLowerCase();
-		String id = StringStyler.styleToEnum( cat + "." + key.toLowerCase() );
-		return super.getSource().getIdFromString( id );
-	}
-
-	@Override
 	public String getComponentName() {
 		String cat = this.getCategory();
 		return Utils.isNull(cat)?super.getComponentName(): cat;
@@ -157,6 +152,11 @@ implements  IJp2pWritePropertySource<IJp2pProperties>{
 				ids.add(id);
 		}
 		return ids.iterator();
+	}
+	
+	@Override
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new PartialPropertyConvertor( this );
 	}
 
 	@Override
@@ -284,5 +284,19 @@ implements  IJp2pWritePropertySource<IJp2pProperties>{
 	@Override
 	public IJp2pPropertySource<?>[] getChildren() {
 		return this.children.toArray(new IJp2pPropertySource[children.size()]);
+	}
+
+	private class PartialPropertyConvertor extends SimplePropertyConvertor{
+		
+		public PartialPropertyConvertor( IJp2pWritePropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public IJp2pProperties getIdFromString(String key) {
+			String cat = getCategory().toLowerCase();
+			String id = StringStyler.styleToEnum( cat + "." + key.toLowerCase() );
+			return super.getIdFromString( id );
+		}
 	}
 }

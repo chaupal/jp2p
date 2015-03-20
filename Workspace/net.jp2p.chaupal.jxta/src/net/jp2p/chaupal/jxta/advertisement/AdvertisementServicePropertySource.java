@@ -4,6 +4,7 @@ import net.jp2p.chaupal.jxta.IChaupalComponents.ChaupalComponents;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
@@ -126,15 +127,27 @@ public class AdvertisementServicePropertySource extends AdvertisementPropertySou
 	}
 
 	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		if( AdvertisementServiceProperties.isValidProperty(key))
-			return AdvertisementServiceProperties.valueOf(key);
-		return null;
+	public boolean validate( IJp2pProperties id, Object value) {
+		return AdvertisementServiceProperties.isValidProperty( id.toString());
 	}
 
 	@Override
-	public boolean validate( IJp2pProperties id, Object value) {
-		return AdvertisementServiceProperties.isValidProperty( id.toString());
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new Convertor( this );
+	}
+
+	private static class Convertor extends SimplePropertyConvertor{
+
+		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public IJp2pProperties getIdFromString(String key) {
+			if( AdvertisementServiceProperties.isValidProperty(key))
+				return AdvertisementServiceProperties.valueOf(key);
+			return null;
+		}
 	}
 
 	/**

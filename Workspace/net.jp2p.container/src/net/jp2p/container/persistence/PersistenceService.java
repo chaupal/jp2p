@@ -19,26 +19,27 @@ import net.jp2p.container.properties.IPropertyEventDispatcher;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.ManagedPropertyEvent;
 
-public class PersistenceService<T,U extends Object> extends AbstractJp2pService<IManagedPropertyListener<IJp2pProperties, Object>> {
+public class PersistenceService<U,V extends Object> extends AbstractJp2pService<IManagedPropertyListener<IJp2pProperties, Object>> {
 
-	private IPersistedProperties<T,U> properties;
+	private IPersistedProperties<IJp2pProperties,U,V> properties;
 	private IManagedPropertyListener<IJp2pProperties, Object> listener;
 	
 	private Collection<IPropertyEventDispatcher> dispatchers;
 	
-	public PersistenceService(final IJp2pWritePropertySource<IJp2pProperties> source, IPersistedProperties<T,U> props, final IPropertyConvertor<T, U> convertor ){
+	public PersistenceService(final IJp2pWritePropertySource<IJp2pProperties> source, IPersistedProperties<IJp2pProperties,U,V> props ){
 		super(source, null );
 		this.properties = props;
 		dispatchers = new ArrayList<IPropertyEventDispatcher>();
 		listener = new IManagedPropertyListener<IJp2pProperties, Object>(){
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void notifyValueChanged(
 					ManagedPropertyEvent<IJp2pProperties, Object> event) {
 				ManagedProperty<IJp2pProperties, Object> mp = event.getProperty();
 				if( !ManagedProperty.isPersisted( mp ))
 					return;
-				properties.setConvertor(convertor);
+				properties.setConvertor( (IPropertyConvertor<IJp2pProperties, U, V>) source.getConvertor());
 				switch( event.getEvent() ){
 				case DEFAULT_VALUE_SET:
 					IJp2pProperties key = mp.getKey();
@@ -47,7 +48,7 @@ public class PersistenceService<T,U extends Object> extends AbstractJp2pService<
 					//mp.reset();
 					break;
 				default:
-					properties.setProperty( source, mp.getKey(), convertor.convertFrom( mp.getKey() ));
+					properties.setProperty( source, mp.getKey(), (U) source.getConvertor().convertFrom( mp.getKey() ));
 					break;
 				}
 			}

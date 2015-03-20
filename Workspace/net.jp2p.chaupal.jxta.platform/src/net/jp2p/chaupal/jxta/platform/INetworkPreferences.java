@@ -7,10 +7,11 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform;
 
+import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jxta.platform.NetworkConfigurator;
 
-public interface INetworkPreferences extends IPropertyConvertor<String, Object>{
+public interface INetworkPreferences extends IPropertyConvertor<IJp2pProperties, String, Object>{
 
 	/**
 	 * Fill the given configurator with the source

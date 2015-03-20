@@ -187,7 +187,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	public String toString() {
 		return S_FACTORY + this.getPropertySource().getComponentName() + " {" + super.toString() + "}";
 	}	
-	
+
 	/**
 	 * Returns true if the factory has the same component name as the given one.
 	 * @param component

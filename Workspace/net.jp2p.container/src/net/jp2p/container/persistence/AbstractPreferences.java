@@ -15,18 +15,15 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 
-public abstract class AbstractPreferences<T,U extends Object> implements IPropertyConvertor<T,U> {
+public abstract class AbstractPreferences<T extends IJp2pProperties, U,V extends Object> implements IPropertyConvertor<T,U,V> {
 
-	private IJp2pPropertySource<IJp2pProperties> source;
+	private IJp2pPropertySource<T> source;
 
-	public AbstractPreferences() {
-	}
-
-	public AbstractPreferences( IJp2pWritePropertySource<IJp2pProperties> source ) {
+	protected AbstractPreferences( IJp2pWritePropertySource<T> source ) {
 		this.source = source;
 	}
 
-	protected IJp2pPropertySource<IJp2pProperties> getSource() {
+	protected IJp2pPropertySource<T> getSource() {
 		return source;
 	}
 	
@@ -35,11 +32,11 @@ public abstract class AbstractPreferences<T,U extends Object> implements IProper
 	 * @param id
 	 * @return
 	 */
-	public Object createDefaultValue( IJp2pProperties id ){
+	public Object createDefaultValue( T id ){
 		boolean create = ManagedProperty.isCreated( source.getManagedProperty(id));
 		if( !create )
 			return null;
-		ManagedProperty<IJp2pProperties, Object> property = source.getManagedProperty(id);
+		ManagedProperty<T, Object> property = source.getManagedProperty(id);
 		if( property != null )
 			return property.getDefaultValue();
 		return null;
@@ -53,11 +50,17 @@ public abstract class AbstractPreferences<T,U extends Object> implements IProper
 	 * @throws URISyntaxException
 	 */
 	@Override
-	public boolean setPropertyFromConverion( IJp2pProperties id, T value ){
-		ManagedProperty<IJp2pProperties,Object> property = this.source.getManagedProperty(id);
+	public boolean setPropertyFromConverion( T id, U value ){
+		ManagedProperty<T,Object> property = this.source.getManagedProperty(id);
 		Object converted = this.convertTo( id, value);
 		if( converted == null )
 			return false;
 		return property.setValue( converted);
 	}
+
+	@Override
+	public T getIdFromString(String key) {
+		return source.getConvertor().getIdFromString(key);
+	}
+
 }

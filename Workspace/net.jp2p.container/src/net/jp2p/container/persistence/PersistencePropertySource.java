@@ -12,6 +12,8 @@ import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
+import net.jp2p.container.properties.SimplePropertyConvertor;
 
 public class PersistencePropertySource extends AbstractJp2pWritePropertySource {
 
@@ -19,5 +21,12 @@ public class PersistencePropertySource extends AbstractJp2pWritePropertySource {
 		super( IJp2pServiceBuilder.Components.PERSISTENCE_SERVICE.toString(), parent);
 		super.setDirective( Directives.CREATE, Boolean.TRUE.toString());
 		super.setDirective( Directives.AUTO_START, Boolean.TRUE.toString());
+	}
+
+
+	
+	@Override
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new SimplePropertyConvertor( this );
 	}
 }

@@ -18,13 +18,6 @@ public interface IJp2pPropertySource< T extends Object> extends IDescendant<T, I
 	public static final String S_JP2P = "JP2P";
 
 	/**
-	 * Get the id from a string representation
-	 * @param key
-	 * @return
-	 */
-	public T getIdFromString( String key );
-	
-	/**
 	 * Get the component name
 	 * @return
 	 */
@@ -94,6 +87,13 @@ public interface IJp2pPropertySource< T extends Object> extends IDescendant<T, I
 	 * @return
 	 */
 	public Iterator<IJp2pDirectives> directiveIterator();
+
+	/**
+	 * A property convertor is able to convert a property to a string and vice versa
+	 * @param source
+	 * @return
+	 */
+	public IPropertyConvertor<T, String, Object> getConvertor();
 
 	/**
 	 * add a child to the property source

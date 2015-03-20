@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
@@ -72,12 +73,9 @@ public class ModuleSpecAdvertisementPropertySource extends AdvertisementProperty
 		}
 	}
 
-	
 	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		if( ModuleSpecProperties.isValidProperty(key))
-			return ModuleSpecProperties.valueOf(key);
-		return super.getIdFromString(key);
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new ModuleSpecAdvertisementPreferences(this, null );
 	}
 
 	@Override

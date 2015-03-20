@@ -15,29 +15,21 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.jp2p.chaupal.jxta.platform.INetworkPreferences;
-import net.jp2p.chaupal.jxta.platform.http.Http2Preferences;
-import net.jp2p.chaupal.jxta.platform.http.HttpPreferences;
-import net.jp2p.chaupal.jxta.platform.multicast.MulticastPreferences;
-import net.jp2p.chaupal.jxta.platform.security.SecurityPreferences;
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
+import net.jp2p.chaupal.jxta.platform.http.HttpPropertySource;
 import net.jp2p.chaupal.jxta.platform.seeds.SeedListFactory;
 import net.jp2p.chaupal.jxta.platform.seeds.SeedListPropertySource;
-import net.jp2p.chaupal.jxta.platform.tcp.TcpPreferences;
+import net.jp2p.chaupal.jxta.platform.tcp.TcpPropertySource;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.Jp2pComponent;
 import net.jp2p.container.factory.AbstractDependencyFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
-import net.jp2p.container.partial.PartialPropertySource;
-import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
-import net.jp2p.jxta.network.NetworkManagerPropertySource;
-import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource;
-import net.jp2p.jxta.network.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jxta.exception.ConfiguratorException;
 import net.jxta.platform.NetworkConfigurator;
 import net.jxta.platform.NetworkManager;
@@ -45,9 +37,11 @@ import net.jxta.platform.NetworkManager;
 public class NetworkConfigurationFactory extends AbstractDependencyFactory<NetworkConfigurator, IJp2pComponent<NetworkManager>> {
 
 	private Collection<SeedListPropertySource> seedlists;
+	private Collection<IJp2pPropertySource<IJp2pProperties>> sources;
 	
 	public  NetworkConfigurationFactory() {
 		super( JxtaPlatformComponents.NETWORK_CONFIGURATOR.toString());
+		sources = new ArrayList<IJp2pPropertySource<IJp2pProperties>>();
 	}
 	
 	@Override
@@ -71,15 +65,18 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	@Override
 	public void notifyChange(ComponentBuilderEvent<Object> event) {
 		String name = StringStyler.styleToEnum( event.getFactory().getComponentName() );
-		if( !JxtaPlatformComponents.isComponent(name ))
+		if( !JxtaPlatformComponents.isComponent( name ))
 			return;
 		switch( event.getBuilderEvent() ){
 		case PROPERTY_SOURCE_CREATED:
-			if( !isComponentFactory( JxtaPlatformComponents.SEED_LIST, event.getFactory() ))
-				return;
-			if( !AbstractJp2pPropertySource.isChild(super.getPropertySource(), event.getFactory().getPropertySource()))
-				return;
-			seedlists.add( (SeedListPropertySource) event.getFactory().getPropertySource() );
+			switch( JxtaPlatformComponents.valueOf( name )){
+			case SEED_LIST:
+				seedlists.add( (SeedListPropertySource) event.getFactory().getPropertySource() );
+				break;
+			default:
+				sources.add( event.getFactory().getPropertySource());
+				break;
+			}
 			break;
 		default:
 			break;
@@ -87,6 +84,25 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 		super.notifyChange(event);
 	}
 
+	protected void fillConfigurator( NetworkConfigurator configurator ){
+		for( IJp2pPropertySource<IJp2pProperties> source: this.sources ){
+			String name = StringStyler.styleToEnum( source.getComponentName());
+			JxtaPlatformComponents comp = JxtaPlatformComponents.valueOf( name ); 
+			switch( comp ){
+			case HTTP:
+				HttpPropertySource.fillHttpNetworkConfigurator((HttpPropertySource) source, configurator);
+				break;
+			case HTTP2:
+				HttpPropertySource.fillHttp2NetworkConfigurator((HttpPropertySource) source, configurator);
+				break;
+			case TCP:
+				TcpPropertySource.fillTcpNetworkConfigurator((TcpPropertySource) source, configurator);
+				break;
+			default:
+				break;
+			}
+		}
+	}
 	@Override
 	protected IJp2pComponent<NetworkConfigurator> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		NetworkConfigurator configurator = null;
@@ -96,7 +112,7 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 			URI home = (URI) super.getPropertySource().getProperty( NetworkConfiguratorProperties.HOME );
 			if( home != null )
 				configurator.setHome( new File( home ));
-			this.fillPartialConfigurator(configurator, properties);
+			this.fillConfigurator(configurator );
 			configurator.clearRelaySeeds();
 			configurator.clearRendezvousSeeds();
 			for( SeedListPropertySource source: this.seedlists )
@@ -111,43 +127,5 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 		return new Jp2pComponent<NetworkConfigurator>( properties, configurator );
 	}
 	
-	@SuppressWarnings({ "unchecked" })
-	private void fillPartialConfigurator( NetworkConfigurator configurator, IJp2pPropertySource<?> source ) throws IOException{
-		INetworkPreferences preferences;
-		if( source instanceof SeedListPropertySource )
-			return;
-		
-		if( source instanceof PartialPropertySource ){
-			preferences = getPreferences(( PartialPropertySource )source);
-			preferences.fillConfigurator( configurator );
-			return;
-		}
-		preferences = new OverviewPreferences((IJp2pWritePropertySource<IJp2pProperties>) source );
-		preferences.fillConfigurator(configurator);
-		for( IJp2pPropertySource<?> child: super.getPropertySource().getChildren() )
-			this.fillPartialConfigurator( configurator, child);
-	}
-
-	/**
-	 * Get the correct preferences for several services
-	 * @param source
-	 * @return
-	 */
-	public static INetworkPreferences getPreferences( PartialPropertySource source ){
-		JxtaPlatformComponents component = JxtaPlatformComponents.valueOf( StringStyler.styleToEnum( source.getComponentName()));
-		switch( component ){
-		case TCP:
-			return new TcpPreferences( source );
-		case HTTP:
-			return new HttpPreferences( source );
-		case HTTP2:
-			return new Http2Preferences( source );
-		case MULTICAST:
-			return new MulticastPreferences( source);
-		case SECURITY:
-			return new SecurityPreferences( source );
-		default:
-			return null;
-		}
-	}
+	
 }

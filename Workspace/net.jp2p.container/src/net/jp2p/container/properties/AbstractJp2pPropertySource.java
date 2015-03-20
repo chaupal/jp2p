@@ -231,8 +231,8 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 	}
 
 	@Override
-	public IJp2pProperties getIdFromString(String key) {
-		return new StringProperty( key );
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new SimplePropertyConvertor( this);
 	}
 
 	@Override
@@ -478,4 +478,40 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 			id = (IJp2pProperties) key;
 		return id;
 	}
+
+	protected static class SimplePropertyConvertor implements IPropertyConvertor<IJp2pProperties, String, Object>{
+
+		private IJp2pPropertySource<IJp2pProperties> source;
+		
+		public SimplePropertyConvertor( IJp2pPropertySource<IJp2pProperties> source ) {
+			this.source = source;
+		}
+
+		@Override
+		public IJp2pProperties getIdFromString(String key) {
+			return new StringProperty( key );
+		}
+
+		@Override
+		public String convertFrom( IJp2pProperties id) {
+			Object value = source.getProperty(id);
+			return value.toString();
+		}
+
+		@Override
+		public Object convertTo(IJp2pProperties id, String value) {
+			return value;
+		}
+
+		@Override
+		public boolean setPropertyFromConverion(IJp2pProperties id,
+				String value) {
+			if(!( source instanceof IJp2pWritePropertySource))
+				return false;
+			IJp2pWritePropertySource<IJp2pProperties> ws = (IJp2pWritePropertySource<IJp2pProperties>) source;
+			return ws.setProperty(id, convertTo( id, value));
+		}
+		
+	}
+
 }

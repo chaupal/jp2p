@@ -14,19 +14,27 @@ import net.jp2p.container.persistence.AbstractPreferences;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.container.utils.StringProperty;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.advertisement.ModuleSpecAdvertisementPropertySource.ModuleSpecProperties;
 import net.jxta.id.IDFactory;
 import net.jxta.peergroup.core.ModuleSpecID;
 import net.jxta.protocol.ModuleClassAdvertisement;
 
-public class ModuleSpecAdvertisementPreferences extends AbstractPreferences<String, Object>{
+public class ModuleSpecAdvertisementPreferences extends AbstractPreferences<IJp2pProperties, String, Object>{
 
 	private ModuleClassAdvertisement mcadv;
 	
 	public ModuleSpecAdvertisementPreferences( IJp2pWritePropertySource<IJp2pProperties> source, ModuleClassAdvertisement mcadv ) {
 		super( source );
 		this.mcadv = mcadv;
+	}
+
+	@Override
+	public IJp2pProperties getIdFromString(String key) {
+		if( ModuleSpecProperties.isValidProperty(key))
+			return ModuleSpecProperties.valueOf(key);
+		return new StringProperty( key);
 	}
 
 	@Override

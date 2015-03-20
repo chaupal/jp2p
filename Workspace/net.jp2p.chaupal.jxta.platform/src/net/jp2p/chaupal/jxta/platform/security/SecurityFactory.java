@@ -18,7 +18,7 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform.security;
 
-import net.jp2p.container.partial.PartialFactory;
+import net.jp2p.chaupal.jxta.platform.partial.PartialFactory;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 
 public class SecurityFactory extends PartialFactory {

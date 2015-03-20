@@ -21,10 +21,10 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 
-public class PersistedProperties extends AbstractPersistedProperty<String,Object>{
+public class PersistedProperties extends AbstractPersistedProperty<IJp2pProperties, String,Object>{
 
 	private IScopeContext scope;
-	private IPropertyConvertor<String,Object> convertor;
+	private IPropertyConvertor<IJp2pProperties, String,Object> convertor;
 	
 	public PersistedProperties( IJp2pWritePropertySource<IJp2pProperties> source, IScopeContext scope ) {
 		super( source );
@@ -32,7 +32,7 @@ public class PersistedProperties extends AbstractPersistedProperty<String,Object
 	}
 
 	@Override
-	public void setConvertor( IPropertyConvertor<String,Object> convertor) {
+	public void setConvertor( IPropertyConvertor<IJp2pProperties, String,Object> convertor) {
 		this.convertor = convertor;
 	}
 

@@ -86,9 +86,10 @@ public class PropertySourceWrapper< T extends Object> implements IJp2pPropertySo
 		return this.source.getChildren();
 	}
 
+
 	@Override
-	public T getIdFromString(String key) {
-		return source.getIdFromString(key);
+	public IPropertyConvertor<T, String, Object> getConvertor() {
+		return source.getConvertor();
 	}
 
 	@Override

@@ -131,7 +131,7 @@ public abstract class AbstractJxtaAdvertisementFactory<T extends Object, U exten
 		U adv = this.createAdvertisement( super.getPropertySource());
 		return this.createComponent( adv );
 	}
-
+	
 	/**
 	 * Get the correct advertisement type
 	 * @param attrs
@@ -216,5 +216,4 @@ public abstract class AbstractJxtaAdvertisementFactory<T extends Object, U exten
 		}
 		return adv;
 	}
-
 }

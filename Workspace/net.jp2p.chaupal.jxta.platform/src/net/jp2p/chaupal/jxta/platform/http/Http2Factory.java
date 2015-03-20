@@ -18,12 +18,19 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform.http;
 
-import net.jp2p.container.partial.PartialFactory;
+import net.jp2p.container.factory.AbstractPropertySourceFactory;
+import net.jp2p.container.properties.IJp2pProperties;
+import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 
-public class Http2Factory extends PartialFactory {
+public class Http2Factory extends AbstractPropertySourceFactory {
 
 	public Http2Factory() {
 		super(JxtaPlatformComponents.HTTP2.toString());
+	}
+
+	@Override
+	protected IJp2pPropertySource<IJp2pProperties> onCreatePropertySource() {
+		return new HttpPropertySource( super.getComponentName(), super.getParentSource() );
 	}
 }
