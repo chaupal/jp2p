@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashMap;
 
 import net.jp2p.chaupal.context.Jp2pServiceManager;
 import net.jp2p.container.ContainerFactory;

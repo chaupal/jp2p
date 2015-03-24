@@ -90,8 +90,11 @@ public class MulticastPropertySource extends AbstractJp2pWritePropertySource {
 	public static final void fillNetworkConfigurator( MulticastPropertySource source, NetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		while( iterator.hasNext() ){
-			MulticastProperties property = (MulticastProperties) iterator.next();
-			switch( property ){
+			IJp2pProperties property =iterator.next();
+			if( !MulticastProperties.isValidProperty(property))
+				continue;
+			MulticastProperties mp = (MulticastProperties) property;
+			switch( mp ){
 			case ADDRESS:
 				configurator.setMulticastAddress((String) source.getProperty( property ));
 				break;

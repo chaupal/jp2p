@@ -92,8 +92,11 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		configurator.setTcpEnabled( source.isEnabled());
 		while( iterator.hasNext() ){
-			TransportProperties property = (TransportProperties) iterator.next();
-			switch( property ){
+			IJp2pProperties property =iterator.next();
+			if( !TransportProperties.isValidProperty(property))
+				continue;
+			TransportProperties tp = (TransportProperties) property;
+			switch( tp ){
 			case PORT:
 				configurator.setTcpPort( source.getPort());
 				break;
@@ -154,6 +157,8 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 			TransportProperties property = ( TransportProperties )id;
 			switch( property ){
 			case PUBLIC_ADDRESS_EXCLUSIVE:
+			case INCOMING_STATUS:
+			case OUTGOING_STATUS:
 				return Boolean.valueOf( value );
 			case PORT:
 			case START_PORT:

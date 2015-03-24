@@ -37,7 +37,7 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 	 * Supported default properties for Multicast
 	 * 
 	 */
-	public enum MulticastProperties implements IJp2pProperties{
+	public enum SecurityProperties implements IJp2pProperties{
 		AUTHENTICATION_TYPE,
 		CERTFICATE,
 		CERTIFICATE_CHAIN,
@@ -59,14 +59,14 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 		public static boolean isValidProperty( IJp2pProperties property ){
 			if( property == null )
 				return false;
-			for( MulticastProperties prop: values() ){
+			for( SecurityProperties prop: values() ){
 				if( prop.equals( property ))
 					return true;
 			}
 			return false;
 		}
 
-		public static MulticastProperties convertTo( String str ){
+		public static SecurityProperties convertTo( String str ){
 			String enumStr = StringStyler.styleToEnum( str );
 			return valueOf( enumStr );
 		}
@@ -87,8 +87,11 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		configurator.setHttpEnabled( source.isEnabled());
 		while( iterator.hasNext() ){
-			MulticastProperties property = (MulticastProperties) iterator.next();
-			switch( property ){
+			IJp2pProperties property =iterator.next();
+			if( !SecurityProperties.isValidProperty(property))
+				continue;
+			SecurityProperties sp = (SecurityProperties) property;
+			switch( sp ){
 			case AUTHENTICATION_TYPE:
 				configurator.setAuthenticationType((String) source.getProperty( property ));
 				break;
@@ -123,13 +126,13 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 		}
 
 		@Override
-		public MulticastProperties getIdFromString(String key) {
-			return MulticastProperties.valueOf( key );
+		public SecurityProperties getIdFromString(String key) {
+			return SecurityProperties.valueOf( key );
 		}
 
 		@Override
 		public String convertFrom(IJp2pProperties id) {
-			MulticastProperties property = ( MulticastProperties )id;
+			SecurityProperties property = ( SecurityProperties )id;
 			Object retval = getProperty( property );
 			switch( property ){
 			case CERTFICATE:
@@ -148,7 +151,7 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 
 		@Override
 		public Object convertTo(IJp2pProperties id, String value) {
-			MulticastProperties property = ( MulticastProperties )id;
+			SecurityProperties property = ( SecurityProperties )id;
 			switch( property ){
 			case CERTFICATE:
 				return null;
