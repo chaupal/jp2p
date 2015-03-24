@@ -14,6 +14,7 @@ import net.jp2p.chaupal.jxta.platform.NetworkManagerFactory;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.chaupal.jxta.platform.http.Http2Factory;
 import net.jp2p.chaupal.jxta.platform.http.HttpFactory;
+import net.jp2p.chaupal.jxta.platform.infra.InfrastructureFactory;
 import net.jp2p.chaupal.jxta.platform.multicast.MulticastFactory;
 import net.jp2p.chaupal.jxta.platform.security.SecurityFactory;
 import net.jp2p.chaupal.jxta.platform.seeds.SeedListFactory;
@@ -41,6 +42,7 @@ public class JxtaPlatformBuilder extends AbstractJp2pServiceBuilder implements I
 		super.addFactory( new HttpFactory() );
 		super.addFactory( new Http2Factory() );
 		super.addFactory( new MulticastFactory() );
+		super.addFactory( new InfrastructureFactory() );
 		super.addFactory( new SeedListFactory());
 	}
 

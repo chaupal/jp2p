@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.container.IJp2pContainer;
+import net.jp2p.container.builder.ContainerBuilderEvent;
+import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.builder.IJp2pContainerBuilder;
 import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.IComponentChangedListener;
@@ -39,10 +41,12 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 	private LogService logService;
 	
 	private IJp2pContainer<T> container;
+	private Collection<IContainerBuilderListener<T>> containerListeners;
 	
 	protected AbstractJp2pBundleActivator( String bundle_id ) {
 		observers = new ArrayList<IComponentChangedListener<IJp2pComponent<T>>>();
 		this.bundle_id = bundle_id;
+		containerListeners = new ArrayList<IContainerBuilderListener<T>>();
 	}
 
 	public final String getBundleId() {
@@ -55,6 +59,21 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 
 	protected final void setContainer(IJp2pContainer<T> container) {
 		this.container = container;
+		for( IContainerBuilderListener<T> listener: containerListeners )
+			listener.notifyContainerBuilt( new ContainerBuilderEvent<T>( this, container ));
+	}
+
+	@Override
+	public void addContainerBuilderListener(
+			IContainerBuilderListener<T> listener) {
+		this.containerListeners.add( listener );
+	}
+
+
+	@Override
+	public void removeContainerBuilderListener(
+			IContainerBuilderListener<T> listener) {
+		this.containerListeners.remove( listener );
 	}
 
 	/**

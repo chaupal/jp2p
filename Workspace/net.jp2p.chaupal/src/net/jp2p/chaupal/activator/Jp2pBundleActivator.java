@@ -10,8 +10,6 @@
  *******************************************************************************/
 package net.jp2p.chaupal.activator;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,8 +21,6 @@ import net.jp2p.chaupal.context.Jp2pServiceManager;
 import net.jp2p.chaupal.context.ServiceManagerEvent;
 import net.jp2p.chaupal.xml.XMLContainerBuilder;
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
-import net.jp2p.container.builder.ContainerBuilderEvent;
-import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.context.Jp2pServiceLoader;
@@ -37,7 +33,6 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	
 	private IServiceManagerListener listener;	
 	private IComponentChangedListener<?> componentListener;
-	private Collection<IContainerBuilderListener<Object>> containerListeners;
 	
 	private ExecutorService service;
 	
@@ -46,7 +41,6 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	protected Jp2pBundleActivator(String bundle_id) {
 		super( bundle_id );
 		clss = this.getClass();
-		containerListeners = new ArrayList<IContainerBuilderListener<Object>>();
 	}
 
 	@Override
@@ -106,8 +100,6 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 						dispatcher.addServiceChangeListener( componentListener);		
 						builder.build();
 						setContainer( builder.getContainer() );
-						for( IContainerBuilderListener<Object> listener: containerListeners )
-							listener.notifyContainerBuilt( new ContainerBuilderEvent<Object>( builder, builder.getContainer() ));
 					}
 					
 				};
@@ -117,19 +109,5 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 		};
 		manager.addListener(listener);
 		manager.open();
-	}
-
-
-	@Override
-	public void addContainerBuilderListener(
-			IContainerBuilderListener<Object> listener) {
-		this.containerListeners.add( listener );
-	}
-
-
-	@Override
-	public void removeContainerBuilderListener(
-			IContainerBuilderListener<Object> listener) {
-		this.containerListeners.remove( listener );
 	}
 }
