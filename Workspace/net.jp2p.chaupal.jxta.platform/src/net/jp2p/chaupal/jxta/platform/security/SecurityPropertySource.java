@@ -76,6 +76,7 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 	public SecurityPropertySource( String componentName, IJp2pPropertySource<IJp2pProperties> parent) {
 		super( componentName, parent);
 		super.setDirective( IJp2pDirectives.Directives.ENABLED, Boolean.TRUE.toString());
+		super.setProperty( SecurityProperties.PRINCIPAL, getBundleId(parent));
 	}
 
 	@Override
@@ -119,6 +120,11 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 		}
 	}
 
+	/**
+	 * Converts properties to and from Strings
+	 * @author Kees
+	 *
+	 */
 	private class Convertor extends SimplePropertyConvertor{
 
 		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {

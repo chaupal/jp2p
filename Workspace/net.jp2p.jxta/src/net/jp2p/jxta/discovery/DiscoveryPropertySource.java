@@ -11,6 +11,7 @@ import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
+import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
@@ -100,4 +101,48 @@ public class DiscoveryPropertySource extends AbstractJp2pWritePropertySource
 			return super.setDirective(PeerGroupDirectives.valueOf( id.name() ), value );
 		return super.setDirective(id, value);
 	}
+
+	@Override
+	public IPropertyConvertor<IJp2pProperties, String, Object> getConvertor() {
+		return new Convertor( this );
+	}
+
+	/**
+	 * Converts properties to and from Strings
+	 * @author Kees
+	 *
+	 */
+	private class Convertor extends SimplePropertyConvertor{
+
+		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
+			super(source);
+		}
+
+		@Override
+		public DiscoveryProperties getIdFromString(String key) {
+			return DiscoveryProperties.valueOf( key );
+		}
+
+		@Override
+		public String convertFrom(IJp2pProperties id) {
+			DiscoveryProperties property = ( DiscoveryProperties )id;
+			Object retval = getProperty( property );
+			switch( property ){
+			default:
+				break;
+			}
+			return super.convertFrom(id);
+		}
+
+		@Override
+		public Object convertTo(IJp2pProperties id, String value) {
+			DiscoveryProperties property = ( DiscoveryProperties )id;
+			switch( property ){
+			default:
+				break;
+			}
+			return super.convertTo(id, value);
+		}		
+	}
+	
 }

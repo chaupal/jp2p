@@ -157,6 +157,8 @@ public class Jp2pServiceManager{
 				log.log( Level.WARNING, "waiting for: " + info.getName());
 				this.completed = false;
 				return completed;
+			}else{
+				log.log( Level.FINE, "Service registered: " + info.getName());				
 			}
 		}
 		log.log( Level.INFO, "Building completed: " + activator.getBundleId() );
