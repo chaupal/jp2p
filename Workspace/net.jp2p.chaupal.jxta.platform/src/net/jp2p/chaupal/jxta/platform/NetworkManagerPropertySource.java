@@ -31,7 +31,7 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 		INSTANCE_NAME,
 		CONFIG_MODE,
 		PEER_ID;
-	
+
 		/**
 		 * Returns true if the given property is valid for this enumeration
 		 * @param property

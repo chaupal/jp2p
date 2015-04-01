@@ -28,7 +28,7 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		NAME,
 		PEER_ID,
 		STORE_HOME;
-	
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );

@@ -35,7 +35,7 @@ public class PeerGroupAdvertisementPropertySource extends AdvertisementPropertyS
 		DESCRIPTION,
 		TYPE,
 		PIPE_ID;
-	
+
 		public static boolean isValidProperty( String str ){
 			if( Utils.isNull( str ))
 				return false;

@@ -13,7 +13,6 @@ import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
-import net.jp2p.container.properties.SimplePropertyConvertor;
 
 public class PersistencePropertySource extends AbstractJp2pWritePropertySource {
 

@@ -17,12 +17,6 @@ import java.util.logging.Logger;
 
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
-import net.jp2p.chaupal.jxta.platform.http.HttpPropertySource;
-import net.jp2p.chaupal.jxta.platform.multicast.MulticastPropertySource;
-import net.jp2p.chaupal.jxta.platform.security.SecurityPropertySource;
-import net.jp2p.chaupal.jxta.platform.seeds.SeedListFactory;
-import net.jp2p.chaupal.jxta.platform.seeds.SeedListPropertySource;
-import net.jp2p.chaupal.jxta.platform.tcp.TcpPropertySource;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.Jp2pComponent;
 import net.jp2p.container.factory.AbstractDependencyFactory;
@@ -38,7 +32,6 @@ import net.jxta.platform.NetworkManager;
 
 public class NetworkConfigurationFactory extends AbstractDependencyFactory<NetworkConfigurator, IJp2pComponent<NetworkManager>> {
 
-	private Collection<SeedListPropertySource> seedlists;
 	private Collection<IJp2pPropertySource<IJp2pProperties>> sources;
 	
 	public  NetworkConfigurationFactory() {
@@ -49,10 +42,6 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	@Override
 	protected NetworkConfigurationPropertySource onCreatePropertySource() {
 		NetworkConfigurationPropertySource source = new NetworkConfigurationPropertySource( (NetworkManagerPropertySource) super.getParentSource() );
-		seedlists = new ArrayList<SeedListPropertySource>();
-		SeedListPropertySource slps = new SeedListPropertySource( source, source.getClass() );
-		if( slps.hasSeeds() )
-			seedlists.add(slps);
 		return source;
 	}
 	
@@ -69,20 +58,7 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 		String name = StringStyler.styleToEnum( event.getFactory().getComponentName() );
 		if( !JxtaPlatformComponents.isComponent( name ))
 			return;
-		switch( event.getBuilderEvent() ){
-		case PROPERTY_SOURCE_CREATED:
-			switch( JxtaPlatformComponents.valueOf( name )){
-			case SEED_LIST:
-				seedlists.add( (SeedListPropertySource) event.getFactory().getPropertySource() );
-				break;
-			default:
-				sources.add( event.getFactory().getPropertySource());
-				break;
-			}
-			break;
-		default:
-			break;
-		}
+		sources.add( event.getFactory().getPropertySource());
 		super.notifyChange(event);
 	}
 
@@ -94,33 +70,18 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 			case NETWORK_CONFIGURATOR:
 				NetworkConfigurationPropertySource.fillNetworkConfigurator( (NetworkConfigurationPropertySource) source, configurator);
 				break;				
-			case HTTP:
-				HttpPropertySource.fillHttpNetworkConfigurator((HttpPropertySource) source, configurator);
-				break;
-			case HTTP2:
-				HttpPropertySource.fillHttp2NetworkConfigurator((HttpPropertySource) source, configurator);
-				break;
-			case TCP:
-				TcpPropertySource.fillTcpNetworkConfigurator((TcpPropertySource) source, configurator);
-				break;
-			case MULTICAST:
-				MulticastPropertySource.fillNetworkConfigurator((MulticastPropertySource) source, configurator);
-				break;
-			case RENDEZVOUS:
-				SeedListPropertySource.fillRendezvousNetworkConfigurator(( SeedListPropertySource) source, configurator);
-				break;				
-			case RELAY:
-				SeedListPropertySource.fillRelayNetworkConfigurator(( SeedListPropertySource) source, configurator);
-				break;				
-			case SECURITY:
-				SecurityPropertySource.fillNetworkConfigurator(( SecurityPropertySource) source, configurator);
-				break;				
 			default:
 				break;
 			}
 		}
 	}
 	
+	
+	@Override
+	public IJp2pComponent<NetworkConfigurator> getComponent() {
+		return super.getComponent();
+	}
+
 	@Override
 	protected IJp2pComponent<NetworkConfigurator> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		NetworkConfigurator configurator = null;
@@ -131,18 +92,25 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 			if( home != null )
 				configurator.setHome( new File( home ));
 			this.fillConfigurator(configurator );
-			configurator.clearRelaySeeds();
-			configurator.clearRendezvousSeeds();
-			for( SeedListPropertySource source: this.seedlists )
-				SeedListFactory.fillSeeds(configurator, source);
-			configurator.save();
-		} catch (IOException | ConfiguratorException e) {
+		} catch (Exception e) {
 			Logger log = Logger.getLogger( this.getClass().getName() );
 			log.log( Level.SEVERE, e.getMessage() );
 			e.printStackTrace();
 			return null;
 		}
 		return new Jp2pComponent<NetworkConfigurator>( properties, configurator );
+	}
+
+	@Override
+	protected synchronized IJp2pComponent<NetworkConfigurator> createComponent() {
+		IJp2pComponent<NetworkConfigurator> configurator = super.createComponent();
+		try {
+			configurator.getModule().save();
+		} catch (ConfiguratorException | IOException e) {
+			e.printStackTrace();
+		}
+		return configurator;
+		
 	}
 	
 	

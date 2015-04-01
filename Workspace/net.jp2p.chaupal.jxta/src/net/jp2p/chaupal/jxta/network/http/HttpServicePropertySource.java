@@ -24,7 +24,7 @@ public class HttpServicePropertySource extends AbstractJp2pWritePropertySource
 		PUBLIC_ADDRESS_EXCLUSIVE,
 		START_PORT,
 		END_PORT;
-	
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );

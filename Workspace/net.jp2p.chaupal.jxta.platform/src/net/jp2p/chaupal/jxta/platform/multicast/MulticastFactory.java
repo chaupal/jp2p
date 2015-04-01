@@ -18,12 +18,13 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform.multicast;
 
-import net.jp2p.container.factory.AbstractPropertySourceFactory;
+import net.jp2p.chaupal.jxta.platform.configurator.AbstractNetworkConfiguratorExtensionFactory;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 
-public class MulticastFactory extends AbstractPropertySourceFactory {
+public class MulticastFactory extends AbstractNetworkConfiguratorExtensionFactory {
 
 	public MulticastFactory() {
 		super(JxtaPlatformComponents.MULTICAST.toString());
@@ -32,5 +33,11 @@ public class MulticastFactory extends AbstractPropertySourceFactory {
 	@Override
 	protected IJp2pPropertySource<IJp2pProperties> onCreatePropertySource() {
 		return new MulticastPropertySource(super.getComponentName(), super.getParentSource());
+	}
+
+	@Override
+	protected void onNetworkConfiguratorCreated(
+			NetworkConfigurationFactory factory) {
+		MulticastPropertySource.fillNetworkConfigurator((MulticastPropertySource) super.getPropertySource(), super.getConfigurator() );
 	}
 }

@@ -30,7 +30,7 @@ public class ModuleClassAdvertisementPropertySource extends AdvertisementPropert
 	public enum ModuleClassProperties implements IJp2pProperties{
 		DESCRIPTION,
 		MODULE_CLASS_ID;
-	
+
 		public static boolean isValidProperty( String str ){
 			if( Utils.isNull( str ))
 				return false;

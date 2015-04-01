@@ -127,7 +127,7 @@ public class AdvertisementPropertySource extends AbstractJp2pWritePropertySource
 
 	public enum AdvertisementProperties implements IJp2pProperties{
 		NAME;
-	
+
 		public static boolean isValidProperty( String str ){
 			if( Utils.isNull( str ))
 				return false;

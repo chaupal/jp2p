@@ -26,7 +26,7 @@ public class RendezVousPropertySource extends AbstractJp2pWritePropertySource
 		RDV_STATUS,
 		IS_RDV,
 		IS_CONNECTED_TO_RDV;
-	
+
 		/**
 		 * Returns true if the given property is valid for this enumeration
 		 * @param property

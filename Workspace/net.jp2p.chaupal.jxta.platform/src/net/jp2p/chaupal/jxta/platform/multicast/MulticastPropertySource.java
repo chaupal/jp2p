@@ -41,7 +41,7 @@ public class MulticastPropertySource extends AbstractJp2pWritePropertySource {
 		PORT,
 		SIZE,
 		STATUS;
-	
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );

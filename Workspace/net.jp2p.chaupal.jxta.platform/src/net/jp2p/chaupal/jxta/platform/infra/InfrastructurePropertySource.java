@@ -41,8 +41,9 @@ public class InfrastructurePropertySource extends AbstractJp2pWritePropertySourc
 		NAME,
 		DESC,
 		DESCRIPTION,
+		ID_AS_STRING,
 		ID;
-	
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );

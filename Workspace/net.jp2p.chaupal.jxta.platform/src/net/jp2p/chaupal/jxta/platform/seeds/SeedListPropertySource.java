@@ -10,10 +10,12 @@ package net.jp2p.chaupal.jxta.platform.seeds;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Properties;
 
+import net.jp2p.chaupal.jxta.platform.seeds.ISeedInfo.SeedTypes;
+import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
+import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -22,7 +24,10 @@ import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.utils.IOUtils;
 import net.jp2p.container.utils.StringProperty;
 import net.jp2p.container.utils.StringStyler;
+import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
+import net.jp2p.jxta.transport.TransportPropertySource;
+import net.jp2p.jxta.transport.TransportPropertySource.NetworkTypes;
 import net.jxta.platform.NetworkConfigurator;
 
 public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
@@ -30,14 +35,12 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 	protected static final String S_SEEDS = "/JP2P-INF/seeds.txt";
 
 	/**
-	 * Supported default properties for Multicast
+	 * Supported default directives for Seed lists
 	 * 
 	 */
-	public enum SeedListProperties implements IJp2pProperties{
+	public enum SeedListDirectives implements IJp2pDirectives{
 		MAX_CLIENTS,
-		SEEDING_URIS,
-		SEED_URIS,
-		USE_ONLY_THESE_SEEDS;
+		USE_ONLY;
 	
 		@Override
 		public String toString() {
@@ -46,23 +49,36 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 
 		/**
 		 * Returns true if the given property is valid for this enumeration
-		 * @param property
+		 * @param directive
 		 * @return
 		 */
-		public static boolean isValidProperty( IJp2pProperties property ){
-			if( property == null )
+		public static boolean isValidDirective( IJp2pDirectives directive ){
+			if( directive == null )
 				return false;
-			for( SeedListProperties prop: values() ){
-				if( prop.equals( property ))
+			for( IJp2pDirectives prop: values() ){
+				if( prop.equals( directive ))
 					return true;
 			}
 			return false;
 		}
 
-		public static SeedListProperties convertTo( String str ){
+		public static IJp2pDirectives convertTo( String str ){
 			String enumStr = StringStyler.styleToEnum( str );
 			return valueOf( enumStr );
 		}
+	}
+
+	/**
+	 * Supported default directives for Seed lists
+	 * 
+	 */
+	public enum SeedListAttributes{
+		NET;
+	
+		@Override
+		public String toString() {
+			return StringStyler.prettyString( super.toString() );
+		}	
 	}
 
 	private boolean hasSeeds;
@@ -78,6 +94,8 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 		this.clss = clss;
 		this.fillProperties( clss );
 		super.setDirective( Directives.CREATE, Boolean.TRUE.toString());
+		super.setDirective( SeedListDirectives.USE_ONLY, Boolean.FALSE.toString());
+		super.setDirective( Directives.ENABLED, Boolean.TRUE.toString());
 	}
 	
 	protected void fillProperties( Class<?> clss ){
@@ -142,57 +160,42 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 	}
 
 	/**
-	 * Set the values for realys
+	 * Set the values for relays
 	 * @param source
 	 * @param configurator
 	 */
 	public static final void fillRelayNetworkConfigurator( SeedListPropertySource source, NetworkConfigurator configurator ){
-		Iterator<IJp2pProperties> iterator = source.propertyIterator();
-		while( iterator.hasNext() ){
-			SeedListProperties property = (SeedListProperties) iterator.next();
-			switch( property ){
-			case MAX_CLIENTS:
-				configurator.setRelayMaxClients((int) source.getProperty( property ));
-				break;
-			case SEED_URIS:
-				break;
-			case SEEDING_URIS:
-				break;
-			case USE_ONLY_THESE_SEEDS:
-				configurator.setUseOnlyRelaySeeds( (boolean) source.getProperty( property ) );
-				break;
-			default:
-				break;
-			}
-		}
+		configurator.clearRelaySeedingURIs();
+		configurator.clearRelaySeeds();
+		boolean useOnly = AbstractJp2pPropertySource.getBoolean( source, SeedListDirectives.USE_ONLY );
+		configurator.setUseOnlyRelaySeeds(useOnly);
+		
+		String str = source.getDirective( SeedListDirectives.MAX_CLIENTS );
+		int maxClients = Utils.isNull( str )? 0: Integer.parseInt( str );
+		configurator.setRelayMaxClients( maxClients );
 	}
 
 	/**
-	 * Set the values for realys
+	 * Set the values for relays
 	 * @param source
 	 * @param configurator
 	 */
 	public static final void fillRendezvousNetworkConfigurator( SeedListPropertySource source, NetworkConfigurator configurator ){
-		Iterator<IJp2pProperties> iterator = source.propertyIterator();
-		while( iterator.hasNext() ){
-			SeedListProperties property = (SeedListProperties) iterator.next();
-			switch( property ){
-			case MAX_CLIENTS:
-				configurator.setRendezvousMaxClients((int) source.getProperty( property ));
-				break;
-			case SEED_URIS:
-				break;
-			case SEEDING_URIS:
-				break;
-			case USE_ONLY_THESE_SEEDS:
-				configurator.setUseOnlyRendezvousSeeds( (boolean) source.getProperty( property ) );
-				break;
-			default:
-				break;
-			}
-		}
+		configurator.clearRendezvousSeedingURIs();
+		configurator.clearRendezvousSeeds();
+		boolean useOnly = AbstractJp2pPropertySource.getBoolean( source, SeedListDirectives.USE_ONLY );
+		configurator.setUseOnlyRendezvousSeeds(useOnly);
+
+		String str = source.getDirective( SeedListDirectives.MAX_CLIENTS );
+		int maxClients = Utils.isNull( str )? 0: Integer.parseInt( str );
+		configurator.setRendezvousMaxClients( maxClients );
 	}
 
+	/**
+	 * The convertor converts the properties to and from their String represntation
+	 * @author Kees
+	 *
+	 */
 	private class Convertor extends SimplePropertyConvertor{
 
 		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
@@ -200,43 +203,24 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 		}
 
 		@Override
-		public SeedListProperties getIdFromString(String key) {
-			return SeedListProperties.valueOf( key );
-		}
-
-		@Override
-		public String convertFrom(IJp2pProperties id) {
-			SeedListProperties property = ( SeedListProperties )id;
-			Object retval = getProperty( property );
-			switch( property ){
-			case USE_ONLY_THESE_SEEDS:
-				return String.valueOf(( Boolean )retval );
-			case MAX_CLIENTS:
-				return String.valueOf(( Integer )retval );
-			case SEED_URIS:
-			case SEEDING_URIS:
-			default:
-				break;
-			}
-			return super.convertFrom(id);
-		}
-
-		@Override
 		public Object convertTo(IJp2pProperties id, String value) {
-			SeedListProperties property = ( SeedListProperties )id;
-			switch( property ){
-			case USE_ONLY_THESE_SEEDS:
-				return Boolean.valueOf( value );
-			case MAX_CLIENTS:
-				return Integer.valueOf( value );
-			case SEED_URIS:
-			case SEEDING_URIS:
-				return Integer.valueOf( value );
-			default:
-				break;
-			}
-			return super.convertTo(id, value);
+			String str = getDirective( Directives.TYPE );
+			SeedTypes type = Utils.isNull(str)? SeedTypes.RDV: SeedTypes.valueOf( str.toUpperCase( ));
+			ManagedProperty<IJp2pProperties, Object> prop = getOrCreateManagedProperty(id, value, false);	
+			str = prop.getAttribute( SeedListAttributes.NET.toString().toLowerCase() );
+			TransportPropertySource.NetworkTypes net = Utils.isNull( str )? NetworkTypes.TCP: NetworkTypes.valueOf( str.toUpperCase() );
+			return new SeedInfo( type, net, value );
 		}		
 	}
 
+	/**
+	 * Get the seed list type
+	 * @param source
+	 * @return
+	 */
+	public static SeedTypes getSeedListType( SeedListPropertySource source ){
+		String str = source.getDirective( Directives.TYPE );
+		SeedTypes type = Utils.isNull( str )? SeedTypes.RDV: SeedTypes.valueOf( StringStyler.styleToEnum( str ));
+		return type;
+	}
 }
