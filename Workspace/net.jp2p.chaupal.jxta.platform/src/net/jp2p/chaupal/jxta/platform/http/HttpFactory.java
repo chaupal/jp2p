@@ -18,12 +18,13 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform.http;
 
-import net.jp2p.container.factory.AbstractPropertySourceFactory;
+import net.jp2p.chaupal.jxta.platform.configurator.AbstractNetworkConfiguratorExtensionFactory;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 
-public class HttpFactory extends AbstractPropertySourceFactory {
+public class HttpFactory extends AbstractNetworkConfiguratorExtensionFactory {
 
 
 	public HttpFactory() {
@@ -33,5 +34,11 @@ public class HttpFactory extends AbstractPropertySourceFactory {
 	@Override
 	protected IJp2pPropertySource<IJp2pProperties> onCreatePropertySource() {
 		return new HttpPropertySource( super.getComponentName(), super.getParentSource() );
+	}
+
+	@Override
+	protected void onNetworkConfiguratorCreated(
+			NetworkConfigurationFactory factory) {
+		HttpPropertySource.fillHttpNetworkConfigurator((HttpPropertySource) super.getPropertySource(), super.getConfigurator() );
 	}
 }

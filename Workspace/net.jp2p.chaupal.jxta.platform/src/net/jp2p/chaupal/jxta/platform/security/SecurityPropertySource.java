@@ -34,7 +34,7 @@ import net.jxta.platform.NetworkConfigurator;
 public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 	
 	/**
-	 * Supported default properties for Multicast
+	 * Supported default properties for Security
 	 * 
 	 */
 	public enum SecurityProperties implements IJp2pProperties{
@@ -45,7 +45,7 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 		PASSWORD,
 		PRINCIPAL,
 		PRIVATE_KEY;
-	
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );
@@ -86,7 +86,6 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 
 	public static final void fillNetworkConfigurator( SecurityPropertySource source, NetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
-		configurator.setHttpEnabled( source.isEnabled());
 		while( iterator.hasNext() ){
 			IJp2pProperties property =iterator.next();
 			if( !SecurityProperties.isValidProperty(property))

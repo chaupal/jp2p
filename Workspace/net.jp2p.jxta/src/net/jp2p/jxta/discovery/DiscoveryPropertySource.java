@@ -52,7 +52,7 @@ public class DiscoveryPropertySource extends AbstractJp2pWritePropertySource
 		COUNTER,
 		FOUND,
 		THRESHOLD;
-	
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );
@@ -128,6 +128,14 @@ public class DiscoveryPropertySource extends AbstractJp2pWritePropertySource
 			DiscoveryProperties property = ( DiscoveryProperties )id;
 			Object retval = getProperty( property );
 			switch( property ){
+			case WAIT_TIME:
+			case COUNT:
+			case COUNTER:
+			case THRESHOLD:
+			case FOUND:
+				if( retval == null )
+					return "0";
+				return retval.toString();
 			default:
 				break;
 			}
@@ -138,6 +146,14 @@ public class DiscoveryPropertySource extends AbstractJp2pWritePropertySource
 		public Object convertTo(IJp2pProperties id, String value) {
 			DiscoveryProperties property = ( DiscoveryProperties )id;
 			switch( property ){
+			case WAIT_TIME:
+			case COUNT:
+			case COUNTER:
+			case THRESHOLD:
+			case FOUND:
+				if( Utils.isNull( value ))
+					return Integer.valueOf( 0 );
+				return Integer.valueOf( value );
 			default:
 				break;
 			}

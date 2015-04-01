@@ -23,6 +23,21 @@ public class TransportPropertySource extends AbstractJp2pWritePropertySource
 	public static final int DEF_PORT = 9715;
 
 	/**
+	 * Supported default network types for transport
+	 * 
+	 */
+	public enum NetworkTypes{
+		UDP,
+		TCP,
+		HTTP;
+
+		@Override
+		public String toString() {
+			return super.toString().toLowerCase();
+		}	
+	}
+
+	/**
 	 * Supported default properties for transport
 	 * 
 	 */
@@ -35,7 +50,7 @@ public class TransportPropertySource extends AbstractJp2pWritePropertySource
 		END_PORT,
 		PUBLIC_ADDRESS,
 		PUBLIC_ADDRESS_EXCLUSIVE;
-	
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );

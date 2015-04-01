@@ -54,7 +54,7 @@ public class AdvertisementServicePropertySource extends AdvertisementPropertySou
 		LIFE_TIME,
 		EXPIRATION,
 		DESCRIPTION;
-	
+
 		public static boolean isValidProperty( String str ){
 			if( Utils.isNull( str ))
 				return false;

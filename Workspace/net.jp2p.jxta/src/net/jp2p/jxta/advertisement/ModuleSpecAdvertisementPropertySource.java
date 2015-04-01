@@ -36,7 +36,7 @@ public class ModuleSpecAdvertisementPropertySource extends AdvertisementProperty
 		DESCRIPTION,
 		MODULE_SPEC_ID,
 		SPEC_URI;
-	
+
 		public static boolean isValidProperty( String str ){
 			if( Utils.isNull( str ))
 				return false;

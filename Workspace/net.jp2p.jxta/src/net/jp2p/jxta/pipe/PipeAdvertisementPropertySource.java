@@ -37,7 +37,7 @@ public class PipeAdvertisementPropertySource extends AdvertisementPropertySource
 		DESCRIPTION,
 		TYPE,
 		PIPE_ID;
-	
+
 		public static boolean isValidProperty( String str ){
 			if( Utils.isNull( str ))
 				return false;

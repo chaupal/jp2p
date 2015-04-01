@@ -33,7 +33,7 @@ public class SocketPropertySource extends AdvertisementPropertySource{
 		TIME_OUT,
 		ENCRYPT,
 		RELIABLE;
-	
+
 		public static boolean isValidProperty( String str ){
 			if( Utils.isNull( str ))
 				return false;

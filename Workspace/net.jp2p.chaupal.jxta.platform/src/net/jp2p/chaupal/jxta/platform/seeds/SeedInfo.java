@@ -11,6 +11,7 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
 
+import net.jp2p.jxta.transport.TransportPropertySource;
 
 public class SeedInfo implements ISeedInfo{
 
@@ -29,6 +30,12 @@ public class SeedInfo implements ISeedInfo{
 	public SeedInfo( String key, String value ) {
 		this();
 		parse( key, value );
+	}
+
+	public SeedInfo( SeedTypes seedType, TransportPropertySource.NetworkTypes net, String value ) {
+		this();
+		this.seedType = seedType;
+		url = net.name().toLowerCase() + "://" + value;
 	}
 
 	public void parse( String key, String value ){
@@ -67,7 +74,16 @@ public class SeedInfo implements ISeedInfo{
 		}
 		return null;
 	}
+
 	
+	@Override
+	public String toString() {
+		String str = this.seedType + "," + this.url; 
+		if( this.commentedOut )
+			str = "//" + str;
+		return  str;
+	}
+
 	/**
 	 * Create the correct URI from the given string
 	 * @param str

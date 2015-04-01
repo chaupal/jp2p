@@ -31,7 +31,7 @@ public class PipePropertySource extends AdvertisementPropertySource{
 		PIPE_ID,
 		TIME_OUT,
 		TYPE;
-	
+
 		public static boolean isValidProperty( String str ){
 			if( Utils.isNull( str ))
 				return false;

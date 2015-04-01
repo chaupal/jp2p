@@ -18,12 +18,13 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform.security;
 
-import net.jp2p.container.factory.AbstractPropertySourceFactory;
+import net.jp2p.chaupal.jxta.platform.configurator.AbstractNetworkConfiguratorExtensionFactory;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 
-public class SecurityFactory extends AbstractPropertySourceFactory {
+public class SecurityFactory extends AbstractNetworkConfiguratorExtensionFactory {
 
 	public SecurityFactory() {
 		super(JxtaPlatformComponents.SECURITY.toString());
@@ -34,4 +35,9 @@ public class SecurityFactory extends AbstractPropertySourceFactory {
 		return new SecurityPropertySource( super.getComponentName(), super.getParentSource() );
 	}
 
+	@Override
+	protected void onNetworkConfiguratorCreated(
+			NetworkConfigurationFactory factory) {
+		SecurityPropertySource.fillNetworkConfigurator((SecurityPropertySource) super.getPropertySource(), super.getConfigurator() );
+	}
 }

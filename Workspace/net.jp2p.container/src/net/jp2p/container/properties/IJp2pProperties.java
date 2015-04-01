@@ -17,6 +17,7 @@ public interface IJp2pProperties{
 	 *
 	 */
 	public enum Jp2pProperties implements IJp2pProperties{
+		
 		STATUS,
 		BUNDLE_ID,
 		CREATE_DATE;
@@ -41,6 +42,8 @@ public interface IJp2pProperties{
 			}
 			return false;
 		}
+		
+		
 	}
 
 	public String name();	

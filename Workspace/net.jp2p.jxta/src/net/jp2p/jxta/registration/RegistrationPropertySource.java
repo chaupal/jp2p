@@ -25,7 +25,7 @@ public class RegistrationPropertySource extends AbstractJp2pWritePropertySource
 		ATTRIBUTE,
 		WILDCARD,
 		THRESHOLD;
-	
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );
