@@ -41,6 +41,7 @@ public class InfrastructurePropertySource extends AbstractJp2pWritePropertySourc
 		NAME,
 		DESC,
 		DESCRIPTION,
+		ID_AS_STRING,
 		ID;
 
 		@Override
