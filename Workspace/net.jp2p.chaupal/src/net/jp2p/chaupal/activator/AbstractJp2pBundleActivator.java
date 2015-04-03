@@ -43,9 +43,12 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 	private IJp2pContainer<T> container;
 	private Collection<IContainerBuilderListener<T>> containerListeners;
 	
-	protected AbstractJp2pBundleActivator( String bundle_id ) {
+	private DeveloperModes mode;
+	
+	protected AbstractJp2pBundleActivator( String bundle_id, DeveloperModes mode ) {
 		observers = new ArrayList<IComponentChangedListener<IJp2pComponent<T>>>();
 		this.bundle_id = bundle_id;
+		this.mode = mode;
 		containerListeners = new ArrayList<IContainerBuilderListener<T>>();
 	}
 
@@ -57,8 +60,11 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 		return container;
 	}
 
-	protected final void setContainer(IJp2pContainer<T> container) {
+	protected synchronized final void setContainer(IJp2pContainer<T> container) {
 		this.container = container;
+		if( DeveloperModes.DEBUG.equals( this.mode)){
+			bundleContext.registerService( IJp2pContainer.class.getName(), this.container, null );
+		}
 		for( IContainerBuilderListener<T> listener: containerListeners )
 			listener.notifyContainerBuilt( new ContainerBuilderEvent<T>( this, container ));
 	}

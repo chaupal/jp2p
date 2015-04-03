@@ -81,7 +81,7 @@ public class PeerGroupPropertySource extends AdvertisementPropertySource
 	}
 
 	public PeerGroupPropertySource( String componentName, IJp2pPropertySource<IJp2pProperties> parent) {
-		super( componentName,parent );
+		super( componentName, parent );
 		this.fillDefaultValues();
 	}
 

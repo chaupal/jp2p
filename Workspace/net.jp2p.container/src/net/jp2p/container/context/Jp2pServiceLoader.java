@@ -17,7 +17,7 @@ import net.jp2p.container.context.Jp2pLoaderEvent.LoaderEvent;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.utils.Utils;
 
-public class Jp2pServiceLoader{
+public class Jp2pServiceLoader implements IJp2pFactoryCollection{
 
 	private static final String S_CONTEXTS_AVAILABLE = "The following JP2P builders are available";
 	
@@ -119,25 +119,6 @@ public class Jp2pServiceLoader{
 		return false;
 	}
 	
-	/**
-	 * Get the context for the given componentname
-	 * @param contextName
-	 * @return
-	 */
-	/*
-	public synchronized IPropertyConvertor<String, Object> getConvertor( String contextName, IJp2pPropertySource<IJp2pProperties> source ){
-		String componentName = source.getComponentName();
-		if( Utils.isNull( componentName ))
-			return null;
-		
-		//for( IJp2pServiceBuilder builder: this.builders ){
-		//	if( builder.getName().equals( contextName ) && builder.hasFactory( componentName))
-		//		return builder.getConvertor(source);
-		//}
-		return null;
-	}
-	*/
-
 	/**
 	 * Print the available contexts
 	 * @return

@@ -161,7 +161,7 @@ public class ContainerBuilder implements IContainerBuilder{
 }
 
 /**
- * This comparator comparse the weights of the factorys
+ * This comparator compares the weights of the factories
  * @author Kees
  *
  */

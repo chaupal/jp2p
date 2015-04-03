@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import net.jp2p.chaupal.activator.Jp2pBundleActivator;
 import net.jp2p.container.builder.IFactoryBuilder;
+import net.jp2p.container.context.IJp2pFactoryCollection;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.context.Jp2pLoaderEvent;
 import net.jp2p.container.context.IContextLoaderListener;
@@ -21,7 +22,7 @@ import net.jp2p.container.factory.IPropertySourceFactory;
 public class Jp2pServiceManager{
 
 	public static final String S_CONTEXT_FOUND = "The following context was found and registered: ";
-	public static final String S_INFO_BUILDING = "All the required services have been found. Start to build the container ";
+	public static final String S_INFO_BUILDING = "\n\nAll the required services have been found. Start to build the container: ";
 	
 	private Jp2pServiceLoader loader;
 
@@ -43,11 +44,7 @@ public class Jp2pServiceManager{
 				if( completed )
 					break;
 				updateServiceDescriptors( event.getBuilder() );
-				if( !completed )
-					break;
-				logger.info(S_INFO_BUILDING);
-				for( IServiceManagerListener listener: listeners )
-					listener.notifyContainerBuilt( new ServiceManagerEvent( this ));
+				completeRegistration();
 				break;
 			case UNREGISTERED:
 				updateServiceDescriptors( event.getBuilder() );
@@ -71,13 +68,23 @@ public class Jp2pServiceManager{
 	public Jp2pServiceManager( Jp2pBundleActivator activator, Jp2pServiceLoader contextLoader ) {
 		this.loader = contextLoader;
 		this.activator = activator;
-		this.loader.addContextLoaderListener(listener);
 		descriptors = new TreeSet<Jp2pServiceDescriptor>();
 		listeners = new ArrayList<IServiceManagerListener>();
 		parsers = new ArrayList<ContextServiceParser>();
 		this.completed = false;		
 	}
 
+	/**
+	 * Complete the registration
+	 */
+	protected void completeRegistration(){
+		if( !completed )
+			return;
+		logger.info(S_INFO_BUILDING + activator.getBundleId() + "\n");
+		for( IServiceManagerListener listener: listeners )
+			listener.notifyContainerBuilt( new ServiceManagerEvent( this ));		
+	}
+	
 	/**
 	 * Returns true if the manager supports a factory with the given context and name
 	 * @param componentName
@@ -130,16 +137,16 @@ public class Jp2pServiceManager{
 	 * by checking the available services
 	 * @param builder
 	 */
-	protected void updateServiceDescriptors( IJp2pServiceBuilder builder ) {
+	protected void updateServiceDescriptors( IJp2pFactoryCollection builder ) {
 		
 		for( Jp2pServiceDescriptor info: descriptors ){
+			if( info.getName().equals( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() )){
+				info.setFound( true );
+				this.isCompleted();				
+			}else
 			if( builder.hasFactory( info ) ){
-				String context = builder.getName();
-				if(( info.getContext() == null ) || ( context.equals( info.getContext() ))){
-					info.setContext( builder.getName());
-					info.setFound( true );
-					this.isCompleted();
-				}
+				info.setFound( true );
+				this.isCompleted();
 			}
 		}
 	}
@@ -172,6 +179,8 @@ public class Jp2pServiceManager{
 	 */
 	public boolean open(){
 		this.loadServiceDescriptors();
+		this.updateServiceDescriptors( this.loader );
+		completeRegistration();
 		loader.addContextLoaderListener(listener);
 		return true;
 	}

@@ -62,6 +62,8 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 			for( SecurityProperties prop: values() ){
 				if( prop.equals( property ))
 					return true;
+				if( prop.name().equals( property.name() ))
+					return true;
 			}
 			return false;
 		}

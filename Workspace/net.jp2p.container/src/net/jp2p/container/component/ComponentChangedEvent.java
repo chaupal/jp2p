@@ -19,6 +19,10 @@ public class ComponentChangedEvent<T extends Object> extends EventObject {
 	private ServiceChange change;
 	private T target;
 
+	public ComponentChangedEvent(Object source, ServiceChange change ) {
+		this( source, null, null, change );
+	}
+
 	public ComponentChangedEvent(T arg0, String identifier, ServiceChange change ) {
 		this( arg0, arg0, identifier, change );
 	}

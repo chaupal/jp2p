@@ -38,8 +38,24 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	
 	private Class<?> clss;
 
+	/**
+	 * Create the bundle activator in production mode. 
+	 * The container is not added as a declarative service
+	 * @param bundle_id
+	 */
 	protected Jp2pBundleActivator(String bundle_id) {
-		super( bundle_id );
+		this( bundle_id, DeveloperModes.PRODUCTION );
+	}
+
+	/**
+	 * Start the activator for the given bundle id. The JP2P container will be built
+	 * if this is possible.
+	 * If the Developermode is set to debug, then the container will be visible for the IDE
+	 * @param bundle_id
+	 * @param mode
+	 */
+	protected Jp2pBundleActivator(String bundle_id, DeveloperModes mode ) {
+		super( bundle_id, mode );
 		clss = this.getClass();
 	}
 

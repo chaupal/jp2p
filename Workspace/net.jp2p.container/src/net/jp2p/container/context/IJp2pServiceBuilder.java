@@ -13,7 +13,7 @@ import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.utils.StringStyler;
 
-public interface IJp2pServiceBuilder extends Comparable<IJp2pServiceBuilder>{
+public interface IJp2pServiceBuilder extends IJp2pFactoryCollection, Comparable<IJp2pServiceBuilder>{
 
 	/**
 	 * Directives give additional clues on how to create the component
@@ -73,22 +73,9 @@ public interface IJp2pServiceBuilder extends Comparable<IJp2pServiceBuilder>{
 	 * @return
 	 */
 	public Jp2pServiceDescriptor[] getSupportedServices();
-	
-	/**
-	 * Returns true if the given component name is valid for this context
-	 * @param descriptor
-	 * @return
-	 */
-	public boolean hasFactory( Jp2pServiceDescriptor descriptor );
 
 	//Get the factory that is created
 	public IPropertySourceFactory getFactory( String componentName);
-	
-	/**
-	 * Get the handler for this context
-	 * @return
-	 */
-	//public IJp2pHandler getHandler();
 	
 	/**
 	 * Create a value for the given component name and id
@@ -97,10 +84,11 @@ public interface IJp2pServiceBuilder extends Comparable<IJp2pServiceBuilder>{
 	 * @return
 	 */
 	public Object createValue( String componentName, IJp2pProperties id );
-	
+
 	/**
 	 * Print the supported factories, and whether they are available
 	 * @return
 	 */
 	public String printFactories();
+
 }

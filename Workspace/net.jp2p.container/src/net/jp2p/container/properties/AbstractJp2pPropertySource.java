@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Contexts;
@@ -483,6 +484,10 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 
 		private IJp2pPropertySource<IJp2pProperties> source;
 		
+		private static final String S_WRN_NULL_VALUE = "A null value was found for property: ";
+
+		private Logger logger = Logger.getLogger( this.getClass().getName() );
+		
 		public SimplePropertyConvertor( IJp2pPropertySource<IJp2pProperties> source ) {
 			this.source = source;
 		}
@@ -495,6 +500,10 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 		@Override
 		public String convertFrom( IJp2pProperties id) {
 			Object value = source.getProperty(id);
+			if( value == null ){
+				logger.warning( S_WRN_NULL_VALUE + id );
+				return null;
+			}
 			return value.toString();
 		}
 

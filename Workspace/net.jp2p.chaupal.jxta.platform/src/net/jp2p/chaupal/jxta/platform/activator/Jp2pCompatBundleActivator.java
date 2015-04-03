@@ -25,9 +25,13 @@ public class Jp2pCompatBundleActivator<T extends Object> extends AbstractJp2pBun
 	private IComponentChangedListener<IJp2pComponent<T>> componentListener;
 	
 	private Jp2pCompatBuilder<T> builder;
-	
+
 	protected Jp2pCompatBundleActivator(String bundle_id, IJP2PCompatibility<T> compat ) {
-		super( bundle_id );
+		this( bundle_id, DeveloperModes.PRODUCTION, compat );
+	}
+	
+	protected Jp2pCompatBundleActivator(String bundle_id, DeveloperModes mode, IJP2PCompatibility<T> compat ) {
+		super( bundle_id, mode );
 		this.builder = new Jp2pCompatBuilder<T>( super.getBundleId(), compat );;
 	}
 

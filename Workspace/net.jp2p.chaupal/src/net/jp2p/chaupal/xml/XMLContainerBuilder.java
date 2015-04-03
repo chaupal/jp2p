@@ -43,14 +43,14 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	private boolean completed = false;
 	private Jp2pContainer container;
 	
-	private Collection<ICompositeBuilderListener<?>> listeners;
+	private Collection<ICompositeBuilderListener<Object>> listeners;
 	
 	public XMLContainerBuilder( String bundle_id, Class<?> clss, Jp2pServiceManager manager) {
 		this.bundle_id = bundle_id;
 		this.clss = clss;	
 		this.manager = manager;
 		builders = new ArrayList<ICompositeBuilder<ContainerFactory>>();
-		this.listeners = new ArrayList<ICompositeBuilderListener<?>>();
+		this.listeners = new ArrayList<ICompositeBuilderListener<Object>>();
 	}
 	
 	@Override
@@ -66,11 +66,21 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 			e.printStackTrace();
 		}
 		
+		ICompositeBuilderListener<?> listener = new ICompositeBuilderListener<Object>(){
+
+			@Override
+			public void notifyChange(ComponentBuilderEvent<Object> event) {
+				for( ICompositeBuilderListener<Object> listener: listeners )
+					listener.notifyChange(event);
+				
+			}	
+		};
+		
 		//Build the container from the resource files
 		for( ICompositeBuilder<ContainerFactory> builder: this.builders){
-			this.addListenersToBuilder(builder);
+			builder.addListener(listener);
 			builder.build();
-			this.removeListenersFromBuilder(builder);
+			builder.removeListener(listener);
 		}
 
 		//Extend the container with factories that are also needed
@@ -86,7 +96,6 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	public boolean isCompleted() {
 		return this.completed;
 	}
-
 	
 	public final Jp2pContainer getContainer() {
 		return container;
@@ -108,32 +117,15 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addListener(ICompositeBuilderListener<?> listener) {
-		this.listeners.add(listener);
+		this.listeners.add((ICompositeBuilderListener<Object>) listener);
 	}
 
 	@Override
 	public void removeListener(ICompositeBuilderListener<?> listener) {
 		this.listeners.remove(listener);
-	}
-
-	/**
-	 * Delay the addition of builders until the parsing starts
-	 * @param builder
-	 */
-	private final void addListenersToBuilder(ICompositeBuilder<?> builder) {
-		for( ICompositeBuilderListener<?> listener: this.listeners )
-			builder.addListener(listener);
-	}
-
-	/**
-	 * Remove the listeners from the builder
-	 * @param builder
-	 */
-	private void removeListenersFromBuilder(ICompositeBuilder<?> builder) {
-		for( ICompositeBuilderListener<?> listener: this.listeners )
-			builder.removeListener(listener);
 	}
 
 	/**

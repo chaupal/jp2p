@@ -60,6 +60,8 @@ public class InfrastructurePropertySource extends AbstractJp2pWritePropertySourc
 			for( InfrastructureProperties prop: values() ){
 				if( prop.equals( property ))
 					return true;
+				if( prop.name().equals(property.name() ))
+					return true;				
 			}
 			return false;
 		}

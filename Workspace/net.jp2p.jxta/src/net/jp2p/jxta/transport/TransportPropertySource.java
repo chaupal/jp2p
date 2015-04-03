@@ -67,6 +67,8 @@ public class TransportPropertySource extends AbstractJp2pWritePropertySource
 			for( TransportProperties prop: values() ){
 				if( prop.equals( property ))
 					return true;
+				if( prop.name().equals(property.name() ))
+					return true;
 			}
 			return false;
 		}
