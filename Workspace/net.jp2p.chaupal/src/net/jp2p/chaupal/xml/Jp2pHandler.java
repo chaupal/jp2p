@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.chaupal.context.Jp2pServiceManager;
+import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.chaupal.persistence.IContextFactory;
 import net.jp2p.container.builder.ComponentNode;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -73,8 +74,9 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		}
 		
 		String componentName = StringStyler.prettyStringFromXml( qName );
-		if( manager.hasFactory( this.context, componentName )){
-			factory = manager.getFactory( context, componentName );
+		Jp2pServiceDescriptor descriptor = new Jp2pServiceDescriptor( componentName, context );
+		if( manager.hasFactory( descriptor )){
+			factory = manager.getFactory( descriptor );
 		}
 		
 		//The name is not a group. try the default JP2P components

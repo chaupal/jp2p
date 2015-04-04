@@ -5,11 +5,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.chaupal.activator.Jp2pBundleActivator;
+import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.builder.IFactoryBuilder;
 import net.jp2p.container.context.IJp2pFactoryCollection;
 import net.jp2p.container.context.IJp2pServiceBuilder;
@@ -19,14 +19,14 @@ import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.factory.IPropertySourceFactory;
 
-public class Jp2pServiceManager{
+public class Jp2pServiceManager implements IJp2pFactoryCollection{
 
 	public static final String S_CONTEXT_FOUND = "The following context was found and registered: ";
 	public static final String S_INFO_BUILDING = "\n\nAll the required services have been found. Start to build the container: ";
 	
 	private Jp2pServiceLoader loader;
 
-	private Collection<Jp2pServiceDescriptor> descriptors;
+	private Collection<FactoryContainer> containers;
 	private Collection<IServiceManagerListener> listeners;
 	private Jp2pBundleActivator activator;
 	private Collection<ContextServiceParser> parsers;
@@ -54,24 +54,73 @@ public class Jp2pServiceManager{
 		
 		@Override
 		public void notifyUnregisterContext(Jp2pLoaderEvent event) {
-			for( Jp2pServiceDescriptor info: descriptors ){
-				if( event.getBuilder().hasFactory(info))
-					if(( info.getContext() != null ) || ( event.getBuilder().getName().equals( info.getContext() )))
-						info.setFound( false );
+			Collection<FactoryContainer> temp = new ArrayList<FactoryContainer>( containers );
+			for( FactoryContainer container: temp ){
+				if( !container.containsFactory() )
+					continue;
+				Jp2pServiceDescriptor info = container.getDescriptor();
+				if( event.getBuilder().hasFactory( info ))
+					container.removeFactory( event.getBuilder().getFactory(info ));
 			}
 		}
 	};
-	
-	
+		
 	private Logger logger = Logger.getLogger( this.getClass().getName() );
 
 	public Jp2pServiceManager( Jp2pBundleActivator activator, Jp2pServiceLoader contextLoader ) {
 		this.loader = contextLoader;
 		this.activator = activator;
-		descriptors = new TreeSet<Jp2pServiceDescriptor>();
+		containers = new ArrayList<FactoryContainer>();
 		listeners = new ArrayList<IServiceManagerListener>();
 		parsers = new ArrayList<ContextServiceParser>();
 		this.completed = false;		
+	}
+	
+	@Override
+	public String getName() {
+		return null;
+	}
+
+	/**
+	 * Update the service descriptor objects that are needed to build the JP2P container,
+	 * by checking the available services
+	 * @param builder
+	 */
+	protected void updateServiceDescriptors( IJp2pFactoryCollection builder ) {
+		for( FactoryContainer container: containers ){
+			Jp2pServiceDescriptor info = container.getDescriptor();
+			if( info.getName().equals( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() )){
+				container.addFactory( builder.getName(), new ContainerFactory( activator.getBundleId() ));
+				this.isCompleted();				
+			}else
+			if( builder.hasFactory( info ) ){
+				container.addFactory( builder.getName(), builder.getFactory(info));
+				this.isCompleted();
+			}
+		}
+	}
+
+	/**
+	 * Sets and returns true if the registered builders are able to build all the factories from the
+	 * list of descriptors
+	 */
+	private boolean isCompleted() {
+		Logger log = Logger.getLogger( this.getClass().getName() );
+		for( FactoryContainer container: containers ){
+			Jp2pServiceDescriptor info = container.getDescriptor();
+			if( info.isOptional())
+				continue;
+			if( !container.containsFactory() ){
+				log.log( Level.WARNING, "waiting for: " + info.getName());
+				this.completed = false;
+				return completed;
+			}else{
+				log.log( Level.FINE, "Service registered: " + info.getName());				
+			}
+		}
+		log.log( Level.INFO, "Building completed: " + activator.getBundleId() );
+		this.completed = true;
+		return this.completed;
 	}
 
 	/**
@@ -85,14 +134,15 @@ public class Jp2pServiceManager{
 			listener.notifyContainerBuilt( new ServiceManagerEvent( this ));		
 	}
 	
-	/**
-	 * Returns true if the manager supports a factory with the given context and name
-	 * @param componentName
-	 * @return
-	 */
-	public boolean hasFactory( String context, String componentName  ){
-		Jp2pServiceDescriptor descriptor = new Jp2pServiceDescriptor( componentName, context );
-		return this.loader.hasFactory( descriptor );
+	@Override
+	public boolean hasFactory(Jp2pServiceDescriptor descriptor) {
+		for( FactoryContainer container: containers ){
+			if( !container.containsFactory() )
+				continue;
+			if( container.getDescriptor().equals( descriptor ))
+				return true;
+		}
+		return false;//this.loader.hasFactory(descriptor);
 	}
 
 	/**
@@ -100,8 +150,15 @@ public class Jp2pServiceManager{
 	 * @param componentName
 	 * @return
 	 */
-	public IPropertySourceFactory getFactory( String context, String componentName  ){
-		return this.loader.getFactory(context, componentName);
+	@Override
+	public IPropertySourceFactory getFactory( Jp2pServiceDescriptor descriptor  ){
+		for( FactoryContainer container: containers ){
+			if( !container.containsFactory() )
+				continue;
+			if( container.getDescriptor().equals( descriptor ))
+				return container.getFirst();
+		}
+		return this.loader.getFactory( descriptor);
 	}
 
 	public void addListener( IServiceManagerListener listener ){
@@ -128,50 +185,12 @@ public class Jp2pServiceManager{
 
 		//first we parse the xml files to determine which services we need 
 		for(ContextServiceParser parser: parsers ){
-			descriptors.addAll( parser.parse() );
+			Collection<Jp2pServiceDescriptor> descriptors = parser.parse();
+			for( Jp2pServiceDescriptor descriptor: descriptors )
+				containers.add( new FactoryContainer( descriptor ));
 		}
 	}
 
-	/**
-	 * Update the service descriptor objects that are needed to build the JP2P container,
-	 * by checking the available services
-	 * @param builder
-	 */
-	protected void updateServiceDescriptors( IJp2pFactoryCollection builder ) {
-		
-		for( Jp2pServiceDescriptor info: descriptors ){
-			if( info.getName().equals( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() )){
-				info.setFound( true );
-				this.isCompleted();				
-			}else
-			if( builder.hasFactory( info ) ){
-				info.setFound( true );
-				this.isCompleted();
-			}
-		}
-	}
-
-	/**
-	 * Sets and returns true if the registered builders are able to build all the factories from the
-	 * list of descriptors
-	 */
-	private boolean isCompleted() {
-		Logger log = Logger.getLogger( this.getClass().getName() );
-		for( Jp2pServiceDescriptor info: descriptors ){
-			if( info.isOptional())
-				continue;
-			if( !info.isFound()){
-				log.log( Level.WARNING, "waiting for: " + info.getName());
-				this.completed = false;
-				return completed;
-			}else{
-				log.log( Level.FINE, "Service registered: " + info.getName());				
-			}
-		}
-		log.log( Level.INFO, "Building completed: " + activator.getBundleId() );
-		this.completed = true;
-		return this.completed;
-	}
 
 	/**
 	 * Open the manager
@@ -201,7 +220,45 @@ public class Jp2pServiceManager{
 		Enumeration<URL> enm = clss.getClassLoader().getResources( IFactoryBuilder.S_DEFAULT_LOCATION );
 		while( enm.hasMoreElements()){
 			URL url = enm.nextElement();
-			parsers.add( new ContextServiceParser( loader, url, clss ));
+			parsers.add( new ContextServiceParser( url, clss ));
+		}
+	}
+	
+	/**
+	 * Lists the correct factories for the given descriptor
+	 * @author Kees
+	 *
+	 */
+	private class FactoryContainer{
+
+		private Jp2pServiceDescriptor descriptor;
+		private Collection<IPropertySourceFactory> factories;
+		
+		public FactoryContainer( Jp2pServiceDescriptor descriptor ) {
+			super();
+			this.descriptor = descriptor;
+			factories = new ArrayList<IPropertySourceFactory>();
+		}
+		
+		final Jp2pServiceDescriptor getDescriptor() {
+			return descriptor;
+		}
+
+		void addFactory( String context, IPropertySourceFactory factory ){
+			descriptor.setContext(context);
+			this.factories.add( factory );
+		}
+
+		void removeFactory( IPropertySourceFactory factory ){
+			this.factories.remove( factory );
+		}
+		
+		public boolean containsFactory(){
+			return !this.factories.isEmpty();
+		}
+		
+		public IPropertySourceFactory getFirst(){
+			return this.factories.iterator().next();
 		}
 	}
 }

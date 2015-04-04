@@ -27,7 +27,6 @@ import org.xml.sax.SAXNotRecognizedException;
 
 import net.jp2p.container.builder.IFactoryBuilder;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
-import net.jp2p.container.context.Jp2pServiceLoader;
 import net.jp2p.container.utils.IOUtils;
 import net.jp2p.container.utils.Utils;
 
@@ -47,12 +46,11 @@ public class ContextServiceParser{
 		
 	private boolean failed;
 	private URL url;
-	private Jp2pServiceLoader loaders;
 	
 	private Logger logger = Logger.getLogger( ContextServiceParser.class.getName() );
 	
-	public ContextServiceParser( Jp2pServiceLoader contexts, Class<?> clss ) {
-		this( contexts, clss.getResource( IFactoryBuilder.S_DEFAULT_LOCATION ), clss );
+	public ContextServiceParser( Class<?> clss ) {
+		this( clss.getResource( IFactoryBuilder.S_DEFAULT_LOCATION ), clss );
 	}
 
 	/**
@@ -62,10 +60,9 @@ public class ContextServiceParser{
 	 * @param location
 	 * @param builder
 	 */
-	public ContextServiceParser(  Jp2pServiceLoader contexts, URL url, Class<?> clss ) {
+	public ContextServiceParser(  URL url, Class<?> clss ) {
 		this.url = url;
 		this.failed = false;
-		this.loaders = contexts;
 	}
 
 	/**

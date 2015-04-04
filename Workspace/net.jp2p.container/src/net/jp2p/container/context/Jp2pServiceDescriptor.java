@@ -14,7 +14,6 @@ public class Jp2pServiceDescriptor implements Comparable<Jp2pServiceDescriptor>{
 	String name;
 	String context;
 	boolean optional = false;
-	boolean found;
 
 	public Jp2pServiceDescriptor( String name, String context ) {
 		this( name, context, false );
@@ -25,7 +24,6 @@ public class Jp2pServiceDescriptor implements Comparable<Jp2pServiceDescriptor>{
 		this.name = name;
 		this.context = context;
 		this.optional = optional;
-		this.found = false;
 	}
 
 	public String getName() {
@@ -48,17 +46,9 @@ public class Jp2pServiceDescriptor implements Comparable<Jp2pServiceDescriptor>{
 		return optional;
 	}
 
-	public boolean isFound() {
-		return found;
-	}
-
-	public void setFound(boolean found) {
-		this.found = found;
-	}
-
 	@Override
 	public String toString() {
-		return this.context + ":" + this.name + "=" + found;
+		return this.context + ":" + this.name;
 	}
 
 	@Override

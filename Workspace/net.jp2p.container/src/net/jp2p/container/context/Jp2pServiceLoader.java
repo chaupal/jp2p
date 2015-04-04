@@ -34,6 +34,12 @@ public class Jp2pServiceLoader implements IJp2pFactoryCollection{
 		this.listeners = new ArrayList<IContextLoaderListener>();
 	}
 
+	@Override
+	public String getName() {
+		return null;
+	}
+
+
 	public static Jp2pServiceLoader getInstance(){
 		return loader;
 	}
@@ -137,17 +143,17 @@ public class Jp2pServiceLoader implements IJp2pFactoryCollection{
 	 * @param source
 	 * @return
 	 */
-	public IPropertySourceFactory getFactory( String contextName, String componentName ){
+	public IPropertySourceFactory getFactory( Jp2pServiceDescriptor descriptor ){
+		String contextName = descriptor.getContext();
 		if( Utils.isNull( contextName )){
-			Jp2pServiceDescriptor descriptor = new Jp2pServiceDescriptor( componentName, contextName );
 			for( IJp2pServiceBuilder builder: this.builders ){
 				if( builder.hasFactory( descriptor ))
-					return builder.getFactory(componentName);
+					return builder.getFactory(descriptor);
 			}
 		}
 		
 		IJp2pServiceBuilder builder = getBuilder(contextName);
-		return builder.getFactory(componentName);
+		return builder.getFactory(descriptor);
 	}
 
 	/**

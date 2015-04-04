@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
@@ -28,9 +30,11 @@ public class ContainerBuilder implements IContainerBuilder{
 	public static final String S_WRN_NOT_COMPLETE = "\n\t!!! The Service Container did not complete: ";
 
 	private List<ICompositeBuilderListener<?>> factories;
+	private Lock lock;
 	
 	public ContainerBuilder() {
 		factories = new ArrayList<ICompositeBuilderListener<?>>();
+		lock = new ReentrantLock();
 	}
 
 	/* (non-Javadoc)
@@ -39,9 +43,15 @@ public class ContainerBuilder implements IContainerBuilder{
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public boolean addFactory( IPropertySourceFactory factory ){
-		boolean retval = this.factories.add( factory );
-		Collections.sort(this.factories, new FactoryComparator());
-		return retval;
+		lock.lock();
+		try{
+		  boolean retval = this.factories.add( factory );
+		  Collections.sort(this.factories, new FactoryComparator());
+		  return retval;
+		}
+		finally{
+			lock.unlock();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -49,7 +59,13 @@ public class ContainerBuilder implements IContainerBuilder{
 	 */
 	@Override
 	public boolean removeFactory( IPropertySourceFactory factory ){
-		return this.factories.remove( factory );
+		lock.lock();
+		try{
+			return this.factories.remove( factory );
+		}
+		finally{
+			lock.unlock();
+		}
 	}
 	
 	@Override
@@ -118,11 +134,17 @@ public class ContainerBuilder implements IContainerBuilder{
 	@Override
 	@SuppressWarnings("unchecked")
 	public synchronized void updateRequest(ComponentBuilderEvent<?> event) {
-		for( ICompositeBuilderListener<?> listener: this.factories ){
-			if( !listener.equals( event.getFactory())){
-				IPropertySourceFactory factory = (IPropertySourceFactory) listener;
-				factory.notifyChange( (ComponentBuilderEvent<Object>) event);
+		lock.lock();
+		try{
+			for( ICompositeBuilderListener<?> listener: this.factories ){
+				if( !listener.equals( event.getFactory())){
+					IPropertySourceFactory factory = (IPropertySourceFactory) listener;
+					factory.notifyChange( (ComponentBuilderEvent<Object>) event);
+				}
 			}
+		}
+		finally{
+			lock.unlock();
 		}
 	}	
 	

@@ -8,7 +8,6 @@
 package net.jp2p.container.context;
 
 import net.jp2p.container.factory.IJp2pComponents;
-import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.utils.StringStyler;
@@ -65,18 +64,12 @@ public interface IJp2pServiceBuilder extends IJp2pFactoryCollection, Comparable<
 		}
 	}
 
-	//The name of the context
-	public String getName();
-	
 	/**
 	 * Get the names of the services that are available
 	 * @return
 	 */
 	public Jp2pServiceDescriptor[] getSupportedServices();
 
-	//Get the factory that is created
-	public IPropertySourceFactory getFactory( String componentName);
-	
 	/**
 	 * Create a value for the given component name and id
 	 * @param parent

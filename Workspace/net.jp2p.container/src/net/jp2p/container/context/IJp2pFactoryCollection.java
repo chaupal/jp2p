@@ -7,7 +7,15 @@
  *******************************************************************************/
 package net.jp2p.container.context;
 
+import net.jp2p.container.factory.IPropertySourceFactory;
+
 public interface IJp2pFactoryCollection{
+
+	/**
+	 * The name of the context
+	 * @return
+	 */
+	public String getName();
 	
 	/**
 	 * Returns true if the given component name is valid for this context
@@ -15,4 +23,11 @@ public interface IJp2pFactoryCollection{
 	 * @return
 	 */
 	public boolean hasFactory( Jp2pServiceDescriptor descriptor );
+
+	/**
+	 * Get the factory
+	 * @param descriptor
+	 * @return
+	 */
+	public IPropertySourceFactory getFactory( Jp2pServiceDescriptor descriptor );
 }
