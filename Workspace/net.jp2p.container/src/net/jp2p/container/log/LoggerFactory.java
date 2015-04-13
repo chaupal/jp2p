@@ -13,6 +13,7 @@ import net.jp2p.container.context.AbstractJp2pServiceBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
+import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 
@@ -42,9 +43,44 @@ public class LoggerFactory extends
 	
 	@Override
 	public void notifyChange(ComponentBuilderEvent<Object> event) {
-		String contextName = AbstractJp2pServiceBuilder.getContextName( event.getFactory().getPropertySource() );
-		String msg = event.getBuilderEvent().toString() + ": <" + contextName + ">:" + event.getFactory().getComponentName();
+		String msg = getJp2pLogMessage( event.getFactory().getPropertySource(), event.getFactory().getComponentName() ) + 
+				"=" + event.getBuilderEvent();
 		logger.log( Jp2pLevel.JP2PLEVEL, msg );
 		System.out.println(msg);
 	}
+	
+	/**
+	 * Create a JP2P log message from the given string
+	 * @param source
+	 * @param msg
+	 * @return
+	 */
+	public static final String getJp2pLogMessage( IJp2pPropertySource<IJp2pProperties> source, String msg ){
+		String contextName = AbstractJp2pServiceBuilder.getContextName( source );
+		String bundleName = AbstractJp2pPropertySource.getBundleId( source );
+		return " <" + contextName.toUpperCase() + "-LOG" + ": " + bundleName + ">: " + msg ;
+		
+	}
+
+	/**
+	 * Create a JP2P log message from the given string
+	 * @param source
+	 * @param msg
+	 * @return
+	 */
+	public static final void jp2pSystemOutMessage( IJp2pPropertySource<IJp2pProperties> source, String msg ){
+		System.out.println(getJp2pLogMessage( source, msg ));
+		
+	}
+
+	/**
+	 * Create a JP2P log message from the given string
+	 * @param source
+	 * @param msg
+	 * @return
+	 */
+	public static final void jp2pSystemErrMessage( IJp2pPropertySource<IJp2pProperties> source, String msg ){
+		System.err.println(getJp2pLogMessage( source, msg ));
+	}
+
 }

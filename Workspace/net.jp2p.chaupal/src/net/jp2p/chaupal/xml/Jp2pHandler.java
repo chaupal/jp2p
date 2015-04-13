@@ -56,7 +56,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 
 	private static Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 
-	public Jp2pHandler( IContainerBuilder builder, Jp2pServiceManager manager, String bundleId, Class<?> clss ) {
+	public Jp2pHandler( IContainerBuilder builder, Jp2pServiceManager manager, Class<?> clss ) {
 		this.manager = manager;
 		this.builder = builder;
 		this.clss = clss;
@@ -99,6 +99,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 				break;
 			}
 		}
+
 		//Apparently the factory is available elsewhere
 		if( factory == null ){
 			factory = this.getFactoryFromClass(qName, attributes, node.getData().getPropertySource());
@@ -106,6 +107,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		
 		//The factory is either a service or a property
 		if( factory != null ){
+			System.out.println("Factory parsed: " + factory.getComponentName());
 			IJp2pPropertySource<IJp2pProperties> source = ( node == null )? null:node.getData().getPropertySource(); 
 			factory.prepare( source, builder, convertAttributes(attributes));
 			node = this.processFactory(attributes, node, factory);
@@ -163,7 +165,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	 * @param factory
 	 * @return
 	 */
-	protected FactoryNode processFactory( Attributes attributes, FactoryNode parent, IPropertySourceFactory factory ){
+	protected synchronized FactoryNode processFactory( Attributes attributes, FactoryNode parent, IPropertySourceFactory factory ){
 		logger.info( "Factory found for: " + factory.getComponentName() );
 		IJp2pWritePropertySource<?> source = (IJp2pWritePropertySource<?>) factory.createPropertySource();
 		if( parent != null )

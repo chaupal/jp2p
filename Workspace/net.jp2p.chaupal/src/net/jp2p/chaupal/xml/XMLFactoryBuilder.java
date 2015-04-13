@@ -156,9 +156,10 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 			
 			//saxParser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA); 
 			//saxParser.setProperty(JAXP_SCHEMA_SOURCE, new File(JP2P_XSD_SCHEMA)); 
-			Jp2pHandler handler = new Jp2pHandler( builder, manager, bundleId, clss );
+			logger.info("\n\nParsing JP2P Bundle: " + this.bundleId );
+			Jp2pHandler handler = new Jp2pHandler( builder, manager, clss );
 			saxParser.parse( in, handler);
-			logger.info("JP2P Bundle Parsed: " + this.bundleId );
+			logger.info("JP2P Bundle Parsed: " + this.bundleId + "\n\n");
 		} catch( SAXNotRecognizedException e ){
 			failed = true;
 			e.printStackTrace();			

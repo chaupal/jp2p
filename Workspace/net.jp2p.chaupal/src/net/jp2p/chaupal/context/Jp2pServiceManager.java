@@ -142,7 +142,7 @@ public class Jp2pServiceManager implements IJp2pFactoryCollection{
 			if( container.getDescriptor().equals( descriptor ))
 				return true;
 		}
-		return false;//this.loader.hasFactory(descriptor);
+		return this.loader.hasFactory(descriptor);
 	}
 
 	/**

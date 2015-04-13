@@ -27,6 +27,8 @@ import net.jp2p.container.utils.Utils;
 public class AbstractJp2pContainer<T extends Object> extends Jp2pComponent<T> 
 implements	IJp2pContainer<T>{
 
+	private static final String S_CONTAINER = "Container Structure for: ";
+	
 	public static enum ServiceChange{
 		CHILD_ADDED,
 		CHILD_REMOVED,
@@ -41,8 +43,6 @@ implements	IJp2pContainer<T>{
 		}
 	}
 
-	public static final String S_SERVICE_CONTAINER = "JXSE Container";
-	
 	private Collection<IJp2pComponent<?>> children;
 
 	//Takes care of all the messaging through the container
@@ -155,4 +155,32 @@ implements	IJp2pContainer<T>{
 		}
 		return null;
 	}
+	
+	public static final String printContainerStructure( IJp2pContainer<?> container ){
+		StringBuffer buffer = new StringBuffer();
+		buffer.append( S_CONTAINER + container.getId() );
+		for( IJp2pComponent<?> child: container.getChildren() )
+			buffer.append(printComponentStructure( 1, child ));
+		return buffer.toString();
+	}
+
+	/**
+	 * Print the component structure
+	 * @param index
+	 * @param component
+	 * @return
+	 */
+	protected static final String printComponentStructure( int index, IJp2pComponent<?> component ){
+		StringBuffer buffer = new StringBuffer();
+		for( int i=0; i<index; i++ )
+			buffer.append("\t");
+		buffer.append( component.getComponentLabel() + "\n" );
+		if(!( component instanceof IJp2pComponentNode ))
+			return buffer.toString();
+		IJp2pComponentNode<?> node = (IJp2pComponentNode<?>) component;
+		for( IJp2pComponent<?> child: node.getChildren() )
+			buffer.append(printComponentStructure( ++index, child ));
+		return buffer.toString();
+	}
+
 }
