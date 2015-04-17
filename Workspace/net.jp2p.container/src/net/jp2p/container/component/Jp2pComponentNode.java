@@ -10,7 +10,7 @@ package net.jp2p.container.component;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.jp2p.container.AbstractJp2pContainer;
+import net.jp2p.container.Jp2pContainer;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -25,11 +25,28 @@ public class Jp2pComponentNode<T extends Object> extends Jp2pComponent<T> implem
 		this.children = new ArrayList<IJp2pComponent<?>>();
 	}
 
+	/**
+	 * Get the dispatcher for this container
+	 * @return
+	 */
+	protected ComponentEventDispatcher getDispatcher(){
+		return dispatcher;
+	}
+
+	/**
+	 * clear the children
+	 */
+	protected void clear(){
+		children.clear();
+		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
+		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, identifier, Jp2pContainer.ServiceChange.CHILD_REMOVED ));
+	}
+
 	@Override
 	public boolean addChild( IJp2pComponent<?> child ){
 		this.children.add( child );
 		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
-		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, identifier, AbstractJp2pContainer.ServiceChange.CHILD_ADDED ));
+		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, identifier, Jp2pContainer.ServiceChange.CHILD_ADDED ));
 		return true;
 	}
 
@@ -37,7 +54,7 @@ public class Jp2pComponentNode<T extends Object> extends Jp2pComponent<T> implem
 	public void removeChild( IJp2pComponent<?> child ){
 		this.children.remove( child );
 		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
-		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, identifier, AbstractJp2pContainer.ServiceChange.CHILD_REMOVED ));
+		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, identifier, Jp2pContainer.ServiceChange.CHILD_REMOVED ));
 	}
 
 	@Override
@@ -77,11 +94,5 @@ public class Jp2pComponentNode<T extends Object> extends Jp2pComponent<T> implem
 			if( component.getModule().equals( module ))
 				node.removeChild(component);
 		}
-	}
-
-	@Override
-	public boolean isRoot() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

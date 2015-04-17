@@ -9,10 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.chaupal.activator.Jp2pBundleActivator;
-import net.jp2p.container.ContainerFactory;
-import net.jp2p.container.builder.IFactoryBuilder;
+import net.jp2p.chaupal.builder.IFactoryBuilder;
 import net.jp2p.container.context.IJp2pFactoryCollection;
-import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.context.Jp2pLoaderEvent;
 import net.jp2p.container.context.IContextLoaderListener;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
@@ -89,10 +87,6 @@ public class Jp2pServiceManager implements IJp2pFactoryCollection{
 	protected void updateServiceDescriptors( IJp2pFactoryCollection builder ) {
 		for( FactoryContainer container: containers ){
 			Jp2pServiceDescriptor info = container.getDescriptor();
-			if( info.getName().equals( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() )){
-				container.addFactory( builder.getName(), new ContainerFactory( activator.getBundleId() ));
-				this.isCompleted();				
-			}else
 			if( builder.hasFactory( info ) ){
 				container.addFactory( builder.getName(), builder.getFactory(info));
 				this.isCompleted();

@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Chaupal.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: net.jp2p.chaupal.activator,
+ net.jp2p.chaupal.container,
  net.jp2p.chaupal.context,
  net.jp2p.chaupal.dispatcher,
  net.jp2p.chaupal.jxta.network,

@@ -23,7 +23,7 @@ public interface IPropertySourceFactory extends ICompositeBuilderListener<Object
 	 * @param builder
 	 * @param attributes
 	 */
-	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, Map<String, String> attributes );
+	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder<Object> builder, Map<String, String> attributes );
 	
 	/**
 	 * Get the component name that will be created

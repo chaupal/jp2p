@@ -86,7 +86,7 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 	 * Set the persisted property
 	 * @param event
 	 */
-	protected void setPersistedProperty( ComponentBuilderEvent<Object> event ){
+	protected synchronized void setPersistedProperty( ComponentBuilderEvent<Object> event ){
 		IJp2pPropertySource<IJp2pProperties> source = event.getFactory().getPropertySource();
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		while( iterator.hasNext()){

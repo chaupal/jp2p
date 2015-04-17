@@ -10,7 +10,7 @@ package net.jp2p.container.component;
 import java.util.Calendar;
 import java.util.Date;
 
-import net.jp2p.container.AbstractJp2pContainer;
+import net.jp2p.container.Jp2pContainer;
 import net.jp2p.container.activator.AbstractActivator;
 import net.jp2p.container.activator.IJp2pService;
 import net.jp2p.container.factory.IComponentFactory;
@@ -141,7 +141,7 @@ implements IJp2pService<T>{
 		super.notifyListeners(previous, status);
 		String identifier = AbstractJp2pPropertySource.getBundleId(source);
 		ComponentChangedEvent<IJp2pService<T>> event = 
-				new ComponentChangedEvent<IJp2pService<T>>( this, identifier, AbstractJp2pContainer.ServiceChange.STATUS_CHANGE );
+				new ComponentChangedEvent<IJp2pService<T>>( this, identifier, Jp2pContainer.ServiceChange.STATUS_CHANGE );
 		dispatcher.serviceChanged(event);
 	}
 }

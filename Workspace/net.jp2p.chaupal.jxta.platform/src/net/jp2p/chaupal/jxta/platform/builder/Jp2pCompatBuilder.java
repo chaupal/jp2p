@@ -16,7 +16,7 @@ import java.util.Collection;
 
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertyFacade;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfiguratorPropertyFacade;
-import net.jp2p.container.AbstractJp2pContainer;
+import net.jp2p.container.Jp2pContainer;
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
@@ -79,7 +79,7 @@ public class Jp2pCompatBuilder<T extends Object> extends PlatformJxseBuilder<T> 
 		notifyListeners( new ContainerBuilderEvent<T>(this, container));
 	}
 
-	private static class JxtaContainer<T extends Object> extends AbstractJp2pContainer<T> {
+	private static class JxtaContainer<T extends Object> extends Jp2pContainer<T> {
 
 		private String bundle_id;
 		private IJP2PCompatibility<T> compat;
@@ -87,7 +87,7 @@ public class Jp2pCompatBuilder<T extends Object> extends PlatformJxseBuilder<T> 
 
 			@Override
 			public void notifyNodeChanged(CompatibilityEvent event) {
-				clearModules();
+				clear();
 				addChild( setStructure( compat ));	
 			}
 		};

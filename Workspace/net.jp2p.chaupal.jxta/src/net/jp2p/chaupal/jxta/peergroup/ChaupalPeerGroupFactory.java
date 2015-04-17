@@ -49,7 +49,7 @@ public class ChaupalPeerGroupFactory extends ChaupalAdvertisementFactory<PeerGro
 
 	@Override
 	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, Map<String,String> attributes) {
+			IContainerBuilder<Object> builder, Map<String,String> attributes) {
 		Map<String, String> attrs = new HashMap<String, String>();
 		attrs.put( AdvertisementDirectives.TYPE.toLowerCase() , AdvertisementTypes.PEERGROUP.toString());
 		super.prepare(parentSource, builder, attrs);

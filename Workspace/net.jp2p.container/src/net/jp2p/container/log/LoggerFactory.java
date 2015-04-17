@@ -9,6 +9,7 @@ package net.jp2p.container.log;
 
 import java.util.logging.Logger;
 
+import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.context.AbstractJp2pServiceBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.AbstractComponentFactory;
@@ -43,6 +44,9 @@ public class LoggerFactory extends
 	
 	@Override
 	public void notifyChange(ComponentBuilderEvent<Object> event) {
+		if( !BuilderEvents.COMPONENT_CREATED.equals( event.getBuilderEvent()))
+			return;
+				
 		String msg = getJp2pLogMessage( event.getFactory().getPropertySource(), event.getFactory().getComponentName() ) + 
 				"=" + event.getBuilderEvent();
 		logger.log( Jp2pLevel.JP2PLEVEL, msg );
@@ -69,8 +73,7 @@ public class LoggerFactory extends
 	 * @return
 	 */
 	public static final void jp2pSystemOutMessage( IJp2pPropertySource<IJp2pProperties> source, String msg ){
-		System.out.println(getJp2pLogMessage( source, msg ));
-		
+		System.out.println(getJp2pLogMessage( source, msg ));	
 	}
 
 	/**
@@ -81,6 +84,16 @@ public class LoggerFactory extends
 	 */
 	public static final void jp2pSystemErrMessage( IJp2pPropertySource<IJp2pProperties> source, String msg ){
 		System.err.println(getJp2pLogMessage( source, msg ));
+	}
+
+	/**
+	 * Create a JP2P log message from the given IJp2pComponent
+	 * @param source
+	 * @param msg
+	 * @return
+	 */
+	public static final void jp2pSystemOutMessage( IJp2pComponent<?> component, String msg ){
+		System.out.println(getJp2pLogMessage( component.getPropertySource(), msg ));	
 	}
 
 }

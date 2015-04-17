@@ -225,6 +225,8 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		if( factory == null )
 			return false;
 		IJp2pPropertySource<IJp2pProperties> source = factory.getPropertySource();
+		if( !AbstractJp2pPropertySource.getBundleId(source).equals( AbstractJp2pPropertySource.getBundleId( this.getPropertySource() )))
+			return false;
 		if(( source == null ) || ( source.getParent() == null ))
 			return false;
 		return ( source.getParent().equals( this.getPropertySource()));

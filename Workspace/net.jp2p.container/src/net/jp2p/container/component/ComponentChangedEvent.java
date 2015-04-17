@@ -9,7 +9,7 @@ package net.jp2p.container.component;
 
 import java.util.EventObject;
 
-import net.jp2p.container.AbstractJp2pContainer.ServiceChange;
+import net.jp2p.container.Jp2pContainer.ServiceChange;
 import net.jp2p.container.utils.Utils;
 
 public class ComponentChangedEvent<T extends Object> extends EventObject {

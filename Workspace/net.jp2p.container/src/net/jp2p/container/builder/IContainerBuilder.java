@@ -7,13 +7,20 @@
  *******************************************************************************/
 package net.jp2p.container.builder;
 
+import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 
-public interface IContainerBuilder {
+public interface IContainerBuilder<T extends Object> {
 
+	/**
+	 * Get the bundle id for this container
+	 * @return
+	 */
+	public String getBundleID();
+	
 	public abstract boolean addFactory( IPropertySourceFactory factory);
 
 	public abstract boolean removeFactory(IPropertySourceFactory factory);
@@ -73,5 +80,10 @@ public interface IContainerBuilder {
 	public abstract IPropertySourceFactory getOrCreateChildFactory(
 			IJp2pPropertySource<IJp2pProperties> source, String componentName,
 			boolean createSource, boolean blockCreation);
-
+	
+	/**
+	 * Create the container
+	 * @return
+	 */
+	public IJp2pContainer<T> createContainer();
 }

@@ -25,6 +25,7 @@ import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.factory.IPropertySourceFactory;
+import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -50,13 +51,12 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	private FactoryNode node;
 	private Class<?> clss;
 	private Stack<String> stack;
-	private IContainerBuilder builder;
+	private IContainerBuilder<Object> builder;
 	private String context = null;
-
 
 	private static Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 
-	public Jp2pHandler( IContainerBuilder builder, Jp2pServiceManager manager, Class<?> clss ) {
+	public Jp2pHandler( IContainerBuilder<Object> builder, Jp2pServiceManager manager, Class<?> clss ) {
 		this.manager = manager;
 		this.builder = builder;
 		this.clss = clss;
@@ -67,6 +67,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	public void startElement(String uri, String localName, String qName, 
 			Attributes attributes) throws SAXException {
 		IPropertySourceFactory factory = null;
+		
 		//First check for groups
 		if( Groups.isGroup( qName )){
 			stack.push( qName );
@@ -109,6 +110,8 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		if( factory != null ){
 			System.out.println("Factory parsed: " + factory.getComponentName());
 			IJp2pPropertySource<IJp2pProperties> source = ( node == null )? null:node.getData().getPropertySource(); 
+			if(( source != null ) && ( !this.builder.getBundleID().equals( AbstractJp2pPropertySource.getBundleId( source ))))
+				return;
 			factory.prepare( source, builder, convertAttributes(attributes));
 			node = this.processFactory(attributes, node, factory);
 			this.stack.push( qName );

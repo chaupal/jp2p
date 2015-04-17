@@ -13,8 +13,8 @@ package net.jp2p.chaupal.jxta.pipe;
 import java.io.IOException;
 
 import net.jp2p.chaupal.jxta.advertisement.Jp2pAdvertisementService;
-import net.jp2p.container.AbstractJp2pContainer;
-import net.jp2p.container.AbstractJp2pContainer.ServiceChange;
+import net.jp2p.container.Jp2pContainer;
+import net.jp2p.container.Jp2pContainer.ServiceChange;
 import net.jp2p.container.activator.IJp2pService;
 import net.jp2p.container.component.AbstractJp2pServiceNode;
 import net.jp2p.container.component.ComponentChangedEvent;
@@ -72,7 +72,7 @@ public class ChaupalPipeService extends AbstractJp2pServiceNode<PipeService>{
 			@Override
 			public void notifyServiceChanged(ComponentChangedEvent<IJp2pComponent<PipeService>> event) {
 				if( event.getSource().equals( adService )){
-					if( event.getChange().equals( AbstractJp2pContainer.ServiceChange.COMPONENT_EVENT )){
+					if( event.getChange().equals( Jp2pContainer.ServiceChange.COMPONENT_EVENT )){
 						pipead = adService.getModule();
 						if( pipead != null ){
 							String identifier = AbstractJp2pPropertySource.getBundleId( getPropertySource());

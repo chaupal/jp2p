@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 
+import net.jp2p.chaupal.builder.IFactoryBuilder;
+import net.jp2p.chaupal.container.ContainerBuilder;
+import net.jp2p.chaupal.container.ContainerFactory;
+import net.jp2p.chaupal.container.ChaupalContainer;
 import net.jp2p.chaupal.context.Jp2pServiceManager;
-import net.jp2p.container.ContainerFactory;
-import net.jp2p.container.Jp2pContainer;
-import net.jp2p.container.builder.ContainerBuilder;
 import net.jp2p.container.builder.ICompositeBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
-import net.jp2p.container.builder.IFactoryBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener.BuilderEvents;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
@@ -34,14 +34,14 @@ import net.jp2p.container.factory.IPropertySourceFactory;
  * @author Kees
  *
  */
-public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
+public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 
 	private String bundle_id;
 	private Class<?> clss;
 	private Collection<ICompositeBuilder<ContainerFactory>> builders;
 	private Jp2pServiceManager manager;
 	private boolean completed = false;
-	private Jp2pContainer container;
+	private ChaupalContainer container;
 	
 	private Collection<ICompositeBuilderListener<Object>> listeners;
 	
@@ -57,9 +57,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	public void build() {
 		
 		//First register all the discovered builders
-		IContainerBuilder containerBuilder = new ContainerBuilder();
-		ContainerFactory factory = new ContainerFactory( this.bundle_id );
-		containerBuilder.addFactory( factory);
+		IContainerBuilder<Object> containerBuilder = new ContainerBuilder( this.bundle_id );
 		try {
 			this.extendBuilders( containerBuilder, clss);
 		} catch (IOException e) {
@@ -89,8 +87,8 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 		
 		//Last create the container and the components
 		this.completed = true;
-		this.container = (Jp2pContainer) factory.createComponent();
-		System.out.println( Jp2pContainer.printContainerStructure(container));
+		this.container = (ChaupalContainer) containerBuilder.createContainer();
+		System.out.println( ChaupalContainer.printContainerStructure(container));
 	}
 
 	@Override
@@ -98,7 +96,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 		return this.completed;
 	}
 	
-	public final Jp2pContainer getContainer() {
+	public final ChaupalContainer getContainer() {
 		return container;
 	}
 
@@ -109,7 +107,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	 * @param containerBuilder
 	 * @throws IOException
 	 */
-	private void extendBuilders( IContainerBuilder builder, Class<?> clss ) throws IOException{
+	private void extendBuilders( IContainerBuilder<Object> builder, Class<?> clss ) throws IOException{
 		Enumeration<URL> enm = clss.getClassLoader().getResources( IFactoryBuilder.S_DEFAULT_LOCATION );
 		while( enm.hasMoreElements()){
 			URL url = enm.nextElement();
@@ -141,7 +139,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	 * Step 3: parse the properties
 	 * @param node
 	 */
-	private void extendContainer( IContainerBuilder containerBuilder){
+	private void extendContainer( IContainerBuilder<Object> containerBuilder){
 		IPropertySourceFactory[] factories = containerBuilder.getFactories();
 		for( IPropertySourceFactory factory: factories ){
 			if( factory instanceof IComponentFactory<?>)
@@ -160,7 +158,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<Jp2pContainer>{
 	 * file. This allows for more fine-grained tuning of the property sources
 	 * @param node
 	 */
-	private void notifyPropertyCreated( IContainerBuilder containerBuilder){
+	private void notifyPropertyCreated( IContainerBuilder<Object> containerBuilder){
 		for( IPropertySourceFactory factory: containerBuilder.getFactories() ){
 			containerBuilder.updateRequest( new ComponentBuilderEvent<Object>(factory, BuilderEvents.PROPERTY_SOURCE_CREATED));
 		}

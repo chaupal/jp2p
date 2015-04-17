@@ -10,7 +10,7 @@ package net.jp2p.container.component;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.jp2p.container.AbstractJp2pContainer;
+import net.jp2p.container.Jp2pContainer;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -50,7 +50,7 @@ public abstract class AbstractJp2pServiceNode<T extends Object>
 	public boolean addChild( IJp2pComponent<?> child ){
 		this.children.add( child );
 		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
-		notifyComponentChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, child, identifier, AbstractJp2pContainer.ServiceChange.CHILD_ADDED ));
+		notifyComponentChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, child, identifier, Jp2pContainer.ServiceChange.CHILD_ADDED ));
 		return true;
 	}
 
@@ -58,7 +58,7 @@ public abstract class AbstractJp2pServiceNode<T extends Object>
 	public void removeChild( IJp2pComponent<?> child ){
 		this.children.remove( child );
 		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
-		notifyComponentChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, child, identifier, AbstractJp2pContainer.ServiceChange.CHILD_REMOVED ));
+		notifyComponentChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, child, identifier, Jp2pContainer.ServiceChange.CHILD_REMOVED ));
 	}
 
 	protected void notifyComponentChanged( ComponentChangedEvent<?> event){

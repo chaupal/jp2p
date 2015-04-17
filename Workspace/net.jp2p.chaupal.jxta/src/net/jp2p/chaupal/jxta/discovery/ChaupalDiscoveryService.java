@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-import net.jp2p.container.AbstractJp2pContainer;
+import net.jp2p.container.Jp2pContainer;
 import net.jp2p.container.component.AbstractJp2pServiceNode;
 import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.ComponentEventDispatcher;
@@ -186,7 +186,7 @@ public class ChaupalDiscoveryService extends AbstractJp2pServiceNode<DiscoverySe
 					source.setProperty( DiscoveryProperties.COUNTER, count);
 					ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 					String identifier = AbstractJp2pPropertySource.getBundleId( getPropertySource());
-					dispatcher.serviceChanged( new ComponentChangedEvent<ChaupalDiscoveryService>( service, identifier, AbstractJp2pContainer.ServiceChange.COMPONENT_EVENT ));
+					dispatcher.serviceChanged( new ComponentChangedEvent<ChaupalDiscoveryService>( service, identifier, Jp2pContainer.ServiceChange.COMPONENT_EVENT ));
 				}
 				stop();
 				if( size > 0)

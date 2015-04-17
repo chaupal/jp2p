@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container.builder;
+package net.jp2p.chaupal.container;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import net.jp2p.container.ContainerFactory;
+import net.jp2p.container.IContainerFactory;
+import net.jp2p.container.IJp2pContainer;
+import net.jp2p.container.builder.ICompositeBuilderListener;
+import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
@@ -25,16 +28,27 @@ import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 
-public class ContainerBuilder implements IContainerBuilder{
+public class ContainerBuilder implements IContainerBuilder<Object>{
 
 	public static final String S_WRN_NOT_COMPLETE = "\n\t!!! The Service Container did not complete: ";
 
 	private List<ICompositeBuilderListener<?>> factories;
+	private IContainerFactory<Object> factory;
+	private String bundle_id;
+	
 	private Lock lock;
 	
-	public ContainerBuilder() {
+	public ContainerBuilder( String bundle_id ) {
 		factories = new ArrayList<ICompositeBuilderListener<?>>();
+		factory = new ContainerFactory( bundle_id );
+		//factories.add( factory );
+		this.bundle_id = bundle_id;
 		lock = new ReentrantLock();
+	}
+	
+	@Override
+	public String getBundleID() {
+		return bundle_id;
 	}
 
 	/* (non-Javadoc)
@@ -46,6 +60,8 @@ public class ContainerBuilder implements IContainerBuilder{
 		lock.lock();
 		try{
 		  boolean retval = this.factories.add( factory );
+		  if( factory instanceof ContainerFactory )
+			  this.factory = (IContainerFactory<Object>) factory;
 		  Collections.sort(this.factories, new FactoryComparator());
 		  return retval;
 		}
@@ -179,6 +195,11 @@ public class ContainerBuilder implements IContainerBuilder{
 		if( child != null )
 			return this.getFactory(child );
 		return addFactoryToContainer(componentName, source, createSource, create);
+	}
+
+	@Override
+	public IJp2pContainer<Object> createContainer() {
+		return (IJp2pContainer<Object>) factory.createComponent();
 	}
 }
 

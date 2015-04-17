@@ -5,10 +5,12 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container;
+package net.jp2p.chaupal.container;
 
 import java.util.Map;
 
+import net.jp2p.container.IContainerFactory;
+import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.context.IJp2pServiceBuilder;
@@ -24,7 +26,7 @@ import net.jp2p.container.startup.StartupServiceFactory;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 
-public class ContainerFactory extends AbstractComponentFactory<Object>
+public class ContainerFactory extends AbstractComponentFactory<Object> implements IContainerFactory<Object>
 {
 	private String bundleId;
 	
@@ -35,7 +37,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 	
 	@Override
 	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, Map<String, String> attributes) {
+			IContainerBuilder<Object> builder, Map<String, String> attributes) {
 		super.prepare( parentSource, builder, attributes);
 		super.setCanCreate(true);
 	}
@@ -52,8 +54,8 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 	}
 	
 	@Override
-	protected Jp2pContainer onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
-		Jp2pContainer context = new Jp2pContainer( (IJp2pWritePropertySource<IJp2pProperties>) super.getPropertySource() );
+	protected ChaupalContainer onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
+		ChaupalContainer context = new ChaupalContainer( (IJp2pWritePropertySource<IJp2pProperties>) super.getPropertySource() );
 		return context;
 	}
 
@@ -68,12 +70,12 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 		super.notifyChange(event);
 	}
 
-	/**
-	 * Returns true if the context can be auto started 
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.jp2p.container.IContainerFactory#isAutoStart()
 	 */
+	@Override
 	public boolean isAutoStart(){
-		IContainerBuilder container = super.getBuilder();
+		IContainerBuilder<Object> container = super.getBuilder();
 		boolean autostart = AbstractJp2pPropertySource.isAutoStart(this.getPropertySource());
 		if( autostart)
 			return true;
@@ -83,7 +85,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 	}
 
 	private void onPropertySourceCreated(){
-		IContainerBuilder builder = super.getBuilder();
+		IContainerBuilder<Object> builder = super.getBuilder();
 		boolean autostart = AbstractJp2pPropertySource.isAutoStart(this.getPropertySource());
 		String comp = IJp2pServiceBuilder.Components.STARTUP_SERVICE.toString();
 		IPropertySourceFactory startup = builder.getFactory( comp );
@@ -104,8 +106,6 @@ public class ContainerFactory extends AbstractComponentFactory<Object>
 		if( Utils.isNull(componentName))
 			return null;
 		String comp = StringStyler.styleToEnum(componentName);
-		if( !IJp2pServiceBuilder.Components.isComponent( comp ))
-			return null;
 		IJp2pServiceBuilder.Components component = IJp2pServiceBuilder.Components.valueOf(comp);
 		IPropertySourceFactory factory = null;
 		switch( component ){

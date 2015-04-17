@@ -25,12 +25,12 @@ import javax.xml.validation.SchemaFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
+import net.jp2p.chaupal.builder.IFactoryBuilder;
+import net.jp2p.chaupal.container.ContainerFactory;
 import net.jp2p.chaupal.context.Jp2pServiceManager;
-import net.jp2p.container.ContainerFactory;
 import net.jp2p.container.builder.ICompositeBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
-import net.jp2p.container.builder.IFactoryBuilder;
 import net.jp2p.container.utils.IOUtils;
 import net.jp2p.container.utils.Utils;
 

@@ -19,6 +19,7 @@ public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Compa
 	public static final String S_DEFAULT_PROPERTY = "Default";
 	private T module;
 	private IJp2pPropertySource<IJp2pProperties> source;
+	private boolean isRoot;
 
 	protected Jp2pComponent( T component ) {
 		this( null, component );
@@ -27,6 +28,19 @@ public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Compa
 	public Jp2pComponent( IJp2pPropertySource<IJp2pProperties> source, T component ) {
 		this.module = component;
 		this.source = source;
+		this.isRoot = false;
+	}
+
+	/**
+	 * Returns true if the component is a root
+	 * @return
+	 */
+	public final boolean isRoot() {
+		return isRoot;
+	}
+
+	protected final void setRoot(boolean isRoot) {
+		this.isRoot = isRoot;
 	}
 
 	@Override

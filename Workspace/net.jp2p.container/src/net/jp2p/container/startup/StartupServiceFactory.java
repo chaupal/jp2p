@@ -9,7 +9,7 @@ package net.jp2p.container.startup;
 
 import java.util.Map;
 
-import net.jp2p.container.ContainerFactory;
+import net.jp2p.container.IContainerFactory;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder;
@@ -30,7 +30,7 @@ public class StartupServiceFactory extends AbstractPropertySourceFactory
 
 	@Override
 	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource,
-			IContainerBuilder builder, Map<String, String> attributes) {
+			IContainerBuilder<Object> builder, Map<String, String> attributes) {
 		super.prepare( parentSource, builder, attributes);
 		super.setCanCreate( builder != null );
 	}
@@ -45,7 +45,7 @@ public class StartupServiceFactory extends AbstractPropertySourceFactory
 	public void extendContainer() {
 		IContainerBuilder builder = super.getBuilder();
 		IPropertySourceFactory factory = builder.getFactory( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() );
-		ContainerFactory cf = (ContainerFactory) factory;
+		IContainerFactory<?> cf = (IContainerFactory<?>) factory;
 		if( !cf.isAutoStart() )
 			return;
 		IJp2pWritePropertySource<IJp2pProperties> props = (IJp2pWritePropertySource<IJp2pProperties>) factory.getPropertySource();

@@ -24,7 +24,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	private IJp2pPropertySource<IJp2pProperties> source;
 	
 	private boolean canCreate;
-	private IContainerBuilder builder;
+	private IContainerBuilder<Object> builder;
 	private int weight;
 	private String componentName;
 	
@@ -41,7 +41,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	 * @param attributes
 	 */
 	@Override
-	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder builder, Map<String, String> attributes ){
+	public void prepare( IJp2pPropertySource<IJp2pProperties> parentSource, IContainerBuilder<Object> builder, Map<String, String> attributes ){
 		this.canCreate = false;
 		this.parentSource = parentSource;
 		this.builder = builder;
@@ -93,7 +93,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	 * Get the builder
 	 * @return
 	 */
-	protected IContainerBuilder getBuilder() {
+	protected IContainerBuilder<Object> getBuilder() {
 		return builder;
 	}
 

@@ -9,7 +9,6 @@ import java.util.Enumeration;
 import org.eclipse.core.runtime.FileLocator;
 
 import net.jp2p.chaupal.jxta.builder.ContainerBuilderExtender;
-import net.jp2p.container.builder.ContainerBuilder;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.factory.IComponentFactory;
 
@@ -17,11 +16,13 @@ class ContainerBuilderExtender {
 
 	private static final String S_JP2P_INF = "/JP2P-INF/token.txt";
 
-	private static IContainerBuilder builder = new ContainerBuilder();
+	private static IContainerBuilder<Object> builder;
 	
-	private ContainerBuilderExtender() {}
+	private ContainerBuilderExtender( IContainerBuilder<Object> builder){
+		this.builder = builder;
+	}
 
-	public static IContainerBuilder getInstance(){
+	public static IContainerBuilder<Object> getInstance(){
 		return builder;
 	}
 	

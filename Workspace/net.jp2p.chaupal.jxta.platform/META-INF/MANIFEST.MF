@@ -7,6 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: Chaupal
 Import-Package: net.jp2p.chaupal,
  net.jp2p.chaupal.activator,
+ net.jp2p.chaupal.container,
  net.jp2p.chaupal.context,
  net.jp2p.chaupal.jxta.network,
  net.jp2p.chaupal.module,
