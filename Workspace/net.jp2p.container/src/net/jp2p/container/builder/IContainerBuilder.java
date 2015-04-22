@@ -15,12 +15,6 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 
 public interface IContainerBuilder<T extends Object> {
 
-	/**
-	 * Get the bundle id for this container
-	 * @return
-	 */
-	public String getBundleID();
-	
 	public abstract boolean addFactory( IPropertySourceFactory factory);
 
 	public abstract boolean removeFactory(IPropertySourceFactory factory);

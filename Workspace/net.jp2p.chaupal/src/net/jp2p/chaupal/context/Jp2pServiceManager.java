@@ -76,7 +76,7 @@ public class Jp2pServiceManager implements IJp2pFactoryCollection{
 	
 	@Override
 	public String getName() {
-		return null;
+		return activator.getBundleId();
 	}
 
 	/**
@@ -147,9 +147,7 @@ public class Jp2pServiceManager implements IJp2pFactoryCollection{
 	@Override
 	public IPropertySourceFactory getFactory( Jp2pServiceDescriptor descriptor  ){
 		for( FactoryContainer container: containers ){
-			if( !container.containsFactory() )
-				continue;
-			if( container.getDescriptor().equals( descriptor ))
+			if( container.containsFactory() && container.getDescriptor().equals( descriptor ))
 				return container.getFirst();
 		}
 		return this.loader.getFactory( descriptor);

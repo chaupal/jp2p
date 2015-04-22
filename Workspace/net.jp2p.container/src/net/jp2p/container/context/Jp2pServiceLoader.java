@@ -170,7 +170,6 @@ public class Jp2pServiceLoader implements IJp2pFactoryCollection{
 		try {
 			clss = source.getClass().getClassLoader().loadClass( className );
 			context = (IJp2pServiceBuilder) clss.newInstance();
-			System.out.println("URL found: " + ( clss != null ));
 		}
 		catch ( Exception e1) {
 			e1.printStackTrace();

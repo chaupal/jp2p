@@ -57,7 +57,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 	public void build() {
 		
 		//First register all the discovered builders
-		IContainerBuilder<Object> containerBuilder = new ContainerBuilder( this.bundle_id );
+		IContainerBuilder<Object> containerBuilder = new ContainerBuilder();
 		try {
 			this.extendBuilders( containerBuilder, clss);
 		} catch (IOException e) {
@@ -88,7 +88,6 @@ public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 		//Last create the container and the components
 		this.completed = true;
 		this.container = (ChaupalContainer) containerBuilder.createContainer();
-		System.out.println( ChaupalContainer.printContainerStructure(container));
 	}
 
 	@Override

@@ -14,7 +14,6 @@ import net.jp2p.chaupal.jxta.IChaupalComponents.ChaupalComponents;
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.factory.AbstractFilterFactory;
-import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.filter.AbstractComponentFilter;
 import net.jp2p.container.factory.filter.IComponentFactoryFilter;
@@ -38,13 +37,6 @@ public class HttpServiceFactory extends AbstractFilterFactory<Module> {
 	protected IComponentFactoryFilter createFilter() {
 		return new Filter( this );
 	}
-
-	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
-		System.out.println( event.toString());
-		super.notifyChange(event);
-	}
-
 
 	@Override
 	protected synchronized IJp2pComponent<Module> createComponent() {

@@ -34,23 +34,14 @@ public class ContainerBuilder implements IContainerBuilder<Object>{
 
 	private List<ICompositeBuilderListener<?>> factories;
 	private IContainerFactory<Object> factory;
-	private String bundle_id;
 	
 	private Lock lock;
 	
-	public ContainerBuilder( String bundle_id ) {
+	public ContainerBuilder() {
 		factories = new ArrayList<ICompositeBuilderListener<?>>();
-		factory = new ContainerFactory( bundle_id );
-		//factories.add( factory );
-		this.bundle_id = bundle_id;
 		lock = new ReentrantLock();
 	}
 	
-	@Override
-	public String getBundleID() {
-		return bundle_id;
-	}
-
 	/* (non-Javadoc)
 	 * @see net.osgi.jp2p.builder.IContainerBuilder#addFactory(net.osgi.jp2p.factory.IComponentFactory)
 	 */

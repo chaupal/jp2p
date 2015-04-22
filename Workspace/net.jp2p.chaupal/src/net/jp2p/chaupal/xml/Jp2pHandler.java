@@ -15,13 +15,13 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.jp2p.chaupal.container.ContainerFactory;
 import net.jp2p.chaupal.context.Jp2pServiceManager;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.chaupal.persistence.IContextFactory;
 import net.jp2p.container.builder.ComponentNode;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder;
-import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.factory.IPropertySourceFactory;
@@ -53,11 +53,13 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	private Stack<String> stack;
 	private IContainerBuilder<Object> builder;
 	private String context = null;
-
+	private String bundle_id;
+	
 	private static Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 
-	public Jp2pHandler( IContainerBuilder<Object> builder, Jp2pServiceManager manager, Class<?> clss ) {
+	public Jp2pHandler( String bundle_id, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Class<?> clss ) {
 		this.manager = manager;
+		this.bundle_id = bundle_id;
 		this.builder = builder;
 		this.clss = clss;
 		this.stack = new Stack<String>();
@@ -85,7 +87,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 			IJp2pComponents current = IJp2pServiceBuilder.Components.valueOf( StringStyler.styleToEnum( qName ));
 			switch(( IJp2pServiceBuilder.Components )current ){
 			case JP2P_CONTAINER:
-				factory = builder.getFactory(Components.JP2P_CONTAINER.toString());
+				factory = new ContainerFactory( this.bundle_id );
 				break;
 			case CONTEXT:
 				stack.push( qName );
@@ -108,9 +110,9 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		
 		//The factory is either a service or a property
 		if( factory != null ){
-			System.out.println("Factory parsed: " + factory.getComponentName());
+			logger.info( "Factory parsed: " + factory.getComponentName());
 			IJp2pPropertySource<IJp2pProperties> source = ( node == null )? null:node.getData().getPropertySource(); 
-			if(( source != null ) && ( !this.builder.getBundleID().equals( AbstractJp2pPropertySource.getBundleId( source ))))
+			if(( source != null ) && ( !this.bundle_id.equals( AbstractJp2pPropertySource.getBundleId( source ))))
 				return;
 			factory.prepare( source, builder, convertAttributes(attributes));
 			node = this.processFactory(attributes, node, factory);

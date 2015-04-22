@@ -82,8 +82,16 @@ public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder 
 	@Override
 	public IPropertySourceFactory getFactory( Jp2pServiceDescriptor descriptor ) {
 		for( IPropertySourceFactory factory: this.factories ){
-			if( factory.getComponentName().equals( descriptor.getName() ))
+			if( factory.getComponentName().equals( descriptor.getName() )){
+				ClassLoader loader = factory.getClass().getClassLoader();
+				String name = factory.getClass().getName();
+				try{
+					return (IPropertySourceFactory) loader.loadClass(name).newInstance();
+				} catch ( Exception e) {
+				    e.printStackTrace();
+				}
 				return factory;
+			}
 		}
 		return null;
 	}
