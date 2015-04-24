@@ -38,6 +38,8 @@ public class RendezVousPropertySource extends AbstractJp2pWritePropertySource
 			for( RendezVousProperties prop: values() ){
 				if( prop.equals( property ))
 					return true;
+				if( prop.name().equals( property.name() ))
+					return true;
 			}
 			return false;
 		}
@@ -60,7 +62,7 @@ public class RendezVousPropertySource extends AbstractJp2pWritePropertySource
 
 	private void fill( PeerGroupPropertySource parent ){
 		//Determine the properties and directives to take over from the parent 
-		this.setDirective( Directives.AUTO_START, parent.getDirective( Directives.AUTO_START ));
+		this.setDirective( Directives.AUTO_START, Boolean.FALSE.toString());
 	}
 	
 	@Override

@@ -58,6 +58,8 @@ public class MulticastPropertySource extends AbstractJp2pWritePropertySource {
 			for( MulticastProperties prop: values() ){
 				if( prop.equals( property ))
 					return true;
+				if( prop.name().equals( property.name() ))
+					return true;
 			}
 			return false;
 		}

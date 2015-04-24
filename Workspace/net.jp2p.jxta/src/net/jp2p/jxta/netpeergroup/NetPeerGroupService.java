@@ -9,6 +9,7 @@ package net.jp2p.jxta.netpeergroup;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import net.jp2p.container.component.AbstractJp2pService;
 import net.jp2p.container.component.IJp2pComponent;
@@ -25,6 +26,8 @@ public class NetPeerGroupService extends AbstractJp2pService<PeerGroup> implemen
 	private NetworkManager manager;
 	
 	private Collection<IJp2pComponent<?>> modules;
+	
+	private Logger logger = Logger.getLogger( NetPeerGroupService.class.getName());
 
 	public NetPeerGroupService( NetPeerGroupFactory factory, NetworkManager manager ) {
 		super(( IJp2pWritePropertySource<IJp2pProperties> ) factory.getPropertySource(), null );
@@ -38,6 +41,8 @@ public class NetPeerGroupService extends AbstractJp2pService<PeerGroup> implemen
 			PeerGroupPreferences preferences = new PeerGroupPreferences(( IJp2pWritePropertySource<IJp2pProperties> )super.getPropertySource() );
 			manager.setPeerID( preferences.getPeerID());
 			PeerGroup peergroup = manager.startNetwork();
+			logger.info("\n\nNETWORK STARTED: " + manager.getInstanceName() + "\n\n");
+			
 			super.setModule( peergroup );
 			super.activate();
 		} catch (Exception e) {

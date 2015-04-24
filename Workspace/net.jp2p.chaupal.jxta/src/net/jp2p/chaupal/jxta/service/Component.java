@@ -21,6 +21,10 @@ public class Component{
 	
 	public void deactivate(){ /* DO NOTHING */ }
 	
+	protected final boolean canBuild() {
+		return canBuild;
+	}
+
 	public void registerBuilder(IModuleBuilder<Module> builder) {
 		manager.registerBuilder( builder);
 		if( builder instanceof JxtaModuleBuilder )
