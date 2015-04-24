@@ -76,11 +76,18 @@ public interface IJp2pPropertySource< T extends Object> extends IDescendant<T, I
 	public boolean validate( T id, Object value );
 
 	/**
-	 * Get the default directives
+	 * Get the given directives
 	 * @param id
 	 * @return
 	 */
 	public String getDirective( IJp2pDirectives id );
+
+	/**
+	 * Set the directive with the given value
+	 * @param id
+	 * @return
+	 */
+	public boolean setDirective( IJp2pDirectives id, String value );
 
 	/**
 	 * Get an iterator over the directives

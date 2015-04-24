@@ -87,6 +87,7 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 		return JxtaPlatformComponents.NETWORK_MANAGER.toString();
 	}
 
+	
 	private void fill( Jp2pContainerPropertySource parent ){
 		//Get the name from the various options
 		String name = (String) super.getProperty( NetworkManagerProperties.INSTANCE_NAME );

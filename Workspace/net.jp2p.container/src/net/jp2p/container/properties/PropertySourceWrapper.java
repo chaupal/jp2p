@@ -76,6 +76,12 @@ public class PropertySourceWrapper< T extends Object> implements IJp2pPropertySo
 		return this.source.getDirective(id);
 	}
 
+	
+	@Override
+	public boolean setDirective(IJp2pDirectives id, String value) {
+		return this.source.setDirective(id, value);
+	}
+
 	@Override
 	public Iterator<IJp2pDirectives> directiveIterator() {
 		return this.source.directiveIterator();

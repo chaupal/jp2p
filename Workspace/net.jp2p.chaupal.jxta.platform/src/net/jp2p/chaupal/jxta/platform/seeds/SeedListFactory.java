@@ -13,6 +13,7 @@ import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.chaupal.jxta.platform.seeds.ISeedInfo.SeedTypes;
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
+import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
@@ -27,6 +28,13 @@ public class SeedListFactory extends AbstractPropertySourceFactory{
 	@Override
 	protected SeedListPropertySource onCreatePropertySource() {
 		return new SeedListPropertySource( super.getComponentName(), super.getParentSource() );
+	}
+
+	
+	@Override
+	protected IJp2pDirectives onConvertDirective( String key, String value) {
+		// TODO Auto-generated method stub
+		return super.onConvertDirective(key, value);
 	}
 
 	@Override

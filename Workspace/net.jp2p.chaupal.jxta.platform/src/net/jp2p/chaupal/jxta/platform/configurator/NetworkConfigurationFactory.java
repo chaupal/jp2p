@@ -17,11 +17,14 @@ import java.util.logging.Logger;
 
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
+import net.jp2p.chaupal.jxta.platform.security.SecurityFactory;
+import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.Jp2pComponent;
 import net.jp2p.container.factory.AbstractDependencyFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
+import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.StringStyler;
@@ -75,7 +78,25 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 			}
 		}
 	}
+
+	/**
+	 * If a security service is not found, then include one
+	 */
+	@Override
+	public void extendContainer() {
+		IContainerBuilder<Object> builder = super.getBuilder();
+		String comp = JxtaPlatformComponents.SECURITY.toString();
+		IPropertySourceFactory security = builder.getFactory( comp );
+		if( security != null )
+			return;
+		security = new SecurityFactory();
+		security.prepare( super.getPropertySource(), builder, null );
+		security.createPropertySource();
+		builder.addFactory( security );
+		super.extendContainer();	
+	}
 	
+
 	
 	@Override
 	public IJp2pComponent<NetworkConfigurator> getComponent() {
