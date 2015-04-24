@@ -9,12 +9,16 @@ package net.jp2p.container.factory;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
+import net.jp2p.container.properties.IJp2pDirectives;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.container.utils.StringStyler;
 
 public abstract class AbstractPropertySourceFactory implements IPropertySourceFactory{
 
@@ -27,7 +31,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	private IContainerBuilder<Object> builder;
 	private int weight;
 	private String componentName;
-	
+	private Map<String, String> attributes;
 	
 	protected AbstractPropertySourceFactory( String componentName ) {
 		this.componentName = componentName;
@@ -46,6 +50,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 		this.parentSource = parentSource;
 		this.builder = builder;
 		this.weight = Integer.MAX_VALUE;
+		this.attributes = attributes;
 	}
 
 	protected IJp2pPropertySource<IJp2pProperties> getParentSource() {
@@ -116,10 +121,27 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	 */
 	protected abstract IJp2pPropertySource<IJp2pProperties> onCreatePropertySource();
 	
+	/**
+	 * Converst the given directive to the proper format, or returns null if it isn't recognised
+	 * @param key
+	 * @return
+	 */
+	protected IJp2pDirectives onConvertDirective( String key ){
+		Directives id = Directives.valueOf( StringStyler.styleToEnum( key ));
+		return id;
+	}
+	
 	@Override
 	public IJp2pPropertySource<IJp2pProperties> createPropertySource() {
 		if( this.source == null ){
 			this.source = this.onCreatePropertySource();
+			Set<Map.Entry<String, String>> entries = attributes.entrySet();
+			Iterator<Map.Entry<String, String>> iterator = entries.iterator();
+			while( iterator.hasNext() ){
+				Map.Entry<String, String> entry = iterator.next();
+				IJp2pDirectives id = this.onConvertDirective( entry.getKey() );
+				this.source.setDirective(id, entry.getValue());
+			}
 			this.updateState( BuilderEvents.PROPERTY_SOURCE_PREPARED );
 		}
 		return source;

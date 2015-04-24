@@ -43,6 +43,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 class Jp2pHandler extends DefaultHandler implements IContextEntities{
 
+	private static final String S_ERR_INVALID_BUNDLE = "The parsed bundle-id is wrong";
+	
 	public static final int MAX_COUNT = 200;	
 
 	private ManagedProperty<IJp2pProperties,Object> property;
@@ -111,9 +113,14 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		//The factory is either a service or a property
 		if( factory != null ){
 			logger.info( "Factory parsed: " + factory.getComponentName());
-			IJp2pPropertySource<IJp2pProperties> source = ( node == null )? null:node.getData().getPropertySource(); 
-			if(( source != null ) && ( !this.bundle_id.equals( AbstractJp2pPropertySource.getBundleId( source ))))
-				return;
+			IJp2pPropertySource<IJp2pProperties> source = ( node == null )? null: node.getData().getPropertySource(); 
+			if( source != null ){
+				String bundle = AbstractJp2pPropertySource.getBundleId( source );
+				if(  !this.bundle_id.equals( bundle )){
+					logger.severe( S_ERR_INVALID_BUNDLE + bundle + " should be " + this.bundle_id );
+					return;
+				}
+			}
 			factory.prepare( source, builder, convertAttributes(attributes));
 			node = this.processFactory(attributes, node, factory);
 			this.stack.push( qName );

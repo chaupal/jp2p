@@ -9,10 +9,12 @@ package net.jp2p.chaupal.jxta.platform.seeds;
 
 import java.util.Iterator;
 
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerDirectives;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.chaupal.jxta.platform.seeds.ISeedInfo.SeedTypes;
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
+import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
@@ -27,6 +29,13 @@ public class SeedListFactory extends AbstractPropertySourceFactory{
 	@Override
 	protected SeedListPropertySource onCreatePropertySource() {
 		return new SeedListPropertySource( super.getComponentName(), super.getParentSource() );
+	}
+
+	@Override
+	protected IJp2pDirectives onConvertDirective( String key) {
+		if( SeedListPropertySource.SeedListDirectives.isValidDirective( key ))
+			return (NetworkManagerDirectives.valueOf(key));
+		return super.onConvertDirective(key );
 	}
 
 	@Override

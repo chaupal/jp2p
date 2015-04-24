@@ -41,7 +41,17 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 	public enum SeedListDirectives implements IJp2pDirectives{
 		MAX_CLIENTS,
 		USE_ONLY;
-	
+
+		public static boolean isValidDirective( String str ){
+			if( Utils.isNull( str ))
+				return false;
+			for( SeedListDirectives dir: values() ){
+				if( dir.name().equals( str ))
+					return true;
+			}
+			return false;
+		}
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );

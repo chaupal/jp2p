@@ -13,7 +13,7 @@ import java.net.UnknownHostException;
 
 import net.jp2p.jxta.transport.TransportPropertySource;
 
-public class SeedInfo implements ISeedInfo{
+class SeedInfo implements ISeedInfo{
 
 	protected static final String S_LOCALHOST = "localhost";
 	 
@@ -23,7 +23,7 @@ public class SeedInfo implements ISeedInfo{
 	
 	private boolean commentedOut;
 	
-	public SeedInfo() {
+	SeedInfo() {
 		this.commentedOut = false;
 	}
 

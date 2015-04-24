@@ -74,7 +74,15 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 		npps.setDirective( Directives.AUTO_START, this.getPropertySource().getDirective( Directives.AUTO_START ));
 		super.extendContainer();
 	}
+
 	
+	@Override
+	protected IJp2pDirectives onConvertDirective( String key ) {
+		if( NetworkManagerDirectives.isValidDirective( key ))
+			return (NetworkManagerDirectives.valueOf(key));
+		return super.onConvertDirective(key);
+	}
+
 	@Override
 	protected void onParseProperty( ManagedProperty<IJp2pProperties, Object> property) {
 		if(( !ManagedProperty.isCreated(property)) || ( !NetworkManagerProperties.isValidProperty(property.getKey())))
