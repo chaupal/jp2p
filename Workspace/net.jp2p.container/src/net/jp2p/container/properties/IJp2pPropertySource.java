@@ -60,8 +60,20 @@ public interface IJp2pPropertySource< T extends Object> extends IDescendant<T, I
 	 */
 	public String getCategory( T id );
 
+	/**
+	 * Get the managed property
+	 * @param id
+	 * @return
+	 */
 	public ManagedProperty<T,Object> getManagedProperty( T id );
-	
+
+	/**
+	 * Set the managed property
+	 * @param property
+	 * @return
+	 */
+	public boolean setManagedProperty( ManagedProperty<IJp2pProperties,Object> property );
+
 	/**
 	 * Get an iterator over the properties
 	 * @return
@@ -131,5 +143,19 @@ public interface IJp2pPropertySource< T extends Object> extends IDescendant<T, I
 	 */
 	public IJp2pPropertySource<?> getChild( String componentName );
 
+	/**
+	 * Returns true if the source does not contain any properties
+	 * @return
+	 */
 	public boolean isEmpty();
+	
+	/**
+	 * Copy the directives and properties intop the given source. 
+	 * NOTE: the method does not clear the given source, so this acts as a merge operation
+	 * rather than a clone.
+	 * @param source
+	 * @throws CloneNotSupportedException
+	 */
+	public void copy( IJp2pPropertySource<IJp2pProperties> source ) throws CloneNotSupportedException;
+
 }

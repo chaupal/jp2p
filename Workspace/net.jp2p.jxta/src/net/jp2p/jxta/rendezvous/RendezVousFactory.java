@@ -9,6 +9,8 @@ package net.jp2p.jxta.rendezvous;
 
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.Jp2pComponent;
+import net.jp2p.container.properties.AbstractJp2pPropertySource;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.factory.AbstractPeerGroupDependencyFactory;
@@ -26,12 +28,15 @@ public class RendezVousFactory extends AbstractPeerGroupDependencyFactory<Rendez
 	@Override
 	public RendezVousPropertySource onCreatePropertySource() {
 		RendezVousPropertySource source = new RendezVousPropertySource( (PeerGroupPropertySource) super.getParentSource());
+		source.setDirective( Directives.AUTO_START, Boolean.toString( false ));
 		return source;
 	}
 	
 	@Override
 	protected IJp2pComponent<RendezVousService> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		PeerGroup peergroup = super.getPeerGroup();
+		boolean autostart = AbstractJp2pPropertySource.isAutoStart( super.getPropertySource());
+		peergroup.getRendezVousService().setAutoStart( autostart);
 		return new Jp2pComponent<RendezVousService>( super.getPropertySource(), peergroup.getRendezVousService() );
 	}
 }

@@ -143,5 +143,17 @@ public class PropertySourceWrapper< T extends Object> implements IJp2pPropertySo
 	@Override
 	public boolean hasChildren() {
 		return this.source.hasChildren();
+	}
+
+	@Override
+	public boolean setManagedProperty(
+			ManagedProperty<IJp2pProperties, Object> property) {
+		return this.source.setManagedProperty(property);
+	}
+
+	@Override
+	public void copy(IJp2pPropertySource<IJp2pProperties> source)
+			throws CloneNotSupportedException {
+		this.source.copy(source);
 	}	
 }

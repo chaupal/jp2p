@@ -38,6 +38,16 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	}
 
 	/**
+	 * This constructor is only used when cloning a factory
+	 * @param componentName
+	 * @param source
+	 */
+	AbstractPropertySourceFactory( String componentName, IJp2pPropertySource<IJp2pProperties> source ) {
+		this( componentName );
+		this.source = source;
+	}
+
+	/**
 	 * Prepare the factory, by providing the necessary objects to embed the factory in the application
 	 * @param componentName
 	 * @param parentSource
@@ -73,6 +83,10 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	@Override
 	public String getComponentName() {
 		return this.componentName;
+	}
+
+	protected final void setComponentName(String componentName) {
+		this.componentName = componentName;
 	}
 
 	/**
@@ -121,10 +135,13 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	 */
 	protected abstract IJp2pPropertySource<IJp2pProperties> onCreatePropertySource();
 	
-	protected IJp2pDirectives onConvertDirective
-	( String key, String value ){
+	/**
+	 * Converst the given directive to the proper format, or returns null if it isn't recognised
+	 * @param key
+	 * @return
+	 */
+	protected IJp2pDirectives onConvertDirective( String key, String value ){
 		Directives id = Directives.valueOf( StringStyler.styleToEnum( key ));
-		this.source.setDirective(id, value);
 		return id;
 	}
 	
@@ -132,11 +149,14 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	public IJp2pPropertySource<IJp2pProperties> createPropertySource() {
 		if( this.source == null ){
 			this.source = this.onCreatePropertySource();
-			Set<Map.Entry<String, String>> entries = attributes.entrySet();
-			Iterator<Map.Entry<String, String>> iterator = entries.iterator();
-			while( iterator.hasNext() ){
-				Map.Entry<String, String> entry = iterator.next();
-				this.onConvertDirective( entry.getKey(), entry.getValue() );
+			if( attributes != null ){
+				Set<Map.Entry<String, String>> entries = attributes.entrySet();
+				Iterator<Map.Entry<String, String>> iterator = entries.iterator();
+				while( iterator.hasNext() ){
+					Map.Entry<String, String> entry = iterator.next();
+					IJp2pDirectives id = this.onConvertDirective( entry.getKey(), entry.getValue() );
+					this.source.setDirective(id, entry.getValue());
+				}
 			}
 			this.updateState( BuilderEvents.PROPERTY_SOURCE_PREPARED );
 		}

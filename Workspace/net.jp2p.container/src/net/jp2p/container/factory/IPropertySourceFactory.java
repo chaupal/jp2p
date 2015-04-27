@@ -68,5 +68,4 @@ public interface IPropertySourceFactory extends ICompositeBuilderListener<Object
 	 * Parse the properties
 	 */
 	public void parseProperties();
-
 }

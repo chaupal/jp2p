@@ -60,8 +60,8 @@ public class RendezVousPropertySource extends AbstractJp2pWritePropertySource
 		return JxtaComponents.RENDEZVOUS_SERVICE.toString();
 	}
 
+	//Determine the properties and directives to take over from the parent 
 	private void fill( PeerGroupPropertySource parent ){
-		//Determine the properties and directives to take over from the parent 
 		this.setDirective( Directives.AUTO_START, Boolean.FALSE.toString());
 	}
 	

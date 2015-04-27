@@ -21,13 +21,10 @@ public abstract class AbstractJp2pServiceNode<T extends Object>
 
 	private Collection<IJp2pComponent<?>> children;
 
-	private ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-
 	protected AbstractJp2pServiceNode( IJp2pComponentNode<?> source, IComponentFactory<T> factory  ) {
 		super( factory );
 		this.children = new ArrayList<IJp2pComponent<?>>();
 	}
-
 	
 	protected AbstractJp2pServiceNode(
 			IJp2pWritePropertySource<IJp2pProperties> source, T module) {
@@ -62,7 +59,7 @@ public abstract class AbstractJp2pServiceNode<T extends Object>
 	}
 
 	protected void notifyComponentChanged( ComponentChangedEvent<?> event){
-		dispatcher.serviceChanged( event );		
+		super.getDispatcher().serviceChanged( event );		
 	}
 	
 	@Override

@@ -14,6 +14,7 @@ import net.jp2p.chaupal.jxta.platform.seeds.ISeedInfo.SeedTypes;
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.properties.IJp2pDirectives;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
@@ -30,11 +31,16 @@ public class SeedListFactory extends AbstractPropertySourceFactory{
 		return new SeedListPropertySource( super.getComponentName(), super.getParentSource() );
 	}
 
-	
 	@Override
-	protected IJp2pDirectives onConvertDirective( String key, String value) {
-		// TODO Auto-generated method stub
-		return super.onConvertDirective(key, value);
+	protected IJp2pDirectives onConvertDirective( String key, String value ) {
+		String str = StringStyler.styleToEnum( key );
+		if( SeedListPropertySource.SeedListDirectives.isValidDirective( str ))
+			return SeedListPropertySource.SeedListDirectives.valueOf( str );
+		Directives directive = Directives.valueOf( str );
+		if( Directives.TYPE.equals( directive )){
+			super.setComponentName( super.getComponentName() + "." + value );
+		}
+		return super.onConvertDirective(key, value );
 	}
 
 	@Override

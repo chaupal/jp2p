@@ -26,13 +26,11 @@ import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
-import net.jp2p.container.utils.StringDirective;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 
@@ -178,21 +176,11 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	 * @return
 	 */
 	protected synchronized FactoryNode processFactory( Attributes attributes, FactoryNode parent, IPropertySourceFactory factory ){
-		logger.info( "Factory found for: " + factory.getComponentName() );
+		logger.log( Level.FINE, "Factory found for: " + factory.getComponentName() );
 		IJp2pWritePropertySource<?> source = (IJp2pWritePropertySource<?>) factory.createPropertySource();
 		if( parent != null )
 			parent.getData().getPropertySource().addChild( source);
 		
-		//Add the directives
-		if( source instanceof IJp2pWritePropertySource ){
-			source = (IJp2pWritePropertySource<?>) factory.getPropertySource();
-			for( int i=0; i<attributes.getLength(); i++  ){
-				if( !Utils.isNull( attributes.getLocalName(i))){
-					IJp2pDirectives directive = new StringDirective( StringStyler.styleToEnum( attributes.getLocalName( i ))); 
-					source.setDirective( directive, attributes.getValue(i));
-				}
-			}
-		}		
 		builder.addFactory( factory );
 		if( node == null )
 			return new FactoryNode( factory );

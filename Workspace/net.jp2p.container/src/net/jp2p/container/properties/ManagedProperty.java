@@ -16,7 +16,7 @@ import net.jp2p.container.properties.IManagedPropertyListener.PropertyEvents;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 
-public class ManagedProperty<T, U extends Object> {
+public class ManagedProperty<T, U extends Object> implements Cloneable{
 	
 	public static final String S_DEFAULT_CATEGORY = "JP2P";
 	
@@ -245,6 +245,12 @@ public class ManagedProperty<T, U extends Object> {
 	}
 
 	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		ManagedProperty<T,U> mp = new ManagedProperty<T,U>( source, id, value, derived, readOnly, category );
+		return mp;
+	}
+
 	@Override
 	public String toString() {
 		return "{"+ this.id + "=" + this.value + "}";

@@ -9,7 +9,6 @@ Import-Package: net.jp2p.chaupal.activator,
  net.jp2p.chaupal.container,
  net.jp2p.chaupal.context,
  net.jp2p.chaupal.dispatcher,
- net.jp2p.chaupal.jxta.network,
  net.jp2p.chaupal.persistence,
  net.jp2p.container,
  net.jp2p.container.activator,
@@ -56,7 +55,6 @@ Import-Package: net.jp2p.chaupal.activator,
 Service-Component: OSGI-INF/chaupalbuilder.xml, OSGI-INF/jxtabuilder.xml, OSGI-INF/jxta.xml 
 Export-Package: net.jp2p.chaupal.jxta.advertisement,
  net.jp2p.chaupal.jxta.discovery,
- net.jp2p.chaupal.jxta.network,
  net.jp2p.chaupal.jxta.peergroup
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: net.jp2p.chaupal.jxta.Activator

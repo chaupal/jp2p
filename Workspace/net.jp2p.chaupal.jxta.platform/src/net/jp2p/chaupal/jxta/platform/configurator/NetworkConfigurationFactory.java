@@ -20,7 +20,7 @@ import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertyS
 import net.jp2p.chaupal.jxta.platform.security.SecurityFactory;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
-import net.jp2p.container.component.Jp2pComponent;
+import net.jp2p.container.component.Jp2pComponentNode;
 import net.jp2p.container.factory.AbstractDependencyFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
@@ -119,7 +119,7 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 			e.printStackTrace();
 			return null;
 		}
-		return new Jp2pComponent<NetworkConfigurator>( properties, configurator );
+		return new Jp2pComponentNode<NetworkConfigurator>( properties, configurator );
 	}
 
 	@Override

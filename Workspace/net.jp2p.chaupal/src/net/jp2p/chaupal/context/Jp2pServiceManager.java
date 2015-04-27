@@ -1,6 +1,8 @@
 package net.jp2p.chaupal.context;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -250,7 +252,34 @@ public class Jp2pServiceManager implements IJp2pFactoryCollection{
 		}
 		
 		public IPropertySourceFactory getFirst(){
-			return this.factories.iterator().next();
+			IPropertySourceFactory factory = this.factories.iterator().next();
+			return (IPropertySourceFactory) newFactory( factory );
 		}
 	}
+	
+	/**
+	 * Create a new factory 
+	 * @return
+	 */
+	public static IPropertySourceFactory newFactory( IPropertySourceFactory factory ){
+		try {
+			Constructor<?> constructor = factory.getClass().getConstructor();
+			IPropertySourceFactory fact = (IPropertySourceFactory) constructor.newInstance();
+			return fact;
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} 
+		return null;
+	}
+
 }

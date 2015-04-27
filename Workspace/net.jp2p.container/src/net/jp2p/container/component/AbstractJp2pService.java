@@ -81,6 +81,14 @@ implements IJp2pService<T>{
 		return ( Date )value;
 	}
 
+	/**
+	 * Get the dispatcher
+	 * @return
+	 */
+	protected final ComponentEventDispatcher getDispatcher() {
+		return dispatcher;
+	}
+
 	@Override
 	public IJp2pPropertySource<IJp2pProperties> getPropertySource() {
 		return source;

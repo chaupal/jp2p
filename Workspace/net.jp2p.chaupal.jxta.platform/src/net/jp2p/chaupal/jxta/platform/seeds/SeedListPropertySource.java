@@ -41,7 +41,17 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 	public enum SeedListDirectives implements IJp2pDirectives{
 		MAX_CLIENTS,
 		USE_ONLY;
-	
+
+		public static boolean isValidDirective( String str ){
+			if( Utils.isNull( str ))
+				return false;
+			for( SeedListDirectives dir: values() ){
+				if( dir.name().equals( str ))
+					return true;
+			}
+			return false;
+		}
+
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );
@@ -164,7 +174,7 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 	 * @param source
 	 * @param configurator
 	 */
-	public static final void fillRelayNetworkConfigurator( SeedListPropertySource source, NetworkConfigurator configurator ){
+	protected static final void fillRelayNetworkConfigurator( SeedListPropertySource source, NetworkConfigurator configurator ){
 		configurator.clearRelaySeedingURIs();
 		configurator.clearRelaySeeds();
 		boolean useOnly = AbstractJp2pPropertySource.getBoolean( source, SeedListDirectives.USE_ONLY );
@@ -180,7 +190,7 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 	 * @param source
 	 * @param configurator
 	 */
-	public static final void fillRendezvousNetworkConfigurator( SeedListPropertySource source, NetworkConfigurator configurator ){
+	protected static final void fillRendezvousNetworkConfigurator( SeedListPropertySource source, NetworkConfigurator configurator ){
 		configurator.clearRendezvousSeedingURIs();
 		configurator.clearRendezvousSeeds();
 		boolean useOnly = AbstractJp2pPropertySource.getBoolean( source, SeedListDirectives.USE_ONLY );

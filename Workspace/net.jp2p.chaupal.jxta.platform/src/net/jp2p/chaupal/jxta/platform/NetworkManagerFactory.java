@@ -36,6 +36,7 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IManagedPropertyListener.PropertyEvents;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
@@ -75,6 +76,14 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 		super.extendContainer();
 	}
 	
+	@Override
+	protected IJp2pDirectives onConvertDirective( String key, String value ) {
+		String str = StringStyler.styleToEnum(key);
+		if( NetworkManagerDirectives.isValidDirective( str ))
+			return (NetworkManagerDirectives.valueOf(str));
+		return super.onConvertDirective(key, value );
+	}
+
 	@Override
 	protected void onParseProperty( ManagedProperty<IJp2pProperties, Object> property) {
 		if(( !ManagedProperty.isCreated(property)) || ( !NetworkManagerProperties.isValidProperty(property.getKey())))

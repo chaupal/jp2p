@@ -135,7 +135,7 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 		
 	}
 
-	protected boolean setManagedProperty( ManagedProperty<IJp2pProperties,Object> property ) {
+	public boolean setManagedProperty( ManagedProperty<IJp2pProperties,Object> property ) {
 		this.properties.put( property.getKey(), property );
 		for( IManagedPropertyListener<IJp2pProperties, Object> listener: this.listeners ){
 			property.addPropertyListener(listener);
@@ -241,13 +241,33 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 		return false;
 	}
 
+	/**
+	 * Copy the directives and properties into the given property source.
+	 * @param source
+	 * @throws CloneNotSupportedException
+	 */
+	@SuppressWarnings("unchecked")
+	public void copy( IJp2pPropertySource<IJp2pProperties> source ) throws CloneNotSupportedException{
+		Iterator<IJp2pDirectives> directives = directiveIterator();
+		while( directives.hasNext() ){
+			IJp2pDirectives directive = directives.next();
+			source.setDirective( directive, source.getDirective( directive ));
+		}
+		Iterator<IJp2pProperties> properties = propertyIterator();
+		while( properties.hasNext() ){
+			IJp2pProperties property = properties.next();
+			source.setManagedProperty( (ManagedProperty<IJp2pProperties, Object>) source.getManagedProperty( property ).clone() );
+		}
+		
+	}
+	
 	@Override
 	public String toString() {
 		return super.toString() + "[" + this.getComponentName() + "]";
 	}
 	
 	/**
-	 * If true, the service is autostarted
+	 * If true, the service is auto-started
 	 * @return
 	 */
 	public static boolean isAutoStart( IJp2pPropertySource<?> source ){
