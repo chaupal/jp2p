@@ -39,7 +39,6 @@ public class Jp2pServiceLoader implements IJp2pFactoryCollection{
 		return null;
 	}
 
-
 	public static Jp2pServiceLoader getInstance(){
 		return loader;
 	}

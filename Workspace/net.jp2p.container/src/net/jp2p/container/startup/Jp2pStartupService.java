@@ -23,7 +23,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.Utils;
 
-public class Jp2pStartupService extends AbstractActivator implements IJp2pService<IContainerBuilder>{
+public class Jp2pStartupService extends AbstractActivator implements IJp2pService<IContainerBuilder<?>>{
 
 	public static final String S_ERR_NO_SERVICE_LOADED = "\n\t!!! No service is loaded. Not starting context:  ";
 	public static final String S_ERR_CONTEXT_NOT_BUILT = "\n\t!!! The context was not built! Not starting context:  ";
@@ -31,11 +31,11 @@ public class Jp2pStartupService extends AbstractActivator implements IJp2pServic
 
 	private Jp2pStartupPropertySource source;
 	
-	private IContainerBuilder container;
+	private IContainerBuilder<?> container;
 	
 	private Collection<ICompositeBuilderListener<Object>> listeners;
 	
-	public Jp2pStartupService( IContainerBuilder container, Jp2pStartupPropertySource source ) {
+	public Jp2pStartupService( IContainerBuilder<?> container, Jp2pStartupPropertySource source ) {
 		this.source = source;
 		this.container = container;
 		listeners = new ArrayList<ICompositeBuilderListener<Object>>();
@@ -136,7 +136,7 @@ public class Jp2pStartupService extends AbstractActivator implements IJp2pServic
 	}
 
 	@Override
-	public IContainerBuilder getModule() {
+	public IContainerBuilder<?> getModule() {
 		return this.container;
 	}
 }

@@ -9,7 +9,7 @@ package net.jp2p.chaupal.builder;
 
 import org.osgi.framework.BundleContext;
 
-import net.jp2p.chaupal.module.AbstractService;
+import net.jp2p.chaupal.service.AbstractDeclarativeService;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.context.Jp2pServiceLoader;
 
@@ -29,18 +29,28 @@ import net.jp2p.container.context.Jp2pServiceLoader;
  * PROP_DIR service property.
  * </p>
  */
-public class Jp2pBuilderService extends AbstractService<IJp2pServiceBuilder>{
+public class Jp2pBuilderService extends AbstractDeclarativeService<IJp2pServiceBuilder>{
 
-	//in the component.xml file you will use target="(jp2p.context=contextName)"
+	//in the component.xml file you will use target="(jp2p.builder=builderName)"
    private static String filter = "(jp2p.builder=*)"; 
 
 	private Jp2pServiceLoader loader;
 	
 	public Jp2pBuilderService( BundleContext bc, Jp2pServiceLoader loader) {
-		super( bc, IJp2pServiceBuilder.class, filter );
+		super();
 		this.loader = loader;
+		this.prepare(bc);
 	}
-	
+
+	/**
+	 * Prepare the service
+	 * @param bc
+	 */
+	public void prepare(BundleContext bc ) {
+		super.prepare(bc, IJp2pServiceBuilder.class, filter );
+	}
+
+
 	@Override
 	public void open() {
 		super.open();

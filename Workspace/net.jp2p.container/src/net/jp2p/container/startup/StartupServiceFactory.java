@@ -43,7 +43,7 @@ public class StartupServiceFactory extends AbstractPropertySourceFactory
 
 	@Override
 	public void extendContainer() {
-		IContainerBuilder builder = super.getBuilder();
+		IContainerBuilder<?> builder = super.getBuilder();
 		IPropertySourceFactory factory = builder.getFactory( IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString() );
 		IContainerFactory<?> cf = (IContainerFactory<?>) factory;
 		if( !cf.isAutoStart() )

@@ -50,7 +50,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	/**
 	 * Start the activator for the given bundle id. The JP2P container will be built
 	 * if this is possible.
-	 * If the Developermode is set to debug, then the container will be visible for the IDE
+	 * If the Developer mode is set to debug, then the container will be visible for the IDE
 	 * @param bundle_id
 	 * @param mode
 	 */
