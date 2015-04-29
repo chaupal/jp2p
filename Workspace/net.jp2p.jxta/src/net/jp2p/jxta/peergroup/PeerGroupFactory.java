@@ -64,7 +64,7 @@ public class PeerGroupFactory extends AbstractPeerGroupDependencyFactory<PeerGro
 	
 	@Override
 	public void extendContainer() {
-		IContainerBuilder builder = super.getBuilder();
+		IContainerBuilder<?> builder = super.getBuilder();
 		RendezVousPropertySource rdvps = (RendezVousPropertySource) JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getParentSource(), JxtaComponents.RENDEZVOUS_SERVICE.toString(), true ).getPropertySource();
 		rdvps.setDirective( Directives.AUTO_START, this.getPropertySource().getDirective( Directives.AUTO_START ));
 		super.extendContainer();

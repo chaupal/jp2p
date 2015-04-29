@@ -58,7 +58,7 @@ public abstract class ChaupalAdvertisementFactory<T extends Object, U extends Ad
 
 	@Override
 	public void extendContainer() {
-		IContainerBuilder builder = super.getBuilder();
+		IContainerBuilder<Object> builder = super.getBuilder();
 		String componentName = ChaupalComponents.DISCOVERY_SERVICE.toString();
 		IPropertySourceFactory df = builder.getFactory( componentName);
 		if( df == null ){
