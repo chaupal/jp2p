@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.chaupal.module;
+package net.jp2p.chaupal.utils;
 
 import java.util.Collection;
 
@@ -34,7 +34,7 @@ import org.osgi.service.log.LogService;
  * PROP_DIR service property.
  * </p>
  */
-public abstract class AbstractService<T extends Object> {
+public abstract class AbstractDeclarativeService<T extends Object> {
 
 	private static final String S_ERR_NO_DATA_PROVIDED = "No data has been included with the service";
 
@@ -44,7 +44,7 @@ public abstract class AbstractService<T extends Object> {
 	private Class<T> clss;
 	
 	@SuppressWarnings("unchecked")
-	protected AbstractService(BundleContext bc, Class<?> clss, String filter) {
+	protected AbstractDeclarativeService(BundleContext bc, Class<?> clss, String filter) {
 		this.bc = bc;
 		this.clss = (Class<T>) clss;
 		this.filter = filter;
