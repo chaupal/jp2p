@@ -15,6 +15,7 @@ Export-Package: net.jp2p.chaupal,
  net.jp2p.chaupal.core,
  net.jp2p.chaupal.dispatcher,
  net.jp2p.chaupal.persistence,
+ net.jp2p.chaupal.sequencer,
  net.jp2p.chaupal.service,
  net.jp2p.chaupal.utils,
  net.jp2p.chaupal.xml

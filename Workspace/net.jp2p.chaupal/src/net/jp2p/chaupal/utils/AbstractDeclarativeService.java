@@ -42,12 +42,41 @@ public abstract class AbstractDeclarativeService<T extends Object> {
 	
 	private String filter;
 	private Class<T> clss;
+	private boolean enabled;
+
+	protected AbstractDeclarativeService( String filter ) {
+		this( filter, true );
+	}
 	
+	protected AbstractDeclarativeService( String filter, boolean enable ) {
+		this.filter = filter;
+		this.enabled = enable;
+	}
+
+	
+	public final boolean isEnabled() {
+		return enabled;
+	}
+
+	/**
+	 * Start the service
+	 * @param bc
+	 */
 	@SuppressWarnings("unchecked")
-	protected AbstractDeclarativeService(BundleContext bc, Class<?> clss, String filter) {
+	public void start( BundleContext bc, Class<?> clss ){
 		this.bc = bc;
 		this.clss = (Class<T>) clss;
-		this.filter = filter;
+		if( this.enabled )
+			this.open();
+	}
+
+	/**
+	 * Stop the service
+	 * @param bc
+	 */
+	public void stop( BundleContext bc ){
+		if( this.enabled)
+			this.close();
 	}
 
 	protected abstract void onDataRegistered( T data );
@@ -57,7 +86,7 @@ public abstract class AbstractDeclarativeService<T extends Object> {
 	/**
 	 * Open the service
 	 */
-	public void open() {
+	protected void open() {
 		ServiceListener sl = new ServiceListener() {
 			@Override
 			@SuppressWarnings("unchecked")
@@ -127,7 +156,7 @@ public abstract class AbstractDeclarativeService<T extends Object> {
 		}
 	}
 
-	public void close(){
+	protected void close(){
 		try {
 			Collection<ServiceReference<T>> srl = bc.getServiceReferences( clss, filter);
 			for(ServiceReference<T> sr: srl ) {

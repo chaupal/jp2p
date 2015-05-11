@@ -19,6 +19,8 @@ import net.jp2p.chaupal.builder.Jp2pBuilderService;
 import net.jp2p.chaupal.context.IServiceManagerListener;
 import net.jp2p.chaupal.context.Jp2pServiceManager;
 import net.jp2p.chaupal.context.ServiceManagerEvent;
+import net.jp2p.chaupal.sequencer.IJp2pBundleSequencer;
+import net.jp2p.chaupal.sequencer.SequenceDeclarativeService;
 import net.jp2p.chaupal.xml.XMLContainerBuilder;
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
 import net.jp2p.container.component.ComponentEventDispatcher;
@@ -30,6 +32,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	private static Jp2pBuilderService jp2pBuilderService; 
 	private Jp2pServiceLoader loader;
 	private Jp2pServiceManager manager;
+	private SequenceDeclarativeService<Object> sequencerService;
 	
 	private IServiceManagerListener listener;	
 	private IComponentChangedListener<?> componentListener;
@@ -38,40 +41,87 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 	
 	private Class<?> clss;
 
+	protected Jp2pBundleActivator(String bundle_id ) {
+		this( bundle_id, DeveloperModes.PRODUCTION );
+	}
+
 	/**
 	 * Create the bundle activator in production mode. 
 	 * The container is not added as a declarative service
 	 * @param bundle_id
 	 */
-	protected Jp2pBundleActivator(String bundle_id) {
-		this( bundle_id, DeveloperModes.PRODUCTION );
+	protected Jp2pBundleActivator(String bundle_id,  DeveloperModes mode ) {
+		this( bundle_id, Jp2pBundleActivator.class, mode, null);
+		this.clss = this.getClass();
+	}
+
+	/**
+	 * Create the bundle activator in production mode. 
+	 * The container is not added as a declarative service
+	 * @param bundle_id
+	 */
+	protected Jp2pBundleActivator(String bundle_id, IJp2pBundleSequencer<Object> sequencer ) {
+		this( bundle_id, DeveloperModes.PRODUCTION, sequencer );
+	}
+
+	/**
+	 * Create the bundle activator in production mode. 
+	 * The container is not added as a declarative service
+	 * @param bundle_id
+	 */
+	protected Jp2pBundleActivator(String bundle_id, DeveloperModes mode, IJp2pBundleSequencer<Object> sequencer ) {
+		this( bundle_id, mode, new SequenceDeclarativeService<Object>( sequencer ));
 	}
 
 	/**
 	 * Start the activator for the given bundle id. The JP2P container will be built
 	 * if this is possible.
-	 * If the Developermode is set to debug, then the container will be visible for the IDE
+	 * If the Developer mode is set to debug, then the container will be visible for the IDE
 	 * @param bundle_id
 	 * @param mode
+	 * @param enableSequencer
 	 */
-	protected Jp2pBundleActivator(String bundle_id, DeveloperModes mode ) {
+	protected Jp2pBundleActivator(String bundle_id, DeveloperModes mode, SequenceDeclarativeService<Object> service ) {
+		this( bundle_id, Jp2pBundleActivator.class, mode, service );
+		this.clss = this.getClass();
+	}
+	
+	/**
+	 * Start the activator for the given bundle id. The JP2P container will be built
+	 * if this is possible.
+	 * If the Developer mode is set to debug, then the container will be visible for the IDE
+	 * @param bundle_id
+	 * @param mode
+	 * @param enableSequencer
+	 */
+	protected Jp2pBundleActivator(String bundle_id, Class<?> clss, DeveloperModes mode, SequenceDeclarativeService<Object> service ) {
 		super( bundle_id, mode );
-		clss = this.getClass();
+		this.clss = clss;
+		this.sequencerService = service;
 	}
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		loader = Jp2pServiceLoader.getInstance();
-		
+
+		if( sequencerService != null ){
+			sequencerService.start( bundleContext, clss );
+			super.addObserver( sequencerService );
+		}
+
 		//Passes the builders through to the loader
-		jp2pBuilderService = new Jp2pBuilderService( bundleContext, loader );
-		jp2pBuilderService.open();	
-		
+		jp2pBuilderService = new Jp2pBuilderService( loader );
+		jp2pBuilderService.start(bundleContext, clss);
+
 		super.start(bundleContext);
 	}
 
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
+		if( sequencerService != null ){
+			super.removeObserver( this.sequencerService);
+			sequencerService.stop( bundleContext );
+		}
 		if(( manager != null ) && ( listener != null )){
 			manager.removeListener(listener);
 			manager.close();
@@ -79,7 +129,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 		}
 		
 		if( jp2pBuilderService != null ){
-			jp2pBuilderService.close();
+			jp2pBuilderService.stop(bundleContext);
 			jp2pBuilderService = null;
 		}
 		

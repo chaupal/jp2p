@@ -7,22 +7,7 @@
  *******************************************************************************/
 package net.jp2p.chaupal.dispatcher;
 
-import net.jp2p.container.utils.StringStyler;
-
 public interface IServiceChangedListener {
-
-	public enum ServiceChange{
-		CHILD_ADDED,
-		CHILD_REMOVED,
-		STATUS_CHANGE,
-		COMPONENT_EVENT,
-		REFRESH;
-
-		@Override
-		public String toString() {
-			return StringStyler.prettyString( super.toString() );
-		}
-	}
 	
 	public void notifyServiceChanged( ServiceChangedEvent event );
 }

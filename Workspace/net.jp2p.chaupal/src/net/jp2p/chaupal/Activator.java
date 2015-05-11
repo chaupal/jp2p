@@ -23,16 +23,17 @@ public class Activator implements BundleActivator {
 		plugin = this;		
 
 		logService = new Jp2pLogService( context );
-		logService.open();
+		logService.open();		
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {		
 		plugin = null;
 
-
-		logService.close();
-		logService = null;
+		if( logService != null ){
+			logService.close();
+			logService = null;
+		}
 	}	
 	
 	public static Activator getDefault(){

@@ -9,7 +9,7 @@ package net.jp2p.chaupal.dispatcher;
 
 import java.util.EventObject;
 
-import net.jp2p.chaupal.dispatcher.IServiceChangedListener.ServiceChange;
+import net.jp2p.container.Jp2pContainer.ServiceChange;
 
 public class ServiceChangedEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
