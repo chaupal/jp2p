@@ -45,7 +45,8 @@ public abstract class AbstractDependencyFactory<T extends Object, U extends Obje
 				return;
 			dependency = (U) factory.getComponent();
 			super.setCanCreate( dependency != null );
-			super.startComponent();
+			if( super.canCreate() )
+				super.startComponent();
 			break;
 		default:
 			break;

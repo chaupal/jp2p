@@ -36,7 +36,8 @@ public abstract class AbstractFilterFactory<T extends Object> extends
 		if( filter != null ){
 			if( filter.accept(event)){
 				setCanCreate( true );
-				startComponent();
+				if( super.canCreate() )
+					startComponent();
 			}
 		}
 		super.notifyChange(event);

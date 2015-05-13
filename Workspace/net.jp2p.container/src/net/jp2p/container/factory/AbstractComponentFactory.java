@@ -19,6 +19,7 @@ import net.jp2p.container.activator.IActivator.Status;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.IJp2pComponentNode;
 import net.jp2p.container.component.Jp2pComponentNode;
+import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -26,6 +27,7 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties.Jp2pProperties;
+import net.jp2p.container.utils.Utils;
 
 public abstract class AbstractComponentFactory<T extends Object> extends AbstractPropertySourceFactory implements IComponentFactory<IJp2pComponent<T>>{
 
@@ -40,6 +42,7 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	private boolean failed;
 	
 	private Stack<Object> stack;
+	private WaitForHelper helper;
 
 	protected AbstractComponentFactory( String componentName ) {
 		super( componentName );
@@ -47,6 +50,17 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		this.failed = false;
 		stack = new Stack<Object>();
 	}
+
+	
+	
+	@Override
+	public IJp2pPropertySource<IJp2pProperties> createPropertySource() {
+		IJp2pPropertySource<IJp2pProperties> source = super.createPropertySource();
+		helper = new WaitForHelper( source );
+		return source;
+	}
+
+
 
 	@Override
 	public boolean isCompleted(){
@@ -151,6 +165,16 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		return component;
 	}
 
+	
+	@Override
+	protected void setCanCreate(boolean canCreate) {
+		if(( helper != null ) && !helper.canCreate() )
+			return;
+		super.setCanCreate(canCreate);
+	}
+
+
+
 	/**
 	 * The completion is not necessarily the same as creating the module. This method has to 
 	 * be called separately;
@@ -200,6 +224,12 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 
 	@Override
 	public void notifyChange(ComponentBuilderEvent<Object> event) {
+		if( helper != null ){
+			helper.update(event);
+			if( !helper.canCreate )
+				return;
+		}
+		
 		switch( event.getBuilderEvent()){
 		case COMPONENT_CREATED:
 			IComponentFactory<?>factory = (IComponentFactory<?>) event.getFactory();
@@ -311,4 +341,39 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		}
 	}
 
+	/**
+	 * This helper class checks to see if the factory has a a 'wait-for' dependency
+	 * and checks the relevant wait-for service if it does.
+	 * @author Kees
+	 *
+	 */
+	private class WaitForHelper{
+		
+		private IJp2pPropertySource<IJp2pProperties> properties;
+		
+		private boolean canCreate;
+
+		WaitForHelper( IJp2pPropertySource<IJp2pProperties> properties) {
+			super();
+			this.properties = properties;
+			String waitFor = this.properties.getDirective( Directives.WAIT_FOR );
+			this.canCreate = Utils.isNull( waitFor );
+		}
+		
+		boolean canCreate() {
+			return canCreate;
+		}
+
+		void update( ComponentBuilderEvent<Object> event ){
+			if( this.canCreate || !BuilderEvents.COMPONENT_CREATED.equals( event.getBuilderEvent() ))
+				return;
+			IComponentFactory<?>factory = (IComponentFactory<?>) event.getFactory();
+			if( !Components.SEQUENCER_SERVICE.toString().equals( factory.getComponentName() ))
+				return;
+			String name = AbstractJp2pPropertySource.getIdentifier( factory.getPropertySource());
+			String waitFor = this.properties.getDirective( Directives.WAIT_FOR );
+			if( name.equals( waitFor ))
+				canCreate = true;
+		}
+	}
 }
