@@ -40,6 +40,11 @@ public class ComponentChangedEvent<T extends Object> extends EventObject {
 		return this.identifier.equals( id );
 	}
 	
+	
+	public final String getIdentifier() {
+		return identifier;
+	}
+
 	public T getTarget() {
 		return target;
 	}
@@ -50,6 +55,6 @@ public class ComponentChangedEvent<T extends Object> extends EventObject {
 
 	@Override
 	public String toString() {
-		return change.toString() + "=>" + getSource().toString();
+		return this.identifier + ": " + change.toString() + "=>" + getSource().toString();
 	}	
 }

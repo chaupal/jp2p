@@ -7,9 +7,7 @@
  *******************************************************************************/
 package net.jp2p.chaupal.builder;
 
-import org.osgi.framework.BundleContext;
-
-import net.jp2p.chaupal.service.AbstractDeclarativeService;
+import net.jp2p.chaupal.utils.AbstractDeclarativeService;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.context.Jp2pServiceLoader;
 
@@ -31,31 +29,16 @@ import net.jp2p.container.context.Jp2pServiceLoader;
  */
 public class Jp2pBuilderService extends AbstractDeclarativeService<IJp2pServiceBuilder>{
 
-	//in the component.xml file you will use target="(jp2p.builder=builderName)"
+	//in the component.xml file you will use target="(jp2p.context=contextName)"
    private static String filter = "(jp2p.builder=*)"; 
 
 	private Jp2pServiceLoader loader;
 	
-	public Jp2pBuilderService( BundleContext bc, Jp2pServiceLoader loader) {
-		super();
+	public Jp2pBuilderService( Jp2pServiceLoader loader) {
+		super( filter, IJp2pServiceBuilder.class );
 		this.loader = loader;
-		this.prepare(bc);
 	}
-
-	/**
-	 * Prepare the service
-	 * @param bc
-	 */
-	public void prepare(BundleContext bc ) {
-		super.prepare(bc, IJp2pServiceBuilder.class, filter );
-	}
-
-
-	@Override
-	public void open() {
-		super.open();
-	}
-
+	
 	@Override
 	protected void onDataRegistered(IJp2pServiceBuilder context) {
 		loader.addBuilder(context);
@@ -64,10 +47,5 @@ public class Jp2pBuilderService extends AbstractDeclarativeService<IJp2pServiceB
 	@Override
 	protected void onDataUnRegistered(IJp2pServiceBuilder context) {
 		loader.removeBuilder(context);
-	}
-
-	@Override
-	public void close() {
-		super.close();
 	}
 }

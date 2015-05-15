@@ -8,6 +8,7 @@
 package net.jp2p.chaupal.context;
 
 import net.jp2p.chaupal.persistence.SimplePersistenceFactory;
+import net.jp2p.chaupal.sequencer.SequencerServiceFactory;
 import net.jp2p.container.context.AbstractJp2pServiceBuilder;
 import net.jp2p.container.log.LoggerFactory;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -23,6 +24,7 @@ public class Jp2pServiceBuilder extends AbstractJp2pServiceBuilder {
 	@Override
 	protected void prepare() {
 		super.addFactory( new StartupServiceFactory() );
+		super.addFactory( new SequencerServiceFactory());
 		super.addFactory( new SimplePersistenceFactory() );
 		super.addFactory( new LoggerFactory() );
 	}

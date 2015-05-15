@@ -28,6 +28,7 @@ import org.xml.sax.SAXNotRecognizedException;
 import net.jp2p.chaupal.builder.IFactoryBuilder;
 import net.jp2p.chaupal.container.ContainerFactory;
 import net.jp2p.chaupal.context.Jp2pServiceManager;
+import net.jp2p.chaupal.sequencer.Jp2pBundleSequencer;
 import net.jp2p.container.builder.ICompositeBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -51,6 +52,7 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 	private boolean completed, failed;
 	private URL url;
 	private Jp2pServiceManager manager;
+	private Jp2pBundleSequencer<Object> sequencer;
 	private IContainerBuilder<Object> builder;
 	
 	private String bundleId;
@@ -60,8 +62,8 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 		
 	private Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 	
-	public XMLFactoryBuilder( String bundleId, Class<?> clss, IContainerBuilder<Object> builder, Jp2pServiceManager manager ) {
-		this( bundleId, clss.getResource( S_DEFAULT_LOCATION ), clss, builder, manager );
+	public XMLFactoryBuilder( String bundleId, Class<?> clss, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer ) {
+		this( bundleId, clss.getResource( S_DEFAULT_LOCATION ), clss, builder, manager, sequencer );
 	}
 
 	/**
@@ -71,9 +73,10 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 	 * @param location
 	 * @param builder
 	 */
-	public XMLFactoryBuilder( String bundleId, URL url, Class<?> clss, IContainerBuilder<Object> builder, Jp2pServiceManager manager ) {
+	public XMLFactoryBuilder( String bundleId, URL url, Class<?> clss, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer ) {
 		this.bundleId = bundleId;
 		this.manager = manager;
+		this.sequencer = sequencer;
 		this.builder = builder;
 		this.url = url;
 		this.clss = clss;
@@ -157,7 +160,7 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 			//saxParser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA); 
 			//saxParser.setProperty(JAXP_SCHEMA_SOURCE, new File(JP2P_XSD_SCHEMA)); 
 			logger.info("\n\nParsing JP2P Bundle: " + this.bundleId );
-			Jp2pHandler handler = new Jp2pHandler( this.bundleId, builder, manager, clss );
+			Jp2pHandler handler = new Jp2pHandler( this.bundleId, builder, manager, sequencer, clss );
 			saxParser.parse( in, handler);
 			logger.info("JP2P Bundle Parsed: " + this.bundleId + "\n\n");
 		} catch( SAXNotRecognizedException e ){

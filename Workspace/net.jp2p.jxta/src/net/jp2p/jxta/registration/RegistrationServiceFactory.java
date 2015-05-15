@@ -8,6 +8,7 @@
 package net.jp2p.jxta.registration;
 
 import net.jp2p.container.factory.AbstractComponentFactory;
+import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
@@ -28,8 +29,15 @@ public class RegistrationServiceFactory extends
 	}
 
 	@Override
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+		/* DO NOTHING */
+	}
+
+	@Override
 	protected RegistrationService onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		RegistrationService service = new RegistrationService( (IJp2pWritePropertySource<IJp2pProperties>) properties );
 		return service;
 	}
+
+
 }

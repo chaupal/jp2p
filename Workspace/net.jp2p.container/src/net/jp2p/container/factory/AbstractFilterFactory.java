@@ -32,7 +32,7 @@ public abstract class AbstractFilterFactory<T extends Object> extends
 	}
 
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
 		if( filter != null ){
 			if( filter.accept(event)){
 				setCanCreate( true );
@@ -40,6 +40,5 @@ public abstract class AbstractFilterFactory<T extends Object> extends
 					startComponent();
 			}
 		}
-		super.notifyChange(event);
 	}
 }

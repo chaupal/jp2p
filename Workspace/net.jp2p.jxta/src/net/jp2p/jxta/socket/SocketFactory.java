@@ -36,7 +36,6 @@ public class SocketFactory extends AbstractPeerGroupDependencyFactory<PipeMsgLis
 		return new SocketPropertySource( super.getParentSource() );
 	}
 
-
 	@Override
 	protected IJp2pComponent<PipeMsgListener> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		PipeAdvertisement pipead;
@@ -51,7 +50,7 @@ public class SocketFactory extends AbstractPeerGroupDependencyFactory<PipeMsgLis
 	}
 
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
 		if( super.isChildEvent( event )){
 			IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) event.getFactory().getPropertySource();
 			this.pipeSource = (AdvertisementPropertySource) source;

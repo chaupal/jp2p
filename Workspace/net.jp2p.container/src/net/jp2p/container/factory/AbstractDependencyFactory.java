@@ -37,7 +37,7 @@ public abstract class AbstractDependencyFactory<T extends Object, U extends Obje
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
 		switch( event.getBuilderEvent()){
 		case COMPONENT_CREATED:
 			IComponentFactory<?> factory = (IComponentFactory<?>) event.getFactory();
@@ -51,6 +51,5 @@ public abstract class AbstractDependencyFactory<T extends Object, U extends Obje
 		default:
 			break;
 		}
-		super.notifyChange(event);
 	}
 }

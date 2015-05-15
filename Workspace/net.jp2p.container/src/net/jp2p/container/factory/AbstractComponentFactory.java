@@ -43,11 +43,13 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	
 	private Stack<Object> stack;
 	private WaitForHelper helper;
+	private boolean started;
 
 	protected AbstractComponentFactory( String componentName ) {
 		super( componentName );
 		this.completed = false;
 		this.failed = false;
+		this.started = false;
 		stack = new Stack<Object>();
 	}
 
@@ -164,17 +166,7 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		updateState( BuilderEvents.FACTORY_COMPLETED );
 		return component;
 	}
-
 	
-	@Override
-	protected void setCanCreate(boolean canCreate) {
-		if(( helper != null ) && !helper.canCreate() )
-			return;
-		super.setCanCreate(canCreate);
-	}
-
-
-
 	/**
 	 * The completion is not necessarily the same as creating the module. This method has to 
 	 * be called separately;
@@ -222,13 +214,15 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		return activator.isActive();
 	}
 
+	protected abstract void onNotifyChange( ComponentBuilderEvent<Object> event );
+	
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public final void notifyChange(ComponentBuilderEvent<Object> event) {
 		if( helper != null ){
 			helper.update(event);
-			if( !helper.canCreate )
-				return;
 		}
+		
+		this.onNotifyChange(event);
 		
 		switch( event.getBuilderEvent()){
 		case COMPONENT_CREATED:
@@ -284,11 +278,14 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	 * @return
 	 */
 	protected boolean startComponent(){
+		if(( helper != null ) && helper.isBlocked() )
+			return false;
 		this.updateState( BuilderEvents.COMPONENT_PREPARED );
 		ExecutorService executor = Executors.newCachedThreadPool();
 		StartRunnable runnable = new StartRunnable( this );
 		executor.execute( runnable );
-		return runnable.isResult();
+		this.started = runnable.isResult();
+		return started;
 	}
 
 	/**
@@ -342,6 +339,16 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	}
 
 	/**
+	 * finalise the factory after the component is made
+	 */
+	public void finalise(){
+		this.completed = false;
+		this.started = false;
+		this.stack.clear();
+		super.finalise();
+	}
+	
+	/**
 	 * This helper class checks to see if the factory has a a 'wait-for' dependency
 	 * and checks the relevant wait-for service if it does.
 	 * @author Kees
@@ -351,29 +358,38 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		
 		private IJp2pPropertySource<IJp2pProperties> properties;
 		
-		private boolean canCreate;
+		private boolean blocked;
 
 		WaitForHelper( IJp2pPropertySource<IJp2pProperties> properties) {
 			super();
 			this.properties = properties;
 			String waitFor = this.properties.getDirective( Directives.WAIT_FOR );
-			this.canCreate = Utils.isNull( waitFor );
+			this.blocked = !Utils.isNull( waitFor );
 		}
 		
-		boolean canCreate() {
-			return canCreate;
+		boolean isBlocked() {
+			return blocked;
 		}
 
+		/**
+		 * Update the helper to respond to a sequencer service that has the same name as the
+		 * 'wait for' directive
+		 * @param event
+		 */
 		void update( ComponentBuilderEvent<Object> event ){
-			if( this.canCreate || !BuilderEvents.COMPONENT_CREATED.equals( event.getBuilderEvent() ))
+			if( !this.blocked || !BuilderEvents.COMPONENT_CREATED.equals( event.getBuilderEvent() ))
 				return;
 			IComponentFactory<?>factory = (IComponentFactory<?>) event.getFactory();
 			if( !Components.SEQUENCER_SERVICE.toString().equals( factory.getComponentName() ))
 				return;
 			String name = AbstractJp2pPropertySource.getIdentifier( factory.getPropertySource());
 			String waitFor = this.properties.getDirective( Directives.WAIT_FOR );
-			if( name.equals( waitFor ))
-				canCreate = true;
+			if( !name.equals( waitFor ))
+				return;
+			
+			blocked = false;
+			if( canCreate() && !started )
+				startComponent();
 		}
 	}
 }

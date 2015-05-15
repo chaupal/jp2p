@@ -45,6 +45,7 @@ public interface IJp2pServiceBuilder extends IJp2pFactoryCollection, Comparable<
 		CONTEXT,
 		STARTUP_SERVICE,
 		PERSISTENCE_SERVICE,
+		SEQUENCER_SERVICE,
 		LOGGER_SERVICE;
 	
 		@Override

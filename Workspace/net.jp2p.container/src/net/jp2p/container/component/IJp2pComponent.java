@@ -20,7 +20,20 @@ public interface IJp2pComponent<T extends Object>{
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );
-		}	
+		}
+		
+		/**
+		 * Returns true if the given property is valid for this enum
+		 * @param prop
+		 * @return
+		 */
+		public static boolean isValid( IJp2pProperties prop ){
+			for( ModuleProperties mp: values() ){
+				if( mp.name().equals( prop.name() ))
+					return true;
+			}
+			return false;
+		}
 	}
 
 	/**

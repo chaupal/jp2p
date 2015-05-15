@@ -221,6 +221,15 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 		return ( source.equals( this.getPropertySource().getParent()));
 	}
 
+	/**
+	 * Finalise the factory after the component is made
+	 */
+	public void finalise(){
+		this.canCreate = false;
+		this.source = null;
+		this.attributes.clear();
+	}
+	
 	@Override
 	public String toString() {
 		return S_FACTORY + this.getPropertySource().getComponentName() + " {" + super.toString() + "}";

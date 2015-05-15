@@ -21,9 +21,8 @@ import net.jp2p.jxta.discovery.DiscoveryServiceFactory;
 public class ChaupalDiscoveryServiceFactory extends DiscoveryServiceFactory {
 
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
 		System.out.println( event.toString());
-		super.notifyChange(event);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ public interface IActivator extends ISimpleActivator
 	
 	
 	public enum Status{
+		UNKNOWN,
 		DISABLED,
 		IDLE,
 		INITIALISING,

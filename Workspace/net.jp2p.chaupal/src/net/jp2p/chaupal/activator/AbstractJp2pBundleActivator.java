@@ -12,10 +12,6 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.jp2p.chaupal.sync.ISyncListener;
-import net.jp2p.chaupal.sync.ISyncServer;
-import net.jp2p.chaupal.sync.ISyncService;
-import net.jp2p.chaupal.sync.SyncEvent;
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
@@ -44,23 +40,13 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 	private ServiceTracker<BundleContext,LogService> logServiceTracker;
 	private LogService logService;
 	
-	private ISyncService<T> syncService;
-	private SyncElement sync;
-	
 	private IJp2pContainer<T> container;
 	private Collection<IContainerBuilderListener<T>> containerListeners;
 	
 	private DeveloperModes mode;
-
-	protected AbstractJp2pBundleActivator( String bundle_id, DeveloperModes mode ) {
-		this( bundle_id, mode, null );
-	}
 	
-	protected AbstractJp2pBundleActivator( String bundle_id, DeveloperModes mode, ISyncService<T> syncService ) {
+	protected AbstractJp2pBundleActivator( String bundle_id, DeveloperModes mode ) {
 		observers = new ArrayList<IComponentChangedListener<IJp2pComponent<T>>>();
-		sync = new SyncElement( bundle_id );
-		this.syncService = syncService;
-		observers.add( sync );
 		this.bundle_id = bundle_id;
 		this.mode = mode;
 		containerListeners = new ArrayList<IContainerBuilderListener<T>>();
@@ -126,11 +112,9 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 			Logger.getLogger( this.getClass().getName() ).warning( S_MSG_NOT_A_JP2P_BUNDLE);
 		
 		this.bundleContext = bundleContext;
-		
 		Level level = Jp2pLevel.getJxtaLevel();
 		Logger log = Logger.getLogger( this.getClass().getName() );
 		log.log( level, S_MSG_LOG );
-		
 		// create a tracker and track the log service
 		logServiceTracker = 
 				new ServiceTracker<BundleContext,LogService>(bundleContext, LogService.class.getName(), null);
@@ -142,14 +126,7 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 		if(logService != null)
 			logService.log(LogService.LOG_INFO, "Logging service started");
 		
-		bundleContext.registerService( ISyncServer.class, sync, null );
-		
-		if( this.syncService != null ){
-			syncService.prepare(bundleContext, ISyncServer.class );
-			syncService.open();
-		}
-		else
-			build();
+		build();
 	}
 
 	/**
@@ -170,10 +147,6 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 	 */
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {		
-		this.observers.remove( sync );
-		if( this.syncService != null )
-			syncService.close();
-
 		if(logService != null)
 			logService.log(LogService.LOG_INFO, "Logging service Stopped");
 		
@@ -199,32 +172,5 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 					notifyObservers(event);	
 		}
 	};
-
-	private class SyncElement implements IComponentChangedListener<IJp2pComponent<T>>, ISyncServer{
-
-		private Collection<ISyncListener> listeners;
-		private String bundle_id;
-		
-		public SyncElement( String bundle_id) {
-			this.bundle_id = bundle_id;
-			listeners = new ArrayList<ISyncListener>();
-		}
-
-		@Override
-		public void addSyncListener(ISyncListener listener) {
-			listeners.add( listener );
-		}
-
-		@Override
-		public void removeSyncListener(ISyncListener listener) {
-			listeners.remove( listener );
-		}
-
-		@Override
-		public void notifyServiceChanged(ComponentChangedEvent<IJp2pComponent<T>> event) {
-			for( ISyncListener listener: listeners )
-				listener.notifySyncEvent( new SyncEvent( this, bundle_id, event.getTarget().getComponentLabel(), event.getChange()));
-		}	
-	}
-
+ 
 }

@@ -29,6 +29,7 @@ public interface IJp2pDirectives{
 		CONTEXT,
 		AUTO_START,
 		CLEAR,
+		WAIT_FOR,
 		VERSION,
 		CREATE;
 

@@ -29,6 +29,7 @@ public class SequencerEvent<T extends Object> extends ServiceChangedEvent {
 	
 	private String target;
 	private Status status;
+	private String componentName;
 
 	public SequencerEvent( IJp2pBundleSequencer<T> sequencer, ComponentChangedEvent<IJp2pComponent<T>> event){
 		this( sequencer, event.getIdentifier(), Status.UNKNOWN, event.getChange() );
@@ -39,6 +40,7 @@ public class SequencerEvent<T extends Object> extends ServiceChangedEvent {
 		this( sequencer, event.getIdentifier(), status, event.getChange() );
 		IJp2pComponent<T> component = (IJp2pComponent<T>) event.getSource();
 		this.target = component.getId();
+		this.componentName = component.getComponentLabel();
 	}
 	
 	protected SequencerEvent( IJp2pBundleSequencer<T> sequencer, String target, Status status, ServiceChange change) {
@@ -51,6 +53,10 @@ public class SequencerEvent<T extends Object> extends ServiceChangedEvent {
 	public String getBundleId(){
 		IJp2pBundleSequencer<T> sequencer = (IJp2pBundleSequencer<T>) super.getSource();
 		return sequencer.getBundleId();
+	}
+
+	public final String getComponentName() {
+		return componentName;
 	}
 
 	public final String getTarget() {

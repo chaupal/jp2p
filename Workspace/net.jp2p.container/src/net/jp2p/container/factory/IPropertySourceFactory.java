@@ -68,4 +68,10 @@ public interface IPropertySourceFactory extends ICompositeBuilderListener<Object
 	 * Parse the properties
 	 */
 	public void parseProperties();
+	
+	/**
+	 * finalise the factory after the component is made
+	 */
+	public void finalise();
+
 }

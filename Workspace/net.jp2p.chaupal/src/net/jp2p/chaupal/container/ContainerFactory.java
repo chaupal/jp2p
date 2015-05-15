@@ -64,10 +64,9 @@ public class ContainerFactory extends AbstractComponentFactory<Object> implement
 		return super.createComponent();
 	}
 
-	//Make public
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
-		super.notifyChange(event);
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+		/* DO NOTHING */
 	}
 
 	/* (non-Javadoc)

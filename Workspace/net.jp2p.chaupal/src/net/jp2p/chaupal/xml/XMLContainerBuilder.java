@@ -18,6 +18,7 @@ import net.jp2p.chaupal.container.ContainerBuilder;
 import net.jp2p.chaupal.container.ContainerFactory;
 import net.jp2p.chaupal.container.ChaupalContainer;
 import net.jp2p.chaupal.context.Jp2pServiceManager;
+import net.jp2p.chaupal.sequencer.Jp2pBundleSequencer;
 import net.jp2p.container.builder.ICompositeBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -40,15 +41,17 @@ public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 	private Class<?> clss;
 	private Collection<ICompositeBuilder<ContainerFactory>> builders;
 	private Jp2pServiceManager manager;
+	private Jp2pBundleSequencer<Object> sequencer;
 	private boolean completed = false;
 	private ChaupalContainer container;
 	
 	private Collection<ICompositeBuilderListener<Object>> listeners;
 	
-	public XMLContainerBuilder( String bundle_id, Class<?> clss, Jp2pServiceManager manager) {
+	public XMLContainerBuilder( String bundle_id, Class<?> clss, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer) {
 		this.bundle_id = bundle_id;
 		this.clss = clss;	
 		this.manager = manager;
+		this.sequencer = sequencer;
 		builders = new ArrayList<ICompositeBuilder<ContainerFactory>>();
 		this.listeners = new ArrayList<ICompositeBuilderListener<Object>>();
 	}
@@ -110,7 +113,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 		Enumeration<URL> enm = clss.getClassLoader().getResources( IFactoryBuilder.S_DEFAULT_LOCATION );
 		while( enm.hasMoreElements()){
 			URL url = enm.nextElement();
-			builders.add( new XMLFactoryBuilder( bundle_id, url, clss, builder, manager ));
+			builders.add( new XMLFactoryBuilder( bundle_id, url, clss, builder, manager, sequencer ));
 		}
 	}
 	

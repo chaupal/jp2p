@@ -23,6 +23,8 @@ import java.util.Collection;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import net.jp2p.container.context.IJp2pServiceBuilder.Components;
+
 public class Jp2pBundleSequencer<T extends Object> implements IJp2pBundleSequencer<T> {
 
 	private String bundle_id;
@@ -81,6 +83,9 @@ public class Jp2pBundleSequencer<T extends Object> implements IJp2pBundleSequenc
 	 */
 	@Override
 	public synchronized void notifyComponentChanged( SequencerEvent<T> event ){
+		//ignore changes of the sequencer service
+		if( Components.SEQUENCER_SERVICE.toString().equals( event.getComponentName() ))
+			return;
 		lock.lock();
 		try{
 			events.add( event );

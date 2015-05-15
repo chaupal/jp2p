@@ -43,7 +43,7 @@ public class LoggerFactory extends
 	}
 	
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
 		if( !BuilderEvents.COMPONENT_CREATED.equals( event.getBuilderEvent()))
 			return;
 				

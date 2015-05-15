@@ -19,6 +19,8 @@ import net.jp2p.chaupal.container.ContainerFactory;
 import net.jp2p.chaupal.context.Jp2pServiceManager;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.chaupal.persistence.IContextFactory;
+import net.jp2p.chaupal.sequencer.Jp2pBundleSequencer;
+import net.jp2p.chaupal.sequencer.SequencerServiceFactory;
 import net.jp2p.container.builder.ComponentNode;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder;
@@ -48,6 +50,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	private ManagedProperty<IJp2pProperties,Object> property;
 
 	private Jp2pServiceManager manager;
+	private Jp2pBundleSequencer<Object> sequencer;
 	private FactoryNode node;
 	private Class<?> clss;
 	private Stack<String> stack;
@@ -57,8 +60,9 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	
 	private static Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 
-	public Jp2pHandler( String bundle_id, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Class<?> clss ) {
+	public Jp2pHandler( String bundle_id, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer, Class<?> clss ) {
 		this.manager = manager;
+		this.sequencer = sequencer;
 		this.bundle_id = bundle_id;
 		this.builder = builder;
 		this.clss = clss;
@@ -98,6 +102,9 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 					cf.setManager(manager);
 				}		
 				break;			
+			case SEQUENCER_SERVICE:
+				SequencerServiceFactory ssf = (SequencerServiceFactory) factory;
+				ssf.setSequencer(sequencer);
 			default:
 				break;
 			}
@@ -133,7 +140,6 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 			}
 		}
 	}
-
 
 	/**
 	 * Create a factory from a class definition

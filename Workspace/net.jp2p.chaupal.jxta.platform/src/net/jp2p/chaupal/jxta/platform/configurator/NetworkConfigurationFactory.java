@@ -56,15 +56,6 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 		return ( component.getModule() instanceof NetworkManager);
 	}
 
-	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
-		String name = StringStyler.styleToEnum( event.getFactory().getComponentName() );
-		if( !JxtaPlatformComponents.isComponent( name ))
-			return;
-		sources.add( event.getFactory().getPropertySource());
-		super.notifyChange(event);
-	}
-
 	protected void fillConfigurator( NetworkConfigurator configurator ){
 		for( IJp2pPropertySource<IJp2pProperties> source: this.sources ){
 			String name = StringStyler.styleToEnum( source.getComponentName());
@@ -101,6 +92,15 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	@Override
 	public IJp2pComponent<NetworkConfigurator> getComponent() {
 		return super.getComponent();
+	}
+
+	@Override
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+		String name = StringStyler.styleToEnum( event.getFactory().getComponentName() );
+		if( !JxtaPlatformComponents.isComponent( name ))
+			return;
+		sources.add( event.getFactory().getPropertySource());
+		super.onNotifyChange(event);
 	}
 
 	@Override

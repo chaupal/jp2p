@@ -63,7 +63,7 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
 		if( !filter.accept(event))
 			return;
 		boolean autostart = AbstractJp2pPropertySource.getBoolean(super.getPropertySource(), Directives.AUTO_START );

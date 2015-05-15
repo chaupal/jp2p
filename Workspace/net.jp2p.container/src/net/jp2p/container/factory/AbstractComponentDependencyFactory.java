@@ -42,16 +42,16 @@ public abstract class AbstractComponentDependencyFactory<T extends Object, U ext
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
 		if( filter != null ){
 			if( filter.accept(event)){
 				IComponentFactory<T> factory = (IComponentFactory<T>) event.getFactory();
 				dependency = (U) factory.getComponent();
 				setCanCreate( dependency != null );
-				startComponent();
+				if( super.canCreate() )
+					startComponent();
 			}
 		}
-		super.notifyChange(event);
 	}
 
 	/**

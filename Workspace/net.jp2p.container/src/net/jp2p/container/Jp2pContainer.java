@@ -31,7 +31,9 @@ implements	IJp2pContainer<T>{
 		PEERGROUP_ADDED,
 		PEERGROUP_REMOVED,
 		STATUS_CHANGE,
-		COMPONENT_EVENT;
+		COMPONENT_EVENT,
+		COMPLETED,
+		REFRESH;
 	
 		@Override
 		public String toString() {
