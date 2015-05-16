@@ -7,11 +7,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <parent>
     <artifactId>net.jp2p.parent</artifactId>
     <groupId>net.jp2p</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <relativePath>../net.jp2p.project</relativePath>
   </parent>
 
   <artifactId>net.jp2p.chaupal.jxta</artifactId>
   <packaging>eclipse-plugin</packaging>
-</project> 
 
+</project>

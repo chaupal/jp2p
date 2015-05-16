@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Chaupal JXTA Service Library
 Bundle-SymbolicName: net.jp2p.chaupal.jxta
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Chaupal.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: net.jp2p.chaupal.activator,

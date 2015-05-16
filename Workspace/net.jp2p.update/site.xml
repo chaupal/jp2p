@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="Core JP2P Bundles" url="https://chaupal.github.io/releases/2.8.0/milestone/20150303/alpha/jp2p/site.xml">
+   <description name="Core JP2P Bundles" url="https://chaupal.github.io/releases/1.1.0/20150516/site.xml">
       This site contains the core JP2P bundles and a compatibility
 bundle for existing JXTA applications
    </description>
-   <feature url="features/net.jp2p.feature_1.0.0.qualifier.jar" id="net.jp2p.feature" version="1.0.0.qualifier">
+   <feature url="features/net.jp2p.feature_1.1.0.qualifier.jar" id="net.jp2p.feature" version="1.1.0.qualifier">
       <category name="Chaupal"/>
    </feature>
    <category-def name="Chaupal" label="Chaupal JP2P">

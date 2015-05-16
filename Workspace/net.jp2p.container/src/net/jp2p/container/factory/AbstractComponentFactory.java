@@ -43,13 +43,11 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	
 	private Stack<Object> stack;
 	private WaitForHelper helper;
-	private boolean started;
 
 	protected AbstractComponentFactory( String componentName ) {
 		super( componentName );
 		this.completed = false;
 		this.failed = false;
-		this.started = false;
 		stack = new Stack<Object>();
 	}
 
@@ -277,38 +275,34 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	 * Helper routine to start a component that is an IActivator instance
 	 * @return
 	 */
-	protected boolean startComponent(){
+	protected void startComponent(){
 		if(( helper != null ) && helper.isBlocked() )
-			return false;
+			return;
 		this.updateState( BuilderEvents.COMPONENT_PREPARED );
 		ExecutorService executor = Executors.newCachedThreadPool();
 		StartRunnable runnable = new StartRunnable( this );
 		executor.execute( runnable );
-		this.started = runnable.isResult();
-		return started;
 	}
 
 	/**
 	 * Create and start the component
 	 * @return
 	 */
-	protected synchronized boolean createAndStartComponent(){
+	protected synchronized void createAndStartComponent(){
 		Object component = this.createComponent();
 		if(!( component instanceof IActivator ))
-			return true;
-		boolean retval = false;
+			return;
 		try{
 			IActivator activator = (IActivator)component;
 			if( !activator.getStatus().equals( Status.INITIALISED))
-				return false;
+				return;
 			if( AbstractJp2pPropertySource.isAutoStart(super.getPropertySource()))
-				retval = activator.start();
+				activator.start();
 			this.updateState( BuilderEvents.COMPONENT_STARTED);
 		}
 		catch( Exception ex ){
 			ex.printStackTrace();
 		}
-		return retval;
 	}
 	
 	/**
@@ -320,21 +314,13 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 
 		private AbstractComponentFactory<?> factory;
 		
-		private boolean result;
-		
 		StartRunnable( AbstractComponentFactory<?> factory ){
 			this.factory = factory;
-			this.result = false;
 		}
 		
-		public boolean isResult() {
-			return result;
-		}
-
-
 		@Override
 		public void run(){
-			result = this.factory.createAndStartComponent();
+			this.factory.createAndStartComponent();
 		}
 	}
 
@@ -343,7 +329,6 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	 */
 	public void finalise(){
 		this.completed = false;
-		this.started = false;
 		this.stack.clear();
 		super.finalise();
 	}
@@ -388,7 +373,7 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 				return;
 			
 			blocked = false;
-			if( canCreate() && !started )
+			if( canCreate() )
 				startComponent();
 		}
 	}

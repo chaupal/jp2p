@@ -2,12 +2,11 @@
 <feature
       id="net.jp2p.feature"
       label="JP2P Core Bundles"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="Chaupal.org">
 
    <description url="https://github.com/chaupal">
-      This feauture contains the UI Tools for Chaupal applications:
-- wizrds to create JP2P projects and applications
+      This feauture contains the core bundles for Chaupal JP2P applications
    </description>
 
    <copyright url="https://github.com/chaupal">
@@ -72,7 +71,7 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <url>
-      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/2.8.0/milestone/20150303/jp2p/site.xml"/>
+      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/jp2p/1.1.0/20150516/site.xml"/>
    </url>
 
    <requires>
@@ -107,6 +106,13 @@ END OF TERMS AND CONDITIONS
 
    <plugin
          id="net.jp2p.jxta"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.chaupal.jxta.platform"
          download-size="0"
          install-size="0"
          version="0.0.0"
