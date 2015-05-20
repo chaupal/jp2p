@@ -32,6 +32,7 @@ import net.jp2p.chaupal.sequencer.Jp2pBundleSequencer;
 import net.jp2p.container.builder.ICompositeBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
+import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.utils.IOUtils;
 import net.jp2p.container.utils.Utils;
 
@@ -57,13 +58,14 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 	
 	private String bundleId;
 	private Class<?> clss;
+	private DeveloperModes mode;
 	
 	private Collection<ICompositeBuilderListener<Object>> listeners;
 		
 	private Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 	
-	public XMLFactoryBuilder( String bundleId, Class<?> clss, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer ) {
-		this( bundleId, clss.getResource( S_DEFAULT_LOCATION ), clss, builder, manager, sequencer );
+	public XMLFactoryBuilder( String bundleId, Class<?> clss, DeveloperModes mode, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer ) {
+		this( bundleId, clss.getResource( S_DEFAULT_LOCATION ), clss, mode, builder, manager, sequencer );
 	}
 
 	/**
@@ -73,13 +75,14 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 	 * @param location
 	 * @param builder
 	 */
-	public XMLFactoryBuilder( String bundleId, URL url, Class<?> clss, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer ) {
+	public XMLFactoryBuilder( String bundleId, URL url, Class<?> clss, DeveloperModes mode, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer ) {
 		this.bundleId = bundleId;
 		this.manager = manager;
 		this.sequencer = sequencer;
 		this.builder = builder;
 		this.url = url;
 		this.clss = clss;
+		this.mode = mode;
 		this.completed = false;
 		this.failed = false;
 		this.listeners = new ArrayList<ICompositeBuilderListener<Object>>();
@@ -160,7 +163,7 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 			//saxParser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA); 
 			//saxParser.setProperty(JAXP_SCHEMA_SOURCE, new File(JP2P_XSD_SCHEMA)); 
 			logger.info("\n\nParsing JP2P Bundle: " + this.bundleId );
-			Jp2pHandler handler = new Jp2pHandler( this.bundleId, builder, manager, sequencer, clss );
+			Jp2pHandler handler = new Jp2pHandler( this.bundleId, mode, builder, manager, sequencer, clss );
 			saxParser.parse( in, handler);
 			logger.info("JP2P Bundle Parsed: " + this.bundleId + "\n\n");
 		} catch( SAXNotRecognizedException e ){

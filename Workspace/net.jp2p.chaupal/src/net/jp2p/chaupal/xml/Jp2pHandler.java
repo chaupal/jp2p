@@ -28,6 +28,7 @@ import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
+import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
@@ -57,15 +58,17 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	private IContainerBuilder<Object> builder;
 	private String context = null;
 	private String bundle_id;
+	private DeveloperModes mode;
 	
 	private static Logger logger = Logger.getLogger( XMLFactoryBuilder.class.getName() );
 
-	public Jp2pHandler( String bundle_id, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer, Class<?> clss ) {
+	public Jp2pHandler( String bundle_id, DeveloperModes mode, IContainerBuilder<Object> builder, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer, Class<?> clss ) {
 		this.manager = manager;
 		this.sequencer = sequencer;
 		this.bundle_id = bundle_id;
 		this.builder = builder;
 		this.clss = clss;
+		this.mode = mode;
 		this.stack = new Stack<String>();
 	}
 
@@ -127,7 +130,9 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 				}
 			}
 			factory.prepare( source, builder, convertAttributes(attributes));
-			node = this.processFactory(attributes, node, factory);
+			FactoryNode nd = this.processFactory(attributes, node, factory);
+			if( nd != null )
+				node = nd;
 			this.stack.push( qName );
 			return;
 		}else{
@@ -176,6 +181,7 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	
 	/**
 	 * Process the factory by adding the directives and adding it to the container
+	 * Returns null if the factory is to be skipped (depends on developer mode)
 	 * @param attributes
 	 * @param parent
 	 * @param factory
@@ -183,7 +189,12 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 	 */
 	protected synchronized FactoryNode processFactory( Attributes attributes, FactoryNode parent, IPropertySourceFactory factory ){
 		logger.log( Level.FINE, "Factory found for: " + factory.getComponentName() );
-		IJp2pWritePropertySource<?> source = (IJp2pWritePropertySource<?>) factory.createPropertySource();
+		IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) factory.createPropertySource();
+
+		DeveloperModes readMode = AbstractJp2pPropertySource.getDeveloperMode(source);
+		boolean accept = readMode.equals( this.mode ) || DeveloperModes.ANY.equals( readMode );
+		if( !accept )
+			return null;
 		if( parent != null )
 			parent.getData().getPropertySource().addChild( source);
 		

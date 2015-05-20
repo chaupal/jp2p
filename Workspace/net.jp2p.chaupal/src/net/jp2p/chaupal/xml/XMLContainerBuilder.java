@@ -27,6 +27,7 @@ import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
+import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 
 /**
  * The container builder sees that all the factories that are needed to build the container are present.
@@ -44,13 +45,15 @@ public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 	private Jp2pBundleSequencer<Object> sequencer;
 	private boolean completed = false;
 	private ChaupalContainer container;
+	private DeveloperModes mode;
 	
 	private Collection<ICompositeBuilderListener<Object>> listeners;
 	
-	public XMLContainerBuilder( String bundle_id, Class<?> clss, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer) {
+	public XMLContainerBuilder( String bundle_id, Class<?> clss, DeveloperModes mode, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer) {
 		this.bundle_id = bundle_id;
 		this.clss = clss;	
 		this.manager = manager;
+		this.mode = mode;
 		this.sequencer = sequencer;
 		builders = new ArrayList<ICompositeBuilder<ContainerFactory>>();
 		this.listeners = new ArrayList<ICompositeBuilderListener<Object>>();
@@ -60,7 +63,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 	public void build() {
 		
 		//First register all the discovered builders
-		IContainerBuilder<Object> containerBuilder = new ContainerBuilder();
+		IContainerBuilder<Object> containerBuilder = new ContainerBuilder( mode );
 		try {
 			this.extendBuilders( containerBuilder, clss);
 		} catch (IOException e) {
@@ -113,7 +116,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 		Enumeration<URL> enm = clss.getClassLoader().getResources( IFactoryBuilder.S_DEFAULT_LOCATION );
 		while( enm.hasMoreElements()){
 			URL url = enm.nextElement();
-			builders.add( new XMLFactoryBuilder( bundle_id, url, clss, builder, manager, sequencer ));
+			builders.add( new XMLFactoryBuilder( bundle_id, url, clss, mode, builder, manager, sequencer ));
 		}
 	}
 	

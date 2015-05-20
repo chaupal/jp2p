@@ -25,6 +25,7 @@ import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.context.Jp2pServiceLoader;
+import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 
 public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
@@ -127,7 +128,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 
 					@Override
 					public void run() {
-						XMLContainerBuilder builder = new XMLContainerBuilder( getBundleId(), clss, manager, sequencerService.getSequencer() );
+						XMLContainerBuilder builder = new XMLContainerBuilder( getBundleId(), clss, getMode(), manager, sequencerService.getSequencer() );
 						ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 						componentListener = new ComponentChangedListener();
 						dispatcher.addServiceChangeListener( componentListener);		

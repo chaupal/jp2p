@@ -30,6 +30,7 @@ public interface IJp2pDirectives{
 		AUTO_START,
 		CLEAR,
 		WAIT_FOR,
+		DEVELOP_MODE,
 		VERSION,
 		CREATE;
 
@@ -72,6 +73,22 @@ public interface IJp2pDirectives{
 			return false;
 		}
 
+		@Override
+		public String toString() {
+			return StringStyler.prettyString( super.toString() );
+		}
+	}
+
+	/**
+	 * Developer modes tell the system in which state they are
+	 * @author Kees
+	 *
+	 */
+	public enum DeveloperModes{
+		DEBUG,
+		PRODUCTION,
+		ANY;
+	
 		@Override
 		public String toString() {
 			return StringStyler.prettyString( super.toString() );

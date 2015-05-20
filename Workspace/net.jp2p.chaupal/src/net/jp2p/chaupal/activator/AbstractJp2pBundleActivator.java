@@ -20,6 +20,7 @@ import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.log.Jp2pLevel;
+import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -54,6 +55,11 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 
 	public final String getBundleId() {
 		return bundle_id;
+	}
+
+	
+	protected DeveloperModes getMode() {
+		return mode;
 	}
 
 	public IJp2pContainer<T> getContainer() {

@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Contexts;
+import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties.Jp2pProperties;
 import net.jp2p.container.properties.IManagedPropertyListener.PropertyEvents;
@@ -404,6 +405,16 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 	 */
 	public static String getIdentifier( IJp2pPropertySource<IJp2pProperties> source ){
 		return source.getDirective( IJp2pDirectives.Directives.NAME );
+	}
+
+	/**
+	 * Get the bundle id for the given source
+	 * @param source
+	 * @return
+	 */
+	public static DeveloperModes getDeveloperMode( IJp2pPropertySource<IJp2pProperties> source ){
+		String mode = source.getDirective( Directives.DEVELOP_MODE );
+		return (mode == null ) ? DeveloperModes.ANY: DeveloperModes.valueOf( mode );
 	}
 
 	/**

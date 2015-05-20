@@ -21,6 +21,7 @@ import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
+import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
@@ -34,11 +35,13 @@ public class ContainerBuilder implements IContainerBuilder<Object>{
 
 	private List<ICompositeBuilderListener<?>> factories;
 	private IContainerFactory<Object> factory;
+	private DeveloperModes mode;
 	
 	private Lock lock;
 	
-	public ContainerBuilder() {
+	public ContainerBuilder( DeveloperModes mode) {
 		factories = new ArrayList<ICompositeBuilderListener<?>>();
+		this.mode = mode;
 		lock = new ReentrantLock();
 	}
 	
