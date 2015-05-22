@@ -9,6 +9,8 @@ package net.jp2p.container.component;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ComponentEventDispatcher {
 
@@ -16,8 +18,11 @@ public class ComponentEventDispatcher {
 	
 	private static ComponentEventDispatcher dispatcher = new ComponentEventDispatcher();
 	
+	private Lock lock;
+	
 	private ComponentEventDispatcher() {
 		this.listeners = new ArrayList<IComponentChangedListener<?>>();
+		lock = new ReentrantLock();
 	}
 	
 	public static ComponentEventDispatcher getInstance(){
@@ -25,17 +30,35 @@ public class ComponentEventDispatcher {
 	}
 
 	public void addServiceChangeListener( IComponentChangedListener<?> listener ){
-		this.listeners.add( listener );
+		lock.lock();
+		try{
+			this.listeners.add( listener );
+		}
+		finally{
+			lock.unlock();
+		}
 	}
 
 	public void removeServiceChangeListener( IComponentChangedListener<?> listener ){
+		lock.lock();
+		try{
 		this.listeners.remove( listener );
+		}
+		finally{
+			lock.unlock();
+		}
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public synchronized void serviceChanged( ComponentChangedEvent<?> event ){
+		lock.lock();
+		try{
 		for( IComponentChangedListener listener: this.listeners )
 			listener.notifyServiceChanged(event);
+		}
+		finally{
+			lock.unlock();
+		}
 	}
 
 }
