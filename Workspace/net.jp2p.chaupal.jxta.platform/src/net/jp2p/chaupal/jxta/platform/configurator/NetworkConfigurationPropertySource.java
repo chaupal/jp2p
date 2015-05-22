@@ -7,11 +7,13 @@ import java.util.Iterator;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
+import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
+import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jxta.peer.PeerID;
 import net.jxta.platform.NetworkConfigurator;
@@ -52,6 +54,30 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		public static NetworkConfiguratorProperties convertTo( String str ){
 			String enumStr = StringStyler.styleToEnum( str );
 			return valueOf( enumStr );
+		}
+	}
+
+	/**
+	 * supported directives
+	 * @author Kees
+	 *
+	 */
+	public enum NetworkConfigurationDirectives implements IJp2pDirectives{
+		CLEAR_CONFIG;
+
+		public static boolean isValidDirective( String str ){
+			if( Utils.isNull( str ))
+				return false;
+			for( NetworkConfigurationDirectives dir: values() ){
+				if( dir.name().equals( str ))
+					return true;
+			}
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return StringStyler.prettyString( super.toString() );
 		}
 	}
 
@@ -114,6 +140,11 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		return false;
 	}
 
+	public static boolean isClearConfig( NetworkConfigurationPropertySource source ){
+		String clearConfig = source.getDirective( NetworkConfigurationDirectives.CLEAR_CONFIG );
+		return ( Utils.isNull( clearConfig ) ? Boolean.TRUE: Boolean.parseBoolean( clearConfig ));
+	}
+	
 	/**
 	 * convert the given context property to a networkManagerProperty, or null if there is
 	 * no relation between them

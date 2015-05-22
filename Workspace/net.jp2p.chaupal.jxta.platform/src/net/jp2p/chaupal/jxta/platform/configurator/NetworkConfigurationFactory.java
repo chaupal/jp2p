@@ -10,12 +10,18 @@ package net.jp2p.chaupal.jxta.platform.configurator;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
+import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
+import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfigurationDirectives;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.chaupal.jxta.platform.security.SecurityFactory;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -25,6 +31,7 @@ import net.jp2p.container.factory.AbstractDependencyFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
+import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.StringStyler;
@@ -70,6 +77,22 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 		}
 	}
 
+	@Override
+	protected void onParseDirectiveAfterCreation( IJp2pDirectives directive, Object value) {
+		if( !NetworkConfigurationDirectives.CLEAR_CONFIG.equals( directive ))
+			return;
+		boolean clearConfig = NetworkConfigurationPropertySource.isClearConfig( (NetworkConfigurationPropertySource) super.getPropertySource());
+		if( !clearConfig )
+			return;
+		URI uri = ( URI )super.getParentSource().getProperty( NetworkManagerProperties.INSTANCE_HOME );
+		Path path = Paths.get(uri);
+		if(Files.exists(path, LinkOption.NOFOLLOW_LINKS )){
+			File file = path.toFile();
+			NetworkManager.RecursiveDelete( file );
+		}
+	}
+
+
 	/**
 	 * If a security service is not found, then include one
 	 */
@@ -87,7 +110,13 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 		super.extendContainer();	
 	}
 	
-
+	@Override
+	protected IJp2pDirectives onConvertDirective( String key, String value ) {
+		String str = StringStyler.styleToEnum(key);
+		if( NetworkConfigurationDirectives.isValidDirective( str ))
+			return (NetworkConfigurationDirectives.valueOf(str));
+		return super.onConvertDirective(key, value );
+	}
 	
 	@Override
 	public IJp2pComponent<NetworkConfigurator> getComponent() {

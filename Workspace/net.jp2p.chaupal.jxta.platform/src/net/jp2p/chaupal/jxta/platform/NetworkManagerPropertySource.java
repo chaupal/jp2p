@@ -6,7 +6,6 @@ import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.IJp2pContainer.ContainerProperties;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
-import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
@@ -42,30 +41,6 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 				return false;
 			for( NetworkManagerProperties prop: values() ){
 				if( prop.equals( property ))
-					return true;
-			}
-			return false;
-		}
-
-		@Override
-		public String toString() {
-			return StringStyler.prettyString( super.toString() );
-		}
-	}
-
-	/**
-	 * supported directives
-	 * @author Kees
-	 *
-	 */
-	public enum NetworkManagerDirectives implements IJp2pDirectives{
-		CLEAR_CONFIG;
-
-		public static boolean isValidDirective( String str ){
-			if( Utils.isNull( str ))
-				return false;
-			for( NetworkManagerDirectives dir: values() ){
-				if( dir.name().equals( str ))
 					return true;
 			}
 			return false;
@@ -120,13 +95,6 @@ public class NetworkManagerPropertySource extends AbstractJp2pWritePropertySourc
 		}
 	}
 	
-	@Override
-	public boolean setDirective(IJp2pDirectives id, String value) {
-		if( NetworkManagerDirectives.isValidDirective( id.name() ))
-			return super.setDirective( NetworkManagerDirectives.valueOf( id.name() ), value );
-		return super.setDirective(id, value);
-	}
-
 	@Override
 	public Object getDefault( IJp2pProperties id) {
 		Jp2pContainerPropertySource source = (Jp2pContainerPropertySource) super.getParent();

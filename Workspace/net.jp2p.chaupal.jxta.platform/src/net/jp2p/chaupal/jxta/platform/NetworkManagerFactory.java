@@ -9,7 +9,6 @@ package net.jp2p.chaupal.jxta.platform;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -19,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.chaupal.container.ContainerFactory;
-import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerDirectives;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -30,13 +28,11 @@ import net.jp2p.container.factory.AbstractFilterFactory;
 import net.jp2p.container.factory.filter.ComponentCreateFilter;
 import net.jp2p.container.factory.filter.IComponentFactoryFilter;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IManagedPropertyListener.PropertyEvents;
 import net.jp2p.container.properties.ManagedProperty;
-import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
@@ -77,14 +73,6 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 	}
 	
 	@Override
-	protected IJp2pDirectives onConvertDirective( String key, String value ) {
-		String str = StringStyler.styleToEnum(key);
-		if( NetworkManagerDirectives.isValidDirective( str ))
-			return (NetworkManagerDirectives.valueOf(str));
-		return super.onConvertDirective(key, value );
-	}
-
-	@Override
 	protected void onParseProperty( ManagedProperty<IJp2pProperties, Object> property) {
 		if(( !ManagedProperty.isCreated(property)) || ( !NetworkManagerProperties.isValidProperty(property.getKey())))
 			return;
@@ -100,17 +88,6 @@ public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>
 			break;
 		}
 		super.onParseProperty(property);
-	}
-
-	@Override
-	protected void onParseDirectivePriorToCreation( IJp2pDirectives directive, Object value) {
-		if(( directive != null ) && !directive.equals( Directives.CLEAR  ) && !directive.equals( NetworkManagerDirectives.CLEAR_CONFIG))
-			return;
-		Path path = Paths.get(( URI )super.getPropertySource().getProperty( NetworkManagerProperties.INSTANCE_HOME ));
-		if(Files.exists(path, LinkOption.NOFOLLOW_LINKS )){
-			File file = path.toFile();
-			NetworkManager.RecursiveDelete( file );
-		}
 	}
 
 	@Override
