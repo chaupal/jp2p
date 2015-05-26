@@ -84,7 +84,8 @@ class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		}
 		
 		String componentName = StringStyler.prettyStringFromXml( qName );
-		Jp2pServiceDescriptor descriptor = new Jp2pServiceDescriptor( componentName, context );
+		Jp2pServiceDescriptor descriptor = new Jp2pServiceDescriptor( componentName );
+		descriptor.setContext( context );
 		if( manager.hasFactory( descriptor )){
 			factory = manager.getFactory( descriptor );
 		}

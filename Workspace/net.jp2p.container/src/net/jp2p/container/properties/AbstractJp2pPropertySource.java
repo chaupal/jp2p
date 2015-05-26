@@ -15,7 +15,6 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import net.jp2p.container.Jp2pContainerPropertySource;
-import net.jp2p.container.properties.IJp2pDirectives.Contexts;
 import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties.Jp2pProperties;
@@ -67,7 +66,6 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 		this.parent = parent;
 		this.properties.put( Jp2pProperties.BUNDLE_ID, new ManagedProperty<IJp2pProperties,Object>( this, Jp2pProperties.BUNDLE_ID, parent.getProperty( Jp2pProperties.BUNDLE_ID), S_JP2P ));
 		this.directives.put( IJp2pDirectives.Directives.AUTO_START, parent.getDirective(IJp2pDirectives.Directives.AUTO_START ));
-		this.directives.put( IJp2pDirectives.Directives.CONTEXT, parent.getDirective(IJp2pDirectives.Directives.CONTEXT ));
 		this.directives.put( IJp2pDirectives.Directives.ID, parent.getId() + "." + componentName.toLowerCase() );
 	}
 
@@ -366,18 +364,6 @@ public abstract class AbstractJp2pPropertySource implements IJp2pPropertySource<
 		return Boolean.parseBoolean( directive);
 	}
 	
-	/**
-	 * Get the context of the given property source
-	 * @param source
-	 * @return
-	 */
-	public static Contexts getContext( IJp2pPropertySource<?> source ){
-		String value = source.getDirective( Directives.CONTEXT );
-		if( Utils.isNull( value ))
-			return Contexts.JXTA;
-		return Contexts.valueOf( StringStyler.styleToEnum( value ));
-	}
-
 	/**
 	 * Returns true if the property source is a child of the parent
 	 * @param source

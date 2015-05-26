@@ -20,6 +20,7 @@ public interface IJp2pProperties{
 		
 		STATUS,
 		BUNDLE_ID,
+		CONTEXT,
 		CREATE_DATE;
 
 		@Override

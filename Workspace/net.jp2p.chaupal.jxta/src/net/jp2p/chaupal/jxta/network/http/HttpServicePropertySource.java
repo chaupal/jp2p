@@ -2,7 +2,6 @@ package net.jp2p.chaupal.jxta.network.http;
 
 import net.jp2p.chaupal.jxta.IChaupalComponents.ChaupalComponents;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
-import net.jp2p.container.properties.IJp2pDirectives.Contexts;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
@@ -59,7 +58,6 @@ public class HttpServicePropertySource extends AbstractJp2pWritePropertySource
 	private void fill(){
 		super.setProperty( TransportProperties.ENABLED, true );
 		super.setDirective( Directives.CREATE, Boolean.TRUE.toString());
-		super.setDirective( Directives.CONTEXT, Contexts.CHAUPAL.toString() );
 	}
 
 	@Override

@@ -19,7 +19,6 @@ import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.properties.ManagedProperty;
-import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 
@@ -75,10 +74,9 @@ class ServiceHandler extends DefaultHandler implements IContextEntities{
 			}
 		}
 		String serviceName = StringStyler.styleToEnum(qName);
-		String context = attributes.getValue(Directives.CONTEXT.toString().toLowerCase());
 		String name = StringStyler.prettyStringFromXml( qName );
 		boolean optional = Components.JP2P_CONTAINER.toString().equals( name );
-		Jp2pServiceDescriptor info = new Jp2pServiceDescriptor( StringStyler.prettyString( serviceName ), context, optional );
+		Jp2pServiceDescriptor info = new Jp2pServiceDescriptor( StringStyler.prettyString( serviceName ), optional );
 		services.add( info );
 		stack.push( qName );
 	}

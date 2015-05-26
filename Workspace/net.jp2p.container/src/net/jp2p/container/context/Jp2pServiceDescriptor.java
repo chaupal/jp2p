@@ -15,14 +15,13 @@ public class Jp2pServiceDescriptor implements Comparable<Jp2pServiceDescriptor>{
 	String context;
 	boolean optional = false;
 
-	public Jp2pServiceDescriptor( String name, String context ) {
-		this( name, context, false );
+	public Jp2pServiceDescriptor( String name ) {
+		this( name, false );
 	}
 
-	public Jp2pServiceDescriptor( String name, String context, boolean optional) {
+	public Jp2pServiceDescriptor( String name, boolean optional) {
 		super();
 		this.name = name;
-		this.context = context;
 		this.optional = optional;
 	}
 

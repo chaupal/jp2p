@@ -10,7 +10,6 @@ package net.jp2p.container.log;
 import java.util.logging.Logger;
 
 import net.jp2p.container.component.IJp2pComponent;
-import net.jp2p.container.context.AbstractJp2pServiceBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
@@ -60,10 +59,8 @@ public class LoggerFactory extends
 	 * @return
 	 */
 	public static final String getJp2pLogMessage( IJp2pPropertySource<IJp2pProperties> source, String msg ){
-		String contextName = AbstractJp2pServiceBuilder.getContextName( source );
 		String bundleName = AbstractJp2pPropertySource.getBundleId( source );
-		return " <" + contextName.toUpperCase() + "-LOG" + ": " + bundleName + ">: " + msg ;
-		
+		return " <" + bundleName + "-LOG" + ">: " + msg ;	
 	}
 
 	/**

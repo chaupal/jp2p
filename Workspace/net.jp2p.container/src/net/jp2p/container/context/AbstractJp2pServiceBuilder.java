@@ -12,10 +12,6 @@ import java.util.Collection;
 
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.IPropertySourceFactory;
-import net.jp2p.container.properties.AbstractJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pDirectives.Contexts;
-import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.Utils;
 
 public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder {
@@ -54,8 +50,11 @@ public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder 
 	@Override
 	public Jp2pServiceDescriptor[] getSupportedServices() {
 		Collection<Jp2pServiceDescriptor> descriptors = new ArrayList<Jp2pServiceDescriptor>();
-		for( IPropertySourceFactory factory: this.factories )
-			descriptors.add( new Jp2pServiceDescriptor( factory.getComponentName(), this.getName() ));
+		for( IPropertySourceFactory factory: this.factories ){
+			Jp2pServiceDescriptor descriptor = new Jp2pServiceDescriptor( factory.getComponentName()); 
+			descriptor.setContext( this.getName() );
+			descriptors.add( descriptor);
+		}
 		return descriptors.toArray( new Jp2pServiceDescriptor[ descriptors.size()]);
 	}
 	
@@ -125,17 +124,5 @@ public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder 
 		if( Utils.isNull(str1 ) && Utils.isNull(str2))
 			return false;
 		return str1.toLowerCase().equals( str2.toLowerCase());				
-	}
-
-	/**
-	 * Get the context name by parsing the predecessors of the given source
-	 * @param source
-	 * @return
-	 */
-	public static String getContextName( IJp2pPropertySource<?> source ){
-		String contextName = AbstractJp2pPropertySource.findFirstAncestorDirective(source, Directives.CONTEXT );
-		if( Utils.isNull( contextName ))
-			contextName = Contexts.JP2P.toString();
-		return contextName;
 	}
 }
