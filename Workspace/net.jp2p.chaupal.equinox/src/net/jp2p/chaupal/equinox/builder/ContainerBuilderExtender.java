@@ -1,4 +1,4 @@
-package net.jp2p.chaupal.jxta.builder;
+package net.jp2p.chaupal.equinox.builder;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Enumeration;
 
 import org.eclipse.core.runtime.FileLocator;
 
-import net.jp2p.chaupal.jxta.builder.ContainerBuilderExtender;
+import net.jp2p.chaupal.equinox.builder.ContainerBuilderExtender;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.factory.IComponentFactory;
 

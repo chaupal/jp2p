@@ -239,6 +239,8 @@ public class Jp2pServiceManager implements IJp2pFactoryCollection{
 		}
 
 		void addFactory( String context, IPropertySourceFactory factory ){
+			if(( factory == null ) || ( factories.contains( factory )))
+				return;
 			descriptor.setContext(context);
 			this.factories.add( factory );
 		}
@@ -252,6 +254,8 @@ public class Jp2pServiceManager implements IJp2pFactoryCollection{
 		}
 		
 		public IPropertySourceFactory getFirst(){
+			if( factories.isEmpty())
+				return null;
 			IPropertySourceFactory factory = this.factories.iterator().next();
 			return (IPropertySourceFactory) newFactory( factory );
 		}

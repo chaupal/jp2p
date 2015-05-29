@@ -4,7 +4,6 @@ import net.jp2p.chaupal.jxta.advertisement.ChaupalAdvertisementFactory;
 import net.jp2p.chaupal.jxta.discovery.ChaupalDiscoveryServiceFactory;
 import net.jp2p.chaupal.jxta.network.http.HttpServiceFactory;
 import net.jp2p.chaupal.jxta.peergroup.ChaupalPeerGroupFactory;
-import net.jp2p.chaupal.jxta.persistence.OsgiPersistenceFactory;
 import net.jp2p.chaupal.jxta.pipe.ChaupalPipeFactory;
 import net.jp2p.container.context.AbstractJp2pServiceBuilder;
 import net.jp2p.container.factory.IComponentFactory;
@@ -23,7 +22,6 @@ public class ChaupalBuilder extends AbstractJp2pServiceBuilder {
 		super.addFactory( new ChaupalDiscoveryServiceFactory());
 		super.addFactory( new ChaupalPipeFactory());
 		super.addFactory( new ChaupalPeerGroupFactory());
-		super.addFactory( new OsgiPersistenceFactory());
 		super.addFactory( new HttpServiceFactory());
 	}
 

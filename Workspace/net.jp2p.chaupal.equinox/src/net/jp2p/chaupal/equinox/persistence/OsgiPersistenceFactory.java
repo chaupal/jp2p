@@ -1,8 +1,7 @@
-package net.jp2p.chaupal.jxta.persistence;
+package net.jp2p.chaupal.equinox.persistence;
 
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 
-import net.jp2p.chaupal.persistence.PersistedProperties;
 import net.jp2p.chaupal.persistence.SimplePersistenceFactory;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.persistence.IPersistedProperties;

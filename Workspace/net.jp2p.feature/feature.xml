@@ -71,7 +71,7 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <url>
-      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/jp2p/1.1.0/20150516/site.xml"/>
+      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/chaupal/1.1.0/20150525/site.xml"/>
    </url>
 
    <requires>
@@ -113,6 +113,13 @@ END OF TERMS AND CONDITIONS
 
    <plugin
          id="net.jp2p.chaupal.jxta.platform"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.jp2p.chaupal.equinox"
          download-size="0"
          install-size="0"
          version="0.0.0"
