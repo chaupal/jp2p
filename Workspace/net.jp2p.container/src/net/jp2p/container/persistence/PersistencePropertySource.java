@@ -42,6 +42,7 @@ public class PersistencePropertySource extends AbstractJp2pWritePropertySource {
 			return false;
 		}
 	}
+	
 	public PersistencePropertySource( IJp2pPropertySource<IJp2pProperties> parent) {
 		super( IJp2pServiceBuilder.Components.PERSISTENCE_SERVICE.toString(), parent);
 		super.setDirective( Directives.CREATE, Boolean.TRUE.toString());

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+
+<target name="target" sequenceNumber="103">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipselabs.osgi.ds.broker.feature.feature.group" version="1.0.0.v20130305"/>
+<repository location="http://89.31.96.252/download.condast.org/updatesite/Broker/release/site.xml"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.pde.feature.group" version="3.10.1.v20150204-1700"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.10.1.v20150204-1700"/>
+<unit id="org.eclipse.platform.ide" version="4.4.2.M20150204-1700"/>
+<unit id="org.eclipse.platform.sdk" version="4.4.2.M20150204-1700"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="net.jxse.feature.feature.group" version="1.0.0.v20150526"/>
+<repository location="https://chaupal.github.io/releases/2.8.0/milestone/20150525/site.xml"/>
+</location>
+</locations>
+</target>

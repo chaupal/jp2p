@@ -16,15 +16,15 @@ import java.util.concurrent.Executors;
 import org.osgi.framework.BundleContext;
 
 import net.jp2p.chaupal.builder.Jp2pBuilderService;
-import net.jp2p.chaupal.context.IServiceManagerListener;
 import net.jp2p.chaupal.context.Jp2pServiceManager;
-import net.jp2p.chaupal.context.ServiceManagerEvent;
 import net.jp2p.chaupal.sequencer.SequenceDeclarativeService;
 import net.jp2p.chaupal.xml.XMLContainerBuilder;
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IComponentChangedListener;
+import net.jp2p.container.context.IServiceManagerListener;
 import net.jp2p.container.context.Jp2pServiceLoader;
+import net.jp2p.container.context.ServiceManagerEvent;
 import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 
 public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {

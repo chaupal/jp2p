@@ -8,11 +8,11 @@
 package net.jp2p.chaupal.context;
 
 import net.jp2p.chaupal.persistence.SimplePersistenceFactory;
-import net.jp2p.chaupal.sequencer.SequencerServiceFactory;
 import net.jp2p.container.context.AbstractJp2pServiceBuilder;
 import net.jp2p.container.log.LoggerFactory;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pDirectives.Contexts;
+import net.jp2p.container.sequencer.SequencerServiceFactory;
 import net.jp2p.container.startup.StartupServiceFactory;
 
 public class Jp2pServiceBuilder extends AbstractJp2pServiceBuilder {

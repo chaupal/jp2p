@@ -11,15 +11,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.chaupal.activator.Jp2pBundleActivator;
-import net.jp2p.chaupal.builder.IFactoryBuilder;
+import net.jp2p.container.builder.IFactoryBuilder;
 import net.jp2p.container.context.IJp2pFactoryCollection;
+import net.jp2p.container.context.IJp2pServiceManager;
+import net.jp2p.container.context.IServiceManagerListener;
 import net.jp2p.container.context.Jp2pLoaderEvent;
 import net.jp2p.container.context.IContextLoaderListener;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
 import net.jp2p.container.context.Jp2pServiceLoader;
+import net.jp2p.container.context.ServiceManagerEvent;
 import net.jp2p.container.factory.IPropertySourceFactory;
 
-public class Jp2pServiceManager implements IJp2pFactoryCollection{
+public class Jp2pServiceManager implements IJp2pServiceManager{
 
 	public static final String S_CONTEXT_FOUND = "The following context was found and registered: ";
 	public static final String S_INFO_BUILDING = "\n\nAll the required services have been found. Start to build the container: ";
@@ -239,6 +242,8 @@ public class Jp2pServiceManager implements IJp2pFactoryCollection{
 		}
 
 		void addFactory( String context, IPropertySourceFactory factory ){
+			if(( factory == null ) || ( factories.contains( factory )))
+				return;
 			descriptor.setContext(context);
 			this.factories.add( factory );
 		}
@@ -252,6 +257,8 @@ public class Jp2pServiceManager implements IJp2pFactoryCollection{
 		}
 		
 		public IPropertySourceFactory getFirst(){
+			if( factories.isEmpty())
+				return null;
 			IPropertySourceFactory factory = this.factories.iterator().next();
 			return (IPropertySourceFactory) newFactory( factory );
 		}

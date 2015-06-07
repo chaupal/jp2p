@@ -27,6 +27,7 @@ public interface IJp2pDirectives{
 		FILE,
 		VISIBLE,
 		AUTO_START,
+		CONTEXT,
 		CLEAR,
 		WAIT_FOR,
 		DEVELOP_MODE,

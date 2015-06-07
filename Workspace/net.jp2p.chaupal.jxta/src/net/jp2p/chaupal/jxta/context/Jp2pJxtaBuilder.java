@@ -9,7 +9,6 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pDirectives.Contexts;
 import net.jp2p.jxta.advertisement.service.JxtaAdvertisementFactory;
 import net.jp2p.jxta.discovery.DiscoveryServiceFactory;
-import net.jp2p.jxta.netpeergroup.NetPeerGroupFactory;
 import net.jp2p.jxta.peergroup.PeerGroupFactory;
 import net.jp2p.jxta.pipe.PipeServiceFactory;
 import net.jp2p.jxta.registration.RegistrationServiceFactory;
@@ -26,7 +25,6 @@ public class Jp2pJxtaBuilder extends AbstractJp2pServiceBuilder {
 	
 	@Override
 	protected void prepare() {
-		super.addFactory( new NetPeerGroupFactory());
 		super.addFactory(  new PipeServiceFactory());
 		super.addFactory(  new RegistrationServiceFactory());
 		super.addFactory(  new DiscoveryServiceFactory());

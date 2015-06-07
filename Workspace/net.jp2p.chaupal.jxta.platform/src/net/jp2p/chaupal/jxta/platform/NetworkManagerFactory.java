@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.jp2p.chaupal.container.ContainerFactory;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
@@ -25,6 +24,7 @@ import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.Jp2pComponentNode;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.AbstractFilterFactory;
+import net.jp2p.container.factory.ContainerFactory;
 import net.jp2p.container.factory.filter.ComponentCreateFilter;
 import net.jp2p.container.factory.filter.IComponentFactoryFilter;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;

@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Stack;
 import java.util.logging.Logger;
 
-import net.jp2p.chaupal.xml.IContextEntities;
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
@@ -21,6 +20,7 @@ import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
+import net.jp2p.container.xml.IContextEntities;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

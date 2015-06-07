@@ -18,9 +18,7 @@ public interface ICompositeBuilderListener<T extends Object> {
 		COMPONENT_PREPARED,
 		COMPONENT_CREATED,
 		COMPONENT_STARTED,
-		FACTORY_COMPLETED,
-		FACTORY_ADDED_TO_CONTAINER,
-		FACORY_REMOVED_FROM_CONTAINER;
+		FACTORY_COMPLETED;
 
 		@Override
 		public String toString() {

@@ -24,6 +24,7 @@ import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pDirectives.Contexts;
 import net.jp2p.jxta.context.IJxtaBuilder;
+import net.jp2p.jxta.netpeergroup.NetPeerGroupFactory;
 import net.jxta.peergroup.IModuleDefinitions.DefaultModules;
 import net.jxta.peergroup.core.ModuleClassID;
 
@@ -37,6 +38,7 @@ public class JxtaPlatformBuilder extends AbstractJp2pServiceBuilder implements I
 	protected void prepare() {
 		super.addFactory( new NetworkManagerFactory( ));
 		super.addFactory( new NetworkConfigurationFactory( ));
+		super.addFactory( new NetPeerGroupFactory());
 		super.addFactory( new SecurityFactory());
 		super.addFactory( new TcpFactory() );
 		super.addFactory( new HttpFactory() );

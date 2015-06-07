@@ -10,13 +10,14 @@ package net.jp2p.chaupal.persistence;
 import java.util.Iterator;
 import java.util.Stack;
 
-import net.jp2p.chaupal.context.Jp2pServiceManager;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.context.IJp2pServiceBuilder;
+import net.jp2p.container.context.IJp2pServiceManager;
 import net.jp2p.container.factory.AbstractComponentFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.filter.BuilderEventFilter;
 import net.jp2p.container.factory.filter.IComponentFactoryFilter;
+import net.jp2p.container.persistence.IContextFactory;
 import net.jp2p.container.persistence.IPersistedProperties;
 import net.jp2p.container.persistence.PersistedProperties;
 import net.jp2p.container.persistence.PersistencePropertySource;
@@ -34,7 +35,7 @@ import net.jp2p.container.properties.ManagedProperty;
 public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedPropertyListener<IJp2pProperties, Object>> implements IContextFactory {
 
 	private Stack<IPropertyEventDispatcher> stack;
-	private Jp2pServiceManager manager;
+	private IJp2pServiceManager manager;
 	
 	private IComponentFactoryFilter filter = new BuilderEventFilter<IJp2pComponent<IManagedPropertyListener<IJp2pProperties, Object>>>( BuilderEvents.PROPERTY_SOURCE_PREPARED, this );
 
@@ -43,7 +44,7 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 		stack = new Stack<IPropertyEventDispatcher>();
 	}
 
-	protected Jp2pServiceManager getManager() {
+	protected IJp2pServiceManager getManager() {
 		return manager;
 	}
 
@@ -51,7 +52,7 @@ public class SimplePersistenceFactory extends AbstractComponentFactory<IManagedP
 	 * @see net.jp2p.container.persistence.IContextFactory#setLoader(net.jp2p.container.context.ContextLoader)
 	 */
 	@Override
-	public void setManager(Jp2pServiceManager manager) {
+	public void setManager(IJp2pServiceManager manager) {
 		this.manager = manager;
 	}
 

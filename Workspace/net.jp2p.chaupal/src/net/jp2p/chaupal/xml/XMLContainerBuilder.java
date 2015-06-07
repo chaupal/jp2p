@@ -13,21 +13,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 
-import net.jp2p.chaupal.builder.IFactoryBuilder;
-import net.jp2p.chaupal.container.ContainerBuilder;
-import net.jp2p.chaupal.container.ContainerFactory;
-import net.jp2p.chaupal.container.ChaupalContainer;
-import net.jp2p.chaupal.context.Jp2pServiceManager;
-import net.jp2p.chaupal.sequencer.Jp2pBundleSequencer;
+import net.jp2p.container.builder.ContainerBuilder;
 import net.jp2p.container.builder.ICompositeBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
+import net.jp2p.container.builder.IFactoryBuilder;
 import net.jp2p.container.builder.ICompositeBuilderListener.BuilderEvents;
+import net.jp2p.container.context.IJp2pServiceManager;
 import net.jp2p.container.factory.AbstractComponentFactory;
+import net.jp2p.container.factory.ChaupalContainer;
 import net.jp2p.container.factory.ComponentBuilderEvent;
+import net.jp2p.container.factory.ContainerFactory;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
+import net.jp2p.container.sequencer.Jp2pBundleSequencer;
+import net.jp2p.container.xml.XMLFactoryBuilder;
 
 /**
  * The container builder sees that all the factories that are needed to build the container are present.
@@ -41,7 +42,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 	private String bundle_id;
 	private Class<?> clss;
 	private Collection<ICompositeBuilder<ContainerFactory>> builders;
-	private Jp2pServiceManager manager;
+	private IJp2pServiceManager manager;
 	private Jp2pBundleSequencer<Object> sequencer;
 	private boolean completed = false;
 	private ChaupalContainer container;
@@ -49,7 +50,7 @@ public class XMLContainerBuilder implements ICompositeBuilder<ChaupalContainer>{
 	
 	private Collection<ICompositeBuilderListener<Object>> listeners;
 	
-	public XMLContainerBuilder( String bundle_id, Class<?> clss, DeveloperModes mode, Jp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer) {
+	public XMLContainerBuilder( String bundle_id, Class<?> clss, DeveloperModes mode, IJp2pServiceManager manager, Jp2pBundleSequencer<Object> sequencer) {
 		this.bundle_id = bundle_id;
 		this.clss = clss;	
 		this.manager = manager;

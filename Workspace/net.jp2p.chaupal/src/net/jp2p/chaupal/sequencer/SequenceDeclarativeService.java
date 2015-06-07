@@ -31,6 +31,9 @@ import net.jp2p.container.activator.IJp2pService;
 import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.component.IJp2pComponent;
+import net.jp2p.container.sequencer.IJp2pBundleSequencer;
+import net.jp2p.container.sequencer.Jp2pBundleSequencer;
+import net.jp2p.container.sequencer.SequencerEvent;
 
 public class SequenceDeclarativeService<T extends Object> extends AbstractDeclarativeService<IJp2pBundleSequencer<T>> implements IComponentChangedListener<IJp2pComponent<T>>{
 
