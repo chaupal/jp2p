@@ -15,7 +15,7 @@
         <tycho.version>0.22.0</tycho.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
         <luna-update-repo.url>http://download.eclipse.org/eclipse/updates/4.4</luna-update-repo.url>
-        <jxse-repo.url>https://chaupal.github.io/releases/2.8.0/milestone/20150525</jxse-repo.url>        
+        <jxse-repo.url>https://chaupal.github.io/releases/2.8.0/milestone/20150701</jxse-repo.url>        
         <osgi-broker-repo.url>http://89.31.96.252/download.condast.org/updatesite/Broker/release</osgi-broker-repo.url>        
     </properties>
 
@@ -30,12 +30,6 @@
             <url>${jxse-repo.url}</url>
             <layout>p2</layout>
         </repository>
-        <repository>
-            <id>osgi-broker</id>
-            <url>${osgi-broker-repo.url}</url>
-            <layout>p2</layout>
-        </repository>
-
     </repositories>
 
   <modules>

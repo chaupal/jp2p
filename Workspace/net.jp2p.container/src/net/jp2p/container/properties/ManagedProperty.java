@@ -151,7 +151,7 @@ public class ManagedProperty<T, U extends Object> implements Cloneable{
 
 	protected void notifyValueChanged( PropertyEvents event ){
 		for( IManagedPropertyListener<T,U> listener: this.listeners ){
-			listener.notifyValueChanged( new ManagedPropertyEvent<>(this, event ));
+			listener.notifyValueChanged( new ManagedPropertyEvent<T,U>(this, event ));
 		}
 	}
 

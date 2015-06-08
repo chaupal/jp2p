@@ -71,13 +71,12 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <url>
-      <update label="JP2P Core Bundles" url="https://chaupal.github.io/releases/chaupal/1.1.0/20150525/site.xml"/>
+      <update label="JP2P Core Bundles" url="https://chaupal.githttps://chaupal.github.io/releases/jp2p-core-alpha.html"/>
    </url>
 
    <requires>
       <import plugin="org.eclipse.core.runtime" version="3.0.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.preferences"/>
-      <import plugin="org.eclipselabs.osgi.ds.broker"/>
       <import plugin="org.eclipse.osgi" version="3.9.1" match="greaterOrEqual"/>
       <import plugin="net.jxse.osgi"/>
       <import plugin="net.jxse.osgi.platform"/>

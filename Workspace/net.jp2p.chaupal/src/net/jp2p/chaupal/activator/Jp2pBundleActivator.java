@@ -105,6 +105,9 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 			loader.clear();
 			loader = null;
 		}
+		if( service != null ){
+			service.shutdown();
+		}
 
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 		
@@ -137,7 +140,7 @@ public class Jp2pBundleActivator extends AbstractJp2pBundleActivator<Object> {
 					}
 					
 				};
-				service = Executors.newSingleThreadExecutor();
+				service = Executors.newCachedThreadPool();
 				service.execute( runnable );		
 			}	
 		};

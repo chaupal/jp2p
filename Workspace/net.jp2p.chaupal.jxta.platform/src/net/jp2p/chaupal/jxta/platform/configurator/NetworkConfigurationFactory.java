@@ -8,7 +8,6 @@
 package net.jp2p.chaupal.jxta.platform.configurator;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -36,7 +35,6 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
-import net.jxta.exception.ConfiguratorException;
 import net.jxta.platform.NetworkConfigurator;
 import net.jxta.platform.NetworkManager;
 
@@ -156,7 +154,7 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 		IJp2pComponent<NetworkConfigurator> configurator = super.createComponent();
 		try {
 			configurator.getModule().save();
-		} catch (ConfiguratorException | IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return configurator;

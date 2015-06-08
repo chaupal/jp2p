@@ -61,7 +61,7 @@ public class ChaupalPipeService extends AbstractJp2pServiceNode<PipeService>{
 	 * @throws IOException
 	 */
 	public OutputPipe getOutputPipe() throws IOException{
-		return super.getModule().createOutputPipe( pipead, (long) super.getPropertySource().getProperty( PipeServiceProperties.TIME_OUT ));
+		return super.getModule().createOutputPipe( pipead, (Long) super.getPropertySource().getProperty( PipeServiceProperties.TIME_OUT ));
 	}
 
 	@Override

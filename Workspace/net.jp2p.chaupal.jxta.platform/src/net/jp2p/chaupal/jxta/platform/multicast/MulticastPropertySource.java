@@ -81,7 +81,7 @@ public class MulticastPropertySource extends AbstractJp2pWritePropertySource {
 	 * @return
 	 */
 	public int getPort(){
-		return (int) super.getProperty( MulticastProperties.PORT );
+		return (Integer) super.getProperty( MulticastProperties.PORT );
 	}
 
 	@Override
@@ -107,10 +107,10 @@ public class MulticastPropertySource extends AbstractJp2pWritePropertySource {
 				configurator.setMulticastPort( source.getPort());
 				break;
 			case POOL_SIZE:
-				configurator.setMulticastPoolSize((int) source.getProperty( property ));
+				configurator.setMulticastPoolSize((Integer) source.getProperty( property ));
 				break;
 			case SIZE:
-				configurator.setMulticastSize( (int) source.getProperty( property ));
+				configurator.setMulticastSize( (Integer) source.getProperty( property ));
 				break;
 			default:
 				break;

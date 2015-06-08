@@ -4,7 +4,7 @@ Bundle-Name: JXTA bridge for JP2P Container
 Bundle-SymbolicName: net.jp2p.jxta;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Chaupal.org
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: net.jp2p.container,
  net.jp2p.container.activator,
  net.jp2p.container.builder,

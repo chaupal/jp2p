@@ -10,6 +10,9 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform.activator;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.osgi.framework.BundleContext;
 
 import net.jp2p.chaupal.activator.AbstractJp2pBundleActivator;
@@ -26,6 +29,7 @@ public class Jp2pCompatBundleActivator<T extends Object> extends AbstractJp2pBun
 	private IComponentChangedListener<IJp2pComponent<T>> componentListener;
 	
 	private Jp2pCompatBuilder<T> builder;
+	private ExecutorService service;
 
 	protected Jp2pCompatBundleActivator(String bundle_id, IJP2PCompatibility<T> compat ) {
 		this( bundle_id, DeveloperModes.PRODUCTION, compat );
@@ -36,7 +40,6 @@ public class Jp2pCompatBundleActivator<T extends Object> extends AbstractJp2pBun
 		this.builder = new Jp2pCompatBuilder<T>( super.getBundleId(), compat );;
 	}
 
-	
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);		
@@ -48,9 +51,12 @@ public class Jp2pCompatBundleActivator<T extends Object> extends AbstractJp2pBun
 		}
 	}
 
-
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
+		if( service != null ){
+			service.shutdown();
+		}
+		
 		this.builder.stop(bundleContext);
 
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
@@ -64,12 +70,19 @@ public class Jp2pCompatBundleActivator<T extends Object> extends AbstractJp2pBun
 	
 	@Override
 	protected void build() {
-		builder.build();
-		super.setContainer( builder.getContainer());
+		Runnable runnable = new Runnable(){
 
-		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
-		this.componentListener = new ComponentChangedListener();
-		dispatcher.addServiceChangeListener( this.componentListener);
+			@Override
+			public void run() {
+				ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
+				componentListener = new ComponentChangedListener();
+				dispatcher.addServiceChangeListener( componentListener);		
+				builder.build();
+				setContainer( builder.getContainer() );
+			}		
+		};
+		service = Executors.newCachedThreadPool();
+		service.execute( runnable );		
 	}
 
 

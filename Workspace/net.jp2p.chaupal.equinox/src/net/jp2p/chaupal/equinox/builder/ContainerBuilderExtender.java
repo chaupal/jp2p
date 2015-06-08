@@ -18,8 +18,8 @@ class ContainerBuilderExtender {
 
 	private static IContainerBuilder<Object> builder;
 	
-	private ContainerBuilderExtender( IContainerBuilder<Object> builder){
-		this.builder = builder;
+	private ContainerBuilderExtender( IContainerBuilder<Object> buildr){
+		builder = buildr;
 	}
 
 	public static IContainerBuilder<Object> getInstance(){

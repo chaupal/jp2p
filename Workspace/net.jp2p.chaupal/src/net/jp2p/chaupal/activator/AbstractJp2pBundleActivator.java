@@ -57,7 +57,6 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 		return bundle_id;
 	}
 
-	
 	protected DeveloperModes getMode() {
 		return mode;
 	}

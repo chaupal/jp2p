@@ -92,7 +92,7 @@ public class TransportPropertySource extends AbstractJp2pWritePropertySource
 	 * @return
 	 */
 	public int getStartPort(){
-		return (int) super.getProperty( TransportProperties.START_PORT );
+		return (Integer) super.getProperty( TransportProperties.START_PORT );
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class TransportPropertySource extends AbstractJp2pWritePropertySource
 	 * @return
 	 */
 	public int getEndPort(){
-		return (int) super.getProperty( TransportProperties.END_PORT );
+		return (Integer) super.getProperty( TransportProperties.END_PORT );
 	}
 
 	@Override

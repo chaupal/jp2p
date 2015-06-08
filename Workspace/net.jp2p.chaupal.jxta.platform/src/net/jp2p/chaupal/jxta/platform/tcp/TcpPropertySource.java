@@ -40,7 +40,7 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 	 * @return
 	 */
 	public boolean getIncomingStatus(){
-		return (boolean) super.getProperty( TransportProperties.INCOMING_STATUS );
+		return (Boolean) super.getProperty( TransportProperties.INCOMING_STATUS );
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 	 * @return
 	 */
 	public boolean getOutgoingStatus(){
-		return (boolean) super.getProperty( TransportProperties.OUTGOING_STATUS );
+		return (Boolean) super.getProperty( TransportProperties.OUTGOING_STATUS );
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 	 * @return
 	 */
 	public boolean getPublicAddressExclusive(){
-		return (boolean) super.getProperty( TransportProperties.PUBLIC_ADDRESS_EXCLUSIVE );
+		return (Boolean) super.getProperty( TransportProperties.PUBLIC_ADDRESS_EXCLUSIVE );
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 	 * @return
 	 */
 	public int getPort(){
-		return (int) super.getProperty( TransportProperties.PORT );
+		return (Integer) super.getProperty( TransportProperties.PORT );
 	}
 
 	@Override
@@ -101,10 +101,10 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 				configurator.setTcpPort( source.getPort());
 				break;
 			case START_PORT:
-				configurator.setTcpStartPort((int) source.getProperty( property ));
+				configurator.setTcpStartPort((Integer) source.getProperty( property ));
 				break;
 			case END_PORT:
-				configurator.setTcpEndPort( (int) source.getProperty( property ));
+				configurator.setTcpEndPort( (Integer) source.getProperty( property ));
 				break;
 			case INCOMING_STATUS:
 				configurator.setTcpIncoming( source.getIncomingStatus() );

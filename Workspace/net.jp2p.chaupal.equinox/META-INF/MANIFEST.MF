@@ -4,7 +4,7 @@ Bundle-Name: Eclipse
 Bundle-SymbolicName: net.jp2p.chaupal.equinox
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Chaupal.org
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Service-Component: OSGI-INF/jp2pbuilder.xml
 Import-Package: net.jp2p.chaupal.persistence,
  net.jp2p.container.activator,

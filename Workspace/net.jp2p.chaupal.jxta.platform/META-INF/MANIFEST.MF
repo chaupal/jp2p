@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Jxta Compatibility package
 Bundle-SymbolicName: net.jp2p.chaupal.jxta.platform
 Bundle-Version: 1.1.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Chaupal.org
 Import-Package: net.jp2p.chaupal,
  net.jp2p.chaupal.activator,

@@ -35,7 +35,7 @@ public class SocketService<T extends PipeMsgListener> extends AbstractJp2pServic
 	 * @throws IOException
 	 */
 	protected JxtaSocket getSocket( PipeAdvertisement pipeAdv) throws IOException{
-		int time_out = (int) super.getPropertySource().getProperty( SocketProperties.TIME_OUT );
+		int time_out = (Integer) super.getPropertySource().getProperty( SocketProperties.TIME_OUT );
 		//boolean reliable = (boolean)source.getProperty( SocketProperties.RELIABLE );
 		JxtaSocket socket;
 		if( time_out <= 0 )
@@ -52,9 +52,9 @@ public class SocketService<T extends PipeMsgListener> extends AbstractJp2pServic
 	 */
 	protected JxtaServerSocket getServerSocket( PipeAdvertisement pipeAdv ) throws IOException{
 		SocketPropertySource source = (SocketPropertySource) super.getPropertySource();
-		int back_log = (int) source.getProperty( SocketProperties.BACKLOG );
-		int time_out = (int) source.getProperty( SocketProperties.TIME_OUT );
-		boolean encrypt = (boolean)source.getProperty( SocketProperties.ENCRYPT );
+		int back_log = (Integer) source.getProperty( SocketProperties.BACKLOG );
+		int time_out = (Integer) source.getProperty( SocketProperties.TIME_OUT );
+		boolean encrypt = (Boolean)source.getProperty( SocketProperties.ENCRYPT );
 		if(( back_log <= 0 ) && ( time_out <= 0 ))
 			return new JxtaServerSocket( peerGroup, pipeAdv, encrypt );
 		if(( time_out <= 0 ))

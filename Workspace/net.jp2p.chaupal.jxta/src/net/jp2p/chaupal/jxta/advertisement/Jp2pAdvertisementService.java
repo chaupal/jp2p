@@ -55,8 +55,8 @@ public class Jp2pAdvertisementService<T extends Advertisement> extends AbstractJ
 	 * @param provider
 	 */
 	protected synchronized void publishAdvertisements( Advertisement ad ){
-		long lifetime = (long) super.getPropertySource().getProperty( AdvertisementServiceProperties.LIFE_TIME );
-		long expiration = (long) super.getPropertySource().getProperty( AdvertisementServiceProperties.EXPIRATION );
+		long lifetime = (Long) super.getPropertySource().getProperty( AdvertisementServiceProperties.LIFE_TIME );
+		long expiration = (Long) super.getPropertySource().getProperty( AdvertisementServiceProperties.EXPIRATION );
 		Scope scope = AdvertisementServicePropertySource.getScope( super.getPropertySource());
 		Logger log = Logger.getLogger( this.getClass().getName() );
 		log.log( Jp2pLevel.JP2PLEVEL, "Publishing the following advertisement with lifetime :"

@@ -57,7 +57,7 @@ public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 	 * @return
 	 */
 	public boolean getIncomingStatus(){
-		return (boolean) super.getProperty( TransportProperties.INCOMING_STATUS );
+		return (Boolean) super.getProperty( TransportProperties.INCOMING_STATUS );
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 	 * @return
 	 */
 	public boolean getOutgoingStatus(){
-		return (boolean) super.getProperty( TransportProperties.OUTGOING_STATUS );
+		return (Boolean) super.getProperty( TransportProperties.OUTGOING_STATUS );
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 	 * @return
 	 */
 	public boolean getPublicAddressExclusive(){
-		return (boolean) super.getProperty( TransportProperties.PUBLIC_ADDRESS_EXCLUSIVE );
+		return (Boolean) super.getProperty( TransportProperties.PUBLIC_ADDRESS_EXCLUSIVE );
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 	 * @return
 	 */
 	public int getPort(){
-		return (int) super.getProperty( TransportProperties.PORT );
+		return (Integer) super.getProperty( TransportProperties.PORT );
 	}
 
 	@Override
@@ -139,16 +139,19 @@ public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		configurator.setHttpEnabled( source.isEnabled());
 		while( iterator.hasNext() ){
-			TransportProperties property = (TransportProperties) iterator.next();
-			switch( property ){
+			IJp2pProperties property =iterator.next();
+			if( !TransportProperties.isValidProperty(property))
+				continue;
+			TransportProperties tp = (TransportProperties) property;
+			switch( tp ){
 			case PORT:
 				configurator.setHttp2Port( source.getPort());
 				break;
 			case START_PORT:
-				configurator.setHttp2StartPort((int) source.getProperty( property ));
+				configurator.setHttp2StartPort((Integer) source.getProperty( property ));
 				break;
 			case END_PORT:
-				configurator.setHttp2EndPort( (int) source.getProperty( property ));
+				configurator.setHttp2EndPort( (Integer) source.getProperty( property ));
 				break;
 			case INCOMING_STATUS:
 				configurator.setHttp2Incoming( source.getIncomingStatus() );

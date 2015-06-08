@@ -58,7 +58,7 @@ public class SequencerPropertySource extends AbstractJp2pWritePropertySource{
 	}
 	
 	public int getTimeOut(){
-		return (int) super.getProperty( SequenceProperties.TIME_OUT );		
+		return (Integer) super.getProperty( SequenceProperties.TIME_OUT );		
 	}
 	
 	@Override
