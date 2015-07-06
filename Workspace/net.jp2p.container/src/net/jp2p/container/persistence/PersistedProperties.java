@@ -21,7 +21,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
-import net.jp2p.container.utils.IOUtils;
+import net.jp2p.container.utils.io.IOUtils;
 import net.jp2p.container.utils.ProjectFolderUtils;
 
 public class PersistedProperties extends

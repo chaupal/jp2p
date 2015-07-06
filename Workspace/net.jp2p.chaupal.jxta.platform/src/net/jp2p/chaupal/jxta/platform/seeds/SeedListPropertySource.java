@@ -21,7 +21,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
-import net.jp2p.container.utils.IOUtils;
+import net.jp2p.container.utils.io.IOUtils;
 import net.jp2p.container.utils.StringProperty;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;

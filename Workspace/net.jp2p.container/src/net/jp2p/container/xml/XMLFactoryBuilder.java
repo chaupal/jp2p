@@ -33,7 +33,7 @@ import net.jp2p.container.context.IJp2pServiceManager;
 import net.jp2p.container.factory.ContainerFactory;
 import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.sequencer.Jp2pBundleSequencer;
-import net.jp2p.container.utils.IOUtils;
+import net.jp2p.container.utils.io.IOUtils;
 import net.jp2p.container.utils.Utils;
 
 public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, IFactoryBuilder {

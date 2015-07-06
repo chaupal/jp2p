@@ -27,7 +27,7 @@ import org.xml.sax.SAXNotRecognizedException;
 
 import net.jp2p.container.builder.IFactoryBuilder;
 import net.jp2p.container.context.Jp2pServiceDescriptor;
-import net.jp2p.container.utils.IOUtils;
+import net.jp2p.container.utils.io.IOUtils;
 import net.jp2p.container.utils.Utils;
 
 public class ContextServiceParser{
