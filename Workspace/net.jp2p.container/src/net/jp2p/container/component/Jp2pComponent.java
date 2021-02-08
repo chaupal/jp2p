@@ -21,7 +21,7 @@ public class Jp2pComponent<M extends Object> implements IJp2pComponent<M>, Compa
 	private IJp2pPropertySource<IJp2pProperties> source;
 	private boolean isRoot;
 
-	protected Jp2pComponent( M component ) {
+	public Jp2pComponent( M component ) {
 		this( null, component );
 	}
 

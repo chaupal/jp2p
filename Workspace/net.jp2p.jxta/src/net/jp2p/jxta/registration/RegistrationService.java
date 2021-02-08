@@ -12,6 +12,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+import net.jp2p.chaupal.document.IJp2pAdvertisement;
+import net.jp2p.chaupal.exception.Jp2pPeerGroupException;
+import net.jp2p.chaupal.id.IJp2pID;
+import net.jp2p.chaupal.peergroup.IJp2pPeerGroup;
 import net.jp2p.container.activator.AbstractActivator;
 import net.jp2p.container.activator.IJp2pService;
 import net.jp2p.container.log.Jp2pLevel;
@@ -45,7 +49,6 @@ public class RegistrationService extends AbstractActivator implements IJp2pServi
 		return this.source.getComponentName();
 	}
 	
-	@Override
 	public IJp2pPropertySource<IJp2pProperties> getPropertySource() {
 		// TODO Auto-generated method stub
 		return null;
@@ -125,14 +128,24 @@ public class RegistrationService extends AbstractActivator implements IJp2pServi
 		}
 	}
 
+
 	@Override
-	public String getId() {
-		return this.source.getId();
+	public void init(IJp2pPeerGroup group, IJp2pID assignedID, IJp2pAdvertisement implAdv)
+			throws Jp2pPeerGroupException, Jp2pPeerGroupException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public RegistrationService getModule() {
-		return null;//this.service;
+	public int startApp(String[] args) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void stopApp() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

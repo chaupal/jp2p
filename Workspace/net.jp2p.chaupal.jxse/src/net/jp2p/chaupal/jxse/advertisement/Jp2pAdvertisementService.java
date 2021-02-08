@@ -37,7 +37,7 @@ import net.jp2p.jxta.advertisement.AdvertisementPropertySource.AdvertisementType
 import net.jp2p.jxta.discovery.DiscoveryPropertySource;
 import net.jp2p.jxta.discovery.DiscoveryPropertySource.DiscoveryProperties;
 
-public class Jp2pAdvertisementService<A extends Advertisement> extends AbstractJp2pServiceNode<A> implements IJp2pComponentNode<A>{
+public class Jp2pAdvertisementService<A extends Advertisement> extends AbstractJp2pServiceNode<A> implements IJp2pComponentNode<A, Object>{
 
 	private IComponentChangedListener<Jp2pAdvertisementService<A>> listener;
 	private ActivatorListener actListener;;
@@ -45,7 +45,7 @@ public class Jp2pAdvertisementService<A extends Advertisement> extends AbstractJ
 	private Jp2pAdvertisementService<A> service;
 	
 	public Jp2pAdvertisementService( IJp2pWritePropertySource<A> source, A advertisement, ChaupalDiscoveryService discovery ) {
-		super( source, advertisement );
+		super( null, advertisement );
 		this.discovery = discovery;
 		this.service = this;
 	}

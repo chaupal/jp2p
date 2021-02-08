@@ -11,12 +11,12 @@ import net.jp2p.container.builder.ICompositeBuilderListener.BuilderEvents;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 
-public abstract class AbstractBuilderEventFilter<T extends Object> extends
-		AbstractComponentFactoryFilter<T> {
+public abstract class AbstractBuilderEventFilter<M extends Object> extends
+		AbstractComponentFactoryFilter<M> {
 
 	private BuilderEvents event;
 	
-	public AbstractBuilderEventFilter( BuilderEvents event, IComponentFactory<T> factory) {
+	public AbstractBuilderEventFilter( BuilderEvents event, IComponentFactory<M> factory) {
 		super(factory);
 		this.event = event;
 	}

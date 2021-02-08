@@ -52,9 +52,9 @@ public class HttpServiceFactory extends AbstractFilterFactory<Module> {
 		return new HttpService( this );
 	}
 
-	private static class Filter extends AbstractComponentFilter<IJp2pComponent<Module>, IJp2pContainer<Module>>{
+	private static class Filter extends AbstractComponentFilter<Module, IJp2pContainer<Module>>{
 
-		public Filter(IComponentFactory<IJp2pComponent<Module>> factory) {
+		public Filter(IComponentFactory<Module> factory) {
 			super( BuilderEvents.COMPONENT_CREATED, factory);
 		}
 

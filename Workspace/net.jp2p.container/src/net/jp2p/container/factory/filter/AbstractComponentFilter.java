@@ -11,14 +11,14 @@ import net.jp2p.container.builder.ICompositeBuilderListener.BuilderEvents;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 
-public abstract class AbstractComponentFilter<T,U extends Object> extends AbstractBuilderEventFilter<T> {
+public abstract class AbstractComponentFilter<M,U extends Object> extends AbstractBuilderEventFilter<M> {
 	
 	public static final String S_ERR_INVALID_EVENT = "The event is not valid; should be CreateComponent or StartComponent";
 	
 	//The component that has to be created or started
 	private U component;
 	
-	public AbstractComponentFilter( BuilderEvents event, IComponentFactory<T> factory) {
+	public AbstractComponentFilter( BuilderEvents event, IComponentFactory<M> factory) {
 		super(event, factory);
 		if(!BuilderEvents.COMPONENT_CREATED.equals(event) && 
 				!BuilderEvents.COMPONENT_STARTED.equals(event ) && 
@@ -40,10 +40,10 @@ public abstract class AbstractComponentFilter<T,U extends Object> extends Abstra
 	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean onCorrectBuilderEvent(ComponentBuilderEvent event) {
-		if( ((IComponentFactory<T>) event.getFactory()).createComponent() == null )
+		if( ((IComponentFactory<M>) event.getFactory()).createComponent() == null )
 			return false;
 		if( this.checkComponent((IComponentFactory<U>) event.getFactory() )){
-			component = (U) ((IComponentFactory<T>) event.getFactory()).createComponent();
+			component = (U) ((IComponentFactory<M>) event.getFactory()).createComponent();
 			return true;
 		}
 		return false;

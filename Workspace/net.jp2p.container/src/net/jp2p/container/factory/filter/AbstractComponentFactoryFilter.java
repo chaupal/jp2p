@@ -10,17 +10,17 @@ package net.jp2p.container.factory.filter;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.IComponentFactory;
 
-public abstract class AbstractComponentFactoryFilter<T extends Object>
+public abstract class AbstractComponentFactoryFilter<M extends Object>
 		implements IComponentFactoryFilter {
 
-	private IComponentFactory<T> factory;
+	private IComponentFactory<M> factory;
 	private boolean accept;
 	
-	protected AbstractComponentFactoryFilter( IComponentFactory<T> factory ) {
+	protected AbstractComponentFactoryFilter( IComponentFactory<M> factory ) {
 		this.factory = factory;
 	}
 
-	protected IComponentFactory<T> getFactory() {
+	protected IComponentFactory<M> getFactory() {
 		return factory;
 	}
 

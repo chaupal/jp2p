@@ -10,6 +10,11 @@ package net.jp2p.jxta.netpeergroup;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
+
+import net.jp2p.chaupal.document.IJp2pAdvertisement;
+import net.jp2p.chaupal.exception.Jp2pPeerGroupException;
+import net.jp2p.chaupal.id.IJp2pID;
+import net.jp2p.chaupal.peergroup.IJp2pPeerGroup;
 import net.jp2p.container.activator.AbstractJp2pService;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.IJp2pComponentNode;

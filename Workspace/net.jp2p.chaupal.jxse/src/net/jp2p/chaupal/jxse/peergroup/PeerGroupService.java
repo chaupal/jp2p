@@ -48,7 +48,7 @@ public class PeerGroupService extends AbstractJp2pServiceNode<PeerGroup>{
 	
 	@Override
 	public boolean start() {
-		if( super.getJp2pModule() == null )
+		if( super.getModule() == null )
 			this.startDiscovery();
 		return super.start();
 	}
@@ -68,7 +68,7 @@ public class PeerGroupService extends AbstractJp2pServiceNode<PeerGroup>{
 				case COMPLETED:	
 					Advertisement[] ads = disco.getAdvertisements();
 					try {
-						disco.getJp2pModule().publish( ads[0]);
+						disco.getModule().publish( ads[0]);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -122,7 +122,7 @@ public class PeerGroupService extends AbstractJp2pServiceNode<PeerGroup>{
 
 	@Override
 	protected void deactivate() {
-		PeerGroup peergroup = super.getJp2pModule();
+		PeerGroup peergroup = super.getModule();
 		if( peergroup != null )
 			peergroup.stopApp();
 		ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();

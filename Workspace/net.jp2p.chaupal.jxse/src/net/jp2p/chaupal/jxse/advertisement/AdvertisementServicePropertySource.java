@@ -9,8 +9,8 @@ import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
-import net.jxta.peergroup.PeerGroup;
 import net.jp2p.jxta.advertisement.AdvertisementPropertySource;
+import net.jxta.peergroup.PeerGroup;
 
 public class AdvertisementServicePropertySource extends AdvertisementPropertySource {
 

@@ -28,7 +28,7 @@ public class ChaupalDiscoveryServiceFactory extends DiscoveryServiceFactory {
 	@Override
 	protected ChaupalDiscoveryService onCreateComponent( IJp2pPropertySource<IJp2pProperties> source) {
 		IJp2pComponent<DiscoveryService> ds = super.onCreateComponent( source );
-		ChaupalDiscoveryService service = new ChaupalDiscoveryService( (IJp2pWritePropertySource<IJp2pProperties>) source, ds.getJp2pModule() );
+		ChaupalDiscoveryService service = new ChaupalDiscoveryService( (IJp2pWritePropertySource<IJp2pProperties>) source, ds.getModule() );
 		return service;
 	}
 

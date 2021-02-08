@@ -5,11 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container.service;
+package net.jp2p.chaupal.module;
 
 import java.util.EventObject;
 
-import net.jp2p.container.service.IServiceListener.ServiceRegistrationEvents;
+import net.jp2p.chaupal.module.IServiceListener.ServiceRegistrationEvents;
 
 public class ServiceListenerEvent<T extends Object> extends EventObject {
 	private static final long serialVersionUID = 5928582157413151939L;

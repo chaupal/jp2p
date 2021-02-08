@@ -52,7 +52,7 @@ public class ChaupalPipeService extends AbstractJp2pServiceNode<PipeService>{
 	 * @throws IOException
 	 */
 	public InputPipe getInputPipe() throws IOException{
-		return super.getJp2pModule().createInputPipe( pipead );
+		return super.getModule().createInputPipe( pipead );
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class ChaupalPipeService extends AbstractJp2pServiceNode<PipeService>{
 	 * @throws IOException
 	 */
 	public OutputPipe getOutputPipe() throws IOException{
-		return super.getJp2pModule().createOutputPipe( pipead, (Long) super.getPropertySource().getProperty( PipeServiceProperties.TIME_OUT ));
+		return super.getModule().createOutputPipe( pipead, (Long) super.getPropertySource().getProperty( PipeServiceProperties.TIME_OUT ));
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class ChaupalPipeService extends AbstractJp2pServiceNode<PipeService>{
 			public void notifyServiceChanged(ComponentChangedEvent<IJp2pComponent<PipeService>> event) {
 				if( event.getSource().equals( adService )){
 					if( event.getChange().equals( Jp2pContainer.ServiceChange.COMPONENT_EVENT )){
-						pipead = adService.getJp2pModule();
+						pipead = null;//adService.getModule();
 						if( pipead != null ){
 							String identifier = AbstractJp2pPropertySource.getBundleId( getPropertySource());
 							ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
@@ -104,8 +104,8 @@ public class ChaupalPipeService extends AbstractJp2pServiceNode<PipeService>{
 	@SuppressWarnings("unchecked")
 	public static Jp2pAdvertisementService<PipeAdvertisement> getAdvertisementService( ChaupalPipeService adService ){
 		for( IJp2pComponent<?> component: adService.getChildren() ){
-			if( component.getJp2pModule() instanceof Jp2pAdvertisementService )
-				return (Jp2pAdvertisementService<PipeAdvertisement>) component.getJp2pModule();
+			if( component.getModule() instanceof Jp2pAdvertisementService )
+				return (Jp2pAdvertisementService<PipeAdvertisement>) component.getModule();
 		}
 		return null;
 	}
