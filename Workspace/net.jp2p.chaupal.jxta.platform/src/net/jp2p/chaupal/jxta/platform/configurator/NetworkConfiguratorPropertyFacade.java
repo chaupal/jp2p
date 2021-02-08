@@ -6,19 +6,19 @@ import java.util.Iterator;
 
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.properties.AbstractPropertyFacade;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jxta.platform.NetworkConfigurator;
 
-public class NetworkConfiguratorPropertyFacade extends AbstractPropertyFacade<NetworkConfigurator> {
+public class NetworkConfiguratorPropertyFacade extends AbstractPropertyFacade<INetworkConfigurator> {
 
-	public NetworkConfiguratorPropertyFacade( String bundleId, NetworkConfigurator module) {
+	public NetworkConfiguratorPropertyFacade( String bundleId, INetworkConfigurator module) {
 		super( bundleId, module);
 	}
 
 	@Override
 	public Object getProperty( IJp2pProperties id) {
-		NetworkConfigurator configurator = super.getModule();
+		INetworkConfigurator configurator = super.getModule();
 		if(!( id instanceof NetworkConfiguratorProperties ))
 			return null;
 		NetworkConfiguratorProperties property = ( NetworkConfiguratorProperties )id;

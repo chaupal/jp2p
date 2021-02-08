@@ -7,8 +7,6 @@
  *******************************************************************************/
 package net.jp2p.container.factory;
 
-import net.jp2p.container.factory.AbstractComponentFactory;
-import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.filter.IComponentFactoryFilter;
 
 public abstract class AbstractComponentDependencyFactory<T extends Object, U extends Object> extends
@@ -42,11 +40,11 @@ public abstract class AbstractComponentDependencyFactory<T extends Object, U ext
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent event) {
 		if( filter != null ){
 			if( filter.accept(event)){
 				IComponentFactory<T> factory = (IComponentFactory<T>) event.getFactory();
-				dependency = (U) factory.getComponent();
+				dependency = (U) factory.createComponent();
 				setCanCreate( dependency != null );
 				if( super.canCreate() )
 					startComponent();
@@ -59,7 +57,7 @@ public abstract class AbstractComponentDependencyFactory<T extends Object, U ext
 	 * @param event
 	 * @return
 	*/
-	protected boolean isChildEvent( ComponentBuilderEvent<?> event ){
+	protected boolean isChildEvent( ComponentBuilderEvent event ){
 		return this.isChildFactory(event.getFactory() );
 	}
 
@@ -68,7 +66,7 @@ public abstract class AbstractComponentDependencyFactory<T extends Object, U ext
 	 * @param event
 	 * @return
 	*/
-	protected boolean isParentEvent( ComponentBuilderEvent<?> event ){
+	protected boolean isParentEvent( ComponentBuilderEvent event ){
 		return this.isParentFactory(event.getFactory() );
 	}
 

@@ -50,7 +50,7 @@ public class SocketFactory extends AbstractPeerGroupDependencyFactory<PipeMsgLis
 	}
 
 	@Override
-	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent event) {
 		if( super.isChildEvent( event )){
 			IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) event.getFactory().getPropertySource();
 			this.pipeSource = (AdvertisementPropertySource) source;

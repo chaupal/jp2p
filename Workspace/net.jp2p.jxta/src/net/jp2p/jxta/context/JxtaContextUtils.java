@@ -7,12 +7,12 @@
  *******************************************************************************/
 package net.jp2p.jxta.context;
 
+import net.jp2p.chaupal.peergroup.IJp2pModuleClassID;
 import net.jp2p.container.context.IJp2pServiceBuilder;
-import net.jxta.peergroup.core.ModuleClassID;
 
 public class JxtaContextUtils {
 
-	public static ModuleClassID[] getLoadedModuleClassIDs( IJp2pServiceBuilder context ) {
+	public static IJp2pModuleClassID[] getLoadedModuleClassIDs( IJp2pServiceBuilder context ) {
 		if( context instanceof IJxtaBuilder){
 			IJxtaBuilder jc = (IJxtaBuilder) context;
 			return jc.getSupportedModuleClassIDs();

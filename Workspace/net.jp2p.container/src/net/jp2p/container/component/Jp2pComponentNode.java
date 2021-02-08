@@ -15,12 +15,12 @@ import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 
-public class Jp2pComponentNode<T extends Object> extends Jp2pComponent<T> implements IJp2pComponentNode<T>{
+public class Jp2pComponentNode<M extends Object> extends Jp2pComponent<M> implements IJp2pComponentNode<M,Object>{
 
 	private ComponentEventDispatcher dispatcher = ComponentEventDispatcher.getInstance();
 	private Collection<IJp2pComponent<?>> children;
 
-	public Jp2pComponentNode( IJp2pPropertySource<IJp2pProperties> source, T component ) {
+	public Jp2pComponentNode( IJp2pPropertySource<IJp2pProperties> source, M component ) {
 		super( source, component);
 		this.children = new ArrayList<IJp2pComponent<?>>();
 	}
@@ -43,7 +43,7 @@ public class Jp2pComponentNode<T extends Object> extends Jp2pComponent<T> implem
 	}
 
 	@Override
-	public boolean addChild( IJp2pComponent<?> child ){
+	public boolean addChild( IJp2pComponent<Object> child ){
 		this.children.add( child );
 		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
 		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, identifier, Jp2pContainer.ServiceChange.CHILD_ADDED ));
@@ -51,15 +51,16 @@ public class Jp2pComponentNode<T extends Object> extends Jp2pComponent<T> implem
 	}
 
 	@Override
-	public void removeChild( IJp2pComponent<?> child ){
+	public void removeChild( IJp2pComponent<Object> child ){
 		this.children.remove( child );
 		String identifier = AbstractJp2pPropertySource.getBundleId( super.getPropertySource());
 		dispatcher.serviceChanged( new ComponentChangedEvent<IJp2pComponent<?>>( this, identifier, Jp2pContainer.ServiceChange.CHILD_REMOVED ));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IJp2pComponent<?>[] getChildren(){
-		return this.children.toArray( new IJp2pComponent<?>[this.children.size()] );
+	public IJp2pComponent<Object>[] getChildren(){
+		return this.children.toArray( new IJp2pComponent[this.children.size()] );
 	}
 
 	@Override
@@ -89,8 +90,8 @@ public class Jp2pComponentNode<T extends Object> extends Jp2pComponent<T> implem
 	 * @param node
 	 * @param module
 	 */
-	public static void removeModule( IJp2pComponentNode<?> node, Object module ){
-		for( IJp2pComponent<?> component: node.getChildren() ){
+	public static void removeModule( IJp2pComponentNode<Object,Object> node, Object module ){
+		for( IJp2pComponent<Object> component: node.getChildren() ){
 			if( component.getModule().equals( module ))
 				node.removeChild(component);
 		}

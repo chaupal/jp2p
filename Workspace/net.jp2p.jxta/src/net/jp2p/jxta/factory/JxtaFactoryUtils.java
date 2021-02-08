@@ -79,7 +79,7 @@ public class JxtaFactoryUtils {
 	 * @param createSource: create the property source immediately
 	 * @return
 	 */
-	public static IPropertySourceFactory getOrCreateChildFactory( IContainerBuilder builder, Map<String,String> attributes, IJp2pPropertySource<IJp2pProperties> parentSource, String componentName, boolean createSource ){
+	public static IPropertySourceFactory getOrCreateChildFactory( IContainerBuilder<Object> builder, Map<String,String> attributes, IJp2pPropertySource<IJp2pProperties> parentSource, String componentName, boolean createSource ){
 		IJp2pPropertySource<?> child = parentSource.getChild( componentName ); 
 		if( child != null )
 			return builder.getFactory(child );

@@ -7,7 +7,6 @@
  *******************************************************************************/
 package net.jp2p.container;
 
-import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.activator.IActivator;
 import net.jp2p.container.component.ComponentEventDispatcher;
 import net.jp2p.container.component.IJp2pComponent;
@@ -20,8 +19,8 @@ import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 
-public class Jp2pContainer<T extends Object> extends Jp2pComponentNode<T> 
-implements	IJp2pContainer<T>{
+public class Jp2pContainer<M extends Object> extends Jp2pComponentNode<M> 
+implements	IJp2pContainer<M>{
 
 	private static final String S_CONTAINER = "Container Structure for: ";
 	
@@ -93,8 +92,8 @@ implements	IJp2pContainer<T>{
 	 * @param container
 	 * @param module
 	 */
-	protected static void removeModule( Jp2pContainer<?> container, Object module ){
-		for( IJp2pComponent<?> component: container.getChildren() ){
+	protected static void removeModule( Jp2pContainer<Object> container, Object module ){
+		for( IJp2pComponent<Object> component: container.getChildren() ){
 			if( component.getModule().equals( module ))
 				container.removeChild(component);
 		}
@@ -113,10 +112,10 @@ implements	IJp2pContainer<T>{
 			return root;
 		if(!( root instanceof IJp2pComponentNode ))
 			return null;
-		IJp2pComponentNode<?> node = ( IJp2pComponentNode<?>) root;
-		IJp2pComponentNode<?> result;
-		for( IJp2pComponent<?> child: node.getChildren() ){
-			result = (IJp2pComponentNode<?>) findComponent(componentName, child);
+		IJp2pComponentNode<?,?> node = ( IJp2pComponentNode<?,?>) root;
+		IJp2pComponentNode<?,?> result;
+		for( Object child: node.getChildren() ){
+			result = (IJp2pComponentNode<?,?>) findComponent(componentName, (IJp2pComponent<?>) child);
 			if( result != null )
 				return result;
 		}
@@ -144,7 +143,7 @@ implements	IJp2pContainer<T>{
 		buffer.append( component.getComponentLabel() + "\n" );
 		if(!( component instanceof IJp2pComponentNode ))
 			return buffer.toString();
-		IJp2pComponentNode<?> node = (IJp2pComponentNode<?>) component;
+		IJp2pComponentNode<?,?> node = (IJp2pComponentNode<?,?>) component;
 		for( IJp2pComponent<?> child: node.getChildren() )
 			buffer.append(printComponentStructure( ++index, child ));
 		return buffer.toString();

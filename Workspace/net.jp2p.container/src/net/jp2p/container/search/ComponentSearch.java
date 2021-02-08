@@ -10,9 +10,9 @@ package net.jp2p.container.search;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.jp2p.container.component.ILeaf;
+import net.jp2p.container.component.INode;
 import net.jp2p.container.filter.IFilter;
-import net.jp2p.container.utils.ILeaf;
-import net.jp2p.container.utils.INode;
 
 public class ComponentSearch<T,U extends Object> implements ISearchable<T,U> {
 

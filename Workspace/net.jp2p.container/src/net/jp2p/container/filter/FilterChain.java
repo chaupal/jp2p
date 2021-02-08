@@ -77,7 +77,7 @@ public class FilterChain<T extends Object> extends AbstractComponentFactoryFilte
 	}
 	
 	@Override
-	public boolean onAccept(ComponentBuilderEvent<?> event) {
+	public boolean onAccept(ComponentBuilderEvent event) {
 		if( completed )
 			return false;
 		boolean accept = false;	

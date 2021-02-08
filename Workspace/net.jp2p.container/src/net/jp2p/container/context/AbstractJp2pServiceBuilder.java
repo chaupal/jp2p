@@ -10,7 +10,6 @@ package net.jp2p.container.context;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.utils.Utils;
 
@@ -85,7 +84,7 @@ public abstract class AbstractJp2pServiceBuilder implements IJp2pServiceBuilder 
 				ClassLoader loader = factory.getClass().getClassLoader();
 				String name = factory.getClass().getName();
 				try{
-					return (IPropertySourceFactory) loader.loadClass(name).newInstance();
+					return (IPropertySourceFactory) loader.loadClass(name).getDeclaredConstructor().newInstance();
 				} catch ( Exception e) {
 				    e.printStackTrace();
 				}

@@ -21,7 +21,7 @@ package net.jp2p.container;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.factory.IComponentFactory;
 
-public interface IContainerFactory<T extends Object> extends IComponentFactory<IJp2pComponent<T>>{
+public interface IContainerFactory<M extends Object> extends IComponentFactory<M>{
 
 	/**
 	 * Returns true if the context can be auto started 
@@ -33,5 +33,5 @@ public interface IContainerFactory<T extends Object> extends IComponentFactory<I
 	 * Create the component
 	 * @return
 	 */
-	public IJp2pComponent<T> createComponent();
+	public IJp2pComponent<M> createComponent();
 }

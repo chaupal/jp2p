@@ -9,7 +9,6 @@ package net.jp2p.container.properties;
 
 import java.util.Iterator;
 
-import net.jp2p.container.utils.IDescendant;
 
 public interface IJp2pPropertySource< T extends Object> extends IDescendant<T, IJp2pPropertySource<?>>{
 

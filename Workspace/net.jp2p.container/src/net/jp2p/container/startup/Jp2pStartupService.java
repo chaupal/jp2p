@@ -10,12 +10,16 @@ package net.jp2p.container.startup;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
-
+import net.jp2p.chaupal.document.IJp2pAdvertisement;
+import net.jp2p.chaupal.exception.Jp2pPeerGroupException;
+import net.jp2p.chaupal.id.IJp2pID;
+import net.jp2p.chaupal.peergroup.IJp2pPeerGroup;
 import net.jp2p.container.activator.AbstractActivator;
 import net.jp2p.container.activator.IActivator;
 import net.jp2p.container.activator.IJp2pService;
 import net.jp2p.container.builder.ICompositeBuilderListener;
 import net.jp2p.container.builder.IContainerBuilder;
+import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.properties.IJp2pDirectives;
@@ -23,7 +27,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.Utils;
 
-public class Jp2pStartupService extends AbstractActivator implements IJp2pService<IContainerBuilder<?>>{
+public class Jp2pStartupService extends AbstractActivator implements IJp2pComponent, IJp2pService<IContainerBuilder<?>>{
 
 	public static final String S_ERR_NO_SERVICE_LOADED = "\n\t!!! No service is loaded. Not starting context:  ";
 	public static final String S_ERR_CONTEXT_NOT_BUILT = "\n\t!!! The context was not built! Not starting context:  ";
@@ -63,8 +67,8 @@ public class Jp2pStartupService extends AbstractActivator implements IJp2pServic
 	protected void stopModule( IPropertySourceFactory factory ){
 		if(!( factory instanceof IComponentFactory<?> ))
 			return;
-		if( ((IComponentFactory<?>) factory).getComponent() instanceof IActivator ){
-			IActivator service = (IActivator) ((IComponentFactory<?>) factory).getComponent();
+		if( ((IComponentFactory<?>) factory).createComponent() instanceof IActivator ){
+			IActivator service = (IActivator) ((IComponentFactory<?>) factory).createComponent();
 			if( service.isActive())
 				service.stop();
 		}		
@@ -138,5 +142,24 @@ public class Jp2pStartupService extends AbstractActivator implements IJp2pServic
 	@Override
 	public IContainerBuilder<?> getModule() {
 		return this.container;
+	}
+
+	@Override
+	public void init(IJp2pPeerGroup group, IJp2pID assignedID, IJp2pAdvertisement implAdv)
+			throws Jp2pPeerGroupException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int startApp(String[] args) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void stopApp() {
+		// TODO Auto-generated method stub
+		
 	}
 }

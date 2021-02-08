@@ -7,6 +7,4 @@
  *******************************************************************************/
 package net.jp2p.container.component;
 
-import net.jp2p.container.utils.INode;
-
-public interface IJp2pComponentNode<T extends Object> extends IJp2pComponent<T>, INode<IJp2pComponent<T>, IJp2pComponent<?>>{}
+public interface IJp2pComponentNode<M,N extends Object> extends IJp2pComponent<M>, INode<M, IJp2pComponent<N>>{}

@@ -26,5 +26,5 @@ public interface ICompositeBuilderListener<T extends Object> {
 		}
 	}
 	
-	public void notifyChange( ComponentBuilderEvent<T> event );
+	public void notifyChange( ComponentBuilderEvent event );
 }

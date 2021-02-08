@@ -10,6 +10,10 @@ package net.jp2p.container.utils;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.jp2p.container.component.ILeaf;
+import net.jp2p.container.component.INode;
+import net.jp2p.container.properties.IDescendant;
+
 public class SimpleNode<T, U extends Object> implements IDescendant<T, ILeaf<U>> {
 
 	private T data;

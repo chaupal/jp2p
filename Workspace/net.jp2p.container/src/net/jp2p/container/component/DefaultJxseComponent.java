@@ -16,7 +16,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 
-public class DefaultJxseComponent<T extends Object> implements IJp2pComponent<T>{
+public class DefaultJxseComponent<M extends Object> implements IJp2pComponent<M>{
 
 	public static final String S_SERVICE = "Service";
 	
@@ -25,20 +25,20 @@ public class DefaultJxseComponent<T extends Object> implements IJp2pComponent<T>
 	public static final String S_ERR_NOT_COMPLETED = 
 			"The factory did not create the component. The flag setCompleted must be true, which is usually checked  with setAvailable.";
 	
-	private T module;
+	private M module;
 	private IJp2pWritePropertySource<IJp2pProperties> source;
 	
 	protected DefaultJxseComponent( String bundleId, String componentName) {
 		this( new DefaultPropertySource( bundleId, componentName), null);
 	}
 
-	protected DefaultJxseComponent( IJp2pWritePropertySource<IJp2pProperties> source, T module ) {
+	protected DefaultJxseComponent( IJp2pWritePropertySource<IJp2pProperties> source, M module ) {
 		this.source = source;
 		this.module = module;
 	}
 
-	protected DefaultJxseComponent( IComponentFactory<T> factory ) {
-		this( (IJp2pWritePropertySource<IJp2pProperties>) factory.getPropertySource(), factory.getComponent() );
+	protected DefaultJxseComponent( IComponentFactory<M> factory ) {
+		this( (IJp2pWritePropertySource<IJp2pProperties>) factory.getPropertySource(), factory.createComponent().getModule() );
 	}
 
 	/**
@@ -76,11 +76,11 @@ public class DefaultJxseComponent<T extends Object> implements IJp2pComponent<T>
 	}
 
 	@Override
-	public T getModule(){
+	public M getModule(){
 		return module;
 	}
 	
-	protected void setModule( T module ){
+	protected void setModule( M module ){
 		this.module = module;
 	}
 	

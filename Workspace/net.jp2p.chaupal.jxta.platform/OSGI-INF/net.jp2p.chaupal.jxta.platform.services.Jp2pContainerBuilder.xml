@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="net.jp2p.chaupal.jxta.platform.services.Jp2pContainerBuilder">
+   <service>
+      <provide interface="net.jp2p.container.builder.IJp2pContainerBuilder"/>
+   </service>
+   <implementation class="net.jp2p.chaupal.jxta.platform.services.Jp2pContainerBuilder"/>
+</scr:component>

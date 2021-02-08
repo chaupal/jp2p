@@ -4,8 +4,12 @@ import java.io.File;
 import java.net.URI;
 import java.util.Iterator;
 
+import net.jp2p.chaupal.jxse.core.id.Jp2pIDFactory;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
+import net.jp2p.chaupal.peer.IJp2pPeerID;
+import net.jp2p.chaupal.platform.INetworkConfigurator;
+import net.jp2p.chaupal.platform.INetworkManager;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -15,9 +19,7 @@ import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
-import net.jxta.peer.PeerID;
-import net.jxta.platform.NetworkConfigurator;
-import net.jxta.platform.NetworkManager.ConfigMode;
+import net.jxta.id.ID;
 
 public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropertySource
 	implements IJp2pWritePropertySource<IJp2pProperties>
@@ -109,7 +111,7 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		return new Convertor( this );
 	}
 
-	public static final void fillNetworkConfigurator( NetworkConfigurationPropertySource source, NetworkConfigurator configurator ){
+	public static final void fillNetworkConfigurator( NetworkConfigurationPropertySource source, INetworkConfigurator<ID> configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		while( iterator.hasNext() ){
 			NetworkConfiguratorProperties property = ( NetworkConfiguratorProperties ) iterator.next();
@@ -118,7 +120,7 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 				configurator.setStoreHome((URI) source.getProperty( property ));
 				break;
 			case PEER_ID:
-				configurator.setPeerID(( PeerID ) source.getProperty( property ));
+				configurator.setPeerID(( IJp2pPeerID ) source.getProperty( property ));
 				break;
 			case DESCRIPTION:
 				configurator.setDescription(( String )source.getProperty( property ));
@@ -188,20 +190,6 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		return null;
 	}
 
-	/**
-	 * Get the config modes as string
-	 * @return
-	 */
-	public static final String[] getConfigModes(){
-		ConfigMode[] modes = ConfigMode.values();
-		String[] results = new String[ modes.length];
-		for( int i=0; i<modes.length; i++ ){
-			ConfigMode mode = modes[i];
-			results[i] = mode.toString();
-		}
-		return results;
-	}
-
 	private class Convertor extends SimplePropertyConvertor{
 
 		public Convertor(IJp2pPropertySource<IJp2pProperties> source) {
@@ -219,9 +207,9 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 			switch( property ){
 			case CONFIG_MODE:
 				String str = StringStyler.styleToEnum( value );
-				return ConfigMode.valueOf( str );
+				return INetworkManager.ConfigModes.valueOf( str );
 			case PEER_ID:
-				return PeerID.create( URI.create( value ));
+				return Jp2pIDFactory.create( URI.create( value ));
 			case HOME:
 				return new File( value );
 			default:

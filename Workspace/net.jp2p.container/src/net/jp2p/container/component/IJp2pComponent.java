@@ -11,8 +11,8 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.StringStyler;
 
-public interface IJp2pComponent<T extends Object>{
-	
+public interface IJp2pComponent<M extends Object>{
+
 	public enum ModuleProperties implements IJp2pProperties{
 		STATUS,
 		CREATE_DATE;
@@ -55,9 +55,5 @@ public interface IJp2pComponent<T extends Object>{
 	 */
 	public IJp2pPropertySource<IJp2pProperties> getPropertySource();
 	
-	/**
-	 * Get the module that is contained in the component
-	 * @return
-	 */
-	public T getModule();
+	public M getModule();
 }

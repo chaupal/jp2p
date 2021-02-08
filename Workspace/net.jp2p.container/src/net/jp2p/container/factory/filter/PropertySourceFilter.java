@@ -28,7 +28,7 @@ public class PropertySourceFilter<T,U extends Object> extends AbstractBuilderEve
 	}
 
 	@Override
-	protected boolean onCorrectBuilderEvent(ComponentBuilderEvent<?> event) {
+	protected boolean onCorrectBuilderEvent(ComponentBuilderEvent event) {
 		return ( componentName.equals( event.getFactory().getComponentName()));		
 	}
 }

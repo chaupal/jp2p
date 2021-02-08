@@ -21,15 +21,17 @@ package net.jp2p.chaupal.jxta.platform.infra;
 import java.net.URI;
 import java.util.Iterator;
 
+import org.w3c.dom.Element;
+
+import net.jp2p.chaupal.id.IJp2pID;
+import net.jp2p.chaupal.jxta.core.id.Jp2pIDFactory;
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
-import net.jxta.document.XMLElement;
-import net.jxta.id.ID;
-import net.jxta.platform.NetworkConfigurator;
 
 public class InfrastructurePropertySource extends AbstractJp2pWritePropertySource {
 	
@@ -82,7 +84,7 @@ public class InfrastructurePropertySource extends AbstractJp2pWritePropertySourc
 		return new Convertor( this );
 	}
 
-	public static final void fillInfrastructureConfigurator( InfrastructurePropertySource source, NetworkConfigurator configurator ){
+	public static final void fillInfrastructureConfigurator( InfrastructurePropertySource source, INetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		while( iterator.hasNext() ){
 			InfrastructureProperties property = (InfrastructureProperties) iterator.next();
@@ -91,13 +93,13 @@ public class InfrastructurePropertySource extends AbstractJp2pWritePropertySourc
 				configurator.setInfrastructureName(( String ) source.getProperty( property ));
 				break;
 			case DESC:
-				configurator.setInfrastructureDesc(( XMLElement<?> ) source.getProperty( property ));
+				configurator.setInfrastructureDesc(( Element ) source.getProperty( property ));
 				break;
 			case DESCRIPTION:
 				configurator.setInfrastructureDescriptionStr(( String ) source.getProperty( property ));
 				break;
 			case ID:
-				configurator.setInfrastructureID(( ID ) source.getProperty( property ));
+				configurator.setInfrastructureID(( IJp2pID ) source.getProperty( property ));
 				break;
 			default:
 				break;
@@ -121,7 +123,7 @@ public class InfrastructurePropertySource extends AbstractJp2pWritePropertySourc
 			InfrastructureProperties property = ( InfrastructureProperties )id;
 			switch( property ){
 			case ID:
-				return ID.create( URI.create( value ));
+				return Jp2pIDFactory.create( URI.create( value ));
 			default:
 				break;
 			}

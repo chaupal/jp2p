@@ -16,6 +16,7 @@ import java.util.Collection;
 
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertyFacade;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfiguratorPropertyFacade;
+import net.jp2p.chaupal.platform.INetworkManager;
 import net.jp2p.container.Jp2pContainer;
 import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.ContainerBuilderEvent;
@@ -25,18 +26,16 @@ import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.IJp2pComponentNode;
 import net.jp2p.container.component.Jp2pComponent;
 import net.jp2p.container.component.Jp2pComponentNode;
+import net.jp2p.container.core.CompatibilityEvent;
+import net.jp2p.container.core.ICompatibilityListener;
+import net.jp2p.container.core.IJP2PCompatibility;
+import net.jp2p.container.core.IJxtaNode;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jxse.osgi.compat.CompatibilityEvent;
-import net.jxse.osgi.compat.ICompatibilityListener;
-import net.jxse.osgi.compat.IJP2PCompatibility;
-import net.jxse.osgi.compat.IJxtaNode;
-import net.jxse.osgi.platform.activator.PlatformJxseBuilder;
-import net.jxta.platform.NetworkManager;
 
-public class Jp2pCompatBuilder<T extends Object> extends PlatformJxseBuilder<T> implements IJp2pContainerBuilder<T>{
+public class Jp2pCompatBuilder<T extends Object> extends JxtaPlatformBuilder implements IJp2pContainerBuilder<T>{
 
 	private String bundle_id;
 	private IJP2PCompatibility<T> compat;
@@ -128,8 +127,8 @@ public class Jp2pCompatBuilder<T extends Object> extends PlatformJxseBuilder<T> 
 		private IJp2pComponent<T> getComponent( T module ){
 			IJp2pComponentNode<T> comp = null;
 			IJp2pPropertySource<IJp2pProperties> source = null;
-			if( module instanceof NetworkManager){
-				NetworkManager manager = (NetworkManager) module;
+			if( module instanceof INetworkManager){
+				INetworkManager manager = (INetworkManager) module;
 				source = new NetworkManagerPropertyFacade( bundle_id, manager);
 				comp = new Jp2pComponentNode<T>( source, module );
 				try {

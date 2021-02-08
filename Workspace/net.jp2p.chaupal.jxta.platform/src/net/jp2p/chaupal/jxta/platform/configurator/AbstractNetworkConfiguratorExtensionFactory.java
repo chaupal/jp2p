@@ -7,22 +7,21 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform.configurator;
 
-import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
-import net.jxta.platform.NetworkConfigurator;
 
 public abstract class AbstractNetworkConfiguratorExtensionFactory extends AbstractPropertySourceFactory{
 	
-	private NetworkConfigurator configurator;
+	private INetworkConfigurator configurator;
 	
 	protected AbstractNetworkConfiguratorExtensionFactory( String componentName ) {
 		super( componentName );
 	}
 
-	protected final NetworkConfigurator getConfigurator() {
+	protected final INetworkConfigurator getConfigurator() {
 		return configurator;
 	}
 
@@ -38,7 +37,7 @@ public abstract class AbstractNetworkConfiguratorExtensionFactory extends Abstra
 		if( !JxtaPlatformComponents.NETWORK_CONFIGURATOR.equals( JxtaPlatformComponents.valueOf( name )))
 			return;
 		NetworkConfigurationFactory factory = (NetworkConfigurationFactory) event.getFactory();
-		this.configurator = factory.getComponent().getModule();
+		this.configurator = factory.createComponent().getJp2pModule();
 		this.onNetworkConfiguratorCreated(factory);
 		super.notifyChange(event);
 	}

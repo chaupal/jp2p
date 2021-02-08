@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jp2p-container id="org.chaupal.rdv" name="Chaupal RDV Peer" auto-start="true">
+  <properties>
+    <bundle-id>org.chaupal.rdv</bundle-id>
+    <home-folder>${user.home}/.jxta/${bundle-id}</home-folder>
+  </properties>
+  <logger-service auto-start="true"/>
+  <startup-service auto-start="true"/>
+  <persistence-service context="ChaupalEclipse"/>
+  <network-manager id="org.chaupal.rdv.jp2pcontext" name="Rdv">
+    <properties>
+      <config-mode>RENDEZVOUS</config-mode>
+      <peer-id create="true" persist="true"/>
+    </properties>
+    <network-configurator name="Rdv Peer" clear-config="true">
+       <properties>
+       </properties>
+       <security>
+         <properties>
+           <principal>org.chaupal.rdv</principal>
+         </properties>
+       </security>
+       <tcp>
+         <properties>
+           <port>9715</port>
+           <incoming-status>true</incoming-status>
+           <outgoing-status>true</outgoing-status>
+          </properties>
+        </tcp>
+       <http>
+         <properties>
+           <port>8081</port>
+           <incoming-status>true</incoming-status>
+           <outgoing-status>true</outgoing-status>
+         </properties>
+        </http>
+        <multicast enabled="true"/>
+    </network-configurator>
+  </network-manager>
+</jp2p-container>

@@ -30,10 +30,10 @@ public abstract class AbstractBuilderEventFilter<T extends Object> extends
 	 * @param event
 	 * @return
 	 */
-	protected abstract boolean onCorrectBuilderEvent(ComponentBuilderEvent<?> event);
+	protected abstract boolean onCorrectBuilderEvent(ComponentBuilderEvent event);
 	
 	@Override
-	public boolean onAccept(ComponentBuilderEvent<?> event) {
+	public boolean onAccept(ComponentBuilderEvent event) {
 		if( !this.event.equals( event.getBuilderEvent() ))
 			return false;
 		return this.onCorrectBuilderEvent(event);

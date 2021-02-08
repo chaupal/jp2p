@@ -10,18 +10,16 @@ package net.jp2p.jxta.netpeergroup;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
-
-import net.jp2p.container.component.AbstractJp2pService;
+import net.jp2p.container.activator.AbstractJp2pService;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.IJp2pComponentNode;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
-import net.jp2p.jxta.netpeergroup.NetPeerGroupFactory;
 import net.jp2p.jxta.peergroup.PeerGroupPreferences;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.platform.NetworkManager;
 
-public class NetPeerGroupService extends AbstractJp2pService<PeerGroup> implements IJp2pComponentNode<PeerGroup>{
+public class NetPeerGroupService extends AbstractJp2pService<PeerGroup> implements IJp2pComponentNode<PeerGroup,Object>{
 
 	private NetworkManager manager;
 	
@@ -61,22 +59,42 @@ public class NetPeerGroupService extends AbstractJp2pService<PeerGroup> implemen
 	}
 
 	@Override
-	public boolean addChild(IJp2pComponent<?> child) {
+	public boolean addChild(IJp2pComponent<Object> child) {
 		return modules.add( child );
 	}
 
 	@Override
-	public void removeChild(IJp2pComponent<?> child) {
+	public void removeChild(IJp2pComponent<Object> child) {
 		modules.remove( child );
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IJp2pComponent<?>[] getChildren() {
-		return (IJp2pComponent<?>[]) modules.toArray( new IJp2pComponent[ modules.size()]);
+	public IJp2pComponent<Object>[] getChildren() {
+		return (IJp2pComponent<Object>[]) modules.toArray( new IJp2pComponent[ modules.size()]);
 	}
 
 	@Override
 	public boolean hasChildren() {
 		return !modules.isEmpty();
+	}
+
+	@Override
+	public void init(IJp2pPeerGroup group, IJp2pID assignedID, IJp2pAdvertisement implAdv)
+			throws Jp2pPeerGroupException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int startApp(String[] args) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void stopApp() {
+		// TODO Auto-generated method stub
+		
 	}	
 }

@@ -13,17 +13,19 @@ package net.jp2p.chaupal.jxta.platform;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import net.jp2p.chaupal.jxse.core.id.Jp2pIDFactory;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
+import net.jp2p.chaupal.peer.IJp2pPeerID;
+import net.jp2p.chaupal.platform.INetworkManager;
 import net.jp2p.container.persistence.AbstractPreferences;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jxta.id.ID;
 import net.jxta.id.IDFactory;
-import net.jxta.peer.PeerID;
 import net.jxta.peergroup.PeerGroupID;
-import net.jxta.platform.NetworkManager.ConfigMode;
 
 public class NetworkManagerPreferences extends AbstractPreferences<IJp2pProperties, String, Object>{
 	public NetworkManagerPreferences( NetworkManagerPropertySource source )
@@ -43,15 +45,15 @@ public class NetworkManagerPreferences extends AbstractPreferences<IJp2pProperti
 	/* (non-Javadoc)
 	 * @see net.osgi.jxse.network.INetworkManagerPropertySource#getConfigMode()
 	 */
-	public ConfigMode getConfigMode( ){
+	public INetworkManager.ConfigModes getConfigMode( ){
 		IJp2pPropertySource<IJp2pProperties> source = super.getSource();
-		return ( ConfigMode ) source.getProperty( NetworkManagerProperties.CONFIG_MODE );
+		return ( INetworkManager.ConfigModes ) source.getProperty( NetworkManagerProperties.CONFIG_MODE );
 	}
 
 	/* (non-Javadoc)
 	 * @see net.osgi.jxse.network.INetworkManagerPropertySource#setConfigMode(net.jxta.platform.NetworkManager.ConfigMode)
 	 */
-	public void setConfigMode( ConfigMode mode ){
+	public void setConfigMode( INetworkManager.ConfigModes mode ){
 		IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) super.getSource();
 		source.setProperty( NetworkManagerProperties.CONFIG_MODE, mode );
 	}
@@ -59,8 +61,8 @@ public class NetworkManagerPreferences extends AbstractPreferences<IJp2pProperti
 	/* (non-Javadoc)
 	 * @see net.osgi.jxse.network.INetworkManagerPropertySource#setConfigMode(java.lang.String)
 	 */
-	public ConfigMode setConfigMode( String mstr ){
-		ConfigMode mode = ConfigMode.valueOf(mstr );
+	public INetworkManager.ConfigModes setConfigMode( String mstr ){
+		INetworkManager.ConfigModes mode = INetworkManager.ConfigModes.valueOf(mstr );
 		this.setConfigMode(mode );
 		return mode;
 	}
@@ -103,20 +105,20 @@ public class NetworkManagerPreferences extends AbstractPreferences<IJp2pProperti
 	/* (non-Javadoc)
 	 * @see net.osgi.jxse.network.INetworkManagerPropertySource#getPeerID()
 	 */
-	public PeerID getPeerID() throws URISyntaxException{
+	public IJp2pPeerID getPeerID() throws URISyntaxException{
 		NetworkManagerPropertySource source = (NetworkManagerPropertySource) super.getSource();
 		String name = AbstractJp2pPropertySource.getIdentifier( source );
-		PeerID pgId = IDFactory.newPeerID( PeerGroupID.defaultNetPeerGroupID, name.getBytes() );
+		ID pgId = IDFactory.newPeerID( PeerGroupID.defaultNetPeerGroupID, name.getBytes() );
 		ManagedProperty<IJp2pProperties, Object> property = source.getOrCreateManagedProperty( NetworkManagerProperties.PEER_ID, pgId.toString(), false );
 		String str = (String) property.getValue();
 		URI uri = new URI( str );
-		return (PeerID) IDFactory.fromURI( uri );
+		return (IJp2pPeerID) Jp2pIDFactory.create( uri );
 	}
 
 	/* (non-Javadoc)
 	 * @see net.osgi.jxse.network.INetworkManagerPropertySource#setPeerID(net.jxta.peer.PeerID)
 	 */
-	public void setPeerID( PeerID peerID ){
+	public void setPeerID( IJp2pPeerID peerID ){
 		IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) super.getSource();
 		source.setProperty( NetworkManagerProperties.PEER_ID, peerID.toString() );
 	}
@@ -170,7 +172,7 @@ public class NetworkManagerPreferences extends AbstractPreferences<IJp2pProperti
 			URI uri = null;
 			try {
 				uri = new URI( value );
-				return IDFactory.fromURI( uri );
+				return Jp2pIDFactory.create( uri );
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 			}

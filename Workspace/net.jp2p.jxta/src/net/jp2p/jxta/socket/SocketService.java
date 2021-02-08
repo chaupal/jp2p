@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.jp2p.container.component.AbstractJp2pService;
+iimport net.jp2p.chaupal.peergroup.IJp2pPeerGroup;
+import net.jp2p.container.activator.AbstractJp2pService;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketProperties;
 import net.jp2p.jxta.socket.SocketPropertySource.SocketTypes;
 import net.jxta.peergroup.PeerGroup;
@@ -131,5 +132,24 @@ public class SocketService<T extends PipeMsgListener> extends AbstractJp2pServic
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void init(IJp2pPeerGroup group, IJp2pID assignedID, IJp2pAdvertisement implAdv)
+			throws Jp2pPeerGroupException, Jp2pPeerGroupException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int startApp(String[] args) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void stopApp() {
+		// TODO Auto-generated method stub
+		
 	}
 }

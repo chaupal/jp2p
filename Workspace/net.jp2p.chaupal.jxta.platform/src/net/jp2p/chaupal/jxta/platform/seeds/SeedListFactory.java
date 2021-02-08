@@ -11,14 +11,14 @@ import java.util.Iterator;
 
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.chaupal.jxta.platform.seeds.ISeedInfo.SeedTypes;
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.factory.AbstractPropertySourceFactory;
 import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.properties.IJp2pDirectives;
-import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
-import net.jxta.platform.NetworkConfigurator;
 
 public class SeedListFactory extends AbstractPropertySourceFactory{
 	
@@ -53,7 +53,7 @@ public class SeedListFactory extends AbstractPropertySourceFactory{
 		if( !JxtaPlatformComponents.NETWORK_CONFIGURATOR.equals( JxtaPlatformComponents.valueOf( name )))
 			return;
 		NetworkConfigurationFactory factory = (NetworkConfigurationFactory) event.getFactory();
-		NetworkConfigurator configurator = factory.getComponent().getModule();
+		INetworkConfigurator configurator = factory.createComponent().getJp2pModule();
 		SeedListPropertySource source = (SeedListPropertySource) super.getPropertySource();
 		
 		SeedTypes type = SeedListPropertySource.getSeedListType( source );
@@ -72,7 +72,7 @@ public class SeedListFactory extends AbstractPropertySourceFactory{
 	 * @param configurator
 	 * @param source
 	 */
-	private static void fillSeeds( SeedListPropertySource source, NetworkConfigurator configurator) {
+	private static void fillSeeds( SeedListPropertySource source, INetworkConfigurator configurator) {
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		while( iterator.hasNext() ){
 			IJp2pProperties key = iterator.next();

@@ -26,11 +26,11 @@ import net.jp2p.container.factory.IJp2pComponents;
 import net.jp2p.container.factory.IPropertySourceFactory;
 import net.jp2p.container.persistence.IContextFactory;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.sequencer.Jp2pBundleSequencer;
 import net.jp2p.container.sequencer.SequencerServiceFactory;
@@ -274,8 +274,8 @@ public class Jp2pHandler extends DefaultHandler implements IContextEntities{
 		String msg = message.format(new Object[]
 				{
 				x.getSystemId(),
-				new Integer(x.getLineNumber()),
-				new Integer(x.getColumnNumber()),
+				x.getLineNumber(),
+				x.getColumnNumber(),
 				x.getMessage()
 				});
 		Logger.getLogger( this.getClass().getName()).info(msg);

@@ -7,10 +7,6 @@
  *******************************************************************************/
 package net.jp2p.container.properties;
 
-import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pWritePropertySource;
-
 public abstract class AbstractPropertyConvertor<T extends IJp2pProperties, U,V extends Object> implements
 		IPropertyConvertor<T,U,V> {
 

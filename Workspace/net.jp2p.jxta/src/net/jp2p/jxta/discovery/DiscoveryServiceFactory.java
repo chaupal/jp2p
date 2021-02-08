@@ -12,7 +12,6 @@ import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.Jp2pComponent;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
-import net.jp2p.jxta.discovery.DiscoveryPropertySource;
 import net.jp2p.jxta.factory.AbstractPeerGroupDependencyFactory;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.netpeergroup.NetPeerGroupFactory;

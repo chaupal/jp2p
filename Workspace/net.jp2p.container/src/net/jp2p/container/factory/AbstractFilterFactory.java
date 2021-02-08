@@ -7,12 +7,10 @@
  *******************************************************************************/
 package net.jp2p.container.factory;
 
-import net.jp2p.container.factory.AbstractComponentFactory;
-import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.filter.IComponentFactoryFilter;
 
-public abstract class AbstractFilterFactory<T extends Object> extends
-		AbstractComponentFactory<T> {
+public abstract class AbstractFilterFactory<M extends Object> extends
+		AbstractComponentFactory<M> {
 
 	private IComponentFactoryFilter filter;
 
@@ -32,7 +30,7 @@ public abstract class AbstractFilterFactory<T extends Object> extends
 	}
 
 	@Override
-	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent event) {
 		if( filter != null ){
 			if( filter.accept(event)){
 				setCanCreate( true );

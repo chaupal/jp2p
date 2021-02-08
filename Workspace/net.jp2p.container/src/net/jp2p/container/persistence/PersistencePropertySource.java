@@ -9,11 +9,11 @@ package net.jp2p.container.persistence;
 
 import net.jp2p.container.context.IJp2pServiceBuilder;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
-import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 
 public class PersistencePropertySource extends AbstractJp2pWritePropertySource {

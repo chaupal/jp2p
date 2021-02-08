@@ -20,10 +20,10 @@ import net.jp2p.container.factory.ComponentBuilderEvent;
 import net.jp2p.container.factory.ContainerFactory;
 import net.jp2p.container.factory.IComponentFactory;
 import net.jp2p.container.factory.IPropertySourceFactory;
-import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
+import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
@@ -115,7 +115,7 @@ public class ContainerBuilder implements IContainerBuilder<Object>{
 	public boolean isCompleted(){
 		for( ICompositeBuilderListener<?> listener: factories ){
 			IPropertySourceFactory factory = (IPropertySourceFactory) listener;
-			if(( factory instanceof IComponentFactory<?> ) && !((ContainerBuilder) factory).isCompleted())
+			if(( factory instanceof IComponentFactory ) && !((ContainerBuilder) factory).isCompleted())
 				return false;
 		}
 		return true;
@@ -124,11 +124,12 @@ public class ContainerBuilder implements IContainerBuilder<Object>{
 	/* (non-Javadoc)
 	 * @see net.osgi.jp2p.builder.IContainerBuilder#listModulesNotCompleted()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String listModulesNotCompleted(){
 		StringBuffer buffer = new StringBuffer();
 		for( ICompositeBuilderListener<?> listener: factories ){
-			IComponentFactory<?> factory = (IComponentFactory<?>) listener;
+			IComponentFactory<Object> factory = (IComponentFactory<Object>) listener;
 			if( !factory.isCompleted())
 				buffer.append( "\t\t\t"+ factory.getComponentName() + "\n" );
 		}
@@ -141,14 +142,13 @@ public class ContainerBuilder implements IContainerBuilder<Object>{
 	 * @see net.osgi.jp2p.builder.IContainerBuilder#updateRequest(net.osgi.jp2p.factory.ComponentBuilderEvent)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
-	public synchronized void updateRequest(ComponentBuilderEvent<?> event) {
+	public synchronized void updateRequest(ComponentBuilderEvent event) {
 		lock.lock();
 		try{
 			for( ICompositeBuilderListener<?> listener: this.factories ){
 				if( !listener.equals( event.getFactory())){
 					IPropertySourceFactory factory = (IPropertySourceFactory) listener;
-					factory.notifyChange( (ComponentBuilderEvent<Object>) event);
+					factory.notifyChange( (ComponentBuilderEvent) event);
 				}
 			}
 		}

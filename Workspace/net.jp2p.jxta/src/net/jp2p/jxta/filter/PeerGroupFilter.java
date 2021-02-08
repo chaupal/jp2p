@@ -48,7 +48,7 @@ public class PeerGroupFilter<T extends Object> extends AbstractComponentFactoryF
 	}
 
 	@Override
-	public boolean onAccept(ComponentBuilderEvent<?> event) {
+	public boolean onAccept(ComponentBuilderEvent event) {
 		if( !BuilderEvents.COMPONENT_STARTED.equals( event.getBuilderEvent()))
 			return false;
 		PeerGroup pg = PeerGroupFactory.getPeerGroup((IComponentFactory<?>) event.getFactory());

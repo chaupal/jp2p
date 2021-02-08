@@ -11,6 +11,7 @@ import java.util.EventObject;
 
 import net.jp2p.container.properties.IManagedPropertyListener.PropertyEvents;
 
+
 public class ManagedPropertyEvent<T,U extends Object> extends EventObject {
 	private static final long serialVersionUID = 1L;
 

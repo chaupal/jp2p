@@ -32,14 +32,14 @@ public class NetworkManagerFilter<T extends Object> extends AbstractComponentFac
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean onAccept(ComponentBuilderEvent<?> event) {
+	public boolean onAccept(ComponentBuilderEvent event) {
 		if( !BuilderEvents.FACTORY_COMPLETED.equals( event.getBuilderEvent()))
 			return false;
 		IComponentFactory<?> factory = (IComponentFactory<?>) event.getFactory();
 		String name = StringStyler.styleToEnum( factory.getComponentName() );
 		if( JxtaPlatformComponents.NETWORK_MANAGER.name().equals(name) ){
 			acceptManager = true;
-			IJp2pComponent<NetworkManager> comp = (IJp2pComponent<NetworkManager>) factory.getComponent();
+			IJp2pComponent<NetworkManager> comp = (IJp2pComponent<NetworkManager>) factory.createComponent();
 			this.manager = comp.getModule();
 		}
 		if( JxtaPlatformComponents.NETWORK_CONFIGURATOR.name().equals(name) ){

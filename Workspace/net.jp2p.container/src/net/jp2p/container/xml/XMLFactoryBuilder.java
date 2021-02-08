@@ -14,13 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
@@ -33,8 +29,8 @@ import net.jp2p.container.context.IJp2pServiceManager;
 import net.jp2p.container.factory.ContainerFactory;
 import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
 import net.jp2p.container.sequencer.Jp2pBundleSequencer;
-import net.jp2p.container.utils.io.IOUtils;
 import net.jp2p.container.utils.Utils;
+import net.jp2p.container.utils.io.IOUtils;
 
 public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, IFactoryBuilder {
 
@@ -138,10 +134,10 @@ public class XMLFactoryBuilder implements ICompositeBuilder<ContainerFactory>, I
 			throw new RuntimeException( S_ERR_NO_SCHEMA_FOUND );
 		
 		//factory.setNamespaceAware( true );
-		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		//SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 		// note that if your XML already declares the XSD to which it has to conform, then there's no need to create a validator from a Schema object
-		Source schemaFile = new StreamSource( Jp2pHandler.class.getResourceAsStream( S_SCHEMA_LOCATION ));
+		//Source schemaFile = new StreamSource( Jp2pHandler.class.getResourceAsStream( S_SCHEMA_LOCATION ));
 		InputStream in;
 		try {
 			in = url.openStream();

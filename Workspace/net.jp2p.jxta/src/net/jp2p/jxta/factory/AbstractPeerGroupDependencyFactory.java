@@ -23,7 +23,7 @@ public abstract class AbstractPeerGroupDependencyFactory<T extends Object> exten
 
 	@Override
 	protected IComponentFactoryFilter createFilter() {
-		return new PeerGroupFilter<IJp2pComponent<T>>( this );
+		return new PeerGroupFilter<T>( this );
 	}
 	
 	protected PeerGroup getPeerGroup(){

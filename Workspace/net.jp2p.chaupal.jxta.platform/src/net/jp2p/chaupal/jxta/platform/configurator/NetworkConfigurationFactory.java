@@ -23,6 +23,8 @@ import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManage
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfigurationDirectives;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationPropertySource.NetworkConfiguratorProperties;
 import net.jp2p.chaupal.jxta.platform.security.SecurityFactory;
+import net.jp2p.chaupal.platform.INetworkConfigurator;
+import net.jp2p.chaupal.platform.INetworkManager;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.Jp2pComponentNode;
@@ -35,10 +37,8 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
-import net.jxta.platform.NetworkConfigurator;
-import net.jxta.platform.NetworkManager;
 
-public class NetworkConfigurationFactory extends AbstractDependencyFactory<NetworkConfigurator, IJp2pComponent<NetworkManager>> {
+public class NetworkConfigurationFactory extends AbstractDependencyFactory<INetworkConfigurator, IJp2pComponent<INetworkManager>> {
 
 	private Collection<IJp2pPropertySource<IJp2pProperties>> sources;
 	
@@ -55,13 +55,13 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	
 	@Override
 	protected boolean isCorrectFactory(IComponentFactory<?> factory) {
-		if(!( factory.getComponent() instanceof IJp2pComponent ))
+		if(!( factory.createComponent() instanceof IJp2pComponent ))
 			return false;
-		IJp2pComponent<?> component = (IJp2pComponent<?>) factory.getComponent();
-		return ( component.getModule() instanceof NetworkManager);
+		IJp2pComponent<?> component = (IJp2pComponent<?>) factory.createComponent();
+		return ( component.getModule() instanceof INetworkManager);
 	}
 
-	protected void fillConfigurator( NetworkConfigurator configurator ){
+	protected void fillConfigurator( INetworkConfigurator configurator ){
 		for( IJp2pPropertySource<IJp2pProperties> source: this.sources ){
 			String name = StringStyler.styleToEnum( source.getComponentName());
 			JxtaPlatformComponents comp = JxtaPlatformComponents.valueOf( name ); 
@@ -86,7 +86,7 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 		Path path = Paths.get(uri);
 		if(Files.exists(path, LinkOption.NOFOLLOW_LINKS )){
 			File file = path.toFile();
-			NetworkManager.RecursiveDelete( file );
+			INetworkManager.RecursiveDelete( file );
 		}
 	}
 
@@ -117,12 +117,12 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	}
 	
 	@Override
-	public IJp2pComponent<NetworkConfigurator> getComponent() {
-		return super.getComponent();
+	public IJp2pComponent<INetworkConfigurator> getComponent() {
+		return super.createComponent();
 	}
 
 	@Override
-	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent event) {
 		String name = StringStyler.styleToEnum( event.getFactory().getComponentName() );
 		if( !JxtaPlatformComponents.isComponent( name ))
 			return;
@@ -131,10 +131,10 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 	}
 
 	@Override
-	protected IJp2pComponent<NetworkConfigurator> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
-		NetworkConfigurator configurator = null;
+	protected IJp2pComponent<INetworkConfigurator> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
+		INetworkConfigurator configurator = null;
 		try {
-			NetworkManager manager = super.getDependency().getModule();
+			INetworkManager manager = super.getDependency().getModule();
 			configurator = manager.getConfigurator();
 			URI home = (URI) super.getPropertySource().getProperty( NetworkConfiguratorProperties.HOME );
 			if( home != null )
@@ -146,12 +146,13 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<Netwo
 			e.printStackTrace();
 			return null;
 		}
-		return new Jp2pComponentNode<NetworkConfigurator>( properties, configurator );
+		return new Jp2pComponentNode<INetworkConfigurator>( properties, configurator );
 	}
 
 	@Override
-	protected synchronized IJp2pComponent<NetworkConfigurator> createComponent() {
-		IJp2pComponent<NetworkConfigurator> configurator = super.createComponent();
+	public
+	synchronized IJp2pComponent<INetworkConfigurator> createComponent() {
+		IJp2pComponent<INetworkConfigurator> configurator = super.createComponent();
 		try {
 			configurator.getModule().save();
 		} catch (Exception e) {

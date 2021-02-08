@@ -19,14 +19,13 @@
 package net.jp2p.chaupal.jxta.platform.multicast;
 
 import java.util.Iterator;
-
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
-import net.jxta.platform.NetworkConfigurator;
 
 public class MulticastPropertySource extends AbstractJp2pWritePropertySource {
 	
@@ -89,7 +88,7 @@ public class MulticastPropertySource extends AbstractJp2pWritePropertySource {
 		return new Convertor( this );
 	}
 
-	public static final void fillNetworkConfigurator( MulticastPropertySource source, NetworkConfigurator configurator ){
+	public static final void fillNetworkConfigurator( MulticastPropertySource source, INetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		while( iterator.hasNext() ){
 			IJp2pProperties property =iterator.next();
@@ -104,13 +103,13 @@ public class MulticastPropertySource extends AbstractJp2pWritePropertySource {
 				configurator.setMulticastInterface((String) source.getProperty( property ));
 				break;
 			case PORT:
-				configurator.setMulticastPort( source.getPort());
+				configurator.setValue( INetworkConfigurator.IntSettings.MULTICAST_PORT, source.getPort());
 				break;
 			case POOL_SIZE:
-				configurator.setMulticastPoolSize((Integer) source.getProperty( property ));
+				configurator.setValue( INetworkConfigurator.IntSettings.MULTICAST_POOL_SIZE, (int) source.getProperty( property ));
 				break;
 			case SIZE:
-				configurator.setMulticastSize( (Integer) source.getProperty( property ));
+				configurator.setValue( INetworkConfigurator.IntSettings.MULTICAST_SIZE, (int) source.getProperty( property ));
 				break;
 			default:
 				break;

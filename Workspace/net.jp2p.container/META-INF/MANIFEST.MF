@@ -4,12 +4,13 @@ Bundle-Name: JP2P Container
 Bundle-SymbolicName: net.jp2p.container
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Chaupal.org
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: net.jp2p.container,
  net.jp2p.container.activator,
  net.jp2p.container.builder,
  net.jp2p.container.component,
  net.jp2p.container.context,
+ net.jp2p.container.core,
  net.jp2p.container.dispatcher,
  net.jp2p.container.factory,
  net.jp2p.container.factory.filter,
@@ -25,3 +26,12 @@ Export-Package: net.jp2p.container,
  net.jp2p.container.utils.io,
  net.jp2p.container.validator,
  net.jp2p.container.xml
+Import-Package: net.jp2p.chaupal.document,
+ net.jp2p.chaupal.exception,
+ net.jp2p.chaupal.id,
+ net.jp2p.chaupal.module,
+ net.jp2p.chaupal.peergroup,
+ org.osgi.framework,
+ org.osgi.service.log;version="1.5.0",
+ org.osgi.util.tracker;version="1.5.2"
+Automatic-Module-Name: net.jp2p.container

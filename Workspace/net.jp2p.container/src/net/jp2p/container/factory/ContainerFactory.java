@@ -62,7 +62,7 @@ public class ContainerFactory extends AbstractComponentFactory<Object> implement
 	}
 
 	@Override
-	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent event) {
 		/* DO NOTHING */
 	}
 

@@ -35,7 +35,6 @@ import net.jp2p.jxta.factory.AbstractPeerGroupDependencyFactory;
 import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.peergroup.PeerGroupFactory;
-import net.jp2p.jxta.peergroup.PeerGroupPropertySource;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource.PeerGroupDirectives;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource.PeerGroupProperties;
 import net.jp2p.jxta.pipe.PipeAdvertisementPropertySource;
@@ -65,7 +64,7 @@ public class PeerGroupFactory extends AbstractPeerGroupDependencyFactory<PeerGro
 	@Override
 	public void extendContainer() {
 		IContainerBuilder<?> builder = super.getBuilder();
-		RendezVousPropertySource rdvps = (RendezVousPropertySource) JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getParentSource(), JxtaComponents.RENDEZVOUS_SERVICE.toString(), true ).getPropertySource();
+		RendezVousPropertySource rdvps = (RendezVousPropertySource) JxtaFactoryUtils.getOrCreateChildFactory( (IContainerBuilder<Object>) builder, new HashMap<String, String>(), super.getParentSource(), JxtaComponents.RENDEZVOUS_SERVICE.toString(), true ).getPropertySource();
 		rdvps.setDirective( Directives.AUTO_START, this.getPropertySource().getDirective( Directives.AUTO_START ));
 		super.extendContainer();
 	}
@@ -161,7 +160,7 @@ public class PeerGroupFactory extends AbstractPeerGroupDependencyFactory<PeerGro
 	 * @return
 	 */
 	public static PeerGroup getPeerGroup( IComponentFactory<?> factory ){
-		Object component = factory.getComponent();
+		Object component = factory.createComponent();
 		PeerGroup peergroup = null;
 		if(  component instanceof PeerGroup )
 			peergroup = (PeerGroup) component;
@@ -244,10 +243,10 @@ public class PeerGroupFactory extends AbstractPeerGroupDependencyFactory<PeerGro
 					sn.addChild(node);						
 			}
 			stack.push((PeerGroupNode) sn);
-			if(!( component instanceof IJp2pComponentNode<?>) )
+			if(!( component instanceof IJp2pComponentNode<?,?>) )
 				return;
-			IJp2pComponentNode<?> node = (IJp2pComponentNode<?>) component;
-			for( IJp2pComponent<?> child: node.getChildren() )
+			IJp2pComponentNode<?,?> node = (IJp2pComponentNode<?,?>) component;
+			for( IJp2pComponent child: node.getChildren() )
 				findPeerGroups(child, stack);
 		}
 	}

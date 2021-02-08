@@ -7,10 +7,6 @@
  *******************************************************************************/
 package net.jp2p.container.factory;
 
-import net.jp2p.container.factory.AbstractComponentFactory;
-import net.jp2p.container.factory.ComponentBuilderEvent;
-import net.jp2p.container.factory.IComponentFactory;
-
 public abstract class AbstractDependencyFactory<T extends Object, U extends Object> extends
 		AbstractComponentFactory<T> {
 
@@ -37,13 +33,13 @@ public abstract class AbstractDependencyFactory<T extends Object, U extends Obje
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent event) {
 		switch( event.getBuilderEvent()){
 		case COMPONENT_CREATED:
 			IComponentFactory<?> factory = (IComponentFactory<?>) event.getFactory();
 			if( !this.isCorrectFactory( factory ))
 				return;
-			dependency = (U) factory.getComponent();
+			dependency = (U) factory.createComponent();
 			super.setCanCreate( dependency != null );
 			if( super.canCreate() )
 				super.startComponent();

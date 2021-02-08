@@ -14,11 +14,28 @@ import net.jp2p.container.IJp2pContainer;
 public class ContainerBuilderEvent<T extends Object> extends EventObject {
 	private static final long serialVersionUID = -1266257260044093122L;
 
-	private IJp2pContainer<T> container;
+	public enum Types{
+		START,
+		SUCCESSFUL,
+		ERROR,
+	}
 	
+	private Types type;
+	
+	private IJp2pContainer<T> container;
+
 	public ContainerBuilderEvent(Object source, IJp2pContainer<T> container) {
+		this( source, Types.START, container );
+	}
+	
+	public ContainerBuilderEvent(Object source, Types type, IJp2pContainer<T> container) {
 		super(source);
+		this.type = type;
 		this.container = container;
+	}
+
+	public Types getType() {
+		return type;
 	}
 
 	public IJp2pContainer<T> getContainer() {

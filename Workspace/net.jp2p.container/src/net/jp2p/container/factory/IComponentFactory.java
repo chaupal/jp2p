@@ -7,7 +7,9 @@
  *******************************************************************************/
 package net.jp2p.container.factory;
 
-public interface IComponentFactory<T extends Object> extends IPropertySourceFactory{
+import net.jp2p.container.component.IJp2pComponent;
+
+public interface IComponentFactory<M extends Object> extends IPropertySourceFactory{
 	
 	/**
 	 * Some services need to start prior to the creation of properties. This can be performed here.
@@ -29,5 +31,5 @@ public interface IComponentFactory<T extends Object> extends IPropertySourceFact
 	 * Get the service component. Returns null if the factory was not completed
 	 * @return
 	 */
-	public T getComponent();
+	public IJp2pComponent<M> createComponent();
 }

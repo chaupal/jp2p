@@ -29,7 +29,7 @@ public class RegistrationServiceFactory extends
 	}
 
 	@Override
-	public void onNotifyChange(ComponentBuilderEvent<Object> event) {
+	public void onNotifyChange(ComponentBuilderEvent event) {
 		/* DO NOTHING */
 	}
 

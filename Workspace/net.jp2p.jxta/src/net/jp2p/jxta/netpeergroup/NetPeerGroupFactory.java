@@ -18,7 +18,6 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.jxta.factory.JxtaFactoryUtils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jp2p.jxta.filter.NetworkManagerFilter;
-import net.jp2p.jxta.netpeergroup.NetPeerGroupService;
 import net.jp2p.jxta.peergroup.PeerGroupPropertySource;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.platform.NetworkManager;
@@ -32,7 +31,7 @@ public class NetPeerGroupFactory extends AbstractComponentDependencyFactory<Peer
 	@Override
 	public void extendContainer() {
 		IContainerBuilder<?> builder = super.getBuilder();
-		JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getPropertySource(), JxtaComponents.RENDEZVOUS_SERVICE.toString(), true ).getPropertySource();
+		JxtaFactoryUtils.getOrCreateChildFactory( (IContainerBuilder<Object>) builder, new HashMap<String, String>(), super.getPropertySource(), JxtaComponents.RENDEZVOUS_SERVICE.toString(), true ).getPropertySource();
 		super.extendContainer();
 	}
 

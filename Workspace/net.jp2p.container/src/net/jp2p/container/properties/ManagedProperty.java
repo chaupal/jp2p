@@ -16,6 +16,7 @@ import net.jp2p.container.properties.IManagedPropertyListener.PropertyEvents;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
 
+
 public class ManagedProperty<T, U extends Object> implements Cloneable{
 	
 	public static final String S_DEFAULT_CATEGORY = "JP2P";

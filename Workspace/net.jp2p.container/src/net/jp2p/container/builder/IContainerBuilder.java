@@ -47,7 +47,7 @@ public interface IContainerBuilder<T extends Object> {
 	 * Perform a request for updating the container
 	 * @param event
 	 */
-	public abstract void updateRequest(ComponentBuilderEvent<?> event);
+	public abstract void updateRequest(ComponentBuilderEvent event);
 
 	/** Add a factory with the given component name to the container. use the given component name and parent,
 	 * if 'createsource' is true, the property source is immediately created, and 'blockcreation' means that

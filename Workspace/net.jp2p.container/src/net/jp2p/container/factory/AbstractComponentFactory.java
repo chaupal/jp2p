@@ -29,14 +29,14 @@ import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties.Jp2pProperties;
 import net.jp2p.container.utils.Utils;
 
-public abstract class AbstractComponentFactory<T extends Object> extends AbstractPropertySourceFactory implements IComponentFactory<IJp2pComponent<T>>{
+public abstract class AbstractComponentFactory<M extends Object> extends AbstractPropertySourceFactory implements IComponentFactory<M>{
 
 	public static final String S_FACTORY = "Factory:";
 	public static final String S_ERR_CREATION_EXCEPTION = "The factory cannot be created, because it is not ready yet";
 	public static final String S_WRN_NOT_ENABLED = "The component is not enabled: ";
 	public static final String S_WRN_BLOCK_CREATION = "The creation of the component is blocked: ";
 	
-	private IJp2pComponent<T> component;
+	private IJp2pComponent<M> component;
 	
 	private boolean completed;
 	private boolean failed;
@@ -59,8 +59,6 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		helper = new WaitForHelper( source );
 		return source;
 	}
-
-
 
 	@Override
 	public boolean isCompleted(){
@@ -118,7 +116,7 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	 * @param properties
 	 * @return
 	 */
-	protected abstract IJp2pComponent<T> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties);
+	protected abstract IJp2pComponent<M> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties);
 	
 	/**
 	 * Create the component. By default, the factory can do this internally.
@@ -130,7 +128,7 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	 * 4: the component is created and events are spawned 
 	 * @return
 	 */
-	protected synchronized IJp2pComponent<T> createComponent() {
+	protected synchronized IJp2pComponent<M> onCreateComponent() {
 		Logger logger = Logger.getLogger( this.getClass().getName() );
 		boolean enabled = super.getPropertySource().isEnabled();
 		if( !enabled ){
@@ -153,7 +151,7 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		this.parseDirectivesAfter();
 		if( component instanceof IJp2pComponentNode ){
 			while( stack.size() >0 ){
-				Jp2pComponentNode.addModule( (IJp2pComponentNode<?>) component, stack.pop() );
+				Jp2pComponentNode.addModule( (IJp2pComponentNode) component, stack.pop() );
 			}
 		}
 		IJp2pWritePropertySource<IJp2pProperties> source = (IJp2pWritePropertySource<IJp2pProperties>) component.getPropertySource();
@@ -195,7 +193,7 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	}
 
 	@Override
-	public IJp2pComponent<T> getComponent(){
+	public IJp2pComponent<M> createComponent(){
 		return component;
 	}
 
@@ -212,10 +210,10 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		return activator.isActive();
 	}
 
-	protected abstract void onNotifyChange( ComponentBuilderEvent<Object> event );
+	protected abstract void onNotifyChange( ComponentBuilderEvent event );
 	
 	@Override
-	public final void notifyChange(ComponentBuilderEvent<Object> event) {
+	public final void notifyChange(ComponentBuilderEvent event) {
 		if( helper != null ){
 			helper.update(event);
 		}
@@ -224,12 +222,12 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		
 		switch( event.getBuilderEvent()){
 		case COMPONENT_CREATED:
-			IComponentFactory<?>factory = (IComponentFactory<?>) event.getFactory();
+			IComponentFactory<M> factory =  (IComponentFactory<M>) event.getFactory();
 			if( isChildFactory( factory )){
 				if( component == null )
-				  stack.push( factory.getComponent() );
+				  stack.push( factory.createComponent() );
 				else{
-					Jp2pComponentNode.addModule( (IJp2pComponentNode<?>) component, factory.getComponent() );
+					Jp2pComponentNode.addModule( (IJp2pComponentNode<?,?>) component, factory.createComponent() );
 				}
 			}
 			break;
@@ -243,7 +241,7 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 	 * @param factory
 	 * @return
 	 */
-	protected boolean isChildFactory( IComponentFactory<?> factory ){
+	protected boolean isChildFactory( IComponentFactory<M> factory ){
 		if( factory == null )
 			return false;
 		IJp2pPropertySource<IJp2pProperties> source = factory.getPropertySource();
@@ -361,10 +359,10 @@ public abstract class AbstractComponentFactory<T extends Object> extends Abstrac
 		 * 'wait for' directive
 		 * @param event
 		 */
-		void update( ComponentBuilderEvent<Object> event ){
+		void update( ComponentBuilderEvent event ){
 			if( !this.blocked || !BuilderEvents.COMPONENT_CREATED.equals( event.getBuilderEvent() ))
 				return;
-			IComponentFactory<?>factory = (IComponentFactory<?>) event.getFactory();
+			IComponentFactory factory = (IComponentFactory) event.getFactory();
 			if( !Components.SEQUENCER_SERVICE.toString().equals( factory.getComponentName() ))
 				return;
 			String name = AbstractJp2pPropertySource.getIdentifier( factory.getPropertySource());

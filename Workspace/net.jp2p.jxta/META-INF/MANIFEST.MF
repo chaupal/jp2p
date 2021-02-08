@@ -4,8 +4,12 @@ Bundle-Name: JXTA bridge for JP2P Container
 Bundle-SymbolicName: net.jp2p.jxta;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Chaupal.org
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: net.jp2p.container,
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: net.jp2p.chaupal.document,
+ net.jp2p.chaupal.exception,
+ net.jp2p.chaupal.id,
+ net.jp2p.chaupal.peergroup,
+ net.jp2p.container,
  net.jp2p.container.activator,
  net.jp2p.container.builder,
  net.jp2p.container.component,
@@ -18,10 +22,6 @@ Import-Package: net.jp2p.container,
  net.jp2p.container.properties,
  net.jp2p.container.utils,
  net.jp2p.jxta.advertisement,
- net.jp2p.jxta.peergroup,
- net.jp2p.jxta.pipe,
- net.jxse.osgi.compat,
- net.jxse.osgi.platform.activator,
  net.jxta.discovery,
  net.jxta.document,
  net.jxta.id,
@@ -49,3 +49,4 @@ Export-Package: net.jp2p.jxta.advertisement,
  net.jp2p.jxta.transport,
  net.jp2p.jxta.utils
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: net.jp2p.jxta

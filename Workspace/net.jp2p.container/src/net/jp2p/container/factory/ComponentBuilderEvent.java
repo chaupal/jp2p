@@ -11,7 +11,7 @@ import java.util.EventObject;
 
 import net.jp2p.container.builder.ICompositeBuilderListener.BuilderEvents;
 
-public class ComponentBuilderEvent<T extends Object> extends EventObject {
+public class ComponentBuilderEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
 
 	private BuilderEvents builderEvent;

@@ -26,7 +26,7 @@ public class FactoryFilter<T,U extends Object> extends AbstractBuilderEventFilte
 	}
 
 	@Override
-	protected boolean onCorrectBuilderEvent(ComponentBuilderEvent<?> event) {
+	protected boolean onCorrectBuilderEvent(ComponentBuilderEvent event) {
 		return ( componentName.equals( event.getFactory().getComponentName()));		
 	}
 }

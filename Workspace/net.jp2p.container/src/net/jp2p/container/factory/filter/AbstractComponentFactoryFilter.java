@@ -29,10 +29,10 @@ public abstract class AbstractComponentFactoryFilter<T extends Object>
 	 * @param event
 	 * @return
 	 */
-	protected abstract boolean onAccept( ComponentBuilderEvent<?> event );
+	protected abstract boolean onAccept( ComponentBuilderEvent event );
 	
 	@Override
-	public boolean accept(ComponentBuilderEvent<?> event) {
+	public boolean accept(ComponentBuilderEvent event) {
 		this.accept = this.onAccept(event);
 		return accept;
 	}

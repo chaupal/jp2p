@@ -41,7 +41,7 @@ import net.jxta.protocol.ModuleClassAdvertisement;
 import net.jxta.protocol.ModuleSpecAdvertisement;
 import net.jxta.protocol.PipeAdvertisement;
 
-public abstract class AbstractJxtaAdvertisementFactory<T extends Object, U extends Advertisement> extends AbstractFilterFactory<T> {
+public abstract class AbstractJxtaAdvertisementFactory<M extends Object, A extends Advertisement> extends AbstractFilterFactory<M> {
 	
 	private AdvertisementTypes type;
 	private PeerGroup peergroup;
@@ -89,8 +89,8 @@ public abstract class AbstractJxtaAdvertisementFactory<T extends Object, U exten
 	
 	@Override
 	protected IComponentFactoryFilter createFilter() {
-		FilterChain<IJp2pComponent<T>> bf = new FilterChain<IJp2pComponent<T>>( Operators.SEQUENTIAL_AND, this );
-		PeerGroupFilter<IJp2pComponent<T>> pgf = new PeerGroupFilter<IJp2pComponent<T>>( this );
+		FilterChain<M> bf = new FilterChain<M>( Operators.SEQUENTIAL_AND, this );
+		PeerGroupFilter<M> pgf = new PeerGroupFilter<M>( this );
 		bf.addFilter(pgf);
 		bf.addListener( new IFilterChainListener(){
 
@@ -98,7 +98,7 @@ public abstract class AbstractJxtaAdvertisementFactory<T extends Object, U exten
 			@Override
 			public boolean notifyComponentCompleted(FilterChainEvent event) {
 				if( event.getFilter() instanceof PeerGroupFilter ){
-					IJp2pComponent<PeerGroup> component = (IJp2pComponent<PeerGroup>) event.getFactory().getComponent();
+					IJp2pComponent<PeerGroup> component = (IJp2pComponent<PeerGroup>) event.getFactory().createComponent();
 					peergroup = component.getModule();
 				}
 				return true;
@@ -113,22 +113,22 @@ public abstract class AbstractJxtaAdvertisementFactory<T extends Object, U exten
 	 * @param source
 	 * @return
 	 */
-	protected abstract U createAdvertisement( IJp2pPropertySource<IJp2pProperties> source );
+	protected abstract A createAdvertisement( IJp2pPropertySource<IJp2pProperties> source );
 
 	/**
 	 * Create the advertisement
 	 * @param source
 	 * @return
 	 */
-	protected abstract IJp2pComponent<T> createComponent( U advertisement );
+	protected abstract IJp2pComponent<M> createComponent( A advertisement );
 
 	@Override
-	protected IJp2pComponent<T> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
+	protected IJp2pComponent<M> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		IJp2pPropertySource<IJp2pProperties> source = super.getPropertySource();
 		String tp = StringStyler.styleToEnum((String) source.getDirective( AdvertisementDirectives.TYPE ));
 		if( Utils.isNull(tp))
 			return null;
-		U adv = this.createAdvertisement( super.getPropertySource());
+		A adv = this.createAdvertisement( super.getPropertySource());
 		return this.createComponent( adv );
 	}
 	

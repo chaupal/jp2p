@@ -7,7 +7,7 @@
  *******************************************************************************/
 package net.jp2p.container.activator;
 
-import net.jp2p.container.component.IJp2pComponent;
+import net.jp2p.chaupal.module.IJp2pModule;
 
-public interface IJp2pService<T extends Object> extends IJp2pComponent<T>, IActivator{
+public interface IJp2pService<M extends Object> extends IJp2pModule, IActivator{
 }

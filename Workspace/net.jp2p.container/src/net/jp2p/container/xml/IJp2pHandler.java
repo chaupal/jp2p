@@ -7,11 +7,11 @@
  *******************************************************************************/
 package net.jp2p.container.xml;
 
-import net.jp2p.container.properties.IJp2pProperties;
-import net.jp2p.container.properties.ManagedProperty;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
+import net.jp2p.container.properties.IJp2pProperties;
+import net.jp2p.container.properties.ManagedProperty;
 
 public interface IJp2pHandler {
 

@@ -9,8 +9,11 @@ package net.jp2p.container.persistence;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import net.jp2p.container.component.AbstractJp2pService;
+import net.jp2p.chaupal.document.IJp2pAdvertisement;
+import net.jp2p.chaupal.exception.Jp2pPeerGroupException;
+import net.jp2p.chaupal.id.IJp2pID;
+import net.jp2p.chaupal.peergroup.IJp2pPeerGroup;
+import net.jp2p.container.activator.AbstractJp2pService;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IManagedPropertyListener;
@@ -72,5 +75,24 @@ public class PersistenceService<U,V extends Object> extends AbstractJp2pService<
 		for( IPropertyEventDispatcher dispatcher: this.dispatchers ){
 			dispatcher.removePropertyListener(listener);
 		}
+	}
+
+	@Override
+	public void init(IJp2pPeerGroup group, IJp2pID assignedID, IJp2pAdvertisement implAdv)
+			throws Jp2pPeerGroupException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int startApp(String[] args) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void stopApp() {
+		// TODO Auto-generated method stub
+		
 	}
 }

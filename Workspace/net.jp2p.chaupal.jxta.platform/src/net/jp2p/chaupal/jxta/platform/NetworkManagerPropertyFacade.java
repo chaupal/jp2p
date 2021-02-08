@@ -5,19 +5,19 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
+import net.jp2p.chaupal.platform.INetworkManager;
 import net.jp2p.container.properties.AbstractPropertyFacade;
 import net.jp2p.container.properties.IJp2pProperties;
-import net.jxta.platform.NetworkManager;
 
-public class NetworkManagerPropertyFacade extends AbstractPropertyFacade<NetworkManager> {
+public class NetworkManagerPropertyFacade extends AbstractPropertyFacade<INetworkManager> {
 
-	public NetworkManagerPropertyFacade( String bundleId, NetworkManager module) {
+	public NetworkManagerPropertyFacade( String bundleId, INetworkManager module) {
 		super( bundleId, module);
 	}
 
 	@Override
 	public Object getProperty( IJp2pProperties id) {
-		NetworkManager manager = super.getModule();
+		INetworkManager manager = super.getModule();
 		if(!( id instanceof NetworkManagerProperties ))
 			return null;
 		NetworkManagerProperties property  = ( NetworkManagerProperties )id;

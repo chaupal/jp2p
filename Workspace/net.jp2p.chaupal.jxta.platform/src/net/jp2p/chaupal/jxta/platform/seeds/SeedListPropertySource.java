@@ -13,14 +13,15 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import net.jp2p.chaupal.jxta.platform.seeds.ISeedInfo.SeedTypes;
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
-import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.io.IOUtils;
 import net.jp2p.container.utils.StringProperty;
 import net.jp2p.container.utils.StringStyler;
@@ -28,7 +29,6 @@ import net.jp2p.container.utils.Utils;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
 import net.jp2p.jxta.transport.TransportPropertySource;
 import net.jp2p.jxta.transport.TransportPropertySource.NetworkTypes;
-import net.jxta.platform.NetworkConfigurator;
 
 public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 
@@ -174,11 +174,11 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 	 * @param source
 	 * @param configurator
 	 */
-	protected static final void fillRelayNetworkConfigurator( SeedListPropertySource source, NetworkConfigurator configurator ){
+	protected static final void fillRelayNetworkConfigurator( SeedListPropertySource source, INetworkConfigurator configurator ){
 		configurator.clearRelaySeedingURIs();
 		configurator.clearRelaySeeds();
 		boolean useOnly = AbstractJp2pPropertySource.getBoolean( source, SeedListDirectives.USE_ONLY );
-		configurator.setUseOnlyRelaySeeds(useOnly);
+		configurator.setEnabled( INetworkConfigurator.ToggleSettings.USE_ONLY_RELAY_SEEDS, useOnly);
 		
 		String str = source.getDirective( SeedListDirectives.MAX_CLIENTS );
 		int maxClients = Utils.isNull( str )? 0: Integer.parseInt( str );
@@ -190,15 +190,15 @@ public class SeedListPropertySource extends AbstractJp2pWritePropertySource {
 	 * @param source
 	 * @param configurator
 	 */
-	protected static final void fillRendezvousNetworkConfigurator( SeedListPropertySource source, NetworkConfigurator configurator ){
+	protected static final void fillRendezvousNetworkConfigurator( SeedListPropertySource source, INetworkConfigurator configurator ){
 		configurator.clearRendezvousSeedingURIs();
 		configurator.clearRendezvousSeeds();
 		boolean useOnly = AbstractJp2pPropertySource.getBoolean( source, SeedListDirectives.USE_ONLY );
-		configurator.setUseOnlyRendezvousSeeds(useOnly);
+		configurator.setEnabled( INetworkConfigurator.ToggleSettings.USE_ONLY_RELAY_SEEDS,useOnly);
 
 		String str = source.getDirective( SeedListDirectives.MAX_CLIENTS );
 		int maxClients = Utils.isNull( str )? 0: Integer.parseInt( str );
-		configurator.setRendezvousMaxClients( maxClients );
+		configurator.setValue( INetworkConfigurator.IntSettings.RENDEZVOUS_MAX_CLIENTS, maxClients );
 	}
 
 	/**

@@ -11,81 +11,154 @@
     <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <properties>
-        <tycho.version>0.22.0</tycho.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
-        <luna-update-repo.url>http://download.eclipse.org/eclipse/updates/4.4</luna-update-repo.url>
-        <jxse-repo.url>https://chaupal.github.io/releases/2.8.0/milestone/20150701</jxse-repo.url>        
-        <osgi-broker-repo.url>http://89.31.96.252/download.condast.org/updatesite/Broker/release</osgi-broker-repo.url>        
-    </properties>
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<tycho.version>2.1.0</tycho.version>
+		<maven.dependency.version>2.10</maven.dependency.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jetty.version>8.1.16.v20140903</jetty.version>
+		<eclipse-update-repo.url>http://download.eclipse.org/eclipse/updates/4.6</eclipse-update-repo.url>
+		<eclipse-repo.url>http://download.eclipse.org/releases/oxygen</eclipse-repo.url>
+	</properties>
 
-    <repositories>
-        <repository>
-            <id>luna-update</id>
-            <url>${luna-update-repo.url}</url>
-            <layout>p2</layout>
-        </repository>
-        <repository>
-            <id>jxse</id>
-            <url>${jxse-repo.url}</url>
-            <layout>p2</layout>
-        </repository>
-    </repositories>
+	<organization>
+		<name>The Chaupal P2P Organisation</name>
+		<url>http://chaupal.github.io/</url>
+	</organization>
+
+	<description>JXTA technology is a set of open protocols that allow any connected device on the
+        network ranging from cell phones and wireless PDAs to PCs and servers to communicate and
+        collaborate in a P2P manner. JXTA peers create a virtual network where any peer can interact
+        with other peers and resources directly even when some of the peers and resources are behind
+        firewalls and NATs or are on different network transports. JXSE is the Java implementation
+        of the JXTA protocols.
+    </description>
+
+	<issueManagement>
+		<system>Project Issues</system>
+		<url>https://github.com/chaupal/jp2p/issues</url>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>Apache 2.0 Software License</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<repositories>
+		<repository>
+			<id>eclipse-update</id>
+			<url>${eclipse-update-repo.url}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>eclipse</id>
+			<layout>p2</layout>
+			<url>${eclipse-repo.url}</url>
+		</repository>
+		<!-- Repository needed to include the jboss netty library -->
+		<repository>
+			<id>mvnrepository</id>
+			<url>https://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<!-- Repository needed to include the jboss netty library -->
+			<id>repository.httptunnel</id>
+			<url>file:${project.basedir}/net.jxse.project/lib/Netty/org.jboss.netty.httptunnel-0.92.0.jar</url>
+		</repository>
+	</repositories>
 
   <modules>
-    <module>../net.jp2p.container</module>
+	<module>../net.jp2p.target</module>
     <module>../net.jp2p.jxta</module>
     <module>../net.jp2p.chaupal</module>
-    <module>../net.jp2p.chaupal.equinox</module>
-    <module>../net.jp2p.chaupal.jxta</module>
-    <module>../net.jp2p.chaupal.jxta.platform</module>
+    <module>../net.jp2p.container</module>
     <module>../net.jp2p.feature</module>
     <module>../net.jp2p.update</module>
   </modules>
   
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-maven-plugin</artifactId>
-                <version>${tycho.version}</version>
-                <extensions>true</extensions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>target-platform-configuration</artifactId>
-                <version>${tycho.version}</version>
-                <configuration>
-                      <environments>
-                        <environment>
-                            <os>linux</os>
-                            <ws>gtk</ws>
-                            <arch>x86</arch>
-                        </environment>
-                        <environment>
-                            <os>linux</os>
-                            <ws>gtk</ws>
-                            <arch>x86_64</arch>
-                        </environment>
-                        <environment>
-                            <os>win32</os>
-                            <ws>win32</ws>
-                            <arch>x86</arch>
-                        </environment>
-                        <environment>
-                            <os>win32</os>
-                            <ws>win32</ws>
-                            <arch>x86_64</arch>
-                        </environment>
-                        <environment>
-                            <os>macosx</os>
-                            <ws>cocoa</ws>
-                            <arch>x86_64</arch>
-                        </environment>
-                    </environments>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-</project> 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.reficio</groupId>
+				<artifactId>p2-maven-plugin</artifactId>
+				<version>1.3.0</version>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<phase>package</phase>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<!-- specify your dependencies here -->
+								<!-- groupId:artifactId:version -->
+								<artifact>
+									<id>org.eclipse.equinox.console:org.eclipse.platform:1.1.200</id>
+									<id>org.apache.derby:derby:10.15.2.0</id>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<pomDependencies>consider</pomDependencies>
+					<target>
+						<artifact>
+							<groupId>net.jxse</groupId>
+							<artifactId>jxse.target</artifactId>
+							<version>${project.version}</version>
+						</artifact>
+					</target>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build></project> 

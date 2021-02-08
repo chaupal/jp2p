@@ -7,9 +7,9 @@
  *******************************************************************************/
 package net.jp2p.chaupal.jxta.platform;
 
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IPropertyConvertor;
-import net.jxta.platform.NetworkConfigurator;
 
 public interface INetworkPreferences extends IPropertyConvertor<IJp2pProperties, String, Object>{
 
@@ -18,5 +18,5 @@ public interface INetworkPreferences extends IPropertyConvertor<IJp2pProperties,
 	 * @param configurator
 	 * @return
 	 */
-	boolean fillConfigurator(NetworkConfigurator configurator);
+	boolean fillConfigurator(INetworkConfigurator configurator);
 }

@@ -20,6 +20,7 @@ package net.jp2p.chaupal.jxta.platform.http;
 
 import java.util.Iterator;
 
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
@@ -27,7 +28,6 @@ import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.transport.TransportPropertySource.TransportProperties;
-import net.jxta.platform.NetworkConfigurator;
 
 public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 	
@@ -105,9 +105,9 @@ public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 		return new Convertor( this );
 	}
 
-	public static final void fillHttpNetworkConfigurator( HttpPropertySource source, NetworkConfigurator configurator ){
+	public static final void fillHttpNetworkConfigurator( HttpPropertySource source, INetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
-		configurator.setHttpEnabled( source.isEnabled());
+		configurator.setEnabled(INetworkConfigurator.ToggleSettings.HTTP, source.isEnabled());
 		while( iterator.hasNext() ){
 			IJp2pProperties property =iterator.next();
 			if( !TransportProperties.isValidProperty(property))
@@ -115,13 +115,19 @@ public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 			TransportProperties tp = (TransportProperties) property;
 			switch( tp ){
 			case PORT:
-				configurator.setHttpPort( source.getPort());
+				configurator.setValue(INetworkConfigurator.IntSettings.HTTP_PORT, source.getPort());
+				break;
+			case START_PORT:
+				configurator.setValue(INetworkConfigurator.IntSettings.HTTP_START_PORT, (Integer) source.getProperty( property ));
+				break;
+			case END_PORT:
+				configurator.setValue(INetworkConfigurator.IntSettings.HTTP_END_PORT, (Integer) source.getProperty( property ));
 				break;
 			case INCOMING_STATUS:
-				configurator.setHttpIncoming( source.getIncomingStatus() );
+				configurator.setEnabled(INetworkConfigurator.ToggleSettings.HTTP_INCOMING_STATUS, source.getIncomingStatus() );
 				break;
 			case OUTGOING_STATUS:
-				configurator.setHttpOutgoing( source.getOutgoingStatus() );
+				configurator.setEnabled(INetworkConfigurator.ToggleSettings.HTTP_OUTGOING_STATUS, source.getOutgoingStatus() );
 				break;
 			case INTERFACE_ADDRESS:
 				configurator.setHttpInterfaceAddress( source.getInterfaceAddress() );
@@ -135,9 +141,9 @@ public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 		}
 	}
 
-	public static final void fillHttp2NetworkConfigurator( HttpPropertySource source, NetworkConfigurator configurator ){
+	public static final void fillHttp2NetworkConfigurator( HttpPropertySource source, INetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
-		configurator.setHttpEnabled( source.isEnabled());
+		configurator.setEnabled(INetworkConfigurator.ToggleSettings.HTTP2, source.isEnabled());
 		while( iterator.hasNext() ){
 			IJp2pProperties property =iterator.next();
 			if( !TransportProperties.isValidProperty(property))
@@ -145,19 +151,19 @@ public class HttpPropertySource extends AbstractJp2pWritePropertySource {
 			TransportProperties tp = (TransportProperties) property;
 			switch( tp ){
 			case PORT:
-				configurator.setHttp2Port( source.getPort());
+				configurator.setValue(INetworkConfigurator.IntSettings.HTTP2_PORT, source.getPort());
 				break;
 			case START_PORT:
-				configurator.setHttp2StartPort((Integer) source.getProperty( property ));
+				configurator.setValue(INetworkConfigurator.IntSettings.HTTP2_START_PORT, (Integer) source.getProperty( property ));
 				break;
 			case END_PORT:
-				configurator.setHttp2EndPort( (Integer) source.getProperty( property ));
+				configurator.setValue(INetworkConfigurator.IntSettings.HTTP2_END_PORT, (Integer) source.getProperty( property ));
 				break;
 			case INCOMING_STATUS:
-				configurator.setHttp2Incoming( source.getIncomingStatus() );
+				configurator.setEnabled(INetworkConfigurator.ToggleSettings.HTTP2_INCOMING_STATUS, source.getIncomingStatus() );
 				break;
 			case OUTGOING_STATUS:
-				configurator.setHttp2Outgoing( source.getOutgoingStatus() );
+				configurator.setEnabled(INetworkConfigurator.ToggleSettings.HTTP2_OUTGOING_STATUS, source.getOutgoingStatus() );
 				break;
 			case INTERFACE_ADDRESS:
 				configurator.setHttp2InterfaceAddress( source.getInterfaceAddress() );

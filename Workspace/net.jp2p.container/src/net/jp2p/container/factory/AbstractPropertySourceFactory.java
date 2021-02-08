@@ -12,12 +12,11 @@ import java.util.Map;
 import java.util.Set;
 
 import net.jp2p.container.builder.IContainerBuilder;
-import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.properties.IJp2pDirectives;
-import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringStyler;
 
 public abstract class AbstractPropertySourceFactory implements IPropertySourceFactory{
@@ -178,7 +177,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	 */
 	public synchronized void updateState( BuilderEvents event ){
 		try{
-			this.builder.updateRequest( new ComponentBuilderEvent<IJp2pComponent<Object>>( this, event ));
+			this.builder.updateRequest( new ComponentBuilderEvent( this, event ));
 		}
 		catch( Exception ex ){
 			ex.printStackTrace();
@@ -186,7 +185,7 @@ public abstract class AbstractPropertySourceFactory implements IPropertySourceFa
 	}
 	
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void notifyChange(ComponentBuilderEvent event) {
 		switch( event.getBuilderEvent()){
 		default:
 			break;

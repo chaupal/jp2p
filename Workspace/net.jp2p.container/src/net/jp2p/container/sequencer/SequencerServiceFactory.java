@@ -10,8 +10,12 @@ package net.jp2p.container.sequencer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import net.jp2p.chaupal.document.IJp2pAdvertisement;
+import net.jp2p.chaupal.exception.Jp2pPeerGroupException;
+import net.jp2p.chaupal.id.IJp2pID;
+import net.jp2p.chaupal.peergroup.IJp2pPeerGroup;
 import net.jp2p.container.Jp2pContainerPropertySource;
-import net.jp2p.container.component.AbstractJp2pService;
+import net.jp2p.container.activator.AbstractJp2pService;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.context.IJp2pServiceBuilder.Components;
 import net.jp2p.container.factory.AbstractComponentFactory;
@@ -87,7 +91,7 @@ public class SequencerServiceFactory extends AbstractComponentFactory<Object>
 
 	
 	@Override
-	protected void onNotifyChange(ComponentBuilderEvent<Object> event) {
+	protected void onNotifyChange(ComponentBuilderEvent event) {
 		/* DO NOTHING */	
 	}
 
@@ -110,16 +114,35 @@ public class SequencerServiceFactory extends AbstractComponentFactory<Object>
 	 * @author Kees
 	 *
 	 */
-	private static class SequencerService extends AbstractJp2pService<Object>{
+	private class SequencerService extends AbstractJp2pService<Object>{
 
 		protected SequencerService( IJp2pWritePropertySource<IJp2pProperties> properties) {
-			super( properties, new Object() );
+			super( properties, null );
 			super.setStatus( Status.ACTIVE);
 		}
 
 		@Override
 		protected void deactivate() {
 			super.setStatus( Status.DISABLED);
+		}
+
+		@Override
+		public void init(IJp2pPeerGroup group, IJp2pID assignedID, IJp2pAdvertisement implAdv)
+				throws Jp2pPeerGroupException, Jp2pPeerGroupException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public int startApp(String[] args) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void stopApp() {
+			// TODO Auto-generated method stub
+			
 		}
 
 		

@@ -14,18 +14,18 @@ import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.properties.IJp2pDirectives.Directives;
 import net.jp2p.container.utils.StringProperty;
 
-public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Comparable< IJp2pComponent<T>>{
+public class Jp2pComponent<M extends Object> implements IJp2pComponent<M>, Comparable<M>{
 
 	public static final String S_DEFAULT_PROPERTY = "Default";
-	private T module;
+	private M module;
 	private IJp2pPropertySource<IJp2pProperties> source;
 	private boolean isRoot;
 
-	protected Jp2pComponent( T component ) {
+	protected Jp2pComponent( M component ) {
 		this( null, component );
 	}
 
-	public Jp2pComponent( IJp2pPropertySource<IJp2pProperties> source, T component ) {
+	public Jp2pComponent( IJp2pPropertySource<IJp2pProperties> source, M component ) {
 		this.module = component;
 		this.source = source;
 		this.isRoot = false;
@@ -67,8 +67,9 @@ public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Compa
 		return source;
 	}
 
+	
 	@Override
-	public T getModule() {
+	public M getModule() {
 		return this.module;
 	}
 
@@ -76,7 +77,7 @@ public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Compa
 	 * Set the module
 	 * @param module
 	 */
-	protected void setModule(T module) {
+	protected void setModule(M module) {
 		this.module = module;
 	}
 
@@ -100,7 +101,7 @@ public class Jp2pComponent<T extends Object> implements IJp2pComponent<T>, Compa
 	}
 
 	@Override
-	public int compareTo(IJp2pComponent<T> o) {
+	public int compareTo(M o) {
 		return Integer.MAX_VALUE;
 	}
 }

@@ -23,13 +23,13 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
-import net.jxta.platform.NetworkConfigurator;
 
 public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 	
@@ -86,7 +86,7 @@ public class SecurityPropertySource extends AbstractJp2pWritePropertySource {
 		return new Convertor( this );
 	}
 
-	public static final void fillNetworkConfigurator( SecurityPropertySource source, NetworkConfigurator configurator ){
+	public static final void fillNetworkConfigurator( SecurityPropertySource source, INetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		while( iterator.hasNext() ){
 			IJp2pProperties property =iterator.next();

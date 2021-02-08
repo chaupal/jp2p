@@ -20,13 +20,13 @@ package net.jp2p.chaupal.jxta.platform.tcp;
 
 import java.util.Iterator;
 
+import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.jxta.transport.TransportPropertySource.TransportProperties;
-import net.jxta.platform.NetworkConfigurator;
 
 public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 	
@@ -88,9 +88,9 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 		return new Convertor( this );
 	}
 
-	public static final void fillTcpNetworkConfigurator( TcpPropertySource source, NetworkConfigurator configurator ){
+	public static final void fillTcpNetworkConfigurator( TcpPropertySource source, INetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
-		configurator.setTcpEnabled( source.isEnabled());
+		configurator.setEnabled( INetworkConfigurator.ToggleSettings.TCP_ENABLED, source.isEnabled());
 		while( iterator.hasNext() ){
 			IJp2pProperties property =iterator.next();
 			if( !TransportProperties.isValidProperty(property))
@@ -98,19 +98,19 @@ public class TcpPropertySource extends AbstractJp2pWritePropertySource {
 			TransportProperties tp = (TransportProperties) property;
 			switch( tp ){
 			case PORT:
-				configurator.setTcpPort( source.getPort());
+				configurator.setValue( INetworkConfigurator.IntSettings.TCP_PORT, source.getPort());
 				break;
 			case START_PORT:
-				configurator.setTcpStartPort((Integer) source.getProperty( property ));
+				configurator.setValue( INetworkConfigurator.IntSettings.TCP_START_PORT, (Integer) source.getProperty( property ));
 				break;
 			case END_PORT:
-				configurator.setTcpEndPort( (Integer) source.getProperty( property ));
+				configurator.setValue( INetworkConfigurator.IntSettings.TCP_END_PORT, (Integer) source.getProperty( property ));
 				break;
 			case INCOMING_STATUS:
-				configurator.setTcpIncoming( source.getIncomingStatus() );
+				configurator.setEnabled( INetworkConfigurator.ToggleSettings.TCP_INCOMING_STATUS, source.getIncomingStatus() );
 				break;
 			case OUTGOING_STATUS:
-				configurator.setTcpOutgoing( source.getOutgoingStatus() );
+				configurator.setEnabled( INetworkConfigurator.ToggleSettings.TCP_OUTGOING_STATUS, source.getOutgoingStatus() );
 				break;
 			case INTERFACE_ADDRESS:
 				configurator.setTcpInterfaceAddress( source.getInterfaceAddress() );
