@@ -27,7 +27,6 @@ import net.jp2p.container.component.IComponentChangedListener;
 import net.jp2p.container.component.IJp2pComponentNode;
 import net.jp2p.container.log.Jp2pLevel;
 import net.jp2p.container.properties.AbstractJp2pPropertySource;
-import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;

@@ -1,11 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Chaupal JXTA Service Library
-Bundle-SymbolicName: net.jp2p.chaupal.jxse
+Bundle-SymbolicName: net.jp2p.chaupal.jxse;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Chaupal.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.ws.rs.core;version="2.1.99",
+ javax.xml.crypto,
+ net.jp2p.builder.builder,
  net.jp2p.chaupal.document,
  net.jp2p.chaupal.exception,
  net.jp2p.chaupal.id,
@@ -53,9 +55,13 @@ Import-Package: javax.ws.rs.core;version="2.1.99",
  net.jxta.rendezvous,
  net.jxta.service,
  org.osgi.framework;version="1.7.0",
+ org.osgi.service.component.annotations;version="1.3.0",
  org.osgi.service.log;version="1.3.0",
  org.osgi.util.tracker;version="1.5.1"
-Service-Component: OSGI-INF/chaupalbuilder.xml, OSGI-INF/jxtabuilder.xml, OSGI-INF/jxta.xml 
+Service-Component: OSGI-INF/chaupalbuilder.xml,
+ OSGI-INF/jxtabuilder.xml,
+ OSGI-INF/jxta.xml,
+ OSGI-INF/net.jp2p.chaupal.jxse.services.Jp2pBuilderComponent.xml
 Export-Package: net.jp2p.chaupal.jxse.advertisement,
  net.jp2p.chaupal.jxse.core.id,
  net.jp2p.chaupal.jxse.core.module,

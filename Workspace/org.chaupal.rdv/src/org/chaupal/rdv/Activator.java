@@ -10,21 +10,15 @@
  *******************************************************************************/
 package org.chaupal.rdv;
 
-import net.jp2p.chaupal.activator.Jp2pBundleActivator;
-import net.jp2p.container.properties.IJp2pDirectives.DeveloperModes;
-
 import org.osgi.framework.*;
-import org.chaupal.rdv.service.ContainerObserver;
 
-public class Activator extends Jp2pBundleActivator {
+public class Activator implements BundleActivator {
 
 	public static final String S_BUNDLE_ID = "org.chaupal.rdv";
 	
-	private static Jp2pBundleActivator activator;
+	private static BundleContext context;
 	
 	public Activator() {
-		super( S_BUNDLE_ID, DeveloperModes.DEBUG );
-		activator = this;
 	}
 	
 	/*
@@ -33,8 +27,7 @@ public class Activator extends Jp2pBundleActivator {
 	 */
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
-		super.addObserver( new ContainerObserver() );
-		super.start(bundleContext);
+		context = bundleContext;
 	}
 
 	/*
@@ -43,11 +36,11 @@ public class Activator extends Jp2pBundleActivator {
 	 */
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
-		super.stop(bundleContext);
-		activator = null;
+		context = null;
 	}
-	
-	public static Jp2pBundleActivator getDefault(){
-		return activator;
+
+	public static BundleContext getContext() {
+		return context;
 	}
+
 }

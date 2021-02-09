@@ -31,85 +31,35 @@
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************
 */
-package net.jp2p.container.builder;
+package net.jp2p.builder.container;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class ContainerBuilderClient<C extends Object>{
+import net.jp2p.container.builder.IJp2pContainerBuilder;
+import net.jp2p.container.builder.Jp2pBuildException;
 
-	private String path;
-	private Class<?> clss;
+public class ContainerBuilderClient<C extends Object>{
 
 	private Executor executor;
 
-	private IJp2pContainerBuilder<C> builder;
-
-	private Collection<IContainerBuilderListener<C>> listeners;
-
-	/**
-	 * The default build path
-	 * @param clss
-	 */
-	public ContainerBuilderClient( Class<?> clss ) {
-		this( clss, null );
-	}
 	
-	public ContainerBuilderClient( Class<?> clss, String path ) {
-		this.clss = clss;
-		this.path = path;
-		this.listeners = new ArrayList<>();
+	public ContainerBuilderClient(  ) {
 		executor = Executors.newCachedThreadPool();
 	}
 
-	protected void execute( ) {
-		executor.execute(()->buildContainer( builder ));		
-	}
-	
 	public synchronized void setBuilder(IJp2pContainerBuilder<C> builder ){
-		this.builder = builder;
-		for( IContainerBuilderListener<C> listener: listeners )
-			builder.addContainerBuilderListener(listener);
+		executor.execute(()->buildContainer( builder ));		
 	}
 
 	public synchronized void unsetBuilder(IJp2pContainerBuilder<C> builder) {
-		for( IContainerBuilderListener<C> listener: listeners )
-			builder.removeContainerBuilderListener(listener);
-		this.builder = null;
-	}
-	
-	public void addContainerBuilderListener(IContainerBuilderListener<C> listener) {
-		this.listeners.add(listener);
-	}
-
-	public void removeContainerBuilderListener(IContainerBuilderListener<C> listener) {
-		this.listeners.remove(listener);	
-	}
-
-	/**
-	 * This method can be overridden to allow a custom build. If a true is returned, then
-	 * the default builder options will be ignored
-	 * @param builder
-	 * @return
-	 */
-	protected boolean onBuildContainer( IJp2pContainerBuilder<C> builder ) {
-		return false;
 	}
 	
 	protected final void buildContainer( IJp2pContainerBuilder<C> builder ) {
-		if( onBuildContainer(builder))
-			return;
 		try {
-			if(( this.path == null ) || this.path.equals(""))
-				this.builder.build( this.clss );
-			else
-				this.builder.build(clss, path );
+			builder.build( this.getClass());
 		} catch (Jp2pBuildException e) {
 			e.printStackTrace();
-			for( IContainerBuilderListener<C> listener: listeners )
-				listener.notifyContainerBuilt( (ContainerBuilderEvent<C>) new ContainerBuilderEvent<>(this, ContainerBuilderEvent.Types.ERROR, null ));
 		}
 	}
 }

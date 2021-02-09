@@ -24,18 +24,18 @@ public interface IJp2pContainerBuilder<M extends Object>{
 	 * Build the container from the given input stream
 	 * @return
 	 */
-	public IJp2pContainer<M> build( InputStream in) throws Jp2pBuildException;
+	public IJp2pContainer<M> build(InputStream in ) throws Jp2pBuildException;
 
 	/**
-	 * Build the container from the given resource path. 
+	 * Build the container from the given input stream
 	 * @return
 	 */
-	public IJp2pContainer<M> build(Class<?> clss, String path) throws Jp2pBuildException;
-
+	public IJp2pContainer<M> build(Class<?> clss ) throws Jp2pBuildException;
 
 	/**
-	 * Build the container from the given default location
+	 * Build the container from the given input stream
 	 * @return
 	 */
-	public IJp2pContainer<M> build( Class<?> clss ) throws Jp2pBuildException;
+	public IJp2pContainer<M> build(Class<?> clss, String path ) throws Jp2pBuildException;
+
 }

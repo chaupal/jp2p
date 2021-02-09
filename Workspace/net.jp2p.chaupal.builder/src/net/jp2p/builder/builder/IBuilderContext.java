@@ -5,9 +5,15 @@
  * which accompanies this distribution, and is available at
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************/
-package net.jp2p.container.activator;
+package net.jp2p.builder.builder;
 
-import net.jp2p.chaupal.module.IJp2pModule;
+import net.jp2p.builder.context.IContextObserver;
+import net.jp2p.container.properties.IJp2pProperties;
 
-public interface IJp2pService<M extends Object> extends IJp2pModule, IActivator{
+public interface IBuilderContext<T extends Object,U extends IJp2pProperties> {
+
+	public abstract IContextObserver<T> getObserver();
+
+	public abstract void setObserver(IContextObserver<T> observer);
+
 }

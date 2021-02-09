@@ -10,10 +10,6 @@ package net.jp2p.container.activator;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.jp2p.chaupal.document.IJp2pAdvertisement;
-import net.jp2p.chaupal.exception.Jp2pPeerGroupException;
-import net.jp2p.chaupal.id.IJp2pID;
-import net.jp2p.chaupal.peergroup.IJp2pPeerGroup;
 import net.jp2p.container.Jp2pContainer;
 import net.jp2p.container.component.ComponentChangedEvent;
 import net.jp2p.container.component.IJp2pComponent;
@@ -26,24 +22,6 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 public abstract class AbstractJp2pServiceNode<M extends Object>
 		extends AbstractJp2pService<M> implements IJp2pComponentNode<M,Object> {
 
-	@Override
-	public void init(IJp2pPeerGroup group, IJp2pID assignedID, IJp2pAdvertisement implAdv)
-			throws Jp2pPeerGroupException, Jp2pPeerGroupException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int startApp(String[] args) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void stopApp() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	protected void deactivate() {

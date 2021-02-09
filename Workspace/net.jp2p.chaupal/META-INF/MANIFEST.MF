@@ -1,14 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Chaupal OSGI Services for JP2P Container
-Bundle-SymbolicName: net.jp2p.chaupal;singleton:=true
+Bundle-SymbolicName: net.jp2p.chaupal
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Chaupal.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Service-Component: OSGI-INF/jp2pbuilders.xml,
- OSGI-INF/jp2pbuilder.xml
 Import-Package: javax.ws.rs.core;version="2.1.0"
-Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: net.jp2p.chaupal
 Export-Package: net.jp2p.chaupal.document,
  net.jp2p.chaupal.exception,
@@ -19,5 +16,4 @@ Export-Package: net.jp2p.chaupal.document,
  net.jp2p.chaupal.peergroup,
  net.jp2p.chaupal.platform,
  net.jp2p.chaupal.protocol,
- net.jp2p.chaupal.rendezvous,
- net.jp2p.chaupal.utils
+ net.jp2p.chaupal.rendezvous

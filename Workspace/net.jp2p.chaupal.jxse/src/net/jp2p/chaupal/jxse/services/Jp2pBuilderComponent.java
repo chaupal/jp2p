@@ -31,50 +31,36 @@
  * http://www.apache.org/licenses/LICENSE-2.0.html
  *******************************************************************************
 */
-package net.jp2p.chaupal.jxse.service;
+package net.jp2p.chaupal.jxse.services;
+
+import net.jp2p.chaupal.builder.builder.AbstractJp2pContainerBuilder;
+import net.jp2p.chaupal.jxse.Activator;
+import net.jp2p.container.IJp2pContainer;
+import net.jp2p.container.builder.ContainerBuilderEvent;
+import net.jp2p.container.builder.Jp2pBuildException;
+import net.jxta.peergroup.core.Module;
 
 import java.io.InputStream;
 
-import net.jp2p.container.IJp2pContainer;
-import net.jp2p.container.builder.IContainerBuilderListener;
-import net.jp2p.container.builder.IJp2pContainerBuilder;
-import net.jp2p.container.builder.Jp2pBuildException;
+import org.osgi.service.component.annotations.Component;
 
-public class Jp2pBuilderComponent implements IJp2pContainerBuilder<Module> {
+@Component( immediate=true)
+public class Jp2pBuilderComponent  extends AbstractJp2pContainerBuilder<Module> {
 
 	public Jp2pBuilderComponent() {
-		// TODO Auto-generated constructor stub
+		super(Activator.BUNDLE_ID, Jp2pBuilderComponent.class);
+		super.addContainerBuilderListener( e-> onNotifyBuildEvent(e));
 	}
 
-	@Override
-	public void addContainerBuilderListener(IContainerBuilderListener<Module> listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeContainerBuilderListener(IContainerBuilderListener<Module> listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public IJp2pContainer<Module> build(InputStream in) throws Jp2pBuildException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public IJp2pContainer<Module> build(Class<?> clss, String path) throws Jp2pBuildException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public IJp2pContainer<Module> build(Class<?> clss) throws Jp2pBuildException {
-		// TODO Auto-generated method stub
-		return null;
+	public void onNotifyBuildEvent( ContainerBuilderEvent<Module> event ) {
+		
 	}
-
-	
 }

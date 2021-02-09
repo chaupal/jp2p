@@ -89,8 +89,9 @@ public abstract class AbstractJp2pBundleActivator<T extends Object> implements B
 
 	/**
 	 * Build the container
+	 * @return 
 	 */
-	protected abstract void build();
+	public abstract IJp2pContainer<T> build();
 	
 	public final void addObserver(IComponentChangedListener<IJp2pComponent<T>> observer) {
 		this.observers.add( observer );

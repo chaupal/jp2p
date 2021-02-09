@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JP2P Container
-Bundle-SymbolicName: net.jp2p.container
+Bundle-SymbolicName: net.jp2p.container;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Chaupal.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -34,3 +34,4 @@ Import-Package: net.jp2p.chaupal.document,
  org.osgi.service.log;version="1.5.0",
  org.osgi.util.tracker;version="1.5.2"
 Automatic-Module-Name: net.jp2p.container
+Bundle-ActivationPolicy: lazy

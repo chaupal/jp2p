@@ -11,13 +11,7 @@ import java.util.Enumeration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-
-import net.jp2p.chaupal.document.IJp2pAdvertisement;
-import net.jp2p.chaupal.exception.Jp2pPeerGroupException;
-import net.jp2p.chaupal.id.IJp2pID;
-import net.jp2p.chaupal.peergroup.IJp2pPeerGroup;
 import net.jp2p.container.activator.AbstractActivator;
-import net.jp2p.container.activator.IJp2pService;
 import net.jp2p.container.log.Jp2pLevel;
 import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
@@ -29,7 +23,7 @@ import net.jxta.discovery.DiscoveryListener;
 import net.jxta.document.Advertisement;
 import net.jxta.protocol.DiscoveryResponseMsg;
 
-public class RegistrationService extends AbstractActivator implements IJp2pService<RegistrationService>, Runnable, DiscoveryListener {
+public class RegistrationService extends AbstractActivator implements Runnable, DiscoveryListener {
 	
 	private IJp2pWritePropertySource<IJp2pProperties> source;
 	private ExecutorService executor;
@@ -126,26 +120,6 @@ public class RegistrationService extends AbstractActivator implements IJp2pServi
 				System.out.println(adv);
 			}
 		}
-	}
-
-
-	@Override
-	public void init(IJp2pPeerGroup group, IJp2pID assignedID, IJp2pAdvertisement implAdv)
-			throws Jp2pPeerGroupException, Jp2pPeerGroupException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int startApp(String[] args) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void stopApp() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

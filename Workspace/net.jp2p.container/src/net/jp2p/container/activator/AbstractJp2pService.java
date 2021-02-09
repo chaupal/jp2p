@@ -22,7 +22,7 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
 import net.jp2p.container.utils.StringProperty;
 
-public abstract class AbstractJp2pService<M extends Object> extends AbstractActivator implements IJp2pComponent<M>, IJp2pService<M>{
+public abstract class AbstractJp2pService<M extends Object> extends AbstractActivator implements IJp2pComponent<M>{
 
 	public static final String S_SERVICE = "Service";
 	
@@ -147,8 +147,8 @@ public abstract class AbstractJp2pService<M extends Object> extends AbstractActi
 		this.source.setProperty( IJp2pProperties.Jp2pProperties.STATUS, status);
 		super.notifyListeners(previous, status);
 		String identifier = AbstractJp2pPropertySource.getBundleId(source);
-		ComponentChangedEvent<IJp2pService<M>> event = 
-				new ComponentChangedEvent<IJp2pService<M>>( this, Jp2pContainer.ServiceChange.STATUS_CHANGE );
+		ComponentChangedEvent<IJp2pActivatorService<M>> event = 
+				new ComponentChangedEvent<IJp2pActivatorService<M>>( this, Jp2pContainer.ServiceChange.STATUS_CHANGE );
 		dispatcher.serviceChanged(event);
 	}
 }

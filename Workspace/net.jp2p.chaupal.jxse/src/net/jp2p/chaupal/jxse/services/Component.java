@@ -1,4 +1,4 @@
-package net.jp2p.chaupal.jxse.service;
+package net.jp2p.chaupal.jxse.services;
 
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaComponents;
 import net.jxta.impl.loader.JxtaLoaderModuleManager;
