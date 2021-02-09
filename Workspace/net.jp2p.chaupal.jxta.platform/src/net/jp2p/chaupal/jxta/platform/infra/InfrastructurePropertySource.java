@@ -24,7 +24,6 @@ import java.util.Iterator;
 import org.w3c.dom.Element;
 
 import net.jp2p.chaupal.id.IJp2pID;
-import net.jp2p.chaupal.jxta.core.id.Jp2pIDFactory;
 import net.jp2p.chaupal.platform.INetworkConfigurator;
 import net.jp2p.container.properties.AbstractJp2pWritePropertySource;
 import net.jp2p.container.properties.IJp2pDirectives;
@@ -32,6 +31,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
+import net.jp2p.jxse.core.id.Jp2pIDFactory;
 
 public class InfrastructurePropertySource extends AbstractJp2pWritePropertySource {
 	

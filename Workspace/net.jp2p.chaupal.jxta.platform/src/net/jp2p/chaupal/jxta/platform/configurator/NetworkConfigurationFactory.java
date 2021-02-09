@@ -37,6 +37,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
+import net.jxta.platform.NetworkManager;
 
 public class NetworkConfigurationFactory extends AbstractDependencyFactory<INetworkConfigurator, IJp2pComponent<INetworkManager>> {
 
@@ -86,7 +87,7 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<INetw
 		Path path = Paths.get(uri);
 		if(Files.exists(path, LinkOption.NOFOLLOW_LINKS )){
 			File file = path.toFile();
-			INetworkManager.RecursiveDelete( file );
+			NetworkManager.RecursiveDelete( file );
 		}
 	}
 
@@ -116,10 +117,6 @@ public class NetworkConfigurationFactory extends AbstractDependencyFactory<INetw
 		return super.onConvertDirective(key, value );
 	}
 	
-	@Override
-	public IJp2pComponent<INetworkConfigurator> getComponent() {
-		return super.createComponent();
-	}
 
 	@Override
 	public void onNotifyChange(ComponentBuilderEvent event) {

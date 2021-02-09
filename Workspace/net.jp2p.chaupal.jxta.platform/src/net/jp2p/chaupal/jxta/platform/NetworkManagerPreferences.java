@@ -13,7 +13,6 @@ package net.jp2p.chaupal.jxta.platform;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import net.jp2p.chaupal.jxse.core.id.Jp2pIDFactory;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.chaupal.peer.IJp2pPeerID;
 import net.jp2p.chaupal.platform.INetworkManager;
@@ -23,6 +22,7 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pPropertySource;
 import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.ManagedProperty;
+import net.jp2p.jxse.core.id.Jp2pIDFactory;
 import net.jxta.id.ID;
 import net.jxta.id.IDFactory;
 import net.jxta.peergroup.PeerGroupID;

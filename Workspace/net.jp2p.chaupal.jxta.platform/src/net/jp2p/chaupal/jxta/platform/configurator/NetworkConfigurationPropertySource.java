@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.URI;
 import java.util.Iterator;
 
-import net.jp2p.chaupal.jxse.core.id.Jp2pIDFactory;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
 import net.jp2p.chaupal.peer.IJp2pPeerID;
@@ -18,8 +17,8 @@ import net.jp2p.container.properties.IJp2pWritePropertySource;
 import net.jp2p.container.properties.IPropertyConvertor;
 import net.jp2p.container.utils.StringStyler;
 import net.jp2p.container.utils.Utils;
+import net.jp2p.jxse.core.id.Jp2pIDFactory;
 import net.jp2p.jxta.factory.IJxtaComponents.JxtaPlatformComponents;
-import net.jxta.id.ID;
 
 public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropertySource
 	implements IJp2pWritePropertySource<IJp2pProperties>
@@ -111,7 +110,7 @@ public class NetworkConfigurationPropertySource extends AbstractJp2pWritePropert
 		return new Convertor( this );
 	}
 
-	public static final void fillNetworkConfigurator( NetworkConfigurationPropertySource source, INetworkConfigurator<ID> configurator ){
+	public static final void fillNetworkConfigurator( NetworkConfigurationPropertySource source, INetworkConfigurator configurator ){
 		Iterator<IJp2pProperties> iterator = source.propertyIterator();
 		while( iterator.hasNext() ){
 			NetworkConfiguratorProperties property = ( NetworkConfiguratorProperties ) iterator.next();

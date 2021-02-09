@@ -10,8 +10,6 @@ package net.jp2p.chaupal.jxta.platform.context;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.jp2p.chaupal.jxta.core.peergroup.IJp2pModuleClassID;
-import net.jp2p.chaupal.jxta.core.peergroup.IJp2pModuleDefinitions;
 import net.jp2p.chaupal.jxta.platform.NetworkManagerFactory;
 import net.jp2p.chaupal.jxta.platform.configurator.NetworkConfigurationFactory;
 import net.jp2p.chaupal.jxta.platform.http.Http2Factory;
@@ -27,6 +25,8 @@ import net.jp2p.container.properties.IJp2pProperties;
 import net.jp2p.container.properties.IJp2pDirectives.Contexts;
 import net.jp2p.jxta.context.IJxtaBuilder;
 import net.jp2p.jxta.netpeergroup.NetPeerGroupFactory;
+import net.jxta.peergroup.IModuleDefinitions;
+import net.jxta.peergroup.core.ModuleClassID;
 
 public class JxtaPlatformBuilder extends AbstractJp2pServiceBuilder implements IJxtaBuilder {
 
@@ -49,19 +49,19 @@ public class JxtaPlatformBuilder extends AbstractJp2pServiceBuilder implements I
 	}
 
 	@Override
-	public IJp2pModuleClassID[] getSupportedModuleClassIDs() {
-		Collection<IJp2pModuleClassID> ids = new ArrayList<>();
-		for( IJp2pModuleDefinitions.DefaultJp2pModules dm: IJp2pModuleDefinitions.DefaultJp2pModules.values()){
+	public ModuleClassID[] getSupportedModuleClassIDs() {
+		Collection<ModuleClassID> ids = new ArrayList<>();
+		for( IModuleDefinitions.DefaultModules dm: IModuleDefinitions.DefaultModules.values()){
 			switch( dm ){
 			case HTTP:
 			case TCP:
 				break;
 			default:
-				ids.add( IJp2pModuleDefinitions.DefaultJp2pModules.getModuleClassID(dm));
+				ids.add( IModuleDefinitions.DefaultModules.getModuleClassID(dm));
 				break;
 			}
 		}		
-		return ids.toArray( new IJp2pModuleClassID[ ids.size() ]);
+		return ids.toArray( new ModuleClassID[ ids.size() ]);
 	}
 
 	@Override

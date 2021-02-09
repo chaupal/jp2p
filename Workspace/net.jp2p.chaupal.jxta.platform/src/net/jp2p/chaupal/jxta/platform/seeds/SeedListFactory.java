@@ -44,7 +44,7 @@ public class SeedListFactory extends AbstractPropertySourceFactory{
 	}
 
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void notifyChange(ComponentBuilderEvent event) {
 		if( !BuilderEvents.COMPONENT_CREATED.equals( event.getBuilderEvent()))
 			return;
 		String name = StringStyler.styleToEnum( event.getFactory().getComponentName() );
@@ -53,7 +53,7 @@ public class SeedListFactory extends AbstractPropertySourceFactory{
 		if( !JxtaPlatformComponents.NETWORK_CONFIGURATOR.equals( JxtaPlatformComponents.valueOf( name )))
 			return;
 		NetworkConfigurationFactory factory = (NetworkConfigurationFactory) event.getFactory();
-		INetworkConfigurator configurator = factory.createComponent().getJp2pModule();
+		INetworkConfigurator configurator = factory.createComponent().getModule();
 		SeedListPropertySource source = (SeedListPropertySource) super.getPropertySource();
 		
 		SeedTypes type = SeedListPropertySource.getSeedListType( source );

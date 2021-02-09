@@ -28,7 +28,7 @@ public abstract class AbstractNetworkConfiguratorExtensionFactory extends Abstra
 	protected abstract void onNetworkConfiguratorCreated( NetworkConfigurationFactory factory );
 	
 	@Override
-	public void notifyChange(ComponentBuilderEvent<Object> event) {
+	public void notifyChange(ComponentBuilderEvent event) {
 		if( !BuilderEvents.COMPONENT_CREATED.equals( event.getBuilderEvent()))
 			return;
 		String name = StringStyler.styleToEnum( event.getFactory().getComponentName() );
@@ -37,7 +37,7 @@ public abstract class AbstractNetworkConfiguratorExtensionFactory extends Abstra
 		if( !JxtaPlatformComponents.NETWORK_CONFIGURATOR.equals( JxtaPlatformComponents.valueOf( name )))
 			return;
 		NetworkConfigurationFactory factory = (NetworkConfigurationFactory) event.getFactory();
-		this.configurator = factory.createComponent().getJp2pModule();
+		this.configurator = factory.createComponent().getModule();
 		this.onNetworkConfiguratorCreated(factory);
 		super.notifyChange(event);
 	}

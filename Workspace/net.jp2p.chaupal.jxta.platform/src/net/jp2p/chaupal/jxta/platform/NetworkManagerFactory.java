@@ -18,8 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.jp2p.chaupal.jxta.platform.NetworkManagerPropertySource.NetworkManagerProperties;
-import net.jp2p.chaupal.peer.IJp2pPeerID;
-import net.jp2p.chaupal.platform.INetworkManager;
 import net.jp2p.container.Jp2pContainerPropertySource;
 import net.jp2p.container.builder.IContainerBuilder;
 import net.jp2p.container.component.IJp2pComponent;
@@ -45,7 +43,7 @@ import net.jxta.peergroup.PeerGroupID;
 import net.jxta.platform.JxtaApplication;
 import net.jxta.platform.NetworkManager;
 
-public class NetworkManagerFactory extends AbstractFilterFactory<INetworkManager>{
+public class NetworkManagerFactory extends AbstractFilterFactory<NetworkManager>{
 		
 	public static final String S_WRN_NO_CONFIGURATOR = "Could not add network configurator";
 	
@@ -55,7 +53,7 @@ public class NetworkManagerFactory extends AbstractFilterFactory<INetworkManager
 	
 	@Override
 	protected IComponentFactoryFilter createFilter() {
-		return new ComponentCreateFilter<IJp2pComponent<INetworkManager>, ContainerFactory>( BuilderEvents.COMPONENT_CREATED, IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString(), this );
+		return new ComponentCreateFilter<NetworkManager, ContainerFactory>( BuilderEvents.COMPONENT_CREATED, IJp2pServiceBuilder.Components.JP2P_CONTAINER.toString(), this );
 	}
 
 	@Override
@@ -68,8 +66,8 @@ public class NetworkManagerFactory extends AbstractFilterFactory<INetworkManager
 	@Override
 	public void extendContainer() {
 		IContainerBuilder<?> builder = super.getBuilder();
-		JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getPropertySource(), JxtaPlatformComponents.NETWORK_CONFIGURATOR.toString(), true );
-		PeerGroupPropertySource npps = (PeerGroupPropertySource) JxtaFactoryUtils.getOrCreateChildFactory( builder, new HashMap<String, String>(), super.getParentSource(), JxtaComponents.NET_PEERGROUP_SERVICE.toString(), true ).getPropertySource();
+		JxtaFactoryUtils.getOrCreateChildFactory( (IContainerBuilder<Object>) builder, new HashMap<String, String>(), super.getPropertySource(), JxtaPlatformComponents.NETWORK_CONFIGURATOR.toString(), true );
+		PeerGroupPropertySource npps = (PeerGroupPropertySource) JxtaFactoryUtils.getOrCreateChildFactory( (IContainerBuilder<Object>) builder, new HashMap<String, String>(), super.getParentSource(), JxtaComponents.NET_PEERGROUP_SERVICE.toString(), true ).getPropertySource();
 		npps.setDirective( Directives.AUTO_START, this.getPropertySource().getDirective( Directives.AUTO_START ));
 		super.extendContainer();
 	}
@@ -93,7 +91,7 @@ public class NetworkManagerFactory extends AbstractFilterFactory<INetworkManager
 	}
 
 	@Override
-	protected IJp2pComponent<INetworkManager> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
+	protected IJp2pComponent<NetworkManager> onCreateComponent( IJp2pPropertySource<IJp2pProperties> properties) {
 		// Removing any existing configuration?
 		NetworkManagerPreferences preferences = new NetworkManagerPreferences( (NetworkManagerPropertySource) properties );
 		String name = preferences.getInstanceName();
@@ -110,8 +108,8 @@ public class NetworkManagerFactory extends AbstractFilterFactory<INetworkManager
 			
 			//Load the config file
 			File file = path.toFile();
-			NetworkManager manager = JxtaApplication.getNetworkManager( preferences.getConfigMode(), name, file.toURI());
-			return new Jp2pComponentNode<INetworkManager>( super.getPropertySource(), manager );
+			NetworkManager manager = JxtaApplication.getNetworkManager( null /*preferences.getConfigMode()*/, name, file.toURI());
+			return new Jp2pComponentNode<NetworkManager>( super.getPropertySource(), manager );
 		} catch (Exception e) {
 			Logger log = Logger.getLogger( this.getClass().getName() );
 			log.log( Level.SEVERE, e.getMessage() );

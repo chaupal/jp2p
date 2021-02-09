@@ -11,6 +11,7 @@
 package net.jp2p.chaupal.jxta.platform.builder;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,6 +23,7 @@ import net.jp2p.container.IJp2pContainer;
 import net.jp2p.container.builder.ContainerBuilderEvent;
 import net.jp2p.container.builder.IContainerBuilderListener;
 import net.jp2p.container.builder.IJp2pContainerBuilder;
+import net.jp2p.container.builder.Jp2pBuildException;
 import net.jp2p.container.component.IJp2pComponent;
 import net.jp2p.container.component.IJp2pComponentNode;
 import net.jp2p.container.component.Jp2pComponent;
@@ -43,17 +45,12 @@ public class Jp2pCompatBuilder<T extends Object> extends JxtaPlatformBuilder imp
 	private Collection<IContainerBuilderListener<T>> listeners;
 				
 	public Jp2pCompatBuilder(String bundle_id, IJP2PCompatibility<T> compat ) {
-		super( bundle_id, compat );
+		super( );
 		this.bundle_id = bundle_id;
 		this.compat = compat;
 		listeners = new ArrayList<IContainerBuilderListener<T>>();
 	}
 	
-	@Override
-	public IJp2pContainer<T> getContainer() {
-		return this.container;
-	}
-
 	private final void notifyListeners( ContainerBuilderEvent<T> event ){
 		for( IContainerBuilderListener<T> listener: listeners ){
 			listener.notifyContainerBuilt(event);
@@ -87,7 +84,7 @@ public class Jp2pCompatBuilder<T extends Object> extends JxtaPlatformBuilder imp
 			@Override
 			public void notifyNodeChanged(CompatibilityEvent event) {
 				clear();
-				addChild( setStructure( compat ));	
+				//addChild( setStructure( compat ));	
 			}
 		};
 		
@@ -113,19 +110,19 @@ public class Jp2pCompatBuilder<T extends Object> extends JxtaPlatformBuilder imp
 
 		private IJp2pComponent<T> setStructure( IJP2PCompatibility<T> compat ){
 			IJxtaNode<T> root = compat.getRoot();
-			IJp2pComponentNode<T> main = (IJp2pComponentNode<T>) getComponent( root.getModule() ); 
+			IJp2pComponentNode<T,?> main = (IJp2pComponentNode<T,?>) getComponent( root.getModule() ); 
 			for( T child: root.getChildren() ){
 				setStructure( main, child );
 			}
 			return main;
 		}
 		
-		private void setStructure( IJp2pComponentNode<T> node, T module ){
-			node.addChild( getComponent( module ));
+		private void setStructure( IJp2pComponentNode<T,?> node, T module ){
+			//node.addChild( getComponent( module ));
 		}
 
 		private IJp2pComponent<T> getComponent( T module ){
-			IJp2pComponentNode<T> comp = null;
+			IJp2pComponentNode<T,?> comp = null;
 			IJp2pPropertySource<IJp2pProperties> source = null;
 			if( module instanceof INetworkManager){
 				INetworkManager manager = (INetworkManager) module;
@@ -133,7 +130,7 @@ public class Jp2pCompatBuilder<T extends Object> extends JxtaPlatformBuilder imp
 				comp = new Jp2pComponentNode<T>( source, module );
 				try {
 					source = new NetworkConfiguratorPropertyFacade( bundle_id, manager.getConfigurator() );
-					comp.addChild( new Jp2pComponentNode<Object>( source, manager.getConfigurator() ));
+					//comp.addChild( new Jp2pComponentNode<Object>( source, manager.getConfigurator() ));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -149,5 +146,23 @@ public class Jp2pCompatBuilder<T extends Object> extends JxtaPlatformBuilder imp
 			this.compat.removeListener(listener);
 			super.deactivate();
 		}
+	}
+
+	@Override
+	public IJp2pContainer<T> build(InputStream in) throws Jp2pBuildException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IJp2pContainer<T> build(Class<?> clss) throws Jp2pBuildException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IJp2pContainer<T> build(Class<?> clss, String path) throws Jp2pBuildException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
